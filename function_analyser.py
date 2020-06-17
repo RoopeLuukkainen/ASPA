@@ -26,7 +26,9 @@ class FunctionAnalyser(ast.NodeVisitor):
         """
         # Global variable detection
         for var in node.targets[:]:
-            if(var.col_offset == 0): # TODO: change so that checks parents, not indent
+            if(node.col_offset == 0 or
+                    utils_lib.get_parent_instance(node,
+                    (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)) is None):
                 if(isinstance(var, ast.Attribute)):
                     self.model.add_msg("AR3-2", var.value.id, var.attr, lineno=var.lineno)
                     global_var = var.value.id
