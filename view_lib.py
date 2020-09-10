@@ -111,10 +111,12 @@ class FiledialogPanel(tk.Frame):
         # File dialog buttons
         ttk.Button(self, text=utils.GUI[parent.LANG]["select_file"], command=self.get_filedialog).grid(row=0, column=1, padx=PAD, pady=PAD, sticky=tk.E)
         ttk.Button(self, text=utils.GUI[parent.LANG]["select_folder"], command=lambda: self.get_filedialog(dir=True)).grid(row=0, column=2, padx=PAD, pady=PAD, sticky=tk.E)
+        ttk.Button(self, text=utils.GUI[parent.LANG]["clear"], command=self.clear_files).grid(row=0, column=3, padx=PAD, pady=PAD, sticky=tk.E)
+
 
         # Create output text box
         self.output_box = tk.Text(self, width=50, height=10, bg=BG_COLOR, fg=FONT_COLOR, font=NORMAL_FONT)#font=SMALL_FONT)
-        self.output_box.grid(row=1, column=0, columnspan=3, sticky="nesw", padx=PAD, pady=PAD)
+        self.output_box.grid(row=1, column=0, columnspan=4, sticky="nesw", padx=PAD, pady=PAD)
         
         # self.output_box.insert(0.0, "E:/GitLab/ast-analyser/test_files/example2.py\nE:/GitLab/ast-analyser/test_files/lib_example.py\n") # TODO: remove this line
         #self.output_box.insert(0.0, "E:/GitLab/ast-analyser/test_files/analysis_examples.py") # TODO: remove this line
@@ -129,8 +131,18 @@ class FiledialogPanel(tk.Frame):
                         filetype = (("Python", "*.py"), (utils.GUI[self.parent.LANG]["all_files"], "*")))
 
         if(path != ""):
-            self.output_box.insert(tk.END, path + "\n")  # TODO: this should come from model but in test version text box is editable.
+            self.add_file(path)
         return None
+
+    def add_file(self, path):
+        self.output_box.config(state="normal")
+        self.output_box.insert(tk.END, path + "\n")
+        self.output_box.config(state="disabled")
+
+    def clear_files(self):
+        self.output_box.config(state="normal")
+        self.output_box.delete(1.0, tk.END)
+        self.output_box.config(state="disabled")
 
     def parse_filepaths(self, clear=False):
         pathset = set()
@@ -139,8 +151,8 @@ class FiledialogPanel(tk.Frame):
             if(path != ""):
                 pathset.add(path)
         if(clear):
-            #pass # TODO: remove this line
-            self.output_box.delete(1.0, tk.END)
+            pass # TODO: remove this line
+            # self.clear_files()
         return pathset
 
     def get_filepath_list(self, clear=False):
@@ -159,6 +171,7 @@ class ControlPanel(tk.Frame):
 
         # exit_button = ttk.Button(button_group, text="Sulje ohjelma", command=quit) #command=parent.close_window)
         # exit_button.grid(row=0, column=1, padx=PAD, pady=PAD, sticky=tk.W)
+
 
 
 class AnalysePage(tk.Frame):

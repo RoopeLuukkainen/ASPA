@@ -72,6 +72,7 @@ class GUI(tk.Tk):
         page.tkraise()
 
     def tkvar_2_var(self, tk_vars, to_type):
+        selections = dict()
         if(isinstance(tk_vars, dict)):
             selections = dict(tk_vars)
             for key in selections.keys():
@@ -81,6 +82,13 @@ class GUI(tk.Tk):
 
     def analyse(self, selected_analysis, filepaths):
         selections = self.tkvar_2_var(selected_analysis, "int")
+        if(sum(selections.values()) == 0):
+            # TODO: Show message of missing analysis selections
+            return None
+        if(not filepaths):
+            # TODO: Show message of missing files
+            return None
+
         filelist = utils.crawl_dirs(filepaths, self.settings["only_leaf_files"])
         timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 
@@ -93,6 +101,8 @@ class GUI(tk.Tk):
         self.pages[view.ResultPage].clear_result()  # Clears previous results
         self.show_page(view.ResultPage)
         self.model.analyse(filelist, selections)
+        return None
 
     def update_result(self, result):
         self.pages[view.ResultPage].add_result(result)
+        return None
