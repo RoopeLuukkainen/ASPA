@@ -1,5 +1,5 @@
 """Class file. Contains FunctionAnalyser class."""
-__version__ = "0.0.1"
+__version__ = "0.1.1"
 __author__ = "RL"
 
 import ast
@@ -11,6 +11,12 @@ class FunctionAnalyser(ast.NodeVisitor):
     # Initialisation
     def __init__(self, model):
         self.model = model
+
+    def _check_nested_function(self, node):
+        """Method to check if function definition is not at a global scope."""
+        if(utils_lib.get_parent_instance(node, 
+                (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)) is not None):
+            self.model.add_msg("AR2-1", node.name, lineno=node.lineno)
 
    # Visits
     def visit_Assign(self, node, *args, **kwargs):
@@ -139,6 +145,13 @@ class FunctionAnalyser(ast.NodeVisitor):
         #         and node.body[-1] is not ast.YieldFrom): # Doesn't work because yield (from) are inside expr node
             self.model.add_msg("AR6", node.name, lineno=node.lineno)
 
+        self._check_nested_function(node)
+
+        self.generic_visit(node)
+
+
+    def visit_AsyncFunctionDef(self, node, *args, **kwargs):
+        self._check_nested_function(node)
         self.generic_visit(node)
 
 

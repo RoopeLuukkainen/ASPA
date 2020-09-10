@@ -44,7 +44,7 @@ class CheckboxPanel(tk.Frame):
     def __init__(self, parent, checkbox_options):
         tk.Frame.__init__(self, parent, bd=BD, relief=BD_STYLE)
         tk.Label(self, text=utils.GUI[parent.LANG]["select_analysis_title"], bg=BG_COLOR, fg=FONT_COLOR, font=LARGE_FONT).grid(row=0, column=0, columnspan=2, padx=PAD, pady=PAD)
-        tk.Label(self, text=utils.GUI[parent.LANG]["preset_title"], bg=BG_COLOR, fg=FONT_COLOR, font=LARGE_FONT).grid(row=0, column=3, padx=PAD, pady=PAD)
+    #    tk.Label(self, text=utils.GUI[parent.LANG]["preset_title"], bg=BG_COLOR, fg=FONT_COLOR, font=LARGE_FONT).grid(row=0, column=3, padx=PAD, pady=PAD)
 
         self.selected_analysis = dict()
         count = 0
@@ -63,23 +63,23 @@ class CheckboxPanel(tk.Frame):
         # tk.Label(self, text="try-except rakenteet", bg=BG_COLOR, fg=FONT_COLOR, font=SMALL_FONT).grid(row=count+1, column=1, padx=PAD, sticky="w")#, pady=PAD)
 
 
-       # Predefined options buttons
-        buttons = list()
+    #    # Predefined options buttons
+    #     buttons = list()
 
-        b_clear = ttk.Button(self, text=utils.GUI[parent.LANG]["clear"],
-            command=lambda: self.check(self.selected_analysis.keys(), 0))
-        b_clear.grid(row=1, column=3, padx=PAD, pady=PAD, sticky=tk.W + tk.E)
-        buttons.append(b_clear)
+    #     b_clear = ttk.Button(self, text=utils.GUI[parent.LANG]["clear"],
+    #         command=lambda: self.check(self.selected_analysis.keys(), 0))
+    #     b_clear.grid(row=1, column=3, padx=PAD, pady=PAD, sticky=tk.W + tk.E)
+    #     buttons.append(b_clear)
 
-        for i in range(1, len(checkbox_options)):
-            b = ttk.Button(self, text=f"{utils.GUI[parent.LANG]['exam_level']} {i}",  # Here could be also week number range
-                command=lambda i=i: self.check(checkbox_options[0:i]))
-            b.grid(row=i+1, column=3, padx=PAD, pady=PAD, sticky=tk.W + tk.E)
-            buttons.append(b)
+    #     for i in range(1, len(checkbox_options)):
+    #         b = ttk.Button(self, text=f"{utils.GUI[parent.LANG]['exam_level']} {i}",  # Here could be also week number range
+    #             command=lambda i=i: self.check(checkbox_options[0:i]))
+    #         b.grid(row=i+1, column=3, padx=PAD, pady=PAD, sticky=tk.W + tk.E)
+    #         buttons.append(b)
 
-        # Hotfix to make last one being all
-        buttons[-1].config(text=f"{utils.GUI[parent.LANG]['exam_level']} {len(checkbox_options)-1} / {utils.GUI[parent.LANG]['course_project_short']}", 
-                           command=lambda: self.check(self.selected_analysis.keys()))
+    #     # Hotfix to make last one being all
+    #     buttons[-1].config(text=f"{utils.GUI[parent.LANG]['exam_level']} {len(checkbox_options)-1} / {utils.GUI[parent.LANG]['course_project_short']}", 
+    #                        command=lambda: self.check(self.selected_analysis.keys()))
 
     def check(self, keys, value=1):
         """Method to set given value for given checkboxes."""

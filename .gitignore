@@ -1,0 +1,39 @@
+# ignore python cache
+__pycache__/
+
+# ignore vscode config files
+.vscode/
+
+# ignore settings file
+settings.json
+
+# ignore student exam files
+T1/
+T2/
+T3/
+T4/
+T5/
+TX/
+kaikki/
+opiskelijat/
+Tentti2/
+Tentit/
+
+# ignore practical assignment files
+HT/
+HT_perus/
+HT_tavoite/
+
+# ignore new test files
+test_files/
+testing*.py
+
+# ignore parser file
+viope_json_parser.py
+
+# ignore all result files
+results/
+tarkistukset*.txt
+
+# GUI test files
+GUI_test/

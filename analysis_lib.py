@@ -1,10 +1,14 @@
+"""File to handle ASPA static analysers."""
+__version__ = "0.1.1"
+__author__ = "RL"
+
 import ast
 import os
 
 # AST analysers
 import data_structure_analyser
 import error_handling_analyser
-import exam_analyser  # basic commands
+import basic_command_analyser  # basic commands
 import file_handling_analyser
 import file_structure_analyser
 import function_analyser
@@ -32,7 +36,7 @@ class Model:
         # but that is modified in the code then, i.e. not by user
         try:
             self.analysers = {
-                self.checkbox_options[0]: exam_analyser.ExamAnalyser(self),
+                self.checkbox_options[0]: basic_command_analyser.ExamAnalyser(self),
                 self.checkbox_options[1]: function_analyser.FunctionAnalyser(self),
                 self.checkbox_options[2]: file_handling_analyser.FileHandlingAnalyser(self),
                 self.checkbox_options[3]: data_structure_analyser.DataStructureAnalyser(self),
@@ -186,7 +190,7 @@ class Model:
 
         if(self.settings["file_write"]):
             write_content = f"{utils.create_dash(get_dash=True)}\n{path}\n=== {filename} ===\n{content}"
-            utils.write_file(self.settings["result_file"], write_content, mode="a")
+            utils.write_file(self.settings["result_path"], write_content, mode="a")
 
         if(self.settings["GUI_print"]):
             GUI_content = f"{utils.create_dash(get_dash=True)}\n{path}\n{filename}\n{content}"

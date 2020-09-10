@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """The main file for ASPA - static analyser."""
-__version__ = "0.0.3"
+__version__ = "0.1.1"
 __author__ = "RL"
 
 import json
@@ -20,11 +20,10 @@ DEFAULT_SETTING = {
     "console_print": False,
     "file_write": True,
     "GUI_print": True,
-    "result_file": "tarkistukset.txt",
+    "result_path": str(pathlib.Path(__file__).parent.absolute().joinpath("tarkistukset.txt")),
     "only_leaf_files": True,
     "show_statistics": False
 }
-
 
 def add_fixed_settings(settings):
     settings["checkbox_options"] = ["basic", "function", "file_handling", "data_structure", "library", "exception_handling"]

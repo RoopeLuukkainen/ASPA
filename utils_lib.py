@@ -1,5 +1,5 @@
 """Library containing utility functions for static analysers."""
-__version__ = "0.1.1"
+__version__ = "0.1.2"
 __author__ = "RL"
 
 import ast
@@ -17,6 +17,7 @@ MSG = {
         "OK": "No violations detected.",
         "NOTE": "detected",
         "PT1": "++Command '{}' is used.",
+        "AR2-1": "Definition of the function '{}' is not at the global scope.",
         "AR3": "Global variable '{}'.",
         "AR3-2": "Variable or object is used in global scope '{}.{}'.", # Works only with objects
         "AR4": "**Recursive function call.",
@@ -54,6 +55,7 @@ MSG = {
         "OK": "Ei tunnistettu tyylirikkomuksia.",
         "NOTE": "huomioita",
         "PT1": "++Komentoa '{}' on käytetty.",
+        "AR2-1": "Aliohjelman '{}' määrittely ei ole päätasolla.",
         "AR3": "Globaalimuuttuja '{}'.",
         "AR3-2": "Muuttujan tai olion globaali käyttö '{}.{}'.",
         "AR4": "**Rekursiivinen aliohjelmakutsu.",
@@ -68,7 +70,7 @@ MSG = {
         "MR2-4": "Päätason aliohjelmakutsu '{}.{}()' ei viittaa tiedoston pääohjelmaan.",
         "MR3": "Kirjasto '{}' sisällytetään (eng. import) uudelleen.",
         "MR3-1": "Kirjastosta '{}' sisällytetään (eng. import) aliohjelmia  uudelleen.",
-        "MR4": "Kirjaston '{}' sisällys (eng. import) ei ole päätasolla.",
+        "MR4": "Kirjaston '{}' sisällytys (eng. import) ei ole päätasolla.",
         "MR4-1": "<Kirjaston '{}' sisällytys (eng. import) ei ole tiedoston alussa.>",
         "MR5": "Tiedostossa ei ole kaikkia alkukommentteja tiedoston {} ensimmäisellä rivillä.",
         "PK1": "**Virheenkäsittelyssä vain yksi (1) except.",
@@ -160,29 +162,12 @@ def get_parent_instance(node, allowed, denied=tuple()):
     temp = node
     parent = None
     while(hasattr(temp, "parent_node") and not isinstance(temp, denied)):
+        temp = temp.parent_node
         if(isinstance(temp, allowed)):
             parent = temp
             break
-        temp = temp.parent_node
     return parent
 
-
-# def print_msg(code, *args, lineno=-1):
-#     if(lineno < 0):
-#         msg = ""
-#     else:
-#         # msg = f"Line {lineno}: "
-#         msg = f"Rivillä {lineno}: "
-
-#     try:
-#         msg += MSG[code]
-#     except KeyError:
-#         msg += MSG["default"]
-
-#     try:
-#         print(msg.format(*args))
-#     except IndexError:
-#         print(MSG["error_error"])
 
 
 def create_msg(code, *args, lineno=-1, lang="FIN"):
@@ -261,52 +246,3 @@ def create_dash(a="-", dash_count=80, get_dash=False):
     else:
         print(a*dash_count)
 
-#----- Testing stuff ----------------------------------------------------------#
-
-# def global_test(body):
-#     for node in body:
-#         if(isinstance(node, ast.Assign)):
-#             for var in node.targets:
-#                 if(hasattr(var, "id")):
-#                     print(var.id)
-#                 elif(isinstance(var, ast.Attribute)):  # Oliolle
-#                     print("{}.{}".format(var.value.id, var.attr))
-#                 else:
-#                     print("#"*80 + "\nglobal_test assign:", var, "\n" + "#"*80)
-
-
-
-
-# def parent_test():
-#     """
-#     Gives:
-#     <_ast.ClassDef object at 0x0000024AB520FD30>
-#     <_ast.Assign object at 0x0000024AB520FD68>
-#     <_ast.Name object at 0x0000024AB520FDA0>
-#     <_ast.Assign object at 0x0000024AB520FD68>
-#     <_ast.ClassDef object at 0x0000024AB520FD30>
-#     """
-
-#     test_string ="""
-# class LUOKKA():
-#     lm = 2
-# def fun(num) -> int:
-#     num += 1
-#     a = None
-#     if(a):
-#         return "kissa"
-#     olio = LUOKKA()
-#     return None
-# print(fun(2))
-# """
-#     tree = ast.parse(test_string)
-#     add_parents(tree)
-
-#     create_dash()
-#     print(tree.body[0])
-#     print(tree.body[0].body[0])
-#     # print(tree.body[0].body[0].parent_node)
-#     print(tree.body[0].body[0].targets[0])
-#     print(tree.body[0].body[0].targets[0].parent_node)
-#     print(tree.body[0].body[0].targets[0].parent_node.parent_node)
-#     create_dash()

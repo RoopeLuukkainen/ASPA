@@ -1,5 +1,5 @@
 """Class file. Contains DataStructureAnalyser class."""
-__version__ = "0.0.1"
+__version__ = "0.1.1"
 __author__ = "RL"
 
 import ast
@@ -8,9 +8,6 @@ import ast
 import utils_lib as utils
 
 class DataStructureAnalyser(ast.NodeVisitor):
-    """
-    TODO: Check that class is created in global scope
-    """
    # Initialisations
     def __init__(self, model):
         self.model = model
@@ -36,6 +33,9 @@ class DataStructureAnalyser(ast.NodeVisitor):
         self.generic_visit(node)
 
     def visit_ClassDef(self, node, *args, **kwargs):
+        """Method to check if 
+        1. Class is created in global scope
+        """
         if(node.col_offset > 0):
             self.model.add_msg("TR2-3", node.name, lineno=node.lineno)
         

@@ -85,11 +85,11 @@ class GUI(tk.Tk):
         timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 
         # # Timestamp to filename  (temporal solution!!)
-        # self.settings["result_file"] = os.path.join(self.settings["root"], 
+        # self.settings["result_path"] = os.path.join(self.settings["root"], 
         #     f"tarkistukset_{os.path.basename(filelist[0])}_{timestamp}.txt")  # Give error if file list is empty. Not yet fixed because temporal solution
         # # temporal ends
 
-        utils.write_file(self.settings["result_file"], timestamp + "\n")
+        utils.write_file(self.settings["result_path"], timestamp + "\n")
         self.pages[view.ResultPage].clear_result()  # Clears previous results
         self.show_page(view.ResultPage)
         self.model.analyse(filelist, selections)
