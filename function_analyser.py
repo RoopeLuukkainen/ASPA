@@ -112,14 +112,72 @@ class FunctionAnalyser(ast.NodeVisitor):
     def visit_Call(self, node, *args, **kwargs):
         """Method to check if node is:
         1. Recursive function call.
+        2. Check that sent and received parameters match
         """
-        # This find recursive function calls.
+        # print(node, node.func, node.func.id)
+        # print(self.model.get_function_dict())
         try:
-            if(hasattr(node, "func") and hasattr(node.func, "id")
-                and (node.func.id == utils_lib.get_parent_instance(
-                    node, (ast.FunctionDef, ast.AsyncFunctionDef)).name)):
+            funs = self.model.get_function_dict()
+            fun = node.func.id
+
+        # Recursive function calls.
+            # if(hasattr(node, "func") and hasattr(node.func, "id")
+            #     and (node.func.id == utils_lib.get_parent_instance(
+            #         node, (ast.FunctionDef, ast.AsyncFunctionDef)).name)):
+            if(fun == utils_lib.get_parent_instance(node,
+                    (ast.FunctionDef, ast.AsyncFunctionDef)).name):
                 self.model.add_msg("AR4", lineno=node.lineno)
         except AttributeError:  # This occus e.g. when function name of global variables is searched
+            pass
+
+        # Parameters check tested with Python 3.8.5
+        try:
+            if(fun in funs.keys()):
+                has_args = True if(funs[fun].ast.args.vararg) else False
+                has_kwargs = True if(funs[fun].ast.args.kwarg) else False
+                default_count = len(funs[fun].ast.args.defaults)
+                kw_default_count = len(funs[fun].ast.args.kw_defaults) # Currently not used
+                args_count = len(funs[fun].pos_args)                        # This directly from FunctionTemplate class
+                kw_only_count = len(funs[fun].kw_args) # Currently not used # This directly from FunctionTemplate class 
+
+                call_param_count = len(node.args)
+                call_kw_count = len(node.keywords) # Currently not used
+
+                if(call_param_count < (args_count - default_count)):
+                    print(f"{node.lineno}: {fun} requires at least {args_count} parameters, but {call_param_count} given.")
+
+                elif(not has_args and (call_param_count > args_count)):
+                    print(f"{node.lineno}: {fun} requires at most {args_count} parameters, but {call_param_count} given.")
+
+                if(not has_kwargs):
+                    for i in node.keywords:
+                        if(i.arg not in funs[fun].kw_args):
+                            print(f"{node.lineno}: in call of function {fun}, {i.arg} is invalid keyword argument.")
+
+
+                # print(node.lineno, ":", call_param_count, call_kw_count, "|",
+                #     args_count, default_count, has_args, kw_only_count, 
+                #     kw_default_count, has_kwargs, end="---")
+
+                # print("abc", node.args, len(node.args))
+                # if(has_kwargs or has_args):
+                #     print(f"pro", end="-")
+                # if(args_count >= call_param_count >= (args_count - default_count)):
+                #     print(f"plain", end="-")
+                # if(has_args and call_param_count >= (args_count - default_count)):
+                #     print(f"args", end="-")
+                # print(node.lineno, end=": ")
+                # if(not has_args 
+                #     and (call_param_count > args_count
+                #         or call_param_count < (args_count - default_count))):
+                #     print(1)
+                # if(has_args and call_param_count < (args_count - default_count)):
+                #     print(2)
+
+                # if((call_param_count < (args_count - default_count))
+                #         or (not has_args and (call_param_count > args_count))):
+        except (AttributeError, KeyError):
+            print(f"Error at {node.lineno}, with {node}")
             pass
         self.generic_visit(node)
 

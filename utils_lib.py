@@ -1,9 +1,16 @@
 """Library containing utility functions for static analysers."""
-__version__ = "0.1.2"
+__version__ = "0.1.3"
 __author__ = "RL"
 
 import ast
 import os
+
+class FunctionTemplate:
+    def __init__(self, name, ast, pos_args, kw_args):
+        self.name = name
+        self.pos_args = pos_args # Not *args
+        self.kw_args = kw_args # Not **kwargs
+        self.ast = ast
 
 # ** Means warning
 # ++ Means note
@@ -45,7 +52,8 @@ MSG = {
         "TR2-2": "Missing parenthesis from object creation. Should be '{}()'.",
         "TR2-3": "Class '{}' is not defined in global scope.",
         "WELCOME": "Program does static analysis for defined file(s).\n"
-                + "In prints **-marking stands for warning, all others are errors."
+                + "In prints **-marking stands for warning, and ++ for note,\n"
+                + "all others are errors."
     },
     "FIN": {
         "default": "Tapahtui virhe!\n",
@@ -83,7 +91,8 @@ MSG = {
         "TR2-2": "Olion luonnista puuttuvat sulkeet. Pitäisi olla '{}()'.",
         "TR2-3": "Luokkaa '{}' ei ole määritelty päätasolla.",
         "WELCOME": "Ohjelma suorittaa staattisen analyysin annetulle tiedostolle.\n"
-                + "Tulosteissa **-merkintä tarkoittaa varoitusta, muut ovat virheitä."
+                + "Tulosteissa **-merkintä tarkoittaa varoitusta ja ++-merkintä ilmoitusta,\n"
+                + "muut ovat virheitä."
     }
 }
 
@@ -158,6 +167,7 @@ def add_parents(tree):
         for child_node in ast.iter_child_nodes(node):
             child_node.parent_node = node
 
+
 def get_parent_instance(node, allowed, denied=tuple()):
     temp = node
     parent = None
@@ -167,7 +177,6 @@ def get_parent_instance(node, allowed, denied=tuple()):
             parent = temp
             break
     return parent
-
 
 
 def create_msg(code, *args, lineno=-1, lang="FIN"):

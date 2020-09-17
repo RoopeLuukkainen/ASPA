@@ -75,7 +75,8 @@ class FileStructureAnalyser(ast.NodeVisitor):
         2. Also could check if this file is imported by others. If not
         Then it is probably main file."""
         call_count = 0
-        fun_list = self.model.get_function_list() 
+        # TODO: Parse nested function names, which are in format parent.functionName
+        fun_list = self.model.get_function_dict().keys() 
         for node in tree.body:
             if(hasattr(node, "value") and isinstance(node.value, ast.Call)):
                 call_count += 1

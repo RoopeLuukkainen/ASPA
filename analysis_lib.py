@@ -46,7 +46,6 @@ class Model:
         except IndexError:
             pass
 
-
         # Variable lists (used by function_analyser)
         self.global_variables = set()
         self.local_variables = set()
@@ -55,10 +54,10 @@ class Model:
         self.files_opened = list()
         self.files_closed =  list()
 
-        # File structure lists 1 (used by file_structure_analyser and data_structure_analyser)
-        self.function_list = list() # Could be set?
-        self.class_list = list() # Could be set?
-        # File structure lists 2 (used by file_structure_analyser)
+        # File structure list and dict used by file_structure_analyser and data_structure_analyser
+        self.function_dict = dict()
+        self.class_list = list()
+        # File structure lists used by file_structure_analyser
         self.file_list = list()
         self.lib_list = list()
         self.imported = set()
@@ -92,8 +91,8 @@ class Model:
     def get_lib_list(self):
         return list(self.lib_list)
 
-    def get_function_list(self):
-        return list(self.function_list)
+    def get_function_dict(self):
+        return dict(self.function_dict)
 
     def get_class_list(self):
         return list(self.class_list)
@@ -130,8 +129,11 @@ class Model:
     def set_file_list(self, value):
         self.file_list = list(value)
 
-    def set_function_list(self, value):
-        self.function_list = list(value)
+    def set_function_dict(self, value, key=None):
+        if(key):
+            self.function_dict[key] = value
+        else:
+            self.function_dict = dict(value)
 
     def set_class_list(self, value):
         self.class_list = list(value)
@@ -149,7 +151,7 @@ class Model:
         self.local_variables.clear()
         self.files_opened.clear()
         self.files_closed.clear()
-        self.function_list.clear()
+        self.function_dict.clear()
         self.class_list.clear()
         self.file_list.clear()
         self.lib_list.clear()
@@ -189,7 +191,7 @@ class Model:
             print(content)
 
         if(self.settings["file_write"]):
-            write_content = f"{utils.create_dash(get_dash=True)}\n{path}\n=== {filename} ===\n{content}"
+            write_content = f"{utils.create_dash(get_dash=True)}\n{path}\n{filename}\n{content}"
             utils.write_file(self.settings["result_path"], write_content, mode="a")
 
         if(self.settings["GUI_print"]):
@@ -207,8 +209,24 @@ class Model:
             if(isinstance(node, ast.ClassDef)):
                 self.class_list.append(node.name)
 
-            elif(isinstance(node, ast.FunctionDef)):
-                self.function_list.append(node.name)
+            elif(isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))):
+                key = node.name
+                pos_args = [i.arg for i in node.args.args]
+                kw_args = list()
+
+                # for i in node.args.args:
+                #     pos_args.append(i.arg)
+
+                for i in node.args.kwonlyargs:
+                    kw_args.append(i.arg)
+
+                parent = utils.get_parent_instance(node, 
+                    (ast.ClassDef, ast.FunctionDef, ast.AsyncFunctionDef))
+                if(parent):
+                    key = f"{parent.name}.{key}"
+                #  TODO: If key exist then there are two identically named functions
+
+                self.function_dict[key] = utils.FunctionTemplate(node.name, node, pos_args, kw_args)
 
     def analyse(self, pathlist, selections):
         for path in pathlist:
@@ -247,6 +265,8 @@ class Model:
         if(self.settings["dump_tree"]):
             utils.create_dash()
             print(ast.dump(tree, include_attributes=True))
+            print()
+            print(ast.dump(tree, include_attributes=False))
             utils.create_dash()
 
         for i in self.checkbox_options:
