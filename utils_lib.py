@@ -6,11 +6,14 @@ import ast
 import os
 
 class FunctionTemplate:
-    def __init__(self, name, ast, pos_args, kw_args):
+    def __init__(self, name, astree, pos_args, kw_args):
         self.name = name
         self.pos_args = pos_args # Positional arguments before *args
         self.kw_args = kw_args # Keyword arguments before **kwargs
-        self.ast = ast # AST of the function
+        self.astree = astree # AST of the function
+
+# TODO: Take this from the configuration file
+IGNORE = {"PT1", "PK1"} # Add keys of ignored error messages
 
 # ** Means warning
 # ++ Means note
@@ -18,9 +21,9 @@ class FunctionTemplate:
 MSG = {
     "ENG": {
         "default": "Error occured!\n",
-        "error_error": "\nError while printing an error message. :(\nProbably too few *args.\n",
+        "error_error": "\nError while printing an error message. :(\nProbably too few *args.\n", # Debug
         "syntax_error": "File has a syntax error.",
-        "type_error": "Abstract Syntax Tree parameter has wrong type, e.g. None.",
+        "type_error": "Abstract Syntax Tree parameter has wrong type, e.g. None.", # Debug
         "OK": "No violations detected.",
         "NOTE": "detected",
         "PT1": "++Command '{}' is used.",
@@ -102,9 +105,6 @@ MSG = {
                 + "muut ovat virheitä."
     }
 }
-
-# TODO: Take this from the configuration file
-IGNORE = {"PK1"} # Add keys of ignored error messages
 
 TEXT = {
     "FIN": {

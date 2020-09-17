@@ -158,12 +158,12 @@ class Model:
         self.imported.clear()
 
     def add_msg(self, code, *args, lineno=-1):
-        self.messages.append((lineno, code, args))
-        try:
-            self.violation_occurances[code] += 1
-        except KeyError:
-            self.violation_occurances[code] = 1
-
+        if(not utils.ignore_check(code)):
+            self.messages.append((lineno, code, args))
+            try:
+                self.violation_occurances[code] += 1
+            except KeyError:
+                self.violation_occurances[code] = 1
         # print("m", self.messages)
 
     def save_messages(self, title):
@@ -183,8 +183,7 @@ class Model:
 
             content += f"\n{title}, {utils.create_msg('NOTE', lang=self.language)}:\n"
             for lineno, code, args in msgs:
-                if(not utils.ignore_check(code)):
-                    content += utils.create_msg(code, *args, lineno=lineno, lang=self.language) + "\n"
+                content += utils.create_msg(code, *args, lineno=lineno, lang=self.language) + "\n"
 
         if(self.settings["console_print"]):
             print(content)

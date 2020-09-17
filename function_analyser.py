@@ -133,10 +133,10 @@ class FunctionAnalyser(ast.NodeVisitor):
         # Parameters check tested with Python 3.8.5
         try:
             if(fun in funs.keys()):
-                has_args = True if(funs[fun].ast.args.vararg) else False
-                has_kwargs = True if(funs[fun].ast.args.kwarg) else False
-                default_count = len(funs[fun].ast.args.defaults)
-                kw_default_count = len(funs[fun].ast.args.kw_defaults) # Currently not used
+                has_args = True if(funs[fun].astree.args.vararg) else False
+                has_kwargs = True if(funs[fun].astree.args.kwarg) else False
+                default_count = len(funs[fun].astree.args.defaults)
+                kw_default_count = len(funs[fun].astree.args.kw_defaults) # Currently not used
                 args_count = len(funs[fun].pos_args)                        # This directly from FunctionTemplate class
                 kw_only_count = len(funs[fun].kw_args) # Currently not used # This directly from FunctionTemplate class 
 

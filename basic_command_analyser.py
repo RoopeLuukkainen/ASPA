@@ -32,6 +32,16 @@ class ExamAnalyser(ast.NodeVisitor):
     #                 Attribute, Subscript, Starred, Name, List, Tuple
 
    # Visits
+    def visit_Call(self, node, *args, **kwargs):
+        # print(node.lineno, node)
+        try:
+            if(isinstance(node.func, ast.Name) and node.func.id in self.required_commands):
+                self.model.add_msg("PT1", node.func.id, lineno=node.lineno)
+        except:
+            pass
+        self.generic_visit(node)
+
+    # Rest are placeholders
     def visit_For(self, node, *args, **kwargs):
         # Found a for loop
         self.generic_visit(node)
@@ -42,19 +52,6 @@ class ExamAnalyser(ast.NodeVisitor):
 
     def visit_If(self, node, *args, **kwargs):
         # Found an if statement
-        self.generic_visit(node)
-
-    def visit_Call(self, node, *args, **kwargs):
-        # print(node.lineno, node)
-        try:
-            if(isinstance(node.func, ast.Name) and node.func.id in self.required_commands):
-                # self.model.add_msg("PT1", node.func.id, lineno=node.lineno)
-                pass
-            # if(isinstance(node.func, ast.Name) and node.func.id == "round"): # There could be a set of these words/command names and check if node.func.id in set
-            #     pass
-            #     #self.model.add_msg("PT1", node.func.id, lineno=node.lineno)
-        except:
-            pass
         self.generic_visit(node)
 
     def visit_Subscript(self, node, *args, **kwargs):
@@ -68,8 +65,8 @@ class ExamAnalyser(ast.NodeVisitor):
 
         self.generic_visit(node)
 
-    # def visit_Slice(self, node, *args, **kwargs):
-    #     self.generic_visit(node)
+    def visit_Slice(self, node, *args, **kwargs):
+        self.generic_visit(node)
 
-    # def visit_Index(self, node, *args, **kwargs):
-    #     self.generic_visit(node)
+    def visit_Index(self, node, *args, **kwargs):
+        self.generic_visit(node)

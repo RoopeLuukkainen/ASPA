@@ -10,11 +10,8 @@ import pathlib
 import GUI
 from utils_lib import read_file, write_file
 
-DEFAULT_SETTING = {
-    #str(pathlib.Path(__file__).parent.absolute()), #"E:\\GitLab\\ast-analyser",
+DEFAULT_SETTINGS = {
     "root": str(pathlib.Path(__file__).parent.absolute()),
-    # "root": "E:\\GitLab\\ast-analyser\\HT\\Ohjelmoinnin_perusteet_Pythonilla_syksy_2019_8388\\Harjoitustyö_palautus_1\\Harjoitustyö_Perustaso_Palautus1_56140",
-    # "root": "E:\\GitLab\\ast-analyser\\test_files",
     "language": "FIN",
     "dump_tree": False,
     "console_print": False,
@@ -31,7 +28,7 @@ def add_fixed_settings(settings):
 
 def init_settings():
     settings_file = "settings.json"
-    settings = DEFAULT_SETTING
+    settings = DEFAULT_SETTINGS
 
     content = read_file(settings_file, settings_file=True)
     if(content):
@@ -41,7 +38,7 @@ def init_settings():
         content = json.dumps(settings, indent=4)
         write_file(settings_file, content, mode="w")
     add_fixed_settings(settings)
-    # print(settings)
+
     return settings
 
 
