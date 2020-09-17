@@ -179,12 +179,11 @@ class Model:
             title = utils.get_title(title_key, self.language)
             if(len(msgs) == 0):
                 content += f"\n{title}: {utils.create_msg('OK', lang=self.language)}\n"
-            # if(self.settings["console_print"]):
-            #     utils.print_title(title)
-            # if(self.settings["file_write"]):
-            else:
-                content += f"\n{title}, {utils.create_msg('NOTE', lang=self.language)}:\n"
-                for lineno, code, args in msgs:
+                continue
+
+            content += f"\n{title}, {utils.create_msg('NOTE', lang=self.language)}:\n"
+            for lineno, code, args in msgs:
+                if(not utils.ignore_check(code)):
                     content += utils.create_msg(code, *args, lineno=lineno, lang=self.language) + "\n"
 
         if(self.settings["console_print"]):
@@ -199,7 +198,8 @@ class Model:
             self.controller.update_result(GUI_content)
 
         if(self.settings["show_statistics"]):
-            # TODO: TEMPRORAL: currently only cumulative count. Add to file and GUI too, OR make this own function
+            # Currently only cumulative count to console.
+            # TODO: TEMPRORAL: Add to file and GUI too, OR make this own function
             for key, value in self.violation_occurances.items():
                 print(f"{key}: {value}")
             print()
@@ -212,19 +212,13 @@ class Model:
             elif(isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))):
                 key = node.name
                 pos_args = [i.arg for i in node.args.args]
-                kw_args = list()
-
-                # for i in node.args.args:
-                #     pos_args.append(i.arg)
-
-                for i in node.args.kwonlyargs:
-                    kw_args.append(i.arg)
+                kw_args = [i.arg for i in node.args.kwonlyargs]
 
                 parent = utils.get_parent_instance(node, 
                     (ast.ClassDef, ast.FunctionDef, ast.AsyncFunctionDef))
                 if(parent):
                     key = f"{parent.name}.{key}"
-                #  TODO: If key exist then there are two identically named functions
+                #  TODO: If key exist then there are two identically named functions in same scope
 
                 self.function_dict[key] = utils.FunctionTemplate(node.name, node, pos_args, kw_args)
 

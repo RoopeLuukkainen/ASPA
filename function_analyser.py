@@ -102,7 +102,6 @@ class FunctionAnalyser(ast.NodeVisitor):
         # This match function calls.
         elif(isinstance(return_value, ast.Call)):
             pass
-            # self.model.add_msg("AR7", lineno=node.lineno)
 
         else:
             #TODO: Remove test print when not needed anymore
@@ -119,11 +118,12 @@ class FunctionAnalyser(ast.NodeVisitor):
         try:
             funs = self.model.get_function_dict()
             fun = node.func.id
+        except (AttributeError, Exception): # AttributeError occur e.g. with attribute/method calls.
+            funs = dict()
+            fun = None #node.func.attr
 
         # Recursive function calls.
-            # if(hasattr(node, "func") and hasattr(node.func, "id")
-            #     and (node.func.id == utils_lib.get_parent_instance(
-            #         node, (ast.FunctionDef, ast.AsyncFunctionDef)).name)):
+        try:
             if(fun == utils_lib.get_parent_instance(node,
                     (ast.FunctionDef, ast.AsyncFunctionDef)).name):
                 self.model.add_msg("AR4", lineno=node.lineno)
@@ -144,41 +144,19 @@ class FunctionAnalyser(ast.NodeVisitor):
                 call_kw_count = len(node.keywords) # Currently not used
 
                 if(call_param_count < (args_count - default_count)):
-                    print(f"{node.lineno}: {fun} requires at least {args_count} parameters, but {call_param_count} given.")
-
+                    self.model.add_msg("AR5-1", fun, args_count, call_param_count, lineno=node.lineno)
                 elif(not has_args and (call_param_count > args_count)):
-                    print(f"{node.lineno}: {fun} requires at most {args_count} parameters, but {call_param_count} given.")
+                    self.model.add_msg("AR5-2", fun, args_count, call_param_count, lineno=node.lineno)
 
                 if(not has_kwargs):
                     for i in node.keywords:
                         if(i.arg not in funs[fun].kw_args):
-                            print(f"{node.lineno}: in call of function {fun}, {i.arg} is invalid keyword argument.")
+                            self.model.add_msg("AR5-3", fun, i.arg, lineno=node.lineno)
 
-
-                # print(node.lineno, ":", call_param_count, call_kw_count, "|",
-                #     args_count, default_count, has_args, kw_only_count, 
-                #     kw_default_count, has_kwargs, end="---")
-
-                # print("abc", node.args, len(node.args))
-                # if(has_kwargs or has_args):
-                #     print(f"pro", end="-")
-                # if(args_count >= call_param_count >= (args_count - default_count)):
-                #     print(f"plain", end="-")
-                # if(has_args and call_param_count >= (args_count - default_count)):
-                #     print(f"args", end="-")
-                # print(node.lineno, end=": ")
-                # if(not has_args 
-                #     and (call_param_count > args_count
-                #         or call_param_count < (args_count - default_count))):
-                #     print(1)
-                # if(has_args and call_param_count < (args_count - default_count)):
-                #     print(2)
-
-                # if((call_param_count < (args_count - default_count))
-                #         or (not has_args and (call_param_count > args_count))):
         except (AttributeError, KeyError):
             print(f"Error at {node.lineno}, with {node}")
-            pass
+        except UnboundLocalError:
+            print(f"Error at {node.lineno}, with {node}")
         self.generic_visit(node)
 
 

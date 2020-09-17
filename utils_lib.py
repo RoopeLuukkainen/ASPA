@@ -1,5 +1,5 @@
 """Library containing utility functions for static analysers."""
-__version__ = "0.1.3"
+__version__ = "0.1.4"
 __author__ = "RL"
 
 import ast
@@ -8,9 +8,9 @@ import os
 class FunctionTemplate:
     def __init__(self, name, ast, pos_args, kw_args):
         self.name = name
-        self.pos_args = pos_args # Not *args
-        self.kw_args = kw_args # Not **kwargs
-        self.ast = ast
+        self.pos_args = pos_args # Positional arguments before *args
+        self.kw_args = kw_args # Keyword arguments before **kwargs
+        self.ast = ast # AST of the function
 
 # ** Means warning
 # ++ Means note
@@ -28,6 +28,9 @@ MSG = {
         "AR3": "Global variable '{}'.",
         "AR3-2": "Variable or object is used in global scope '{}.{}'.", # Works only with objects
         "AR4": "**Recursive function call.",
+        "AR5-1": "Function '{}' requires at least {} parameters, but {} given.",
+        "AR5-2": "Function '{}' requires at most {} parameters, but {} given.",
+        "AR5-3": "In call of function '{}', '{}' is invalid keyword argument.",
         "AR6": "Missing return at the end of the function '{}'.",
         "AR6-1": "**Usage of '{}' in function '{}'.",
         "AR6-2": "Return statement at the middle of the function.",
@@ -57,9 +60,10 @@ MSG = {
     },
     "FIN": {
         "default": "Tapahtui virhe!\n",
-        "error_error": "\nVirhe tulostettaessa virhettä. :(\nLuultavasti liian vähän argumentteja (*args).\n",
+        "error_error": "\nVirhe tulostettaessa virhettä.\n"
+                      + "Luultavasti liian vähän argumentteja (*args).\n", # Debug
+        "type_error": "Syntaksipuun (AST) parametri on väärää tyyppiä, esim. None.",  # Debug
         "syntax_error": "Tiedostossa on syntaksi virhe.",
-        "type_error": "Syntaksipuun (AST) parametri on väärää tyyppiä, esim. None.",
         "OK": "Ei tunnistettu tyylirikkomuksia.",
         "NOTE": "huomioita",
         "PT1": "++Komentoa '{}' on käytetty.",
@@ -67,17 +71,20 @@ MSG = {
         "AR3": "Globaalimuuttuja '{}'.",
         "AR3-2": "Muuttujan tai olion globaali käyttö '{}.{}'.",
         "AR4": "**Rekursiivinen aliohjelmakutsu.",
+        "AR5-1": "Aliohjelma '{}' vaatii vähintään {} parametria, mutta vain {} lähetetty.",
+        "AR5-2": "Aliohjelma '{}' vaatii enintään {} parametria, mutta {} lähetetty.",
+        "AR5-3": "Aliohjelmakutsussa '{}', '{}' on virheellinen muuttujan nimi.",
         "AR6": "Aliohjelman '{}' lopusta puuttuu return-komento.",
         "AR6-1": "**Käytetään generaattoria '{}' aliohjelmassa '{}'.",
         "AR6-2": "Keskellä aliohjelmaa on return.",
         "AR6-3": "return-kommenosta puuttuu paluuarvo.",
         "AR6-4": "**Paluuarvo on vakio.",
         "AR6-5": "<Koodirivejä return-komennon jälkeen.>",
-        "MR2-3": "Aliohjelmakutsu '{}()' on {}. aliohjelmakutsu. Pitäisi olla vain \n"
+        "MR2-3": "Aliohjelmakutsu '{}()' on {}. aliohjelmakutsu. Pitäisi olla vain\n"
                 + "yksi (1) aliohjelmakutsu joka kutsuu paaohjelmaa.",
         "MR2-4": "Päätason aliohjelmakutsu '{}.{}()' ei viittaa tiedoston pääohjelmaan.",
         "MR3": "Kirjasto '{}' sisällytetään (eng. import) uudelleen.",
-        "MR3-1": "Kirjastosta '{}' sisällytetään (eng. import) aliohjelmia  uudelleen.",
+        "MR3-1": "Kirjastosta '{}' sisällytetään (eng. import) aliohjelmia uudelleen.",
         "MR4": "Kirjaston '{}' sisällytys (eng. import) ei ole päätasolla.",
         "MR4-1": "<Kirjaston '{}' sisällytys (eng. import) ei ole tiedoston alussa.>",
         "MR5": "Tiedostossa ei ole kaikkia alkukommentteja tiedoston {} ensimmäisellä rivillä.",
@@ -95,6 +102,9 @@ MSG = {
                 + "muut ovat virheitä."
     }
 }
+
+# TODO: Take this from the configuration file
+IGNORE = {"PK1"} # Add keys of ignored error messages
 
 TEXT = {
     "FIN": {
@@ -177,6 +187,13 @@ def get_parent_instance(node, allowed, denied=tuple()):
             parent = temp
             break
     return parent
+
+
+def ignore_check(code):
+    if(code in IGNORE):
+        return True
+    else:
+        return False
 
 
 def create_msg(code, *args, lineno=-1, lang="FIN"):

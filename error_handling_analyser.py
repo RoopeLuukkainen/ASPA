@@ -35,7 +35,7 @@ class ErrorHandlingAnalyser(ast.NodeVisitor):
             if(not node.handlers):
                 pass
             elif(len(node.handlers) < 2):
-                # self.model.add_msg("PK1", lineno=node.lineno) 
+                self.model.add_msg("PK1", lineno=node.lineno) 
                 if(node.handlers[0].type == None): # TODO: THIS IS SAME check as "i.type == None" below, improve somehow
                     self.model.add_msg("PK1-1", lineno=node.handlers[0].lineno)
             else:
