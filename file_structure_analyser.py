@@ -61,7 +61,7 @@ class FileStructureAnalyser(ast.NodeVisitor):
             # Check if current directory has imported file, i.e. it's local library file.
             if((lib_name + ".py") in self.model.get_file_list()):
                 # self.model.lib_list.append(lib_name + ".py")
-                self.model.set_lib_list(lib_name + ".py", append=True)
+                self.model.set_lib_list(lib_name, append=True)
 
         # Check if import is not at global namespace
         if(utils_lib.get_parent_instance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)) is not None):

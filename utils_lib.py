@@ -13,11 +13,11 @@ class FunctionTemplate:
         self.astree = astree # AST of the function
 
 # TODO: Take this from the configuration file
-IGNORE = {"PT1", "PK1"} # Add keys of ignored error messages
+IGNORE = {"PT1", "PK1", "MR5"} # Add keys of ignored error messages
 
 # ** Means warning
 # ++ Means note
-# <...> means not currently used
+# <...> means not yet used
 MSG = {
     "ENG": {
         "default": "Error occured!\n",

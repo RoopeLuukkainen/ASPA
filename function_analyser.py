@@ -1,5 +1,5 @@
 """Class file. Contains FunctionAnalyser class."""
-__version__ = "0.1.1"
+__version__ = "0.2.0"
 __author__ = "RL"
 
 import ast
@@ -111,7 +111,7 @@ class FunctionAnalyser(ast.NodeVisitor):
     def visit_Call(self, node, *args, **kwargs):
         """Method to check if node is:
         1. Recursive function call.
-        2. Check that sent and received parameters match
+        2. Check that arguments and parameters match
         """
         # print(node, node.func, node.func.id)
         # print(self.model.get_function_dict())
@@ -119,8 +119,24 @@ class FunctionAnalyser(ast.NodeVisitor):
             funs = self.model.get_function_dict()
             fun = node.func.id
         except (AttributeError, Exception): # AttributeError occur e.g. with attribute/method calls.
-            funs = dict()
-            fun = None #node.func.attr
+            try:
+                # print(node.func.attr)
+                # print(node.func.value.id)
+                # print(self.model.get_file_list())
+                if(node.func.value.id + ".py" in self.model.get_file_list()):
+                    print(1)
+                    funs = self.model.get_libfunction_dict() # get_libfunction_dict does not exist
+                    # but here should be definition for "funs" from the imported file
+                    # Somehow the imported file should also be analysed here
+                    #  Also need to verify that files do not import each other for infinite loop
+                    fun = node.func.attr
+                else:
+                    funs = dict()
+                    fun = None
+            except Exception:
+                print(2)
+                funs = dict()
+                fun = None
 
         # Recursive function calls.
         try:
@@ -130,33 +146,33 @@ class FunctionAnalyser(ast.NodeVisitor):
         except AttributeError:  # This occus e.g. when function name of global variables is searched
             pass
 
-        # Parameters check tested with Python 3.8.5
+        # Parameter and argument check tested with Python 3.8.5
         try:
             if(fun in funs.keys()):
                 has_args = True if(funs[fun].astree.args.vararg) else False
                 has_kwargs = True if(funs[fun].astree.args.kwarg) else False
                 default_count = len(funs[fun].astree.args.defaults)
-                kw_default_count = len(funs[fun].astree.args.kw_defaults) # Currently not used
-                args_count = len(funs[fun].pos_args)                        # This directly from FunctionTemplate class
-                kw_only_count = len(funs[fun].kw_args) # Currently not used # This directly from FunctionTemplate class 
+                args_count = len(funs[fun].pos_args)  # This directly from FunctionTemplate class
+                # kw_default_count = len(funs[fun].astree.args.kw_defaults) # Currently not used
+                # kw_only_count = len(funs[fun].kw_args) # Currently not used # This directly from FunctionTemplate class 
 
-                call_param_count = len(node.args)
-                call_kw_count = len(node.keywords) # Currently not used
+                call_arg_count = len(node.args)
+                # call_kw_count = len(node.keywords) # Currently not used
 
-                if(call_param_count < (args_count - default_count)):
-                    self.model.add_msg("AR5-1", fun, args_count, call_param_count, lineno=node.lineno)
-                elif(not has_args and (call_param_count > args_count)):
-                    self.model.add_msg("AR5-2", fun, args_count, call_param_count, lineno=node.lineno)
+                if(call_arg_count < (args_count - default_count)):
+                    self.model.add_msg("AR5-1", fun, args_count, call_arg_count, lineno=node.lineno)
+                elif(not has_args and (call_arg_count > args_count)):
+                    self.model.add_msg("AR5-2", fun, args_count, call_arg_count, lineno=node.lineno)
 
                 if(not has_kwargs):
                     for i in node.keywords:
                         if(i.arg not in funs[fun].kw_args):
                             self.model.add_msg("AR5-3", fun, i.arg, lineno=node.lineno)
 
-        except (AttributeError, KeyError):
-            print(f"Error at {node.lineno}, with {node}")
-        except UnboundLocalError:
-            print(f"Error at {node.lineno}, with {node}")
+        except (AttributeError, KeyError, UnboundLocalError):
+            print(f"Error at {node.lineno}, with {node}") # Debug
+        except:
+            pass
         self.generic_visit(node)
 
 

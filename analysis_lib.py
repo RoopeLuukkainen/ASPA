@@ -8,11 +8,12 @@ import os
 # AST analysers
 import data_structure_analyser
 import error_handling_analyser
-import basic_command_analyser  # basic commands
+import basic_command_analyser
 import file_handling_analyser
 import file_structure_analyser
 import function_analyser
 
+# Utility libraries
 import utils_lib as utils
 
 class Model:
@@ -246,13 +247,15 @@ class Model:
             else:
                 utils.add_parents(tree)
                 self.find_defs(tree)
+                # TODO: optimise such that os.listdir is done only once per directory
                 self.analyse_tree(tree, os.listdir(os.path.dirname(path)), content, selections)
 
             self.show_all_messages(filename, path)
             self.clear_analysis_data()
 
     def analyse_tree(self, tree, file_list, content, selections):
-        """Function to conduct selected static analysises."""
+        """Function to conduct selected static analyses."""
+        self.file_list = file_list
 
         # DUMP tree
         if(self.settings["dump_tree"]):
