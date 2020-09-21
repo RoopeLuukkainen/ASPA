@@ -11,6 +11,7 @@ class ErrorHandlingAnalyser(ast.NodeVisitor):
     # Initialisation
     def __init__(self, model):
         self.model = model
+        self.file_operations = {"read", "readline", "readlines", "write", "writelines"}
    # Getters
 
    # Setters
@@ -21,7 +22,7 @@ class ErrorHandlingAnalyser(ast.NodeVisitor):
     def visit_Try(self, node, *args, **kwargs):
         """Method to check if node is:
         1. Try with only one exception branch
-        2. Exception branch missing a error type. Excluding the last 
+        2. Exception branch missing an error type. Excluding the last 
             exception IF there are more than one exception branches.
 
         ast.Try has lists for each branchtype: handlers=[], orelse=[], finalbody=[],
@@ -77,9 +78,9 @@ class ErrorHandlingAnalyser(ast.NodeVisitor):
         4. Missing try - except around file.write().
         5. Missing try - except around file.writelines().
         """
-        file_operations = {"read", "readline", "readlines", "write", "writelines"}
+
         try:
-            if(node.attr in file_operations
+            if(node.attr in self.file_operations
                     and utils_lib.get_parent_instance(node, ast.Try,
                     denied=(ast.FunctionDef, ast.AsyncFunctionDef)) is None):
                 self.model.add_msg("PK4", node.value.id, node.attr, lineno=node.lineno)

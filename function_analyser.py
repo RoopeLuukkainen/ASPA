@@ -21,9 +21,8 @@ class FunctionAnalyser(ast.NodeVisitor):
    # Visits
     def visit_Assign(self, node, *args, **kwargs):
         """Method to find:
-        1. Global variables (checking col_offset i.e. indention)
-        Other ways would be check module body or does assing have FuncDef
-        as parent.
+        1. Global variables by checking col_offset i.e. indention
+        and checking does assign have FuncDef as parent.
 
         TODO Does not match:
         1. globals which are not classes and are indended.
@@ -32,8 +31,8 @@ class FunctionAnalyser(ast.NodeVisitor):
         """
         # Global variable detection
         for var in node.targets[:]:
-            if(node.col_offset == 0 or
-                    utils_lib.get_parent_instance(node,
+            if(node.col_offset == 0
+                    or utils_lib.get_parent_instance(node,
                     (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)) is None):
                 if(isinstance(var, ast.Attribute)):
                     self.model.add_msg("AR3-2", var.value.id, var.attr, lineno=var.lineno)
@@ -60,10 +59,10 @@ class FunctionAnalyser(ast.NodeVisitor):
         3. Return with missing return value
         4. Returning a constant such as 1 or "abc"
         5. Also detect (but pass) if return value is
-            1. constant None, True, False etc.
+            1. constant keyword None, True, False etc.
             2. variable, set, tuple, list, dictionary.
             3. object or other value with attributes
-            4. Function call, recursive call is detected in visit_Call method
+            4. function call, recursive call is detected in visit_Call method
 
         TODO Does not find:
         1. If there are multiple returns
@@ -103,9 +102,13 @@ class FunctionAnalyser(ast.NodeVisitor):
         elif(isinstance(return_value, ast.Call)):
             pass
 
+        # This match e.g. aritmetic operations and boolean operations such as
+        # return 1 + 2
+        # return a or b
         else:
+            pass
             #TODO: Remove test print when not needed anymore
-            print("<TEST: Palautetaan jotain mitä ei tunnistettu!>", return_value.lineno)
+            # print("<TEST: Palautetaan jotain mitä ei tunnistettu!>", return_value.lineno) # Debug
 
 
     def visit_Call(self, node, *args, **kwargs):
@@ -143,7 +146,7 @@ class FunctionAnalyser(ast.NodeVisitor):
             if(fun == utils_lib.get_parent_instance(node,
                     (ast.FunctionDef, ast.AsyncFunctionDef)).name):
                 self.model.add_msg("AR4", lineno=node.lineno)
-        except AttributeError:  # This occus e.g. when function name of global variables is searched
+        except AttributeError:  # AttributeError occus e.g. when function name is searched from global scope
             pass
 
         # Parameter and argument check tested with Python 3.8.5
@@ -213,7 +216,7 @@ class FunctionAnalyser(ast.NodeVisitor):
             "yield",
             utils_lib.get_parent_instance(node, (ast.FunctionDef, ast.AsyncFunctionDef)).name,
             lineno=node.lineno)
-
+        self.generic_visit(node)
 
     def visit_YieldFrom(self, node, *args, **kwargs):
         """Method to detect usage of yield from."""
@@ -221,3 +224,4 @@ class FunctionAnalyser(ast.NodeVisitor):
             "yield from",
             utils_lib.get_parent_instance(node, (ast.FunctionDef, ast.AsyncFunctionDef)).name,
             lineno=node.lineno)
+        self.generic_visit(node)

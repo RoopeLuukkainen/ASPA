@@ -29,7 +29,7 @@ class FileStructureAnalyser(ast.NodeVisitor):
         Currently does NOT check that they are in comments or docstring.
         """
         # file.__doc__ could be used to check docstring.
-        # Could use regex to match 10 lines an find words from there.
+        # Could use regex to match 10 lines and find words from there.
 
         author = student_no = date = coop = False
         for line in content.split("\n", n)[:n]:
@@ -64,7 +64,8 @@ class FileStructureAnalyser(ast.NodeVisitor):
                 self.model.set_lib_list(lib_name, append=True)
 
         # Check if import is not at global namespace
-        if(utils_lib.get_parent_instance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)) is not None):
+        if(utils_lib.get_parent_instance(node, 
+                (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)) is not None):
             self.model.add_msg("MR4", lib_name, lineno=node.lineno)
 
     def has_main_function(self, tree):
@@ -92,7 +93,7 @@ class FileStructureAnalyser(ast.NodeVisitor):
                 except AttributeError:
                     pass
 
-        if(call_count >= 1): # NOW this gives main file if class is used globally obj = CLASS()
+        if(call_count >= 1): # FIXME: NOW this gives main file if class is used globally obj = CLASS()
             return True
         return False
 

@@ -20,8 +20,10 @@ class DataStructureAnalyser(ast.NodeVisitor):
         """
         # Class as global variable detection
         for var in node.targets[:]:
-            if(isinstance(var, ast.Attribute) and hasattr(var.value, "id") and var.value.id in self.model.class_list):
-                    self.model.add_msg("TR2-1", var.value.id, var.attr, lineno=var.lineno)
+            if(isinstance(var, ast.Attribute)
+                    and hasattr(var.value, "id")
+                    and var.value.id in self.model.class_list):
+                self.model.add_msg("TR2-1", var.value.id, var.attr, lineno=var.lineno)
 
         # Object creating without parenthesis
         try:
@@ -39,13 +41,7 @@ class DataStructureAnalyser(ast.NodeVisitor):
         if(node.col_offset > 0):
             self.model.add_msg("TR2-3", node.name, lineno=node.lineno)
         
-        # if(utils.get_parent_instance(node, ast.Module, 
-        #     denied=(ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)) is None):
+        # if(utils.get_parent_instance(node, 
+        #       (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)) is not None):
         #     print(node.lineno)
         self.generic_visit(node)
-
-            #     if(hasattr(node.func, "id") 
-            # and node.func.id == "open" 
-            # and hasattr(node, "parent_node")
-            # and utils_lib.get_parent_instance(node, ast.Try, 
-            #     denied=(ast.FunctionDef, ast.AsyncFunctionDef)) is None):

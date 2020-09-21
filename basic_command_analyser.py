@@ -33,11 +33,11 @@ class ExamAnalyser(ast.NodeVisitor):
 
    # Visits
     def visit_Call(self, node, *args, **kwargs):
-        # print(node.lineno, node)
         try:
-            if(isinstance(node.func, ast.Name) and node.func.id in self.required_commands):
+            if(isinstance(node.func, ast.Name) 
+                    and node.func.id in self.required_commands):
                 self.model.add_msg("PT1", node.func.id, lineno=node.lineno)
-        except:
+        except AttributeError:
             pass
         self.generic_visit(node)
 

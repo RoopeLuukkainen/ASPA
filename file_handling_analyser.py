@@ -14,6 +14,7 @@ class FileHandlingAnalyser(ast.NodeVisitor):
 
    # General methods
     def check_left_open_files(self):
+        """Method to detect left open filehandles."""
         temp = None
         left_open = list(self.model.get_files_opened())
         for closed in self.model.get_files_closed():
@@ -28,7 +29,7 @@ class FileHandlingAnalyser(ast.NodeVisitor):
                     left_open.remove(temp)
                     temp = None
                 except ValueError:
-                    pass  # In this case same file is closed again, which okay in Python
+                    pass  # In this case same file is closed again
         return left_open
 
    # Visits
@@ -44,7 +45,6 @@ class FileHandlingAnalyser(ast.NodeVisitor):
                 if(hasattr(node, "value") and isinstance(node.value, ast.Name)):
                     self.model.set_files_closed(node.value, append=True)
         except AttributeError:
-            # print("visit_Attribute, Attribute error", node, node.lineno)
             pass
         self.generic_visit(node)
 
