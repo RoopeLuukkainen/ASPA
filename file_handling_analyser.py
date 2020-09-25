@@ -5,7 +5,7 @@ __author__ = "RL"
 import ast
 
 
-import utils_lib
+import utils_lib as utils
 
 class FileHandlingAnalyser(ast.NodeVisitor):
     # Initally opened and closed were SETs of names, that was super easy and efficient but not complete solution
@@ -21,8 +21,8 @@ class FileHandlingAnalyser(ast.NodeVisitor):
             for opened in self.model.get_files_opened():
                 if(closed.id == opened.id
                         and closed.lineno >= opened.lineno
-                        and utils_lib.get_parent_instance(opened, (ast.FunctionDef, ast.AsyncFunctionDef))
-                        is utils_lib.get_parent_instance(closed, (ast.FunctionDef, ast.AsyncFunctionDef))):
+                        and utils.get_parent_instance(opened, (ast.FunctionDef, ast.AsyncFunctionDef))
+                        is utils.get_parent_instance(closed, (ast.FunctionDef, ast.AsyncFunctionDef))):
                     temp = opened
             if(temp):  # After for loop to find last file handle
                 try:
@@ -40,7 +40,7 @@ class FileHandlingAnalyser(ast.NodeVisitor):
         """
         try:
             if(node.attr == "close"):
-                if(utils_lib.get_parent_instance(node, ast.ExceptHandler) is not None):
+                if(utils.get_parent_instance(node, ast.ExceptHandler) is not None):
                     self.model.add_msg("TK1-2", node.value.id, lineno=node.lineno)
                 if(hasattr(node, "value") and isinstance(node.value, ast.Name)):
                     self.model.set_files_closed(node.value, append=True)

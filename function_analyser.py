@@ -5,7 +5,7 @@ __author__ = "RL"
 import ast
 
 
-import utils_lib
+import utils_lib as utils
 
 class FunctionAnalyser(ast.NodeVisitor):
     # Initialisation
@@ -14,7 +14,7 @@ class FunctionAnalyser(ast.NodeVisitor):
 
     def _check_nested_function(self, node):
         """Method to check if function definition is not at a global scope."""
-        if(utils_lib.get_parent_instance(node, 
+        if(utils.get_parent_instance(node, 
                 (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)) is not None):
             self.model.add_msg("AR2-1", node.name, lineno=node.lineno)
 
@@ -26,13 +26,13 @@ class FunctionAnalyser(ast.NodeVisitor):
 
         TODO Does not match:
         1. globals which are not classes and are indended.
-            However utils_lib.global_test find those.
+            However utils.global_test find those.
         2. Expr objects like file_handle.close()
         """
         # Global variable detection
         for var in node.targets[:]:
             if(node.col_offset == 0
-                    or utils_lib.get_parent_instance(node,
+                    or utils.get_parent_instance(node,
                     (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)) is None):
                 if(isinstance(var, ast.Attribute)):
                     self.model.add_msg("AR3-2", var.value.id, var.attr, lineno=var.lineno)
@@ -45,7 +45,7 @@ class FunctionAnalyser(ast.NodeVisitor):
 
             else:
                 # This currently (doesn't?) match globals which are not classes and are indended
-                # however utils_lib.global_test find those.
+                # however utils.global_test find those.
                 # Should check if there is no class or function as parent
                 pass
                 # self.model.local_variables.add(var.id)
@@ -143,7 +143,7 @@ class FunctionAnalyser(ast.NodeVisitor):
 
         # Recursive function calls.
         try:
-            if(fun == utils_lib.get_parent_instance(node,
+            if(fun == utils.get_parent_instance(node,
                     (ast.FunctionDef, ast.AsyncFunctionDef)).name):
                 self.model.add_msg("AR4", lineno=node.lineno)
         except AttributeError:  # AttributeError occus e.g. when function name is searched from global scope
@@ -214,7 +214,7 @@ class FunctionAnalyser(ast.NodeVisitor):
         """Method to detect usage of yield."""
         self.model.add_msg("AR6-1",
             "yield",
-            utils_lib.get_parent_instance(node, (ast.FunctionDef, ast.AsyncFunctionDef)).name,
+            utils.get_parent_instance(node, (ast.FunctionDef, ast.AsyncFunctionDef)).name,
             lineno=node.lineno)
         self.generic_visit(node)
 
@@ -222,6 +222,6 @@ class FunctionAnalyser(ast.NodeVisitor):
         """Method to detect usage of yield from."""
         self.model.add_msg("AR6-1",
             "yield from",
-            utils_lib.get_parent_instance(node, (ast.FunctionDef, ast.AsyncFunctionDef)).name,
+            utils.get_parent_instance(node, (ast.FunctionDef, ast.AsyncFunctionDef)).name,
             lineno=node.lineno)
         self.generic_visit(node)

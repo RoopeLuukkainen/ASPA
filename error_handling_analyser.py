@@ -5,7 +5,7 @@ __author__ = "RL"
 import ast
 
 
-import utils_lib
+import utils_lib as utils
 
 class ErrorHandlingAnalyser(ast.NodeVisitor):
     # Initialisation
@@ -63,7 +63,7 @@ class ErrorHandlingAnalyser(ast.NodeVisitor):
         if(hasattr(node.func, "id") 
             and node.func.id == "open" 
             and hasattr(node, "parent_node")
-            and utils_lib.get_parent_instance(node, ast.Try, 
+            and utils.get_parent_instance(node, ast.Try, 
                 denied=(ast.FunctionDef, ast.AsyncFunctionDef)) is None):
 
             self.model.add_msg("PK3", lineno=node.lineno)
@@ -81,7 +81,7 @@ class ErrorHandlingAnalyser(ast.NodeVisitor):
 
         try:
             if(node.attr in self.file_operations
-                    and utils_lib.get_parent_instance(node, ast.Try,
+                    and utils.get_parent_instance(node, ast.Try,
                     denied=(ast.FunctionDef, ast.AsyncFunctionDef)) is None):
                 self.model.add_msg("PK4", node.value.id, node.attr, lineno=node.lineno)
         except AttributeError:

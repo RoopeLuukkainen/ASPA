@@ -5,7 +5,7 @@ __author__ = "RL"
 import ast
 
 
-import utils_lib
+import utils_lib as utils
 
 class ExamAnalyser(ast.NodeVisitor):
     """Class to do static analysis by visiting nodes of Abstract Syntax
@@ -41,13 +41,20 @@ class ExamAnalyser(ast.NodeVisitor):
             pass
         self.generic_visit(node)
 
+    def visit_While(self, node, *args, **kwargs):
+        # Found a while loop
+        try:
+            # Check if there is no break in infinite loop
+            if(utils.is_always_true(node.test)
+                    and not utils.get_child_instance(node, (ast.Break, ast.Return))):
+                self.model.add_msg("PT4-1", lineno=node.lineno)
+        except AttributeError:
+            pass
+        self.generic_visit(node)
+
     # Rest are placeholders
     def visit_For(self, node, *args, **kwargs):
         # Found a for loop
-        self.generic_visit(node)
-
-    def visit_While(self, node, *args, **kwargs):
-        # Found a while loop
         self.generic_visit(node)
 
     def visit_If(self, node, *args, **kwargs):

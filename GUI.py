@@ -18,12 +18,12 @@ import utils_lib as utils
 TOOL_NAME = "ASPA - Abstrakti SyntaksiPuu Analysaattori"
 
 
-class GUI(tk.Tk):
+class GUICLASS(tk.Tk):
     """Main class for GUI. Master for every used GUI element. The main frame and
     menubar are inlcuded in the here other GUI elements are in view.
     Works as a MVP model presenter/ MVC model controller."""
     def __init__(self, *args, settings={}, **kwargs):
-        self.root = tk.Tk.__init__(self, *args, **kwargs)
+        tk.Tk.__init__(self, *args, **kwargs)
         # tk.Tk.iconbitmap(self, default="icon.ico")  # To change logo icon
         tk.Tk.title(self, TOOL_NAME)
 

@@ -5,7 +5,7 @@ __author__ = "RL"
 import ast
 
 
-import utils_lib
+import utils_lib as utils
 
 class FileStructureAnalyser(ast.NodeVisitor):
     """
@@ -64,7 +64,7 @@ class FileStructureAnalyser(ast.NodeVisitor):
                 self.model.set_lib_list(lib_name, append=True)
 
         # Check if import is not at global namespace
-        if(utils_lib.get_parent_instance(node, 
+        if(utils.get_parent_instance(node, 
                 (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)) is not None):
             self.model.add_msg("MR4", lib_name, lineno=node.lineno)
 

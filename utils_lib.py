@@ -27,6 +27,7 @@ MSG = {
         "OK": "No violations detected.",
         "NOTE": "detected",
         "PT1": "++Command '{}' is used.",
+        "PT4-1": "Loop never breaks.",
         "AR2-1": "Definition of the function '{}' is not at the global scope.",
         "AR3": "Global variable '{}'.",
         "AR3-2": "Variable or object is used in global scope '{}.{}'.", # Works only with objects
@@ -70,6 +71,7 @@ MSG = {
         "OK": "Ei tunnistettu tyylirikkomuksia.",
         "NOTE": "huomioita",
         "PT1": "++Komentoa '{}' on käytetty.",
+        "PT4-1": "Silmukkaa ei koskaan pysäytetä.",
         "AR2-1": "Aliohjelman '{}' määrittely ei ole päätasolla.",
         "AR3": "Globaalimuuttuja '{}'.",
         "AR3-2": "Muuttujan tai olion globaali käyttö '{}.{}'.",
@@ -179,6 +181,14 @@ def add_parents(tree):
 
 
 def get_parent_instance(node, allowed, denied=tuple()):
+    """Function to get parent instance of a node. 
+    'allowed' argument defines type of the desired parent, it should be
+    any of the ast node types and can be tuple. Optional argument '
+    denied' defines not allowed parents as ast node types.
+    
+    If allowed type is found, returns found node, if denied type is 
+    found first or neither of them is found returns None.
+    """
     temp = node
     parent = None
     while(hasattr(temp, "parent_node") and not isinstance(temp, denied)):
@@ -187,6 +197,44 @@ def get_parent_instance(node, allowed, denied=tuple()):
             parent = temp
             break
     return parent
+
+
+def get_child_instance(node, allowed, denied=tuple()):
+    """Function to get child instance of a node.
+    'allowed' argument defines type of the desired child, it should be
+    any of the ast node types and can be tuple. Optional argument '
+    denied' defines not allowed children as ast node types.
+    
+    If allowed type is found, returns found node, if denied type is 
+    found first or neither of them is found returns None.
+    """
+    child = None
+    for child_node in ast.walk(node):
+        if(isinstance(child_node, allowed)):
+            child = child_node
+            break
+        elif(isinstance(child_node, denied)):
+            break
+    return child 
+
+
+def is_always_true(test):
+    """
+    Function to define cases where conditional test is always true.
+    'test' should be ast.Compare type or ast.Constant. Returns truth
+    value.
+    TODO: Add more always true cases.
+    """
+    is_true = False
+    try:
+        # print(isinstance(test, ast.Constant))
+        # print(test.value == True)
+        if(isinstance(test, ast.Constant) and test.value == True):
+            # print(1)
+            is_true = True
+    except AttributeError:
+        print(2)
+    return is_true
 
 
 def ignore_check(code):

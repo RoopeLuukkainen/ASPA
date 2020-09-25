@@ -44,7 +44,7 @@ def init_settings():
 
 def main():
     settings = init_settings()
-    gui = GUI.GUI(settings=settings)
+    gui = GUI.GUICLASS(settings=settings)
     gui.mainloop()
 
 
