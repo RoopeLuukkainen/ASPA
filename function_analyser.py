@@ -4,7 +4,6 @@ __author__ = "RL"
 
 import ast
 
-
 import utils_lib as utils
 
 class FunctionAnalyser(ast.NodeVisitor):
@@ -52,6 +51,9 @@ class FunctionAnalyser(ast.NodeVisitor):
         self.generic_visit(node)
 
     def visit_Global(self, node, *args, **kwargs):
+        """
+        Method to detect usage of global keyword.
+        """
         try:
             for var in node.names:
                 self.model.add_msg("AR3", var, lineno=node.lineno)
@@ -213,6 +215,9 @@ class FunctionAnalyser(ast.NodeVisitor):
 
 
     def visit_AsyncFunctionDef(self, node, *args, **kwargs):
+        """Method to check usage of async functions. Currently checks:
+        1. If function declaration is nested.
+        """
         self._check_nested_function(node)
         self.generic_visit(node)
 
