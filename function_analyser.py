@@ -51,6 +51,13 @@ class FunctionAnalyser(ast.NodeVisitor):
                 # self.model.local_variables.add(var.id)
         self.generic_visit(node)
 
+    def visit_Global(self, node, *args, **kwargs):
+        try:
+            for var in node.names:
+                self.model.add_msg("AR3", var, lineno=node.lineno)
+        except AttributeError:
+            pass
+        self.generic_visit(node)
 
     def visit_Return(self, node, *args, **kwargs):
         """Method to check if node is:
