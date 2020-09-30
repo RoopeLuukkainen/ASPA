@@ -49,26 +49,7 @@ class FileStructureAnalyser(ast.NodeVisitor):
         else:
             self.model.add_msg("MR5", n, lineno=1)
 
-    def _check_import(self, node, lib_name, importFrom=False):
-        # Check if same module is imported already
-        if(lib_name in self.model.get_imported()):
-            if(importFrom):
-                self.model.add_msg("MR3-1", lib_name, lineno=node.lineno)
-            else:
-                self.model.add_msg("MR3", lib_name, lineno=node.lineno)
-        else:
-            self.model.set_imported(lib_name, add=True)
-            # Check if current directory has imported file, i.e. it's local library file.
-            if((lib_name + ".py") in self.model.get_file_list()):
-                # self.model.lib_list.append(lib_name + ".py")
-                self.model.set_lib_list(lib_name, append=True)
-
-        # Check if import is not at global namespace
-        if(utils.get_parent_instance(node, 
-                (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)) is not None):
-            self.model.add_msg("MR4", lib_name, lineno=node.lineno)
-
-    def has_main_function(self, tree):
+    def has_main_function(self, tree):  # TODO: change this to check of main level function calls
         """
         TODO:
         1. If current file has not imports to libfiles but has function
@@ -97,11 +78,25 @@ class FileStructureAnalyser(ast.NodeVisitor):
             return True
         return False
 
+    def check_duplicate_imports(self, import_dict):
+        for value in import_dict.values():
+            if(len(value) > 1):
+                for i in sorted(value, key=lambda elem: elem.lineno)[1:]:
+                    ID = "MR3-1" if(i.import_from) else "MR3"
+                    self.model.add_msg(ID, i.name, lineno=i.lineno)
+
+    def _check_import(self, node, lib_name, importFrom=False):
+        # Check if import is not at global namespace
+        if(utils.get_parent_instance(node, 
+                (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)) is not None):
+            self.model.add_msg("MR4", lib_name, lineno=node.lineno)
+
    # Visits
     def visit_Import(self, node, *args, **kwargs):
-        self._check_import(node, str(node.names[0].name))
+        for i in node.names:
+            self._check_import(node, i.name)
         self.generic_visit(node)
 
     def visit_ImportFrom(self, node, *args, **kwargs):
-        self._check_import(node, str(node.module), importFrom=True)
+        self._check_import(node, node.module, importFrom=True)
         self.generic_visit(node)

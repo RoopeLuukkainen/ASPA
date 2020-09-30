@@ -38,7 +38,6 @@ def init_settings():
         content = json.dumps(settings, indent=4)
         write_file(settings_file, content, mode="w")
     add_fixed_settings(settings)
-
     return settings
 
 

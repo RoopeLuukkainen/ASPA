@@ -11,11 +11,16 @@ class FunctionAnalyser(ast.NodeVisitor):
     def __init__(self, model):
         self.model = model
 
-    def _check_nested_function(self, node):
+    # General methods
+    def _check_nested_function(self, node, *args, **kwargs):
         """Method to check if function definition is not at a global scope."""
         if(utils.get_parent_instance(node, 
                 (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)) is not None):
             self.model.add_msg("AR2-1", node.name, lineno=node.lineno)
+
+    def check_main_function(self, *args, **kwargs):
+        if(not utils.MAIN_FUNC_NAME in self.model.get_function_dict().keys()):
+            self.model.add_msg("AR1")
 
    # Visits
     def visit_Assign(self, node, *args, **kwargs):
@@ -131,6 +136,22 @@ class FunctionAnalyser(ast.NodeVisitor):
             funs = self.model.get_function_dict()
             fun = node.func.id
         except (AttributeError, Exception): # AttributeError occur e.g. with attribute/method calls.
+            # try:
+            #     # print(node.func.attr)
+            #     # print(node.func.value.id)
+            #     # print(self.model.get_file_list())
+            #     if(node.func.value.id + ".py" in self.model.get_file_list()):
+            #         print(1)
+            #         funs = self.model.get_libfunction_dict() # get_libfunction_dict does not exist
+            #         # but here should be definition for "funs" from the imported file
+            #         # Somehow the imported file should also be analysed here
+            #         #  Also need to verify that files do not import each other for infinite loop
+            #         fun = node.func.attr
+            #     else:
+            #         funs = dict()
+            #         fun = None
+            # except Exception:
+            #     print(2)
             funs = dict()
             fun = None
 

@@ -1,10 +1,10 @@
 """Library containing utility functions for static analysers."""
-__version__ = "0.1.4"
+__version__ = "0.1.5"
 __author__ = "RL"
 
 import ast
 import os
-
+# TODO NodeTemplate
 class FunctionTemplate:
     def __init__(self, name, astree, pos_args, kw_args):
         self.name = name
@@ -12,99 +12,117 @@ class FunctionTemplate:
         self.kw_args = kw_args # Keyword arguments before **kwargs
         self.astree = astree # AST of the function
 
-# TODO: Take this from the configuration file
-IGNORE = {"PT1", "PK1", "MR5"} # Add keys of ignored error messages
+class ImportTemplate:
+    def __init__(self, name, lineno, astree, import_from=False):
+        self.name = name
+        self.import_from = import_from 
+        self.astree = astree # AST of the 'import'/'import from' node
+        self.lineno = lineno
 
-# ** Means warning
-# ++ Means note
+MAIN_FUNC_NAME = "paaohjelma"
+# TODO: Take this from the configuration file
+IGNORE = {"PT1", "PK1", "MR5", "AR6-1"} # Add keys of ignored error messages
+GENERAL = 0
+ERROR = 1
+WARNING = 2
+NOTE = 3
+GOOD = 4
+DEBUG = 5
+
 # <...> means not yet used
 MSG = {
     "ENG": {
-        "default": "Error occured!\n",
-        "error_error": "\nError while printing an error message. :(\nProbably too few *args.\n", # Debug
-        "syntax_error": "File has a syntax error.",
-        "type_error": "Abstract Syntax Tree parameter has wrong type, e.g. None.", # Debug
-        "OK": "No violations detected.",
-        "NOTE": "detected",
-        "PT1": "++Command '{}' is used.",
-        "PT4-1": "Loop never breaks.",
-        "AR2-1": "Definition of the function '{}' is not at the global scope.",
-        "AR3": "Global variable '{}'.",
-        "AR3-2": "Variable or object is used in global scope '{}.{}'.", # Works only with objects
-        "AR4": "**Recursive function call.",
-        "AR5-1": "Function '{}' requires at least {} parameters, but {} given.",
-        "AR5-2": "Function '{}' requires at most {} parameters, but {} given.",
-        "AR5-3": "In call of function '{}', '{}' is invalid keyword argument.",
-        "AR6": "Missing return at the end of the function '{}'.",
-        "AR6-1": "**Usage of '{}' in function '{}'.",
-        "AR6-2": "Return statement at the middle of the function.",
-        "AR6-3": "Missing value from the return-statement.",
-        "AR6-4": "**Return value is a constant.",
-        "AR6-5": "<Lines after the return-statement.>",
-        "MR2-3": "Function call '{}()' is {} function call at global scope. There\n"
-                + "should be only one (1) function call, calling the main function.",
-        "MR2-4": "Function call '{}.{}()' does not call the main function.",
-        "MR3": "Library '{}' is imported again.",
-        "MR3-1": "From library '{}' function(s) are imported again.",
-        "MR4": "Import of the library '{}' is not at the global scope.",
-        "MR4-1": "<Import of the library '{}' is not at the beginning of the file.>",
-        "MR5": "Missing some or all header comments at {} first lines of the file.",
-        "PK1": "**Error handling has only one (1) except.",
-        "PK1-1": "Missing exception type.",
-        "PK3": "Missing exception handling from the file opening.",
-        "PK4": "Missing exception handling from the file operation '{}.{}'.",
-        "TK1": "File handle '{}' is left open.",
-        "TK1-2": "**File handle '{}' is closed in except-branch.",
-        "TR2-1": "Class is being used as a global variable '{}.{}'.",
-        "TR2-2": "Missing parenthesis from object creation. Should be '{}()'.",
-        "TR2-3": "Class '{}' is not defined in global scope.",
-        "WELCOME": "Program does static analysis for defined file(s).\n"
-                + "In prints **-marking stands for warning, and ++ for note,\n"
-                + "all others are errors."
+        "default": ("Error occured!", ERROR),
+        "error_error": ("Error while printing an error message. "
+                        + "Probably too few *args.", DEBUG), # Debug
+        "type_error": ("Abstract Syntax Tree parameter has wrong type, e.g. None.", DEBUG), # Debug
+        "syntax_error": ("File has a syntax error.", ERROR),
+        "OK": ("No violations detected.", GOOD),
+        "PT1": ("Command '{}' is used.", NOTE),
+        "PT4-1": ("Loop never breaks.", ERROR),
+        "AR1": (f"No function defition for '{MAIN_FUNC_NAME}'.", NOTE),
+        "AR2-1": ("Definition of the function '{}' is not at the global scope.", ERROR),
+        "AR3": ("Global variable '{}'.", ERROR),
+        "AR3-2": ("Variable or object is used in global scope '{}.{}'.", ERROR), # Works only with objects
+        "AR4": ("Recursive function call.", NOTE),
+        "AR5-1": ("Function '{}' requires at least {} parameters, but {} given.", ERROR),
+        "AR5-2": ("Function '{}' requires at most {} parameters, but {} given.", ERROR),
+        "AR5-3": ("In call of function '{}', '{}' is invalid keyword argument.", ERROR),
+        "AR6": ("Missing return at the end of the function '{}'.", ERROR),
+        "AR6-1": ("Usage of '{}' in function '{}'.", NOTE), # Yield and yield from detection
+        "AR6-2": ("Return statement at the middle of the function.", NOTE),
+        "AR6-3": ("Missing value from the return-statement.", WARNING),
+        "AR6-4": ("Return value is a constant.", NOTE),
+        "AR6-5": ("<Lines after the return-statement.>", ERROR),
+        "MR2-3": ("Function call '{}()' is {} function call in global scope. There "
+                + f"should be only one (1) function call '{MAIN_FUNC_NAME}()'.",
+                WARNING),
+        "MR2-4": ("Function call '{}.{}()' in global scope does not call the"
+                + "main function.", WARNING),
+        "MR3": ("Module '{}' is imported again.", ERROR),
+        "MR3-1": ("From module '{}' function(s) or module(s) are imported again.", WARNING),
+        "MR4": ("Import of the module '{}' is not at the global scope.", ERROR),
+        "MR4-1": ("<Import of the module '{}' is not at the beginning of the file.>", WARNING),
+        "MR5": ("Missing some or all header comments at {} first lines of the file.", WARNING),
+        "PK1": ("Error handling has only one (1) except.", NOTE),
+        "PK1-1": ("Missing exception type.", WARNING),
+        "PK3": ("Missing exception handling from the file opening.", ERROR),
+        "PK4": ("Missing exception handling from the file operation '{}.{}'.", ERROR),
+        "TK1": ("File handle '{}' is left open.", ERROR),
+        "TK1-2": ("File handle '{}' is closed in except-branch.", WARNING),
+        "TR2-1": ("Class is being used directly without an object '{}.{}'.", ERROR),
+        "TR2-2": ("Missing parenthesis from object creation. Should be '{}()'.", ERROR),
+        "TR2-3": ("Class '{}' is not defined in global scope.", ERROR),
+        "LINE": ("Line", GENERAL),
+        "NOTE": ("detected", GENERAL),
+        "WELCOME": ("In prints **-marking stands for warning, and ++ for note, "
+                 + "all others are errors.", GENERAL)
     },
     "FIN": {
-        "default": "Tapahtui virhe!\n",
-        "error_error": "\nVirhe tulostettaessa virhettä.\n"
-                      + "Luultavasti liian vähän argumentteja (*args).\n", # Debug
-        "type_error": "Syntaksipuun (AST) parametri on väärää tyyppiä, esim. None.",  # Debug
-        "syntax_error": "Tiedostossa on syntaksi virhe.",
-        "OK": "Ei tunnistettu tyylirikkomuksia.",
-        "NOTE": "huomioita",
-        "PT1": "++Komentoa '{}' on käytetty.",
-        "PT4-1": "Silmukkaa ei koskaan pysäytetä.",
-        "AR2-1": "Aliohjelman '{}' määrittely ei ole päätasolla.",
-        "AR3": "Globaalimuuttuja '{}'.",
-        "AR3-2": "Muuttujan tai olion globaali käyttö '{}.{}'.",
-        "AR4": "**Rekursiivinen aliohjelmakutsu.",
-        "AR5-1": "Aliohjelma '{}' vaatii vähintään {} parametria, mutta vain {} lähetetty.",
-        "AR5-2": "Aliohjelma '{}' vaatii enintään {} parametria, mutta {} lähetetty.",
-        "AR5-3": "Aliohjelmakutsussa '{}', '{}' on virheellinen muuttujan nimi.",
-        "AR6": "Aliohjelman '{}' lopusta puuttuu return-komento.",
-        "AR6-1": "**Käytetään generaattoria '{}' aliohjelmassa '{}'.",
-        "AR6-2": "Keskellä aliohjelmaa on return.",
-        "AR6-3": "return-kommenosta puuttuu paluuarvo.",
-        "AR6-4": "**Paluuarvo on vakio.",
-        "AR6-5": "<Koodirivejä return-komennon jälkeen.>",
-        "MR2-3": "Aliohjelmakutsu '{}()' on {}. aliohjelmakutsu. Pitäisi olla vain\n"
-                + "yksi (1) aliohjelmakutsu joka kutsuu paaohjelmaa.",
-        "MR2-4": "Päätason aliohjelmakutsu '{}.{}()' ei viittaa tiedoston pääohjelmaan.",
-        "MR3": "Kirjasto '{}' sisällytetään (eng. import) uudelleen.",
-        "MR3-1": "Kirjastosta '{}' sisällytetään (eng. import) aliohjelmia uudelleen.",
-        "MR4": "Kirjaston '{}' sisällytys (eng. import) ei ole päätasolla.",
-        "MR4-1": "<Kirjaston '{}' sisällytys (eng. import) ei ole tiedoston alussa.>",
-        "MR5": "Tiedostossa ei ole kaikkia alkukommentteja tiedoston {} ensimmäisellä rivillä.",
-        "PK1": "**Virheenkäsittelyssä vain yksi (1) except.",
-        "PK1-1": "Exceptistä puuttuu virhetyyppi.",
-        "PK3": "Tiedoston avaamisesta puuttuu virheenkäsittely.",
-        "PK4": "Tiedosto-operaatiosta '{}.{}' puuttuu virheenkäsittely.",
-        "TK1": "Tiedostokahva '{}' on sulkematta.",
-        "TK1-2": "**Tiedostokahva '{}' suljetaan except-haarassa.",
-        "TR2-1": "Luokan käyttö globaalina muuttujana '{}.{}'.",
-        "TR2-2": "Olion luonnista puuttuvat sulkeet. Pitäisi olla '{}()'.",
-        "TR2-3": "Luokkaa '{}' ei ole määritelty päätasolla.",
-        "WELCOME": "Ohjelma suorittaa staattisen analyysin annetulle tiedostolle.\n"
-                + "Tulosteissa **-merkintä tarkoittaa varoitusta ja ++-merkintä ilmoitusta,\n"
-                + "muut ovat virheitä."
+        "default": ("Tapahtui virhe!", ERROR),
+        "error_error": ("Virhe tulostettaessa virhettä. Luultavasti "
+                      + "liian vähän argumentteja (*args).", DEBUG), # Debug
+        "type_error": ("Syntaksipuun parametri on väärää tyyppiä, esim. None.", DEBUG), # Debug
+        "syntax_error": ("Tiedostossa on syntaksi virhe.", ERROR),
+        "OK": ("Ei tunnistettu tyylirikkomuksia.", GOOD),
+        "PT1": ("Komentoa '{}' on käytetty.", NOTE),
+        "PT4-1": ("Silmukkaa ei koskaan pysäytetä.", ERROR),
+        "AR1": (f"Ohjelmasta ei löytynyt määrittelyä '{MAIN_FUNC_NAME}':lle.", NOTE),
+        "AR2-1": ("Aliohjelman '{}' määrittely ei ole päätasolla.", ERROR),
+        "AR3": ("Globaalimuuttuja '{}'.", ERROR),
+        "AR3-2": ("Muuttujan tai olion globaali käyttö '{}.{}'.", ERROR),
+        "AR4": ("Rekursiivinen aliohjelmakutsu.", NOTE),
+        "AR5-1": ("Aliohjelma '{}' vaatii vähintään {} parametria, mutta vain {} lähetetty.", ERROR),
+        "AR5-2": ("Aliohjelma '{}' vaatii enintään {} parametria, mutta {} lähetetty.", ERROR),
+        "AR5-3": ("Aliohjelmakutsussa '{}', '{}' on virheellinen muuttujan nimi.", ERROR),
+        "AR6": ("Aliohjelman '{}' lopusta puuttuu return-komento.", ERROR),
+        "AR6-1": ("Käytetään generaattoria '{}' aliohjelmassa '{}'.", NOTE), # Yield and yield from detection
+        "AR6-2": ("Keskellä aliohjelmaa on return.", NOTE),
+        "AR6-3": ("return-kommenosta puuttuu paluuarvo.", WARNING),
+        "AR6-4": ("Paluuarvo on vakio.", NOTE),
+        "AR6-5": ("<Koodirivejä return-komennon jälkeen.>", ERROR),
+        "MR2-3": ("Aliohjelmakutsu '{}()' on {}. aliohjelmakutsu. Pitäisi olla vain "
+                + f"yksi (1) aliohjelmakutsu '{MAIN_FUNC_NAME}()'.", WARNING),
+        "MR2-4": ("Päätason aliohjelmakutsu '{}.{}()' ei viittaa tiedoston pääohjelmaan.", WARNING),
+        "MR3": ("Kirjasto '{}' sisällytetään (eng. import) uudelleen.", ERROR),
+        "MR3-1": ("Kirjastosta '{}' sisällytetään sisältöä uudelleen.", WARNING),
+        "MR4": ("Kirjaston '{}' sisällytys (eng. import) ei ole päätasolla.", ERROR),
+        "MR4-1": ("<Kirjaston '{}' sisällytys (eng. import) ei ole tiedoston alussa.>", WARNING),
+        "MR5": ("Tiedostossa ei ole kaikkia alkukommentteja tiedoston {}"
+                + " ensimmäisellä rivillä.", WARNING),
+        "PK1": ("Virheenkäsittelyssä vain yksi (1) except.", NOTE),
+        "PK1-1": ("Exceptistä puuttuu virhetyyppi.", WARNING),
+        "PK3": ("Tiedoston avaamisesta puuttuu virheenkäsittely.", ERROR),
+        "PK4": ("Tiedosto-operaatiosta '{}.{}' puuttuu virheenkäsittely.", ERROR),
+        "TK1": ("Tiedostokahva '{}' on sulkematta.", ERROR),
+        "TK1-2": ("Tiedostokahva '{}' suljetaan except-haarassa.", WARNING),
+        "TR2-1": ("Luokan käyttö suoraan ilman objektia '{}.{}'.", ERROR),
+        "TR2-2": ("Olion luonnista puuttuvat sulkeet. Pitäisi olla '{}()'.", ERROR),
+        "TR2-3": ("Luokkaa '{}' ei ole määritelty päätasolla.", ERROR),
+        "NOTE": ("huomioita", GENERAL),
+        "LINE": ("Rivi", GENERAL),
+        "WELCOME": ("Tulosteissa **-merkintä tarkoittaa varoitusta ja ++-merkintä ilmoitusta, "
+                 + "muut ovat virheitä.", GENERAL)
     }
 }
 
@@ -218,6 +236,55 @@ def get_child_instance(node, allowed, denied=tuple()):
     return child 
 
 
+def find_defs(tree, library=None):
+    class_list = list()
+    function_dict = dict()
+    import_list = list()
+
+    for node in ast.walk(tree):
+        if(isinstance(node, ast.ClassDef)):
+            # print(node.lineno, "class")
+            if(library):
+                class_list.append(f"{library}.{node.name}")
+            else:
+                class_list.append(node.name)
+
+        elif(isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))):
+            # print(node.lineno, "func")
+            key = node.name
+            pos_args = [i.arg for i in node.args.args]
+            kw_args = [i.arg for i in node.args.kwonlyargs]
+
+            parent = get_parent_instance(node, 
+                (ast.ClassDef, ast.FunctionDef, ast.AsyncFunctionDef))
+            if(parent):
+                key = f"{parent.name}.{key}"
+            if(library):
+                key = f"{library}.{key}"
+            #  TODO: If key exist then there are two identically named functions in same scope
+
+            function_dict[key] = FunctionTemplate(
+                node.name, node, pos_args, kw_args)
+
+        elif(isinstance(node, ast.Import)):
+            # print(node.lineno, "import")
+            try:
+                for i in node.names:
+                    import_list.append(ImportTemplate(
+                        i.name, node.lineno, node, ast.Import))
+            except AttributeError:
+                pass
+
+        elif(isinstance(node, ast.ImportFrom)):
+            # print(node.lineno, "import from")
+            try:
+                import_list.append(ImportTemplate(
+                    node.module, node.lineno, node, ast.Import))
+            except AttributeError:
+                pass
+    return class_list, function_dict, import_list
+
+
 def is_always_true(test):
     """
     Function to define cases where conditional test is always true.
@@ -227,13 +294,10 @@ def is_always_true(test):
     """
     is_true = False
     try:
-        # print(isinstance(test, ast.Constant))
-        # print(test.value == True)
         if(isinstance(test, ast.Constant) and test.value == True):
-            # print(1)
             is_true = True
     except AttributeError:
-        print(2)
+        pass
     return is_true
 
 
@@ -248,20 +312,18 @@ def create_msg(code, *args, lineno=-1, lang="FIN"):
     msg = ""
     if(lineno < 0):
         pass
-    elif(lang == "ENG"):
-        msg = f"Line {lineno}: "
-    elif(lang == "FIN"):
-        msg = f"Rivillä {lineno}: "
+    elif(lang):
+        msg = f"{MSG[lang]['LINE'][0]} {lineno}: "
 
     try:
-        msg += MSG[lang][code]
+        msg += MSG[lang][code][0]
     except KeyError:
-        msg += MSG["default"]
+        msg += MSG[lang]["default"][0]
 
     try:
         return msg.format(*args)
     except IndexError:
-        return MSG[lang]["error_error"]
+        return MSG[lang]["error_error"][0]
 
 
 def crawl_dirs(paths, only_leaf_files=False):
@@ -278,7 +340,6 @@ def crawl_dirs(paths, only_leaf_files=False):
         elif(os.path.isfile(path) and path.endswith(".py")):
             filelist.append(path)
         # else # file is a special file e.g. socket, FIFO or device file OR not .py file.
-
     return filelist
 
 
@@ -295,14 +356,14 @@ def read_file(filepath, encoding="UTF-8", settings_file=False):
     return content
 
 
-def write_file(filename, content, mode="w", encoding="UTF-8"):
+def write_file(filepath, content, mode="w", encoding="UTF-8"):
     try:
-        with open(filename, mode=mode, encoding=encoding) as f_handle:
+        with open(filepath, mode=mode, encoding=encoding) as f_handle:
             f_handle.write(content)
     except OSError:
-        print("OSError while writing a file", filename)
+        print("OSError while writing a file", filepath)
     except:
-        print("Other error than OSError with file", filename)
+        print("Other error than OSError with file", filepath)
     return None
 
 

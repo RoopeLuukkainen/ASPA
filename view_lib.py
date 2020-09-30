@@ -6,9 +6,9 @@ except ModuleNotFoundError:
     import tkinter as tk  # Python 3, tested with this
     from tkinter import ttk
     from tkinter import filedialog
+    from tkinter import font
 
 import pathlib
-
 
 import utils_lib as utils
 
@@ -24,17 +24,24 @@ FONT_COLOR = "black"
 BD_STYLE = tk.RIDGE # Border style
 BD = 2              # Border width
 
+HIGHLIGHT = {
+    "PASS": "green",
+    "NOTE": "blue",
+    "WARNING": "yellow",
+    "ERROR": "red"
+}
+
 # THERE ARE ALSO predefined fonts like these:
 
-# TkDefaultFont	The default for all GUI items not otherwise specified.
-# TkTextFont	Used for entry widgets, listboxes, etc.
-# TkFixedFont	A standard fixed-width font.
-# TkMenuFont	The font used for menu items.
-# TkHeadingFont	A font for column headings in lists and tables.
-# TkCaptionFont	A font for window and dialog caption bars.
-# TkSmallCaptionFont	A smaller caption font for subwindows or tool dialogs.
-# TkIconFont	A font for icon captions.
-# TkTooltipFont	A font for tooltips.
+# TkDefaultFont The default for all GUI items not otherwise specified.
+# TkTextFont    Used for entry widgets, listboxes, etc.
+# TkFixedFont   A standard fixed-width font.
+# TkMenuFont    The font used for menu items.
+# TkHeadingFont A font for column headings in lists and tables.
+# TkCaptionFont A font for window and dialog caption bars.
+# TkSmallCaptionFont    A smaller caption font for subwindows or tool dialogs.
+# TkIconFont    A font for icon captions.
+# TkTooltipFont A font for tooltips.
 
 class CheckboxPanel(tk.Frame):
     """Class to view checkbox panel. Usage clarification:
@@ -115,11 +122,11 @@ class FiledialogPanel(tk.Frame):
 
 
         # Create output text box
-        self.output_box = tk.Text(self, width=50, height=10, bg=BG_COLOR, fg=FONT_COLOR, font=NORMAL_FONT)#font=SMALL_FONT)
-        self.output_box.grid(row=1, column=0, columnspan=4, sticky="nesw", padx=PAD, pady=PAD)
+        self.filebox = tk.Text(self, width=50, height=10, bg=BG_COLOR, fg=FONT_COLOR, font=NORMAL_FONT)#font=SMALL_FONT)
+        self.filebox.grid(row=1, column=0, columnspan=4, sticky="nesw", padx=PAD, pady=PAD)
         
-        # self.output_box.insert(0.0, "E:/GitLab/ast-analyser/test_files/example2.py\nE:/GitLab/ast-analyser/test_files/lib_example.py\n") # TODO: remove this line
-        #self.output_box.insert(0.0, "E:/GitLab/ast-analyser/test_files/analysis_examples.py") # TODO: remove this line
+        # self.filebox.insert(0.0, "E:/GitLab/ast-analyser/test_files/example2.py\nE:/GitLab/ast-analyser/test_files/lib_example.py\n") # TODO: remove this line
+        #self.filebox.insert(0.0, "E:/GitLab/ast-analyser/test_files/analysis_examples.py") # TODO: remove this line
 
     def get_filedialog(self, dir=False):
         initdir = self.root
@@ -135,18 +142,18 @@ class FiledialogPanel(tk.Frame):
         return None
 
     def add_file(self, path):
-        self.output_box.config(state="normal")
-        self.output_box.insert(tk.END, path + "\n")
-        self.output_box.config(state="disabled")
+        self.filebox.config(state="normal")
+        self.filebox.insert(tk.END, path + "\n")
+        self.filebox.config(state="disabled")
 
     def clear_files(self):
-        self.output_box.config(state="normal")
-        self.output_box.delete(1.0, tk.END)
-        self.output_box.config(state="disabled")
+        self.filebox.config(state="normal")
+        self.filebox.delete(1.0, tk.END)
+        self.filebox.config(state="disabled")
 
     def parse_filepaths(self, clear=False):
         pathset = set()
-        for path in self.output_box.get(0.0, tk.END).split("\n"):
+        for path in self.filebox.get(0.0, tk.END).split("\n"):
             path = path.strip()
             if(path != ""):
                 pathset.add(path)
@@ -249,7 +256,26 @@ class ResultPage(tk.Frame):
     def add_result(self, result):
         self.result_textbox.config(state="normal")
         self.result_textbox.insert(tk.END, result)
+        self.colour_text("ERROR", start="8.0 + 11c", end="9.0 - 1c")
         self.result_textbox.config(state="disabled")
+
+    def colour_text(self, tag, start="1.0", end=tk.END):
+        textbox = self.result_textbox
+        try:
+            color = HIGHLIGHT[tag]
+        except KeyError:
+            color = FONT_COLOR
+
+        textbox.tag_configure(tag,
+                              font=font.Font(textbox, textbox.cget("font")),
+                              foreground=color)
+        textbox.tag_add(tag, start, end)
+        # textbox.tag_add(tag, "1.0 + 5c", "1.0 + 100c")
+        # textbox.tag_add(tag, 1.0+"5c", tk.END)
+        # current_tags = textbox.tag_names(1.0)
+        # if tag in current_tags:
+        #     textbox.tag_remove(tag, 1.0, tk.END)
+        # else:
 
     def clear_result(self):
         self.result_textbox.config(state="normal")

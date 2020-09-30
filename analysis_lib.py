@@ -6,6 +6,7 @@ import ast
 import os
 
 # AST analysers
+import pre_analyser
 import data_structure_analyser
 import error_handling_analyser
 import basic_command_analyser
@@ -46,6 +47,8 @@ class Model:
             }
         except IndexError:
             pass
+        # Pre analyser
+        self.pre_analyser = pre_analyser.PreAnalyser()
 
         # Variable lists (used by function_analyser)
         self.global_variables = set()
@@ -61,7 +64,7 @@ class Model:
         # File structure lists used by file_structure_analyser
         self.file_list = list()
         self.lib_list = list()
-        self.imported = set()
+        self.imported = list()
 
         # Messages
         self.messages = list()
@@ -75,7 +78,7 @@ class Model:
         return set(self.local_variables)
 
     def get_imported(self):
-        return set(self.imported)
+        return list(self.imported)
 
     def get_files_opened(self):
         return list(self.files_opened)
@@ -109,11 +112,11 @@ class Model:
     def set_local_variables(self, value):
         self.local_variables = set(value)
 
-    def set_imported(self, value, add=False):
-        if(add):
-            self.imported.add(value)
+    def set_imported(self, value, append=False):
+        if(append):
+            self.imported.append(value)
         else:
-            self.imported = set(value)
+            self.imported = list(value)
 
     def set_files_opened(self, value, append=False):
         if(append):
@@ -204,23 +207,47 @@ class Model:
                 print(f"{key}: {value}")
             print()
 
-    def find_defs(self, tree):
-        for node in ast.walk(tree):
-            if(isinstance(node, ast.ClassDef)):
-                self.class_list.append(node.name)
+    # def find_defs(self, tree, library=None):
+    #     class_list = list()
+    #     function_dict = dict()
+    #     import_set = set()
 
-            elif(isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))):
-                key = node.name
-                pos_args = [i.arg for i in node.args.args]
-                kw_args = [i.arg for i in node.args.kwonlyargs]
+    #     for node in ast.walk(tree):
+    #         if(isinstance(node, ast.ClassDef)):
+    #             if(library):
+    #                 class_list.append(f"{library}.{node.name}")
+    #             else:
+    #                 class_list.append(node.name)
 
-                parent = utils.get_parent_instance(node, 
-                    (ast.ClassDef, ast.FunctionDef, ast.AsyncFunctionDef))
-                if(parent):
-                    key = f"{parent.name}.{key}"
-                #  TODO: If key exist then there are two identically named functions in same scope
+    #         elif(isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))):
+    #             key = node.name
+    #             pos_args = [i.arg for i in node.args.args]
+    #             kw_args = [i.arg for i in node.args.kwonlyargs]
 
-                self.function_dict[key] = utils.FunctionTemplate(node.name, node, pos_args, kw_args)
+    #             parent = utils.get_parent_instance(node, 
+    #                 (ast.ClassDef, ast.FunctionDef, ast.AsyncFunctionDef))
+    #             if(parent):
+    #                 key = f"{parent.name}.{key}"
+    #             if(library):
+    #                 key = f"{library}.{key}"
+    #             #  TODO: If key exist then there are two identically named functions in same scope
+
+    #             function_dict[key] = utils.FunctionTemplate(
+    #                 node.name, node, pos_args, kw_args)
+
+    #         elif(isinstance(node, ast.Import)):
+    #             try:
+    #                 for i in node.names:
+    #                     import_set.add(i.name)
+    #             except AttributeError:
+    #                 pass
+
+    #         elif(isinstance(node, ast.ImportFrom)):
+    #             try:
+    #                 import_set.add(node.module)
+    #             except AttributeError:
+    #                 pass
+    #         return class_list, function_dict, import_set
 
     def analyse(self, pathlist, selections):
         for path in pathlist:
@@ -230,7 +257,7 @@ class Model:
             if(self.settings["console_print"]):
                 utils.create_dash()
                 print(str(path))
-                print(f"Analysoidaan tiedostoa: {filename}\n")
+                print(f"Analysing file: {filename}\n")
             # print(f"Analysoidaan tiedostoa: {filename, path}\n")
 
             # Create a abstract syntax tree and add parent nodes
@@ -239,19 +266,32 @@ class Model:
             except SyntaxError:
                 self.add_msg("syntax_error")
                 self.save_messages("file_error")
-                # utils.print_msg("syntax_error")
-            except TypeError:  # When content is not str or AST (e.g. None), usually due failed file reading.
+
+            # When content is not str or AST (e.g. None), usually due failed
+            # file reading.
+            except TypeError:
                 self.add_msg("type_error")
                 self.save_messages("file_error")
-                # utils.print_msg("type_error")
+
             else:
                 utils.add_parents(tree)
-                self.find_defs(tree)
+                self.pre_analyse_tree(tree)
+                self.class_list, self.function_dict, self.imported = utils.find_defs(tree)
+                # print(self.class_list, self.function_dict, self.imported)
+                files_in_dir = os.listdir(os.path.dirname(path))
+                # TODO: HERE add read and parse for each imported file and then somehow add those functions to function dict
+                # HERE HERE
+                
                 # TODO: optimise such that os.listdir is done only once per directory
-                self.analyse_tree(tree, os.listdir(os.path.dirname(path)), content, selections)
+                self.analyse_tree(tree, files_in_dir, content, selections)
 
             self.show_all_messages(filename, path)
             self.clear_analysis_data()
+
+    def pre_analyse_tree(self, tree):
+        self.pre_analyser.visit(tree)
+        imported = self.pre_analyser.get_import_dict().keys()
+
 
     def analyse_tree(self, tree, file_list, content, selections):
         """Function to conduct selected static analyses."""
@@ -265,18 +305,26 @@ class Model:
             print(ast.dump(tree, include_attributes=False))
             utils.create_dash()
 
-        for i in self.checkbox_options:
-            if(selections[i]):
-                analyser = self.analysers[i]
+        for opt in self.checkbox_options:
+            if(selections[opt]):
+                analyser = self.analysers[opt]
                 analyser.visit(tree)
 
-                if(i == "file_handling"):
+                if(opt == "file_handling"):
                 #    Check left open files
                     for file in analyser.check_left_open_files():
                         self.add_msg("TK1", file.id, lineno=file.lineno)
-                elif(i == "library"):
+
+                elif(opt == "function"):
+                    analyser.check_main_function()
+
+                elif(opt == "library"):
                     # Info comments check, i.e. author, date etc.
                     analyser.check_info_comments(content)
+
+                    # Duplicate import check
+                    analyser.check_duplicate_imports(
+                        self.pre_analyser.get_import_dict())
 
                     # Main file check
                     if(analyser.has_main_function(tree)): # True this should be a main file
@@ -284,4 +332,4 @@ class Model:
                     else: # Else means library file.
                         pass
 
-                self.save_messages(i)
+                self.save_messages(opt)
