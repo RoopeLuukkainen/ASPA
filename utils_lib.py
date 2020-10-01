@@ -4,18 +4,26 @@ __author__ = "RL"
 
 import ast
 import os
+
 # TODO NodeTemplate
 class FunctionTemplate:
-    def __init__(self, name, astree, pos_args, kw_args):
+    def __init__(self, name, lineno, astree, pos_args, kw_args):
         self.name = name
         self.pos_args = pos_args # Positional arguments before *args
         self.kw_args = kw_args # Keyword arguments before **kwargs
         self.astree = astree # AST of the function
+        self.lineno = lineno
 
 class ImportTemplate:
     def __init__(self, name, lineno, astree, import_from=False):
         self.name = name
         self.import_from = import_from 
+        self.astree = astree # AST of the 'import'/'import from' node
+        self.lineno = lineno
+
+class ClassTemplate:
+    def __init__(self, name, lineno, astree):
+        self.name = name
         self.astree = astree # AST of the 'import'/'import from' node
         self.lineno = lineno
 
@@ -92,8 +100,8 @@ MSG = {
         "AR3": ("Globaalimuuttuja '{}'.", ERROR),
         "AR3-2": ("Muuttujan tai olion globaali käyttö '{}.{}'.", ERROR),
         "AR4": ("Rekursiivinen aliohjelmakutsu.", NOTE),
-        "AR5-1": ("Aliohjelma '{}' vaatii vähintään {} parametria, mutta vain {} lähetetty.", ERROR),
-        "AR5-2": ("Aliohjelma '{}' vaatii enintään {} parametria, mutta {} lähetetty.", ERROR),
+        "AR5-1": ("Aliohjelma '{}' vaatii vähintään {} kpl parametreja, mutta {} lähetetty.", ERROR),
+        "AR5-2": ("Aliohjelma '{}' vaatii enintään {} kpl parametreja, mutta {} lähetetty.", ERROR),
         "AR5-3": ("Aliohjelmakutsussa '{}', '{}' on virheellinen muuttujan nimi.", ERROR),
         "AR6": ("Aliohjelman '{}' lopusta puuttuu return-komento.", ERROR),
         "AR6-1": ("Käytetään generaattoria '{}' aliohjelmassa '{}'.", NOTE), # Yield and yield from detection
@@ -236,53 +244,53 @@ def get_child_instance(node, allowed, denied=tuple()):
     return child 
 
 
-def find_defs(tree, library=None):
-    class_list = list()
-    function_dict = dict()
-    import_list = list()
+# def find_defs(tree, library=None):
+#     # class_list = list()
+#     # function_dict = dict()
+#     import_list = list()
 
-    for node in ast.walk(tree):
-        if(isinstance(node, ast.ClassDef)):
-            # print(node.lineno, "class")
-            if(library):
-                class_list.append(f"{library}.{node.name}")
-            else:
-                class_list.append(node.name)
+#     for node in ast.walk(tree):
+#         # if(isinstance(node, ast.ClassDef)):
+#         #     # print(node.lineno, "class")
+#         #     if(library):
+#         #         class_list.append(f"{library}.{node.name}")
+#         #     else:
+#         #         class_list.append(node.name)
 
-        elif(isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))):
-            # print(node.lineno, "func")
-            key = node.name
-            pos_args = [i.arg for i in node.args.args]
-            kw_args = [i.arg for i in node.args.kwonlyargs]
+#         # if(isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))):
+#         #     # print(node.lineno, "func")
+#         #     key = node.name
+#         #     pos_args = [i.arg for i in node.args.args]
+#         #     kw_args = [i.arg for i in node.args.kwonlyargs]
 
-            parent = get_parent_instance(node, 
-                (ast.ClassDef, ast.FunctionDef, ast.AsyncFunctionDef))
-            if(parent):
-                key = f"{parent.name}.{key}"
-            if(library):
-                key = f"{library}.{key}"
-            #  TODO: If key exist then there are two identically named functions in same scope
+#         #     parent = get_parent_instance(node, 
+#         #         (ast.ClassDef, ast.FunctionDef, ast.AsyncFunctionDef))
+#         #     if(parent):
+#         #         key = f"{parent.name}.{key}"
+#         #     if(library):
+#         #         key = f"{library}.{key}"
+#         #     #  TODO: If key exist then there are two identically named functions in same scope
 
-            function_dict[key] = FunctionTemplate(
-                node.name, node, pos_args, kw_args)
+#         #     function_dict[key] = FunctionTemplate(
+#         #         node.name, node, pos_args, kw_args)
 
-        elif(isinstance(node, ast.Import)):
-            # print(node.lineno, "import")
-            try:
-                for i in node.names:
-                    import_list.append(ImportTemplate(
-                        i.name, node.lineno, node, ast.Import))
-            except AttributeError:
-                pass
+#         if(isinstance(node, ast.Import)):
+#             # print(node.lineno, "import")
+#             try:
+#                 for i in node.names:
+#                     import_list.append(ImportTemplate(
+#                         i.name, node.lineno, node, ast.Import))
+#             except AttributeError:
+#                 pass
 
-        elif(isinstance(node, ast.ImportFrom)):
-            # print(node.lineno, "import from")
-            try:
-                import_list.append(ImportTemplate(
-                    node.module, node.lineno, node, ast.Import))
-            except AttributeError:
-                pass
-    return class_list, function_dict, import_list
+#         elif(isinstance(node, ast.ImportFrom)):
+#             # print(node.lineno, "import from")
+#             try:
+#                 import_list.append(ImportTemplate(
+#                     node.module, node.lineno, node, ast.Import))
+#             except AttributeError:
+#                 pass
+#     return import_list
 
 
 def is_always_true(test):

@@ -60,11 +60,11 @@ class Model:
 
         # File structure list and dict used by file_structure_analyser and data_structure_analyser
         self.function_dict = dict()
-        self.class_list = list()
+        self.class_dict = dict()
         # File structure lists used by file_structure_analyser
         self.file_list = list()
         self.lib_list = list()
-        self.imported = list()
+        self.import_dict = dict()
 
         # Messages
         self.messages = list()
@@ -77,8 +77,8 @@ class Model:
     def get_local_variables(self):
         return set(self.local_variables)
 
-    def get_imported(self):
-        return list(self.imported)
+    def get_import_dict(self):
+        return dict(self.import_dict)
 
     def get_files_opened(self):
         return list(self.files_opened)
@@ -98,8 +98,8 @@ class Model:
     def get_function_dict(self):
         return dict(self.function_dict)
 
-    def get_class_list(self):
-        return list(self.class_list)
+    def get_class_dict(self):
+        return dict(self.class_dict)
 
 
    # List and set setters
@@ -111,12 +111,6 @@ class Model:
 
     def set_local_variables(self, value):
         self.local_variables = set(value)
-
-    def set_imported(self, value, append=False):
-        if(append):
-            self.imported.append(value)
-        else:
-            self.imported = list(value)
 
     def set_files_opened(self, value, append=False):
         if(append):
@@ -133,14 +127,20 @@ class Model:
     def set_file_list(self, value):
         self.file_list = list(value)
 
+    def set_import_dict(self, value, key=None):
+        if(key):
+            self.import_dict[key] = value
+        else:
+            self.import_dict = dict(value)
+
     def set_function_dict(self, value, key=None):
         if(key):
             self.function_dict[key] = value
         else:
             self.function_dict = dict(value)
 
-    def set_class_list(self, value):
-        self.class_list = list(value)
+    def set_class_dict(self, value):
+        self.class_dict = dict(value)
 
     def set_lib_list(self, value, append=False):
         if(append):
@@ -156,10 +156,10 @@ class Model:
         self.files_opened.clear()
         self.files_closed.clear()
         self.function_dict.clear()
-        self.class_list.clear()
+        self.class_dict.clear()
         self.file_list.clear()
         self.lib_list.clear()
-        self.imported.clear()
+        self.import_dict.clear()
 
     def add_msg(self, code, *args, lineno=-1):
         if(not utils.ignore_check(code)):
@@ -253,6 +253,7 @@ class Model:
         for path in pathlist:
             content = utils.read_file(path)
             filename = os.path.basename(path)
+            dir_path = os.path.dirname(path)
 
             if(self.settings["console_print"]):
                 utils.create_dash()
@@ -274,13 +275,9 @@ class Model:
                 self.save_messages("file_error")
 
             else:
+                files_in_dir = os.listdir(dir_path)
                 utils.add_parents(tree)
-                self.pre_analyse_tree(tree)
-                self.class_list, self.function_dict, self.imported = utils.find_defs(tree)
-                # print(self.class_list, self.function_dict, self.imported)
-                files_in_dir = os.listdir(os.path.dirname(path))
-                # TODO: HERE add read and parse for each imported file and then somehow add those functions to function dict
-                # HERE HERE
+                self.pre_analyse_tree(tree, files_in_dir, dir_path)
                 
                 # TODO: optimise such that os.listdir is done only once per directory
                 self.analyse_tree(tree, files_in_dir, content, selections)
@@ -288,10 +285,34 @@ class Model:
             self.show_all_messages(filename, path)
             self.clear_analysis_data()
 
-    def pre_analyse_tree(self, tree):
+    def pre_analyse_tree(self, tree, files, dir_path):
         self.pre_analyser.visit(tree)
-        imported = self.pre_analyser.get_import_dict().keys()
+        self.class_dict = self.pre_analyser.get_class_dict()
+        self.function_dict = self.pre_analyser.get_function_dict()
+        self.import_dict = self.pre_analyser.get_import_dict()
+        self.pre_analyser.clear_all()
 
+        imported = self.import_dict.keys()
+        for i in imported:
+            filename = f"{i}.py"
+            if(filename in files):
+                self.lib_list.append(i)
+                content = utils.read_file(os.path.join(dir_path, filename))
+                try:
+                    tree = ast.parse(content, filename)
+                except SyntaxError:
+                    pass
+
+                # Preanalysing imported local files
+                analyser = pre_analyser.PreAnalyser(library=i)
+                analyser.visit(tree)
+                for func, value in analyser.get_function_dict().items():
+                    if(not func in self.function_dict.keys()):
+                        self.function_dict[func] = value
+                analyser.clear_all()
+
+        # for key, value in self.function_dict.items():
+        #     print(key, value)
 
     def analyse_tree(self, tree, file_list, content, selections):
         """Function to conduct selected static analyses."""
@@ -323,8 +344,7 @@ class Model:
                     analyser.check_info_comments(content)
 
                     # Duplicate import check
-                    analyser.check_duplicate_imports(
-                        self.pre_analyser.get_import_dict())
+                    analyser.check_duplicate_imports(self.import_dict)
 
                     # Main file check
                     if(analyser.has_main_function(tree)): # True this should be a main file

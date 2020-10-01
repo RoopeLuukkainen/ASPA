@@ -51,11 +51,7 @@ class FileStructureAnalyser(ast.NodeVisitor):
 
     def has_main_function(self, tree):  # TODO: change this to check of main level function calls
         """
-        TODO:
-        1. If current file has not imports to libfiles but has function
-        call at the main level then it is possible main file.
-        2. Also could check if this file is imported by others. If not
-        Then it is probably main file."""
+        """
         call_count = 0
         # TODO: Parse nested function names, which are in format parent.functionName
         fun_list = self.model.get_function_dict().keys() 
@@ -73,10 +69,6 @@ class FileStructureAnalyser(ast.NodeVisitor):
                         self.model.add_msg("MR2-4", node.value.func.value.id, node.value.func.attr, lineno=node.lineno)
                 except AttributeError:
                     pass
-
-        if(call_count >= 1): # FIXME: NOW this gives main file if class is used globally obj = CLASS()
-            return True
-        return False
 
     def check_duplicate_imports(self, import_dict):
         for value in import_dict.values():

@@ -18,17 +18,22 @@ class DataStructureAnalyser(ast.NodeVisitor):
         1. Direct usage of CLASS variables via class itself.
         2. Assiging CLASS to variable, i.e. object = CLASS <without parenthesis>
         """
+        classes = self.model.get_class_dict().keys()
         # Class as global variable detection
         for var in node.targets[:]:
             if(isinstance(var, ast.Attribute)
                     and hasattr(var.value, "id")
-                    and var.value.id in self.model.class_list):
+                    and var.value.id in classes):
                 self.model.add_msg("TR2-1", var.value.id, var.attr, lineno=var.lineno)
 
         # Object creating without parenthesis
         try:
-            if(node.value.id in self.model.get_class_list()):
-                self.model.add_msg("TR2-2", node.value.id, lineno=node.lineno)
+            name = node.value.id
+            parent = utils.get_parent_instance(node, 
+                (ast.ClassDef, ast.FunctionDef, ast.AsyncFunctionDef))
+
+            if(name in classes or f"{parent.name}.{name}" in classes):
+                self.model.add_msg("TR2-2", name, lineno=node.lineno)
         except AttributeError:
             pass
 

@@ -22,6 +22,51 @@ class FunctionAnalyser(ast.NodeVisitor):
         if(not utils.MAIN_FUNC_NAME in self.model.get_function_dict().keys()):
             self.model.add_msg("AR1")
 
+    def _check_recursion(self, node, func, *args, **kwargs):
+        # Recursive function calls.
+        try:
+            if(func == utils.get_parent_instance(node,
+                    (ast.FunctionDef, ast.AsyncFunctionDef)).name):
+                self.model.add_msg("AR4", lineno=node.lineno)
+        except AttributeError:  # AttributeError occus e.g. when function name is searched from global scope
+            pass
+
+    def _check_paramenters(self, node, func, *args, **kwargs):
+        def count_args(func, funs, *args, **kwargs):
+            has_args = True if(funs[func].astree.args.vararg) else False
+            has_kwargs = True if(funs[func].astree.args.kwarg) else False
+            default_count = len(funs[func].astree.args.defaults)
+            args_count = len(funs[func].pos_args)  # This is directly from FunctionTemplate class
+            # kw_default_count = len(funs[fun].astree.args.kw_defaults) # Currently not used
+            # kw_only_count = len(funs[fun].kw_args) # Currently not used # This is directly from 
+                                                    # FunctionTemplate class 
+
+            call_arg_count = len(node.args)
+            # call_kw_count = len(node.keywords) # Currently not used
+
+            if(call_arg_count < (args_count - default_count)):
+                self.model.add_msg("AR5-1", func, args_count, call_arg_count, lineno=node.lineno)
+            elif(not has_args and (call_arg_count > args_count)):
+                self.model.add_msg("AR5-2", func, args_count, call_arg_count, lineno=node.lineno)
+
+            if(not has_kwargs):
+                for i in node.keywords:
+                    if(i.arg not in funs[func].kw_args):
+                        self.model.add_msg("AR5-3", func, i.arg, lineno=node.lineno)
+            return None
+
+        # Parameter and argument check tested with Python 3.8.5
+        try:
+            funs = self.model.get_function_dict()
+            functionnames = funs.keys()
+            if(func in functionnames):
+                count_args(func, funs)
+        except (AttributeError, KeyError, UnboundLocalError):
+            # print(f"Error at {node.lineno}, with {node}") # Debug
+            pass
+        except:
+            pass
+
    # Visits
     def visit_Assign(self, node, *args, **kwargs):
         """Method to find:
@@ -124,74 +169,23 @@ class FunctionAnalyser(ast.NodeVisitor):
             #TODO: Remove test print when not needed anymore
             # print("<TEST: Palautetaan jotain mitä ei tunnistettu!>", return_value.lineno) # Debug
 
-
     def visit_Call(self, node, *args, **kwargs):
         """Method to check if node is:
         1. Recursive function call.
         2. Check that arguments and parameters match
         """
-        # print(node, node.func, node.func.id)
-        # print(self.model.get_function_dict())
         try:
-            funs = self.model.get_function_dict()
-            fun = node.func.id
+            if(hasattr(node.func, "id")):
+                fun = node.func.id
+            else:
+                fun = f"{node.func.value.id}.{node.func.attr}"
         except (AttributeError, Exception): # AttributeError occur e.g. with attribute/method calls.
-            # try:
-            #     # print(node.func.attr)
-            #     # print(node.func.value.id)
-            #     # print(self.model.get_file_list())
-            #     if(node.func.value.id + ".py" in self.model.get_file_list()):
-            #         print(1)
-            #         funs = self.model.get_libfunction_dict() # get_libfunction_dict does not exist
-            #         # but here should be definition for "funs" from the imported file
-            #         # Somehow the imported file should also be analysed here
-            #         #  Also need to verify that files do not import each other for infinite loop
-            #         fun = node.func.attr
-            #     else:
-            #         funs = dict()
-            #         fun = None
-            # except Exception:
-            #     print(2)
-            funs = dict()
-            fun = None
-
-        # Recursive function calls.
-        try:
-            if(fun == utils.get_parent_instance(node,
-                    (ast.FunctionDef, ast.AsyncFunctionDef)).name):
-                self.model.add_msg("AR4", lineno=node.lineno)
-        except AttributeError:  # AttributeError occus e.g. when function name is searched from global scope
             pass
+        else:
+            self._check_recursion(node, fun)
+            self._check_paramenters(node, fun)
 
-        # Parameter and argument check tested with Python 3.8.5
-        try:
-            if(fun in funs.keys()):
-                has_args = True if(funs[fun].astree.args.vararg) else False
-                has_kwargs = True if(funs[fun].astree.args.kwarg) else False
-                default_count = len(funs[fun].astree.args.defaults)
-                args_count = len(funs[fun].pos_args)  # This directly from FunctionTemplate class
-                # kw_default_count = len(funs[fun].astree.args.kw_defaults) # Currently not used
-                # kw_only_count = len(funs[fun].kw_args) # Currently not used # This directly from FunctionTemplate class 
-
-                call_arg_count = len(node.args)
-                # call_kw_count = len(node.keywords) # Currently not used
-
-                if(call_arg_count < (args_count - default_count)):
-                    self.model.add_msg("AR5-1", fun, args_count, call_arg_count, lineno=node.lineno)
-                elif(not has_args and (call_arg_count > args_count)):
-                    self.model.add_msg("AR5-2", fun, args_count, call_arg_count, lineno=node.lineno)
-
-                if(not has_kwargs):
-                    for i in node.keywords:
-                        if(i.arg not in funs[fun].kw_args):
-                            self.model.add_msg("AR5-3", fun, i.arg, lineno=node.lineno)
-
-        except (AttributeError, KeyError, UnboundLocalError):
-            print(f"Error at {node.lineno}, with {node}") # Debug
-        except:
-            pass
         self.generic_visit(node)
-
 
     def visit_FunctionDef(self, node, *args, **kwargs):
         """Method to find:
@@ -205,7 +199,8 @@ class FunctionAnalyser(ast.NodeVisitor):
         #     if(isinstance(elem, ast.Return)):
         #         has_return = True
 
-        # else:  # this match if 1 layer of function body has no return, doesn't work if return is indented more
+        # else:  # this match if 1 layer of function body has no return, 
+                 # doesn't work if return is indented more
         #     if(not has_return):
         #         self.model.add_msg("AR6", node.name, lineno=node.lineno)
 
@@ -215,9 +210,7 @@ class FunctionAnalyser(ast.NodeVisitor):
             self.model.add_msg("AR6", node.name, lineno=node.lineno)
 
         self._check_nested_function(node)
-
         self.generic_visit(node)
-
 
     def visit_AsyncFunctionDef(self, node, *args, **kwargs):
         """Method to check usage of async functions. Currently checks:
