@@ -116,9 +116,11 @@ MSG = {
         "PK4": ("Missing exception handling from the file operation '{}.{}'.", ERROR),
         "TK1": ("File handle '{}' is left open.", ERROR),
         "TK1-2": ("File handle '{}' is closed in except-branch.", WARNING),
+        "TK1-3": ("Missing parenthesis from file closing '{}.{}'.", ERROR),
         "TR2-1": ("Class is being used directly without an object '{}.{}'.", ERROR),
         "TR2-2": ("Missing parenthesis from object creation. Should be '{}()'.", ERROR),
         "TR2-3": ("Class '{}' is not defined in global scope.", ERROR),
+        "TR2-4": ("Name of the class '{}' is not in UPPERCASE.", NOTE),
         "LINE": ("Line", GENERAL),
         "NOTE": ("detected", GENERAL),
         "WELCOME": ("In prints **-marking stands for warning, and ++ for note, "
@@ -165,9 +167,11 @@ MSG = {
         "PK4": ("Tiedosto-operaatiosta '{}.{}' puuttuu virheenkäsittely.", ERROR),
         "TK1": ("Tiedostokahva '{}' on sulkematta.", ERROR),
         "TK1-2": ("Tiedostokahva '{}' suljetaan except-haarassa.", WARNING),
+        "TK1-3": ("Tiedoston sulkukommenosta '{}.{}' puuttuvat sulut.", ERROR),
         "TR2-1": ("Luokan käyttö suoraan ilman objektia '{}.{}'.", ERROR),
         "TR2-2": ("Olion luonnista puuttuvat sulkeet. Pitäisi olla '{}()'.", ERROR),
         "TR2-3": ("Luokkaa '{}' ei ole määritelty päätasolla.", ERROR),
+        "TR2-4": ("Luokan '{}' nimi ei ole kirjoitettu SUURAAKKOSIN.", NOTE),
         "NOTE": ("huomioita", GENERAL),
         "LINE": ("Rivi", GENERAL),
         "WELCOME": ("Tulosteissa **-merkintä tarkoittaa varoitusta ja ++-merkintä ilmoitusta, "

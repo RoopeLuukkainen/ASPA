@@ -13,8 +13,12 @@ class FunctionAnalyser(ast.NodeVisitor):
 
     # General methods
     def _check_nested_function(self, node, *args, **kwargs):
-        """Method to check if function definition is not at a global scope."""
-        if(utils.get_parent_instance(node, 
+        """Method to check
+        1. function definition is not at a global scope.
+        """
+        # Col offset should detect every function definition which is indended
+        if(node.col_offset > 0
+                or utils.get_parent_instance(node, 
                 (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)) is not None):
             self.model.add_msg("AR2-1", node.name, lineno=node.lineno)
 

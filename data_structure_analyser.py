@@ -40,13 +40,16 @@ class DataStructureAnalyser(ast.NodeVisitor):
         self.generic_visit(node)
 
     def visit_ClassDef(self, node, *args, **kwargs):
-        """Method to check if 
+        """Method to check
         1. Class is created in global scope
         """
-        if(node.col_offset > 0):
+        # Col offset should detect every class definition which is indended
+        if(node.col_offset > 0
+                or utils.get_parent_instance(node, 
+                (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)) is not None):
             self.model.add_msg("TR2-3", node.name, lineno=node.lineno)
-        
-        # if(utils.get_parent_instance(node, 
-        #       (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)) is not None):
-        #     print(node.lineno)
+
+        if(not node.name.isupper()):
+            self.model.add_msg("TR2-4", node.name, lineno=node.lineno)
+
         self.generic_visit(node)

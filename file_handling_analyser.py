@@ -42,6 +42,8 @@ class FileHandlingAnalyser(ast.NodeVisitor):
             if(node.attr == "close"):
                 if(utils.get_parent_instance(node, ast.ExceptHandler) is not None):
                     self.model.add_msg("TK1-2", node.value.id, lineno=node.lineno)
+                if(utils.get_parent_instance(node, ast.Call) is None):
+                    self.model.add_msg("TK1-3", node.value.id, "close", lineno=node.lineno)
                 if(hasattr(node, "value") and isinstance(node.value, ast.Name)):
                     self.model.set_files_closed(node.value, append=True)
         except AttributeError:
