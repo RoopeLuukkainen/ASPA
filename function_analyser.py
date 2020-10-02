@@ -27,7 +27,11 @@ class FunctionAnalyser(ast.NodeVisitor):
         # if(not utils.MAIN_FUNC_NAME in self.model.get_call_dict().keys()):
         #     pass # No paaohjelma called
 
-    def check_element_order(self, body, *args, **kwargs):
+    def check_element_order(self, body, element_order, *args, **kwargs):
+        """Method to check if ast.nodes in 'body' are in desired order.
+        Order is defined in element_order with following format:
+        ((ast nodes), (must have names/id), (not allowed names/id), "msg ID")
+        """
         def check_name(tree, required, denied):
             valid = True
             if(required or denied):
@@ -49,7 +53,7 @@ class FunctionAnalyser(ast.NodeVisitor):
         cur = 0
         for item in body:  # Check items from top to bottom
             temp = cur
-            for elem in utils.ELEMENT_ORDER[cur:]:
+            for elem in element_order[cur:]:
                 if(isinstance(item, elem[0]) and check_name(item, elem[1], elem[2])):
                     cur = temp
                     break

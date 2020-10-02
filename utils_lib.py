@@ -33,6 +33,7 @@ ALLOWED_ELEMENTS = {ast.Import, ast.ImportFrom, ast.Assign, ast.ClassDef,
                     ast.AsyncFunctionDef, ast.FunctionDef, ast.Expr}
 
 # Format: ((ast nodes), (must have names/id), (not allowed names/id), "msg ID")
+# Currently msg IDs are not in use.
 ELEMENT_ORDER = (# Header comment should be first
                  ((ast.Import, ast.ImportFrom), tuple(), tuple(), "E1"),
                  (ast.Assign, tuple(), tuple(), "E3"),
