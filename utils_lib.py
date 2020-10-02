@@ -29,33 +29,37 @@ class ClassTemplate:
 
 MAIN_FUNC_NAME = "paaohjelma"
 
-ELEMENT_ORDER = (# comment should be first
-                 ((ast.Import, ast.ImportFrom), None, "E1"),
-                 (ast.ClassDef, None, "E2"),
-                 (ast.Assign, None, "E3"),
-                 ((ast.AsyncFunctionDef, ast.FunctionDef), None, "E4"),
-                 (ast.FunctionDef, "paaohjelma", "E5"),
-                 (ast.Expr, "paaohjelma", "E6")
+ALLOWED_ELEMENTS = {ast.Import, ast.ImportFrom, ast.Assign, ast.ClassDef,
+                    ast.AsyncFunctionDef, ast.FunctionDef, ast.Expr}
+
+# Format: ((ast nodes), (must have names/id), (not allowed names/id), "msg ID")
+ELEMENT_ORDER = (# Header comment should be first
+                 ((ast.Import, ast.ImportFrom), tuple(), tuple(), "E1"),
+                 (ast.Assign, tuple(), tuple(), "E3"),
+                 (ast.ClassDef, tuple(), tuple(), "E2"),
+                 ((ast.AsyncFunctionDef, ast.FunctionDef), tuple(), (MAIN_FUNC_NAME), "E4"),
+                 (ast.FunctionDef, (MAIN_FUNC_NAME), tuple(), "E5"),
+                 (ast.Expr, (MAIN_FUNC_NAME), tuple(), "E6")
                 )
 
-ELEMENT_TEXT = {
-    "ENG": {
-        "E1": "Imports",
-        "E2": "Class definitions",
-        "E3": "Constants",
-        "E4": "Function definitions",
-        "E5": f"Definition of {MAIN_FUNC_NAME}",
-        "E6": f"{MAIN_FUNC_NAME}() call"
-    },
-    "FIN": {
-        "E1": "Sisällytykset",
-        "E2": "Luokkien määrittelyt",
-        "E3": "Kiintoarvot",
-        "E4": "Aliohjelmien määrittelyt",
-        "E5": f"{MAIN_FUNC_NAME}-määrittely",
-        "E6": f"{MAIN_FUNC_NAME}-kutsu"
-    }
-}
+# ELEMENT_TEXT = {
+#     "ENG": {
+#         "E1": "Imports",
+#         "E2": "Class definitions",
+#         "E3": "Constants",
+#         "E4": "Function definitions",
+#         "E5": f"Definition of {MAIN_FUNC_NAME}",
+#         "E6": f"{MAIN_FUNC_NAME}() call"
+#     },
+#     "FIN": {
+#         "E1": "Sisällytykset",
+#         "E2": "Luokkien määrittelyt",
+#         "E3": "Kiintoarvot",
+#         "E4": "Aliohjelmien määrittelyt",
+#         "E5": f"{MAIN_FUNC_NAME}-määrittely",
+#         "E6": f"{MAIN_FUNC_NAME}-kutsu"
+#     }
+# }
 
 
 # TODO: Take this from the configuration file
@@ -93,7 +97,8 @@ MSG = {
         "AR6-4": ("Return value is a constant.", NOTE),
         "AR6-5": ("<Lines after the return-statement.>", ERROR),
         "AR7": ("Statement which should not be in global scope.", WARNING),
-        "MR1": ("Element '{}' should be before '{}'.", ERROR),
+        # "MR1": ("Element '{}' should be before '{}'.", WARNING),
+        "MR1": ("Statement seem to be in wrong location.", WARNING),
         "MR2-3": ("Function call '{}()' is {} function call in global scope. There "
                 + f"should be only one (1) function call '{MAIN_FUNC_NAME}()'.",
                 WARNING),
@@ -142,7 +147,8 @@ MSG = {
         "AR6-4": ("Paluuarvo on vakio.", NOTE),
         "AR6-5": ("<Koodirivejä return-komennon jälkeen.>", ERROR),
         "AR7": ("Komento, jonka ei tulisi olla päätasolla.", WARNING),
-        "MR1": ("Komennon '{}' pitäisi olla ennen '{}'.", ERROR),
+        # "MR1": ("Komennon '{}' pitäisi olla ennen '{}'.", WARNING),
+        "MR1": ("Komento vaikuttaisi olevan väärässä kohdin tiedostoa.", WARNING),
         "MR2-3": ("Aliohjelmakutsu '{}()' on {}. aliohjelmakutsu. Pitäisi olla vain "
                 + f"yksi (1) aliohjelmakutsu '{MAIN_FUNC_NAME}()'.", WARNING),
         "MR2-4": ("Päätason aliohjelmakutsu '{}.{}()' ei viittaa tiedoston pääohjelmaan.", WARNING),

@@ -19,33 +19,43 @@ class FunctionAnalyser(ast.NodeVisitor):
             self.model.add_msg("AR2-1", node.name, lineno=node.lineno)
 
     def check_main_function(self, *args, **kwargs):
+        # CHECK IF there is any global scope calls and also if there there is
+        # import to local lib it should be main file.
         if(not utils.MAIN_FUNC_NAME in self.model.get_function_dict().keys()):
             self.model.add_msg("AR1")
 
+        # if(not utils.MAIN_FUNC_NAME in self.model.get_call_dict().keys()):
+        #     pass # No paaohjelma called
+
     def check_element_order(self, body, *args, **kwargs):
-        def check_name(tree, name):
-            valid = False
-            if(name == None):
-                valid = True
-            else:
+        def check_name(tree, required, denied):
+            valid = True
+            if(required or denied):
                 for node in ast.walk(tree):
-                    print(node)
-                    if(name == getattr(node, "name", None) 
-                            or name == getattr(node, "id", None)):
-                        print(name)
-                        valid = True
+                    n = getattr(node, "name", None)
+                    i = getattr(node, "id", None)
+                    if(n):
+                        name = n
+                        break
+                    elif(i):
+                        name = i
+                        break
+                if(required and not name in required):
+                    valid = False
+                elif(denied and name in denied):
+                    valid = False
             return valid
 
         cur = 0
-        for item in body:
+        for item in body:  # Check items from top to bottom
             temp = cur
             for elem in utils.ELEMENT_ORDER[cur:]:
-                if(isinstance(item, elem[0]) and check_name(item, elem[1])):
+                if(isinstance(item, elem[0]) and check_name(item, elem[1], elem[2])):
                     cur = temp
                     break
                 temp += 1
             else:
-                print(item.lineno, "no", elem[-1]) # ADD detection which is violated
+                self.model.add_msg("MR1", lineno=item.lineno)
 
     def _check_recursion(self, node, func, *args, **kwargs):
         # Recursive function calls.
