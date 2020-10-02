@@ -27,6 +27,15 @@ class ClassTemplate:
         self.astree = astree # AST of the 'import'/'import from' node
         self.lineno = lineno
 
+ELEMENT_ORDER = (# comment should be first
+                 ((ast.Import, ast.ImportFrom), None, "A1"),
+                 (ast.ClassDef, None, "A2"),
+                 (ast.Assign, None, "A3"),
+                 ((ast.AsyncFunctionDef, ast.FunctionDef), None, "A4"),
+                 (ast.FunctionDef, "paaohjelma", "A5"),
+                 (ast.Expr, "paaohjelma", "A6")
+                )
+
 MAIN_FUNC_NAME = "paaohjelma"
 # TODO: Take this from the configuration file
 IGNORE = {"PT1", "PK1", "MR5", "AR6-1"} # Add keys of ignored error messages
@@ -242,55 +251,6 @@ def get_child_instance(node, allowed, denied=tuple()):
         elif(isinstance(child_node, denied)):
             break
     return child 
-
-
-# def find_defs(tree, library=None):
-#     # class_list = list()
-#     # function_dict = dict()
-#     import_list = list()
-
-#     for node in ast.walk(tree):
-#         # if(isinstance(node, ast.ClassDef)):
-#         #     # print(node.lineno, "class")
-#         #     if(library):
-#         #         class_list.append(f"{library}.{node.name}")
-#         #     else:
-#         #         class_list.append(node.name)
-
-#         # if(isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))):
-#         #     # print(node.lineno, "func")
-#         #     key = node.name
-#         #     pos_args = [i.arg for i in node.args.args]
-#         #     kw_args = [i.arg for i in node.args.kwonlyargs]
-
-#         #     parent = get_parent_instance(node, 
-#         #         (ast.ClassDef, ast.FunctionDef, ast.AsyncFunctionDef))
-#         #     if(parent):
-#         #         key = f"{parent.name}.{key}"
-#         #     if(library):
-#         #         key = f"{library}.{key}"
-#         #     #  TODO: If key exist then there are two identically named functions in same scope
-
-#         #     function_dict[key] = FunctionTemplate(
-#         #         node.name, node, pos_args, kw_args)
-
-#         if(isinstance(node, ast.Import)):
-#             # print(node.lineno, "import")
-#             try:
-#                 for i in node.names:
-#                     import_list.append(ImportTemplate(
-#                         i.name, node.lineno, node, ast.Import))
-#             except AttributeError:
-#                 pass
-
-#         elif(isinstance(node, ast.ImportFrom)):
-#             # print(node.lineno, "import from")
-#             try:
-#                 import_list.append(ImportTemplate(
-#                     node.module, node.lineno, node, ast.Import))
-#             except AttributeError:
-#                 pass
-#     return import_list
 
 
 def is_always_true(test):

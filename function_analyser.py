@@ -22,6 +22,31 @@ class FunctionAnalyser(ast.NodeVisitor):
         if(not utils.MAIN_FUNC_NAME in self.model.get_function_dict().keys()):
             self.model.add_msg("AR1")
 
+    def check_element_order(self, body, *args, **kwargs):
+        def check_name(tree, name):
+            valid = False
+            if(name == None):
+                valid = True
+            else:
+                for node in ast.walk(tree):
+                    print(node)
+                    if(name == getattr(node, "name", None) 
+                            or name == getattr(node, "id", None)):
+                        print(name)
+                        valid = True
+            return valid
+
+        cur = 0
+        for item in body:
+            temp = cur
+            for elem in utils.ELEMENT_ORDER[cur:]:
+                if(isinstance(item, elem[0]) and check_name(item, elem[1])):
+                    cur = temp
+                    break
+                temp += 1
+            else:
+                print(item.lineno, "no", elem[-1]) # ADD detection which is violated
+
     def _check_recursion(self, node, func, *args, **kwargs):
         # Recursive function calls.
         try:
@@ -129,9 +154,8 @@ class FunctionAnalyser(ast.NodeVisitor):
         3. If there are lines after the return TODO: Same thing with break and continue
             e.g. by going one level up to parent and check if there are nodes which are after the return.
         """
-        if(not isinstance(node.parent_node, ast.FunctionDef)):
+        if(not isinstance(node.parent_node, (ast.FunctionDef, ast.AsyncFunctionDef))):
             self.model.add_msg("AR6-2", lineno=node.lineno)
-        self.generic_visit(node)
 
         return_value = node.value
         if(return_value is None):  # i.e. Match return <without anything>, but not return None
@@ -168,6 +192,7 @@ class FunctionAnalyser(ast.NodeVisitor):
             pass
             #TODO: Remove test print when not needed anymore
             # print("<TEST: Palautetaan jotain mitä ei tunnistettu!>", return_value.lineno) # Debug
+        self.generic_visit(node)
 
     def visit_Call(self, node, *args, **kwargs):
         """Method to check if node is:

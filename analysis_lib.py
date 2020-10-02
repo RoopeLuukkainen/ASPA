@@ -338,6 +338,7 @@ class Model:
 
                 elif(opt == "function"):
                     analyser.check_main_function()
+                    analyser.check_element_order(tree.body)
 
                 elif(opt == "library"):
                     # Info comments check, i.e. author, date etc.
