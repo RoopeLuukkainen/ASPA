@@ -38,6 +38,7 @@ class FunctionAnalyser(ast.NodeVisitor):
         """
         def check_name(tree, required, denied):
             valid = True
+            name = ""
             if(required or denied):
                 for node in ast.walk(tree):
                     n = getattr(node, "name", None)

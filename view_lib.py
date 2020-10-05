@@ -253,9 +253,20 @@ class ResultPage(tk.Frame):
         # exit_button = ttk.Button(button_group, text="Sulje ohjelma", command=quit)
         # exit_button.grid(row=0, column=1, padx=PAD, pady=PAD, sticky=tk.W)
 
-    def add_result(self, messages):
+    def show_info(self, counter=0):
+        infos = [
+            utils.create_msg("NOTE_INFO"),
+            utils.create_msg("WARNING_INFO"),
+            utils.create_msg("ERROR_INFO")
+        ]
+        c = self.add_result(infos, counter=counter)
+        infos.clear()
+        return c
+
+    def add_result(self, messages, counter=0):
+
         self.result_textbox.config(state="normal")
-        line_counter = 0
+        line_counter = counter
         for msg in messages:
             line_counter += 1 # Text box lines start from 1 therefore add at the beginning
             self.result_textbox.insert(tk.END, f"{msg[0]}\n")
@@ -265,6 +276,7 @@ class ResultPage(tk.Frame):
                 self.colour_text(msg[1], start=s, end=e)
 
         self.result_textbox.config(state="disabled")
+        return line_counter
 
     def colour_text(self, tag, start="1.0", end=tk.END):
         textbox = self.result_textbox

@@ -30,6 +30,7 @@ class GUICLASS(tk.Tk):
         self.settings = settings
         self.lang = settings["language"]
         self.model = analysis.Model(self)
+        self.line_count = 0
 
        # The main frame
         main_frame = tk.Frame(self)
@@ -99,11 +100,13 @@ class GUICLASS(tk.Tk):
 
         utils.write_file(self.settings["result_path"], timestamp + "\n")
         self.pages[view.ResultPage].clear_result()  # Clears previous results
+        self.line_count = self.pages[view.ResultPage].show_info()  # Init new results with default info
         self.show_page(view.ResultPage)
         self.model.analyse(filelist, selections)
         return None
 
     def update_result(self, messages):
-        self.pages[view.ResultPage].add_result(messages)
+        self.line_count = self.pages[view.ResultPage].add_result(
+                                              messages, counter=self.line_count)
         # self.pages[view.ResultPage].add_result(result)
         return None

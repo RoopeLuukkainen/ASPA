@@ -187,6 +187,7 @@ class Model:
 
     # TODO: MOVE TO -> controller -> view
     def format_all_messages(self, filename, path):
+        # TODO: Change such that only line_list is used.
         line_list = list()
 
         content = ""
@@ -210,7 +211,7 @@ class Model:
             print(content)
 
         if(self.settings["file_write"]):
-            write_content = f"{utils.create_dash(get_dash=True)}\n{path}\n{filename}\n{content}"
+            write_content = f"{utils.create_dash(a='=', get_dash=True)}\n{path}\n{filename}\n{content}"
             utils.write_file(self.settings["result_path"], write_content, mode="a")
 
         if(self.settings["GUI_print"]):

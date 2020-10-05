@@ -102,7 +102,10 @@ MSG = {
         "NOTE": (", detected", GENERAL),
         "LINE": ("Line", GENERAL),
         "WELCOME": ("In prints **-marking stands for warning, and ++ for note, "
-                 + "all others are errors.", GENERAL)
+                 + "all others are errors.", GENERAL),
+        "NOTE_INFO": ("All messages with this colour are notes.", NOTE),
+        "WARNING_INFO": ("All messages with this colour are warnings.", WARNING),
+        "ERROR_INFO": ("All messages with this colour are errors.", ERROR)
     },
     "FIN": {
         "default": ("Tapahtui virhe!", ERROR),
@@ -153,7 +156,10 @@ MSG = {
         "OK": (": Ei tunnistettu tyylirikkomuksia.", GOOD),
         "LINE": ("Rivi", GENERAL),
         "WELCOME": ("Tulosteissa **-merkintä tarkoittaa varoitusta ja ++-merkintä ilmoitusta, "
-                 + "muut ovat virheitä.", GENERAL)
+                 + "muut ovat virheitä.", GENERAL),
+        "NOTE_INFO": ("Tällä värillä merkityt viestit ovat huomioita.", NOTE),
+        "WARNING_INFO": ("Tällä värillä merkityt viestit ovat varoituksia.", WARNING),
+        "ERROR_INFO": ("Tällä värillä merkityt viestit ovat virheitä.", ERROR)
     }
 }
 
