@@ -28,7 +28,7 @@ def add_fixed_settings(settings):
 
 def init_settings():
     settings_file = "settings.json"
-    settings = DEFAULT_SETTINGS
+    settings = DEFAULT_SETTINGS # Currently reference not copy
 
     content = read_file(settings_file, settings_file=True)
     if(content):

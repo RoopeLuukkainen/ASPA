@@ -110,38 +110,41 @@ class FunctionAnalyser(ast.NodeVisitor):
         except:
             pass
 
+    def _check_global_variables(self):
+        for i in sorted(self.model.get_global_variables().values(),
+                        key=lambda elem: elem.lineno):
+            self.model.add_msg("AR3", i.name, lineno=i.lineno)
+
+
    # Visits
-    def visit_Assign(self, node, *args, **kwargs):
-        """Method to find:
-        1. Global variables by checking col_offset i.e. indention
-        and checking does assign have FuncDef as parent.
+    # def visit_Assign(self, node, *args, **kwargs):
+    #     """Method to find:
+    #     1. Global variables by checking col_offset i.e. indention
+    #     and checking does assign have FuncDef as parent.
 
-        TODO Does not match:
-        1. globals which are not classes and are indended.
-            However utils.global_test find those.
-        2. Expr objects like file_handle.close()
-        """
-        # Global variable detection
-        for var in node.targets[:]:
-            if(node.col_offset == 0
-                    or utils.get_parent_instance(node,
-                    (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)) is None):
-                if(isinstance(var, ast.Attribute)):
-                    self.model.add_msg("AR3-2", var.value.id, var.attr, lineno=var.lineno)
-                    global_var = var.value.id
-                else:
-                    self.model.add_msg("AR3", var.id, lineno=var.lineno)
-                    global_var = var.id
+    #     TODO Does not match:
+    #     1. Expr objects like file_handle.close()
+    #     """
+    #     # Global variable detection
+    #     for var in node.targets[:]:
+    #         if(node.col_offset == 0
+    #                 or utils.get_parent_instance(node,
+    #                 (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)) is None):
+    #             if(isinstance(var, ast.Attribute)):
+    #                 self.model.add_msg("AR3-2", var.value.id, var.attr, lineno=var.lineno)
+    #                 global_var = var.value.id
+    #             elif(isinstance(var, ast.Tuple)):
+    #                 global_var = "TEMP"
+    #             else:
+    #                 self.model.add_msg("AR3", var.id, lineno=var.lineno)
+    #                 global_var = var.id
 
-                self.model.set_global_variables(global_var, add=True)
+    #             self.model.set_local_variables(global_var, add=True) # temporal
 
-            else:
-                # This currently (doesn't?) match globals which are not classes and are indended
-                # however utils.global_test find those.
-                # Should check if there is no class or function as parent
-                pass
-                # self.model.local_variables.add(var.id)
-        self.generic_visit(node)
+    #         else:
+    #             pass
+    #             # self.model.local_variables.add(var.id)
+    #     self.generic_visit(node)
 
     def visit_Global(self, node, *args, **kwargs):
         """

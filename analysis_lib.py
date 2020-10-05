@@ -50,8 +50,8 @@ class Model:
         # Pre analyser
         self.pre_analyser = pre_analyser.PreAnalyser()
 
-        # Variable lists (used by function_analyser)
-        self.global_variables = set()
+        # Variable data structures (used by function_analyser)
+        self.global_variables = dict()
         self.local_variables = set()
 
         # File handling (used by file_handling_analyser)
@@ -72,7 +72,7 @@ class Model:
 
    # List getters
     def get_global_variables(self):
-        return set(self.global_variables)
+        return dict(self.global_variables)
 
     def get_local_variables(self):
         return set(self.local_variables)
@@ -102,15 +102,24 @@ class Model:
         return dict(self.class_dict)
 
 
-   # List and set setters
-    def set_global_variables(self, value, add=False):
-        if(add):
-            self.global_variables.add(value)
-        else:
-            self.global_variables = set(value)
+   # List, dict and set setters
+    # def set_global_variables(self, value, add=False):
+    #     if(add):
+    #         self.global_variables.add(value)
+    #     else:
+    #         self.global_variables = set(value)
 
-    def set_local_variables(self, value):
-        self.local_variables = set(value)
+    def set_global_variables(self, value, key=None):
+        if(key):
+            self.global_variables[key] = value
+        else:
+            self.global_variables = dict(value)
+
+    def set_local_variables(self, value, add=False):
+        if(add):
+            self.local_variables.add(value)
+        else:
+            self.local_variables = set(value)
 
     def set_files_opened(self, value, append=False):
         if(append):
@@ -207,48 +216,6 @@ class Model:
                 print(f"{key}: {value}")
             print()
 
-    # def find_defs(self, tree, library=None):
-    #     class_list = list()
-    #     function_dict = dict()
-    #     import_set = set()
-
-    #     for node in ast.walk(tree):
-    #         if(isinstance(node, ast.ClassDef)):
-    #             if(library):
-    #                 class_list.append(f"{library}.{node.name}")
-    #             else:
-    #                 class_list.append(node.name)
-
-    #         elif(isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))):
-    #             key = node.name
-    #             pos_args = [i.arg for i in node.args.args]
-    #             kw_args = [i.arg for i in node.args.kwonlyargs]
-
-    #             parent = utils.get_parent_instance(node, 
-    #                 (ast.ClassDef, ast.FunctionDef, ast.AsyncFunctionDef))
-    #             if(parent):
-    #                 key = f"{parent.name}.{key}"
-    #             if(library):
-    #                 key = f"{library}.{key}"
-    #             #  TODO: If key exist then there are two identically named functions in same scope
-
-    #             function_dict[key] = utils.FunctionTemplate(
-    #                 node.name, node, pos_args, kw_args)
-
-    #         elif(isinstance(node, ast.Import)):
-    #             try:
-    #                 for i in node.names:
-    #                     import_set.add(i.name)
-    #             except AttributeError:
-    #                 pass
-
-    #         elif(isinstance(node, ast.ImportFrom)):
-    #             try:
-    #                 import_set.add(node.module)
-    #             except AttributeError:
-    #                 pass
-    #         return class_list, function_dict, import_set
-
     def analyse(self, pathlist, selections):
         for path in pathlist:
             content = utils.read_file(path)
@@ -290,6 +257,8 @@ class Model:
         self.class_dict = self.pre_analyser.get_class_dict()
         self.function_dict = self.pre_analyser.get_function_dict()
         self.import_dict = self.pre_analyser.get_import_dict()
+        self.global_variables = self.pre_analyser.get_global_dict()
+        self.constant_variables = self.pre_analyser.get_constant_dict() # This need setter, getter and initialisation if used
         self.pre_analyser.clear_all()
 
         imported = self.import_dict.keys()
@@ -339,6 +308,7 @@ class Model:
                 elif(opt == "function"):
                     analyser.check_main_function()
                     analyser.check_element_order(tree.body, utils.ELEMENT_ORDER)
+                    analyser._check_global_variables()
 
                 elif(opt == "library"):
                     # Info comments check, i.e. author, date etc.

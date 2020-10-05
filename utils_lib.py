@@ -5,7 +5,7 @@ __author__ = "RL"
 import ast
 import os
 
-# TODO NodeTemplate
+# TODO General NodeTemplate
 class FunctionTemplate:
     def __init__(self, name, lineno, astree, pos_args, kw_args):
         self.name = name
@@ -22,6 +22,12 @@ class ImportTemplate:
         self.lineno = lineno
 
 class ClassTemplate:
+    def __init__(self, name, lineno, astree):
+        self.name = name
+        self.astree = astree # AST of the 'import'/'import from' node
+        self.lineno = lineno
+
+class GlobalTemplate:
     def __init__(self, name, lineno, astree):
         self.name = name
         self.astree = astree # AST of the 'import'/'import from' node
