@@ -40,6 +40,32 @@ ELEMENT_ORDER = (# Header comment should be first
 #     }
 # }
 
+EXAMPLES = {
+    "EX0": "Liite 5",
+    "EX1": "Tiedon tulostaminen ruudulle",
+    "EX2": "Tiedon lukeminen käyttäjältä",
+    "EX3": "Valintarakenne",
+    "EX4": "Toistorakenteet",
+    "EX5": "Aliohjelmat",
+    "EX6": "Tiedostoon kirjoittaminen",
+    "EX7": "Tiedostosta lukeminen",
+    "EX8": "Listan käsittely",
+    "EX9": "Monimutkaisempi tietorakenne",
+    "EX10": "Poikkeukset",
+    "EX11": "Luku 8 asiat kokoava esimerkki",
+    "EX12": "Liite 3: Tulkin virheilmoitusten tulkinta"
+}
+
+TITLE_TO_EXAMPLES = {
+    "basic": ("EX0", "EX1","EX2","EX3","EX4",),
+    "function": ("EX0", "EX5",),
+    "file_handling": ("EX0", "EX6","EX7",),
+    "data_structure": ("EX0", "EX5", "EX8","EX9",),
+    "library": ("EX11",),
+    "exception_handling": ("EX0", "EX10",),
+    "file_error": ("EX12",)
+}
+
 
 # TODO: Take this from the configuration file
 IGNORE = {"PT1", "PK1", "MR5", "AR6-1"} # Add keys of ignored error messages
@@ -99,7 +125,7 @@ MSG = {
         "TR2-3": ("Class '{}' is not defined in global scope.", ERROR),
         "TR2-4": ("Name of the class '{}' is not in UPPERCASE.", NOTE),
         "OK": (": No violations detected.", GOOD),
-        "NOTE": (", detected", GENERAL),
+        "NOTE": (", violations detected please see", GENERAL),
         "LINE": ("Line", GENERAL),
         "WELCOME": ("In prints **-marking stands for warning, and ++ for note, "
                  + "all others are errors.", GENERAL),
@@ -152,7 +178,7 @@ MSG = {
         "TR2-2": ("Olion luonnista puuttuvat sulkeet. Pitäisi olla '{}()'.", ERROR),
         "TR2-3": ("Luokkaa '{}' ei ole määritelty päätasolla.", ERROR),
         "TR2-4": ("Luokan '{}' nimi ei ole kirjoitettu SUURAAKKOSIN.", NOTE),
-        "NOTE": (", huomioita", GENERAL),
+        "NOTE": (", tyylirikkeitä havaittu, ole hyvä ja katso", GENERAL),
         "OK": (": Ei tunnistettu tyylirikkomuksia.", GOOD),
         "LINE": ("Rivi", GENERAL),
         "WELCOME": ("Tulosteissa **-merkintä tarkoittaa varoitusta ja ++-merkintä ilmoitusta, "
@@ -350,8 +376,16 @@ def create_msg(code, *args, lineno=-1, lang="FIN"):
 
     return msg, severity, start, end
 
-def create_title(code, title, lang="FIN"):
-    # TODO: merge with create msg function
+
+def get_title(title_key, lang):
+    try:
+        return TEXT[lang][title_key]
+    except KeyError:
+        return None
+
+
+def create_title(code, title_key, lang="FIN"):
+    title = get_title(title_key, lang)
     msg = ""
     start = 0
     end = 0
@@ -363,8 +397,16 @@ def create_title(code, title, lang="FIN"):
     try:
         msg += MSG[lang][code][0]
         severity = MSG[lang][code][1]
+        if(code == "NOTE"):
+            exs = TITLE_TO_EXAMPLES[title_key]
+            print(exs)
+            for i in exs:
+                if(i == "EX0"):
+                    msg += f" {EXAMPLES[i]}:"
+                else:
+                    msg += f" '{EXAMPLES[i]}'"
     except KeyError:
-        pass
+        print("aaa")
     finally:
         end = len(msg)
 
@@ -410,10 +452,6 @@ def write_file(filepath, content, mode="w", encoding="UTF-8"):
     except:
         print("Other error than OSError with file", filepath)
     return None
-
-
-def get_title(title_key, lang):
-    return TEXT[lang][title_key]
 
 
 def print_title(title):

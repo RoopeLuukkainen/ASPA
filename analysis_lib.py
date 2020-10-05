@@ -192,17 +192,15 @@ class Model:
 
         content = ""
         for title_key, msgs in self.all_messages:
-            title = utils.get_title(title_key, self.language)
-
             if(len(msgs) == 0):
                 line_list.append(("", utils.GENERAL))
-                line_list.append(utils.create_title('OK', title, lang=self.language))
-                content += f"\n{utils.create_title('OK', title, lang=self.language)[0]}\n"
+                line_list.append(utils.create_title('OK', title_key, lang=self.language))
+                content += f"\n{utils.create_title('OK', title_key, lang=self.language)[0]}\n"
                 continue
 
             line_list.append(("", utils.GENERAL))
-            line_list.append(utils.create_title('NOTE', title, lang=self.language))
-            content += f"\n{utils.create_title('NOTE', title, lang=self.language)[0]}:\n"
+            line_list.append(utils.create_title('NOTE', title_key, lang=self.language))
+            content += f"\n{utils.create_title('NOTE', title_key, lang=self.language)[0]}:\n"
             for lineno, code, args in msgs:
                 line_list.append(utils.create_msg(code, *args, lineno=lineno, lang=self.language))
                 content += utils.create_msg(code, *args, lineno=lineno, lang=self.language)[0] + "\n"
