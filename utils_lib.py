@@ -5,34 +5,6 @@ __author__ = "RL"
 import ast
 import os
 
-# TODO General NodeTemplate
-class FunctionTemplate:
-    def __init__(self, name, lineno, astree, pos_args, kw_args):
-        self.name = name
-        self.pos_args = pos_args # Positional arguments before *args
-        self.kw_args = kw_args # Keyword arguments before **kwargs
-        self.astree = astree # AST of the function
-        self.lineno = lineno
-
-class ImportTemplate:
-    def __init__(self, name, lineno, astree, import_from=False):
-        self.name = name
-        self.import_from = import_from 
-        self.astree = astree # AST of the 'import'/'import from' node
-        self.lineno = lineno
-
-class ClassTemplate:
-    def __init__(self, name, lineno, astree):
-        self.name = name
-        self.astree = astree # AST of the 'import'/'import from' node
-        self.lineno = lineno
-
-class GlobalTemplate:
-    def __init__(self, name, lineno, astree):
-        self.name = name
-        self.astree = astree # AST of the 'import'/'import from' node
-        self.lineno = lineno
-
 MAIN_FUNC_NAME = "paaohjelma"
 
 ALLOWED_ELEMENTS = {ast.Import, ast.ImportFrom, ast.Assign, ast.ClassDef,
@@ -86,7 +58,6 @@ MSG = {
                         + "Probably too few *args.", DEBUG), # Debug
         "type_error": ("Abstract Syntax Tree parameter has wrong type, e.g. None.", DEBUG), # Debug
         "syntax_error": ("File has a syntax error.", ERROR),
-        "OK": ("No violations detected.", GOOD),
         "PT1": ("Command '{}' is used.", NOTE),
         "PT4-1": ("Loop never breaks.", ERROR),
         "AR1": (f"No function defition for '{MAIN_FUNC_NAME}'.", NOTE),
@@ -127,8 +98,9 @@ MSG = {
         "TR2-2": ("Missing parenthesis from object creation. Should be '{}()'.", ERROR),
         "TR2-3": ("Class '{}' is not defined in global scope.", ERROR),
         "TR2-4": ("Name of the class '{}' is not in UPPERCASE.", NOTE),
+        "OK": (": No violations detected.", GOOD),
+        "NOTE": (", detected", GENERAL),
         "LINE": ("Line", GENERAL),
-        "NOTE": ("detected", GENERAL),
         "WELCOME": ("In prints **-marking stands for warning, and ++ for note, "
                  + "all others are errors.", GENERAL)
     },
@@ -138,7 +110,6 @@ MSG = {
                       + "liian vähän argumentteja (*args).", DEBUG), # Debug
         "type_error": ("Syntaksipuun parametri on väärää tyyppiä, esim. None.", DEBUG), # Debug
         "syntax_error": ("Tiedostossa on syntaksi virhe.", ERROR),
-        "OK": ("Ei tunnistettu tyylirikkomuksia.", GOOD),
         "PT1": ("Komentoa '{}' on käytetty.", NOTE),
         "PT4-1": ("Silmukkaa ei koskaan pysäytetä.", ERROR),
         "AR1": (f"Ohjelmasta ei löytynyt määrittelyä '{MAIN_FUNC_NAME}':lle.", NOTE),
@@ -178,7 +149,8 @@ MSG = {
         "TR2-2": ("Olion luonnista puuttuvat sulkeet. Pitäisi olla '{}()'.", ERROR),
         "TR2-3": ("Luokkaa '{}' ei ole määritelty päätasolla.", ERROR),
         "TR2-4": ("Luokan '{}' nimi ei ole kirjoitettu SUURAAKKOSIN.", NOTE),
-        "NOTE": ("huomioita", GENERAL),
+        "NOTE": (", huomioita", GENERAL),
+        "OK": (": Ei tunnistettu tyylirikkomuksia.", GOOD),
         "LINE": ("Rivi", GENERAL),
         "WELCOME": ("Tulosteissa **-merkintä tarkoittaa varoitusta ja ++-merkintä ilmoitusta, "
                  + "muut ovat virheitä.", GENERAL)
@@ -251,6 +223,34 @@ GUI = {
     }
 }
 
+# TODO General NodeTemplate
+class FunctionTemplate:
+    def __init__(self, name, lineno, astree, pos_args, kw_args):
+        self.name = name
+        self.pos_args = pos_args # Positional arguments before *args
+        self.kw_args = kw_args # Keyword arguments before **kwargs
+        self.astree = astree # AST of the function
+        self.lineno = lineno
+
+class ImportTemplate:
+    def __init__(self, name, lineno, astree, import_from=False):
+        self.name = name
+        self.import_from = import_from 
+        self.astree = astree # AST of the 'import'/'import from' node
+        self.lineno = lineno
+
+class ClassTemplate:
+    def __init__(self, name, lineno, astree):
+        self.name = name
+        self.astree = astree # AST of the 'import'/'import from' node
+        self.lineno = lineno
+
+class GlobalTemplate:
+    def __init__(self, name, lineno, astree):
+        self.name = name
+        self.astree = astree # AST of the 'import'/'import from' node
+        self.lineno = lineno
+
 def add_parents(tree):
     for node in ast.walk(tree):
         for child_node in ast.iter_child_nodes(node):
@@ -320,20 +320,49 @@ def ignore_check(code):
 
 def create_msg(code, *args, lineno=-1, lang="FIN"):
     msg = ""
+    start = 0
+    end = 0
+    severity = MSG[lang]["default"][1]
     if(lineno < 0):
         pass
     elif(lang):
         msg = f"{MSG[lang]['LINE'][0]} {lineno}: "
+        start = len(msg)
 
     try:
         msg += MSG[lang][code][0]
+        severity = MSG[lang][code][1]
     except KeyError:
         msg += MSG[lang]["default"][0]
+    else:
+        try:
+            msg = msg.format(*args)
+        except IndexError:
+            msg = MSG[lang]["error_error"][0]
+    finally:
+        end = len(msg)
+
+    return msg, severity, start, end
+
+def create_title(code, title, lang="FIN"):
+    # TODO: merge with create msg function
+    msg = ""
+    start = 0
+    end = 0
+    severity = GENERAL
+    if(title):
+        msg = title
+        start = len(msg) + 1
 
     try:
-        return msg.format(*args)
-    except IndexError:
-        return MSG[lang]["error_error"][0]
+        msg += MSG[lang][code][0]
+        severity = MSG[lang][code][1]
+    except KeyError:
+        pass
+    finally:
+        end = len(msg)
+
+    return msg, severity, start, end
 
 
 def crawl_dirs(paths, only_leaf_files=False):

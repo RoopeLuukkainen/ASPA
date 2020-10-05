@@ -186,17 +186,25 @@ class Model:
         self.messages.clear()
 
     # TODO: MOVE TO -> controller -> view
-    def show_all_messages(self, filename, path):
+    def format_all_messages(self, filename, path):
+        line_list = list()
+
         content = ""
         for title_key, msgs in self.all_messages:
             title = utils.get_title(title_key, self.language)
+
             if(len(msgs) == 0):
-                content += f"\n{title}: {utils.create_msg('OK', lang=self.language)}\n"
+                line_list.append(("", utils.GENERAL))
+                line_list.append(utils.create_title('OK', title, lang=self.language))
+                content += f"\n{utils.create_title('OK', title, lang=self.language)[0]}\n"
                 continue
 
-            content += f"\n{title}, {utils.create_msg('NOTE', lang=self.language)}:\n"
+            line_list.append(("", utils.GENERAL))
+            line_list.append(utils.create_title('NOTE', title, lang=self.language))
+            content += f"\n{utils.create_title('NOTE', title, lang=self.language)[0]}:\n"
             for lineno, code, args in msgs:
-                content += utils.create_msg(code, *args, lineno=lineno, lang=self.language) + "\n"
+                line_list.append(utils.create_msg(code, *args, lineno=lineno, lang=self.language))
+                content += utils.create_msg(code, *args, lineno=lineno, lang=self.language)[0] + "\n"
 
         if(self.settings["console_print"]):
             print(content)
@@ -206,8 +214,11 @@ class Model:
             utils.write_file(self.settings["result_path"], write_content, mode="a")
 
         if(self.settings["GUI_print"]):
-            GUI_content = f"{utils.create_dash(get_dash=True)}\n{path}\n{filename}\n{content}"
-            self.controller.update_result(GUI_content)
+            # GUI_content = f"{utils.create_dash(get_dash=True)}\n{path}\n{filename}\n{content}"
+            line_list.insert(0, (utils.create_dash(a="=", get_dash=True), utils.GENERAL))
+            line_list.insert(1, (path, utils.GENERAL))
+            line_list.insert(2, (filename, utils.GENERAL))
+            self.controller.update_result(line_list)
 
         if(self.settings["show_statistics"]):
             # Currently only cumulative count to console.
@@ -249,7 +260,7 @@ class Model:
                 # TODO: optimise such that os.listdir is done only once per directory
                 self.analyse_tree(tree, files_in_dir, content, selections)
 
-            self.show_all_messages(filename, path)
+            self.format_all_messages(filename, path)
             self.clear_analysis_data()
 
     def pre_analyse_tree(self, tree, files, dir_path):

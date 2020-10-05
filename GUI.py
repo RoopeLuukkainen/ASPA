@@ -103,6 +103,7 @@ class GUICLASS(tk.Tk):
         self.model.analyse(filelist, selections)
         return None
 
-    def update_result(self, result):
-        self.pages[view.ResultPage].add_result(result)
+    def update_result(self, messages):
+        self.pages[view.ResultPage].add_result(messages)
+        # self.pages[view.ResultPage].add_result(result)
         return None

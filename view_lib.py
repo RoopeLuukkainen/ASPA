@@ -25,10 +25,10 @@ BD_STYLE = tk.RIDGE # Border style
 BD = 2              # Border width
 
 HIGHLIGHT = {
-    "PASS": "green",
-    "NOTE": "blue",
-    "WARNING": "yellow",
-    "ERROR": "red"
+    utils.GOOD: "#00aa00", #""green",
+    utils.NOTE: "#0000ff", # "blue",
+    utils.WARNING: "#ff7700", #"orange",
+    utils.ERROR: "#dd0000" #"red"
 }
 
 # THERE ARE ALSO predefined fonts like these:
@@ -253,10 +253,17 @@ class ResultPage(tk.Frame):
         # exit_button = ttk.Button(button_group, text="Sulje ohjelma", command=quit)
         # exit_button.grid(row=0, column=1, padx=PAD, pady=PAD, sticky=tk.W)
 
-    def add_result(self, result):
+    def add_result(self, messages):
         self.result_textbox.config(state="normal")
-        self.result_textbox.insert(tk.END, result)
-        self.colour_text("ERROR", start="8.0 + 11c", end="9.0 - 1c")
+        line_counter = 0
+        for msg in messages:
+            line_counter += 1 # Text box lines start from 1 therefore add at the beginning
+            self.result_textbox.insert(tk.END, f"{msg[0]}\n")
+            if(len(msg) >= 4):
+                s = f"{line_counter}.0 + {msg[2]}c"
+                e = f"{line_counter}.0 + {msg[3]}c"
+                self.colour_text(msg[1], start=s, end=e)
+
         self.result_textbox.config(state="disabled")
 
     def colour_text(self, tag, start="1.0", end=tk.END):
@@ -270,12 +277,6 @@ class ResultPage(tk.Frame):
                               font=font.Font(textbox, textbox.cget("font")),
                               foreground=color)
         textbox.tag_add(tag, start, end)
-        # textbox.tag_add(tag, "1.0 + 5c", "1.0 + 100c")
-        # textbox.tag_add(tag, 1.0+"5c", tk.END)
-        # current_tags = textbox.tag_names(1.0)
-        # if tag in current_tags:
-        #     textbox.tag_remove(tag, 1.0, tk.END)
-        # else:
 
     def clear_result(self):
         self.result_textbox.config(state="normal")
