@@ -18,7 +18,7 @@ DEFAULT_SETTINGS = {
     "file_write": True,
     "GUI_print": True,
     "result_path": str(pathlib.Path(__file__).parent.absolute().joinpath("tarkistukset.txt")),
-    "only_leaf_files": True,
+    "only_leaf_files": False,
     "show_statistics": False
 }
 
