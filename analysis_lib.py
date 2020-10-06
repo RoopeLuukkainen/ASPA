@@ -53,6 +53,7 @@ class Model:
         # Variable data structures (used by function_analyser)
         self.global_variables = dict()
         self.local_variables = set()
+        self.call_dict = dict()
 
         # File handling (used by file_handling_analyser)
         self.files_opened = list()
@@ -71,6 +72,9 @@ class Model:
         self.all_messages = list()
 
    # List getters
+    def get_call_dict(self):
+        return dict(self.call_dict)
+
     def get_global_variables(self):
         return dict(self.global_variables)
 
@@ -108,6 +112,12 @@ class Model:
     #         self.global_variables.add(value)
     #     else:
     #         self.global_variables = set(value)
+
+    def set_call_dict(self, value, key=None):
+        if(key):
+            self.call_dict[key] = value
+        else:
+            self.call_dict = dict(value)
 
     def set_global_variables(self, value, key=None):
         if(key):
@@ -169,6 +179,7 @@ class Model:
         self.file_list.clear()
         self.lib_list.clear()
         self.import_dict.clear()
+        self.call_dict.clear()
 
     def add_msg(self, code, *args, lineno=-1):
         if(not utils.ignore_check(code)):
@@ -269,6 +280,7 @@ class Model:
         self.import_dict = self.pre_analyser.get_import_dict()
         self.global_variables = self.pre_analyser.get_global_dict()
         self.constant_variables = self.pre_analyser.get_constant_dict() # This need setter, getter and initialisation if used
+        self.call_dict = self.pre_analyser.get_call_dict()
         self.pre_analyser.clear_all()
 
         imported = self.import_dict.keys()

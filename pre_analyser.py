@@ -18,6 +18,7 @@ class PreAnalyser(ast.NodeVisitor):
         self.function_dict = dict()
         self.global_dict = dict()
         self.constant_dict = dict()
+        self.call_dict = dict()
         self.library = library
 
 
@@ -37,6 +38,9 @@ class PreAnalyser(ast.NodeVisitor):
     def get_constant_dict(self):
         return dict(self.constant_dict)
 
+    def get_call_dict(self):
+        return dict(self.call_dict)
+
    # General methods
     def clear_all(self):
         self.import_dict.clear()
@@ -44,6 +48,7 @@ class PreAnalyser(ast.NodeVisitor):
         self.class_dict.clear()
         self.global_dict.clear()
         self.constant_dict.clear()
+        self.call_dict.clear()
         # del self.library
 
     # TODO: General store node function?
@@ -126,7 +131,15 @@ class PreAnalyser(ast.NodeVisitor):
             node.name, node.lineno, node, pos_args, kw_args)
 
     def _store_call(self, node):
-        pass
+        try:
+            if(node.col_offset == 0 
+                    or utils.get_parent_instance(node,
+                    (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)) is None):
+                self.call_dict[node.func.id] = utils.CallTemplate(node.func.id,
+                                                                  node.lineno,
+                                                                  node)
+        except AttributeError:
+            pass
 
    # Visits
     # Imports

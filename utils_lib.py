@@ -283,6 +283,12 @@ class GlobalTemplate:
         self.astree = astree # AST of the 'import'/'import from' node
         self.lineno = lineno
 
+class CallTemplate:
+    def __init__(self, name, lineno, astree):
+        self.name = name
+        self.astree = astree # AST of the 'import'/'import from' node
+        self.lineno = lineno
+
 def add_parents(tree):
     for node in ast.walk(tree):
         for child_node in ast.iter_child_nodes(node):
@@ -399,14 +405,13 @@ def create_title(code, title_key, lang="FIN"):
         severity = MSG[lang][code][1]
         if(code == "NOTE"):
             exs = TITLE_TO_EXAMPLES[title_key]
-            print(exs)
             for i in exs:
                 if(i == "EX0"):
                     msg += f" {EXAMPLES[i]}:"
                 else:
                     msg += f" '{EXAMPLES[i]}'"
     except KeyError:
-        print("aaa")
+        pass
     finally:
         end = len(msg)
 
