@@ -87,3 +87,14 @@ class ErrorHandlingAnalyser(ast.NodeVisitor):
             # print("visit_Attribute, Attribute error", node, node.lineno)
             pass
         self.generic_visit(node)
+
+    def visit_For(self, node, *args, **kwargs):
+        try:
+            names = [i.id for i in self.model.get_files_opened()]
+            if(node.iter.id in names
+                    and utils.get_parent_instance(node, ast.Try,
+                    denied=(ast.FunctionDef, ast.AsyncFunctionDef)) is None):
+                self.model.add_msg("PK4b", f"for {node.target.id} in {node.iter.id}", lineno=node.lineno)
+        except (AttributeError, TypeError):
+            pass
+        self.generic_visit(node)
