@@ -4,7 +4,6 @@ __author__ = "RL"
 
 import ast
 
-
 import utils_lib as utils
 
 class ErrorHandlingAnalyser(ast.NodeVisitor):

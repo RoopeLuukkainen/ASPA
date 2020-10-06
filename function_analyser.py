@@ -23,8 +23,6 @@ class FunctionAnalyser(ast.NodeVisitor):
             self.model.add_msg("AR2-1", node.name, lineno=node.lineno)
 
     def check_main_function(self, *args, **kwargs):
-        # CHECK IF there is any global scope calls and also if there there is
-        # import to local lib it should be main file.
         if(len(self.model.get_call_dict().keys()) > 0
                 and not utils.MAIN_FUNC_NAME in self.model.get_function_dict().keys()):
             self.model.add_msg("AR1")

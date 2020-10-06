@@ -16,9 +16,9 @@ ELEMENT_ORDER = (# Header comment should be first
                  ((ast.Import, ast.ImportFrom), tuple(), tuple(), "E1"),
                  (ast.Assign, tuple(), tuple(), "E3"),
                  (ast.ClassDef, tuple(), tuple(), "E2"),
-                 ((ast.AsyncFunctionDef, ast.FunctionDef), tuple(), (MAIN_FUNC_NAME), "E4"),
-                 (ast.FunctionDef, (MAIN_FUNC_NAME), tuple(), "E5"),
-                 (ast.Expr, (MAIN_FUNC_NAME), tuple(), "E6")
+                 ((ast.AsyncFunctionDef, ast.FunctionDef), tuple(), (MAIN_FUNC_NAME,), "E4"),
+                 (ast.FunctionDef, (MAIN_FUNC_NAME,), tuple(), "E5"),
+                 (ast.Expr, (MAIN_FUNC_NAME,), tuple(), "E6")
                 )
 
 # ELEMENT_TEXT = {
@@ -120,6 +120,7 @@ MSG = {
         "TK1": ("File handle '{}' is left open.", ERROR),
         "TK1-2": ("File handle '{}' is closed in except-branch.", WARNING),
         "TK1-3": ("Missing parenthesis from file closing '{}.{}'.", ERROR),
+        "TK2": ("File operation '{}.{}' is in different function than file open and close.", ERROR),
         "TR2-1": ("Class is being used directly without an object '{}.{}'.", ERROR),
         "TR2-2": ("Missing parenthesis from object creation. Should be '{}()'.", ERROR),
         "TR2-3": ("Class '{}' is not defined in global scope.", ERROR),
@@ -174,6 +175,7 @@ MSG = {
         "TK1": ("Tiedostokahva '{}' on sulkematta.", ERROR),
         "TK1-2": ("Tiedostokahva '{}' suljetaan except-haarassa.", WARNING),
         "TK1-3": ("Tiedoston sulkukommenosta '{}.{}' puuttuvat sulut.", ERROR),
+        "TK2": ("Tiedosto-operaation '{}.{}' eri aliohjelmassa kuin avaus ja sulkeminen.", ERROR),
         "TR2-1": ("Luokan käyttö suoraan ilman objektia '{}.{}'.", ERROR),
         "TR2-2": ("Olion luonnista puuttuvat sulkeet. Pitäisi olla '{}()'.", ERROR),
         "TR2-3": ("Luokkaa '{}' ei ole määritelty päätasolla.", ERROR),
@@ -407,7 +409,7 @@ def create_title(code, title_key, lang="FIN"):
             exs = TITLE_TO_EXAMPLES[title_key]
             for i in exs:
                 if(i == "EX0"):
-                    msg += f" {EXAMPLES[i]}:"
+                    msg += f" {EXAMPLES[i]}"
                 else:
                     msg += f" '{EXAMPLES[i]}'"
     except KeyError:
