@@ -68,7 +68,7 @@ TITLE_TO_EXAMPLES = {
 
 
 # TODO: Take this from the configuration file
-IGNORE = {"PT1", "PK1", "MR5", "AR6-1"} # Add keys of ignored error messages
+IGNORE = {"PT1", "PK1", "MR5", "AR6-1", "AR6-2"} # Add keys of ignored error messages
 GENERAL = 0
 ERROR = 1
 WARNING = 2
