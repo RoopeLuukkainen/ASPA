@@ -177,7 +177,7 @@ MSG = {
         "TK1": ("Tiedostokahva '{}' on sulkematta.", ERROR),
         "TK1-2": ("Tiedostokahva '{}' suljetaan except-haarassa.", WARNING),
         "TK1-3": ("Tiedoston sulkukommenosta '{}.{}' puuttuvat sulut.", ERROR),
-        "TK2": ("Tiedosto-operaation '{}.{}' eri aliohjelmassa kuin avaus ja sulkeminen.", ERROR),
+        "TK2": ("Tiedosto-operaatio '{}.{}' eri aliohjelmassa kuin avaus ja sulkeminen.", ERROR),
         "TR2-1": ("Luokan käyttö suoraan ilman objektia '{}.{}'.", ERROR),
         "TR2-2": ("Olion luonnista puuttuvat sulkeet. Pitäisi olla '{}()'.", ERROR),
         "TR2-3": ("Luokkaa '{}' ei ole määritelty päätasolla.", ERROR),

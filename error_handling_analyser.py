@@ -42,14 +42,8 @@ class ErrorHandlingAnalyser(ast.NodeVisitor):
                 for i in node.handlers[:-1]:
                     if(i.type == None):
                         self.model.add_msg("PK1-1", lineno=i.lineno)
-        # except IndexError:
-        #     print(f"IndexError at line: {node.lineno}, node: {node}")
-        # except AttributeError:
-        #     print(f"AttributeError at line: {node.lineno}, node: {node}")
-        # except Exception as e:
-        #     print(f"Error at line: {node.lineno}, node: {node}")
-        #     print(f"message: {str(e)}")
         except Exception:
+        #     print(f"Error at line: {node.lineno}, node: {node}") # Debug
             pass
 
         self.generic_visit(node)
@@ -91,9 +85,13 @@ class ErrorHandlingAnalyser(ast.NodeVisitor):
     def visit_For(self, node, *args, **kwargs):
         try:
             names = [i.id for i in self.model.get_files_opened()]
+            # print(names)
+
             if(node.iter.id in names
                     and utils.get_parent_instance(node, ast.Try,
                     denied=(ast.FunctionDef, ast.AsyncFunctionDef)) is None):
+                # utils.get_parent_instance(node, (ast.FunctionDef, ast.AsyncFunctionDef))
+                    
                 self.model.add_msg("PK4b", f"for {node.target.id} in {node.iter.id}", lineno=node.lineno)
         except (AttributeError, TypeError):
             pass

@@ -50,13 +50,13 @@ class FileHandlingAnalyser(ast.NodeVisitor):
                     break
                 elif(isinstance(i, ast.Attribute)
                         and i.value.id == name
-                        and i.attr == "close"
-                        and i.lineno >= line):
+                        and i.attr == "close"):
+                        # and i.lineno >= line):
                     has_close = True
                 elif(isinstance(i, ast.Assign)
                         and i.targets[0].id == name
-                        and i.value.func.id == "open"
-                        and i.lineno <= line):
+                        and i.value.func.id == "open"):
+                        # and i.lineno <= line):
                     has_open = True
 
             if(not (has_close and has_open)):
