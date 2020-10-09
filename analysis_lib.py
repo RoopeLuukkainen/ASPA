@@ -38,7 +38,7 @@ class Model:
         # but that is modified in the code then, i.e. not by user
         try:
             self.analysers = {
-                self.checkbox_options[0]: basic_command_analyser.ExamAnalyser(self),
+                self.checkbox_options[0]: basic_command_analyser.BasicsAnalyser(self),
                 self.checkbox_options[1]: function_analyser.FunctionAnalyser(self),
                 self.checkbox_options[2]: file_handling_analyser.FileHandlingAnalyser(self),
                 self.checkbox_options[3]: data_structure_analyser.DataStructureAnalyser(self),

@@ -84,6 +84,7 @@ MSG = {
                         + "Probably too few *args.", DEBUG), # Debug
         "type_error": ("Abstract Syntax Tree parameter has wrong type, e.g. None.", DEBUG), # Debug
         "syntax_error": ("File has a syntax error.", ERROR),
+        "PT0": ("Name '{}' contains other than A-Z, 0-9 and underscore characters.", WARNING),
         "PT1": ("Command '{}' is used.", NOTE),
         "PT4-1": ("Loop never breaks.", ERROR),
         "AR1": (f"No function defition for '{MAIN_FUNC_NAME}'.", NOTE),
@@ -141,6 +142,7 @@ MSG = {
                       + "liian vähän argumentteja (*args).", DEBUG), # Debug
         "type_error": ("Syntaksipuun parametri on väärää tyyppiä, esim. None.", DEBUG), # Debug
         "syntax_error": ("Tiedostossa on syntaksi virhe.", ERROR),
+        "PT0": ("Nimessä '{}' on muita kuin A-Z, 0-9 ja alaviiva merkkejä.", WARNING),
         "PT1": ("Komentoa '{}' on käytetty.", NOTE),
         "PT4-1": ("Silmukkaa ei koskaan pysäytetä.", ERROR),
         "AR1": (f"Ohjelmasta ei löytynyt määrittelyä '{MAIN_FUNC_NAME}':lle.", NOTE),
