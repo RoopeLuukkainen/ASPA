@@ -296,15 +296,28 @@ class CallTemplate:
         self.lineno = lineno
 
 def add_parents(tree):
+    """Function to add parent_node attribute to each node in AST."""
     for node in ast.walk(tree):
         for child_node in ast.iter_child_nodes(node):
             child_node.parent_node = node
 
 def add_siblings(tree):
+    """
+    Function to add previous_sibling and next_sibling attributes to each
+    node in AST, which are inside iterable body of parent node. For
+    nodes which are inside these iterable bodies, if no there is no
+    previous or next sibling the respective value will be None.
+
+    NOTE that:
+    Useful iterable bodies are body, orelse, handlers and finalbody,
+    however, also type_ignores, decorator_list, argument lists (e.g. 
+    args and kw_defaults) will get sibling attributes.
+    """
     for node in ast.walk(tree):
         for field in ast.iter_fields(node): # Yield a tuple of (fieldname, value)
 
-            # There could be check that name of the field is either body, orelse, handlers, finalbody
+            # There could be check that name of the field is either 
+            # body, orelse, handlers or finalbody
             if(isinstance(field[1], (list, tuple))):
                 previous_sibling = None
                 for child_node in field[1]:
@@ -331,7 +344,8 @@ def add_siblings(tree):
 
 
 def get_parent_instance(node, allowed, denied=tuple()):
-    """Function to get parent instance of a node. 
+    """
+    Function to get parent instance of a node. 
     'allowed' argument defines type of the desired parent, it should be
     any of the ast node types and can be tuple. Optional argument '
     denied' defines not allowed parents as ast node types.
@@ -350,7 +364,8 @@ def get_parent_instance(node, allowed, denied=tuple()):
 
 
 def get_child_instance(node, allowed, denied=tuple()):
-    """Function to get child instance of a node.
+    """
+    Function to get child instance of a node.
     'allowed' argument defines type of the desired child, it should be
     any of the ast node types and can be tuple. Optional argument '
     denied' defines not allowed children as ast node types.
@@ -392,6 +407,19 @@ def ignore_check(code):
 
 
 def create_msg(code, *args, lineno=-1, lang="FIN"):
+    """
+    Function to create violation message based on given violation code,
+    message parameters (e.g. variable name), linenumber and language.
+
+    Return:
+    1. msg - violation message - string
+    2. severity - severity level of message - integer number
+        (numbers are predefined global constants)
+    3. start - character index of violation message's start position 
+        - integer number
+    4. end - character index of violation message's end position 
+        - integer number
+    """
     msg = ""
     start = 0
     end = 0
