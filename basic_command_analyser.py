@@ -23,7 +23,6 @@ class BasicsAnalyser(ast.NodeVisitor):
         i.e. they can have only letters from a to z (both upper and lowercase), 
         underscore or numbers, and may not start with a number.
         """
-        # print(self.valid_naming.match(name), self.valid_naming.search(name))
         try:
             if(not self.valid_naming.match(name)):  # Must be re.match, not re.search
                 self.model.add_msg("PT0", name, lineno=node.lineno)

@@ -14,12 +14,12 @@ class FileHandlingAnalyser(ast.NodeVisitor):
         self.file_operations = {"read", "readline", "readlines", "write", "writelines"}
 
    # General methods
-    def check_left_open_files(self):
+    def check_left_open_files(self, opened_files, closed_files):
         """Method to detect left open filehandles."""
         temp = None
-        left_open = list(self.model.get_files_opened())
-        for closed in self.model.get_files_closed():
-            for opened in self.model.get_files_opened():
+        left_open = list(opened_files)
+        for closed in closed_files:
+            for opened in opened_files:
                 if(closed.id == opened.id
                         and closed.lineno >= opened.lineno
                         and utils.get_parent_instance(opened, (ast.FunctionDef, ast.AsyncFunctionDef))
@@ -31,7 +31,10 @@ class FileHandlingAnalyser(ast.NodeVisitor):
                     temp = None
                 except ValueError:
                     pass  # In this case same file is closed again
-        return left_open
+
+        for file in left_open:
+            self.model.add_msg("TK1", file.id, lineno=file.lineno)
+        return None
 
     def check_same_parent(self, node, attr, parent=tuple()):
         try:

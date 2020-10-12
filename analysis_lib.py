@@ -265,6 +265,7 @@ class Model:
             else:
                 files_in_dir = os.listdir(dir_path)
                 utils.add_parents(tree)
+                utils.add_siblings(tree)
                 self.pre_analyse_tree(tree, files_in_dir, dir_path)
                 
                 # TODO: optimise such that os.listdir is done only once per directory
@@ -323,9 +324,8 @@ class Model:
                 analyser.visit(tree)
 
                 if(opt == "file_handling"):
-                #    Check left open files
-                    for file in analyser.check_left_open_files():
-                        self.add_msg("TK1", file.id, lineno=file.lineno)
+                    # Check left open files
+                    analyser.check_left_open_files(self.files_opened, self.files_closed)
 
                 elif(opt == "function"):
                     analyser.check_main_function()
