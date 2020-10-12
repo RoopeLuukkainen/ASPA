@@ -300,6 +300,35 @@ def add_parents(tree):
         for child_node in ast.iter_child_nodes(node):
             child_node.parent_node = node
 
+def add_siblings(tree):
+    for node in ast.walk(tree):
+        for field in ast.iter_fields(node): # Yield a tuple of (fieldname, value)
+
+            # There could be check that name of the field is either body, orelse, handlers, finalbody
+            if(isinstance(field[1], (list, tuple))):
+                previous_sibling = None
+                for child_node in field[1]:
+                    if(previous_sibling):
+                        previous_sibling.next_sibling = child_node
+                    child_node.previous_sibling = previous_sibling
+                    previous_sibling = child_node
+                else:
+                    child_node.next_sibling = None
+
+    # # Print siblings
+    # for node in ast.walk(tree):
+    #     try:
+    #         pl = nl = ""
+    #         if(node.previous_sibling):
+    #             pl = node.previous_sibling.lineno
+
+    #         if(node.next_sibling):
+    #             nl = node.next_sibling.lineno
+
+    #         print(f"{node.lineno:4}: {node}, PREV {pl}: {node.previous_sibling}, NEXT {nl}: {node.next_sibling}")
+    #     except AttributeError:
+    #         print("---", node)
+
 
 def get_parent_instance(node, allowed, denied=tuple()):
     """Function to get parent instance of a node. 
