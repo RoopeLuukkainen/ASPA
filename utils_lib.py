@@ -295,6 +295,8 @@ class CallTemplate:
         self.astree = astree # AST of the 'import'/'import from' node
         self.lineno = lineno
 
+
+# AST improvement utilities
 def add_parents(tree):
     """Function to add parent_node attribute to each node in AST."""
     for node in ast.walk(tree):
@@ -342,7 +344,7 @@ def add_siblings(tree):
     #     except AttributeError:
     #         print("---", node)
 
-
+# AST search utilities
 def get_parent_instance(node, allowed, denied=tuple()):
     """
     Function to get parent instance of a node. 
@@ -382,7 +384,7 @@ def get_child_instance(node, allowed, denied=tuple()):
             break
     return child 
 
-
+# General utilities
 def is_always_true(test):
     """
     Function to define cases where conditional test is always true.
