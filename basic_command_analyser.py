@@ -87,7 +87,6 @@ class BasicsAnalyser(ast.NodeVisitor):
         try:
             if(node.next_sibling):
                 self.model.add_msg("PT5", command_name, lineno=node.lineno)
-                # print(node.lineno, node)
         except AttributeError:
             pass
 
