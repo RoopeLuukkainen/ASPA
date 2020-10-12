@@ -82,8 +82,12 @@ class BasicsAnalyser(ast.NodeVisitor):
         except AttributeError:
             pass
 
-
     def _check_unreachable_code(self, node, command_name, *args, **kwargs):
+        """
+        Method to check if there are lines after the given command. This
+        is currently used to check unreachable code after commands:
+        return, break, continue, raise, sys.exit, exit, quit
+        """
         try:
             if(node.next_sibling):
                 self.model.add_msg("PT5", command_name, lineno=node.lineno)

@@ -171,9 +171,8 @@ class FunctionAnalyser(ast.NodeVisitor):
 
         TODO Does not find:
         1. If there are multiple returns
-        2. If return is unreachable
-        3. If there are lines after the return TODO: Same thing with break and continue
-            e.g. by going one level up to parent and check if there are nodes which are after the return.
+        2. If return is unreachable due to the logical condition, trivial
+            cases are check with basic command check for unreachable code.
         """
         if(not isinstance(node.parent_node, (ast.FunctionDef, ast.AsyncFunctionDef))):
             self.model.add_msg("AR6-2", lineno=node.lineno)
