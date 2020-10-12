@@ -17,7 +17,7 @@ class BasicsAnalyser(ast.NodeVisitor):
         self.required_commands = {"round", "print", "range", "int", "len", "float", "str"} # Examples
         self.valid_naming = re.compile(r"^[a-zA-Z_][a-zA-Z0-9_]*$")
 
-    def check_valid_name(self, node, name):
+    def check_valid_name(self, node, name, *args, **kwargs):
         """Method to validate given name, e.g. variable name or function name.
         Valid names must match following regex pattern ^[a-zA-Z_][a-zA-Z0-9_]*$
         i.e. they can have only letters from a to z (both upper and lowercase), 
@@ -34,7 +34,7 @@ class BasicsAnalyser(ast.NodeVisitor):
         except TypeError:
             pass
 
-    def iterate_arg_names(self, node):
+    def iterate_arg_names(self, node, *args, **kwargs):
         """Method to collect all argument names from a given function node.
         This include posonly, 'normal', keyword and prefix arguments (*arg and
         **kwargs).
@@ -61,7 +61,7 @@ class BasicsAnalyser(ast.NodeVisitor):
             pass
         return arg_names
 
-    def _check_function_naming(self, node):
+    def _check_function_naming(self, node, *args, **kwargs):
         names = self.iterate_arg_names(node)
         try:
             names.append((node, node.name)) # add function name among parameter names
@@ -82,6 +82,15 @@ class BasicsAnalyser(ast.NodeVisitor):
         except AttributeError:
             pass
 
+
+    def _check_unreachable_code(self, node, command_name, *args, **kwargs):
+        try:
+            if(node.next_sibling):
+                self.model.add_msg("PT5", command_name, lineno=node.lineno)
+                # print(node.lineno, node)
+        except AttributeError:
+            pass
+
    # Grammar info
     # From : https://docs.python.org/3.7/library/ast.html#abstract-grammar
 
@@ -99,11 +108,33 @@ class BasicsAnalyser(ast.NodeVisitor):
    # Visits
     def visit_Call(self, node, *args, **kwargs):
         try:
+            call_name = node.func.id  # Name of the called function or class
+            attribute_name = None  # Library, class or object name which is referred
+
+            # Command called check
             if(isinstance(node.func, ast.Name) 
-                    and node.func.id in self.required_commands):
-                self.model.add_msg("PT1", node.func.id, lineno=node.lineno)
+                    and call_name in self.required_commands):
+                self.model.add_msg("PT1", call_name, lineno=node.lineno)
+
+            # Unreachable code check
+            if(call_name == "exit"):
+                self._check_unreachable_code(utils.get_parent_instance(node, ast.Expr),
+                                            "exit")
+            elif(call_name == "quit"):
+                self._check_unreachable_code(utils.get_parent_instance(node, ast.Expr), 
+                                            "quit")
         except AttributeError:
-            pass
+            try:
+                call_name = node.func.attr  # Name of the called function or class
+                attribute_name = node.func.value.id  # Library, class or object name which is referred
+
+                # Unreachable code check
+                if(attribute_name == "sys" and call_name == "exit"):
+                    self._check_unreachable_code(utils.get_parent_instance(node, ast.Expr),
+                                                "sys.exit")
+
+            except AttributeError:
+                pass
         self.generic_visit(node)
 
     def visit_While(self, node, *args, **kwargs):
@@ -204,6 +235,18 @@ class BasicsAnalyser(ast.NodeVisitor):
     #     except AttributeError:
     #         pass
     #     self.generic_visit(node)
+
+    def visit_Return(self, node, *args, **kwargs):
+        self._check_unreachable_code(node, "return")
+
+    def visit_Break(self, node, *args, **kwargs):
+        self._check_unreachable_code(node, "break")
+
+    def visit_Continue(self, node, *args, **kwargs):
+        self._check_unreachable_code(node, "continue")
+
+    def visit_Raise(self, node, *args, **kwargs):
+        self._check_unreachable_code(node, "raise")
 
     # Rest are placeholders
     def visit_If(self, node, *args, **kwargs):
