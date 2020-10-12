@@ -89,7 +89,6 @@ class FileHandlingAnalyser(ast.NodeVisitor):
             pass
         self.generic_visit(node)
 
-
     def visit_Call(self, node, *args, **kwargs):
         """Method to check if node is:
         1. Opening a file.
@@ -101,5 +100,13 @@ class FileHandlingAnalyser(ast.NodeVisitor):
             if(isinstance(parent, ast.Assign)):
                 for name_obj in parent.targets:
                     self.model.set_files_opened(name_obj, append=True)
+        self.generic_visit(node)
 
+    def visit_With(self, node, *args, **kwargs):
+        try:
+            for i in node.items:
+                if(i.context_expr.func.id == "open"):
+                    self.model.add_msg("TK1-1", "with open", lineno=node.lineno)
+        except AttributeError:
+            pass
         self.generic_visit(node)

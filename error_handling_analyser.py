@@ -54,11 +54,10 @@ class ErrorHandlingAnalyser(ast.NodeVisitor):
         1. Missing try - except around file opening.
         """
         if(hasattr(node.func, "id") 
-            and node.func.id == "open" 
-            and hasattr(node, "parent_node")
-            and utils.get_parent_instance(node, ast.Try, 
-                denied=(ast.FunctionDef, ast.AsyncFunctionDef)) is None):
-
+                and node.func.id == "open" 
+                and hasattr(node, "parent_node")
+                and utils.get_parent_instance(node, ast.Try, 
+                    denied=(ast.FunctionDef, ast.AsyncFunctionDef)) is None):
             self.model.add_msg("PK3", lineno=node.lineno)
         self.generic_visit(node)
 

@@ -174,6 +174,13 @@ class FunctionAnalyser(ast.NodeVisitor):
         2. If return is unreachable due to the logical condition, trivial
             cases are check with basic command check for unreachable code.
         """
+
+        # NOTE FIXME: Deprecated since version 3.8: 
+        # Methods visit_Num(), visit_Str(), visit_Bytes(), visit_NameConstant() 
+        # and visit_Ellipsis() are deprecated now and will not be called in
+        # future Python versions. Add the visit_Constant() method to handle all
+        # constant nodes.
+
         if(not isinstance(node.parent_node, (ast.FunctionDef, ast.AsyncFunctionDef))):
             self.model.add_msg("AR6-2", lineno=node.lineno)
 
@@ -263,7 +270,6 @@ class FunctionAnalyser(ast.NodeVisitor):
         """
         self._check_nested_function(node)
         self.generic_visit(node)
-
 
     def visit_Yield(self, node, *args, **kwargs):
         """Method to detect usage of yield."""
