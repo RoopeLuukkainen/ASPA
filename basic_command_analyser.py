@@ -3,6 +3,7 @@ __version__ = "0.3.1"
 __author__ = "RL"
 
 import ast
+# import keyword
 import re
 
 import utils_lib as utils
@@ -25,7 +26,7 @@ class BasicsAnalyser(ast.NodeVisitor):
         """
         try:
             if(not self.valid_naming.match(name)):  # Must be re.match, not re.search
-                self.model.add_msg("PT0", name, lineno=node.lineno)
+                self.model.add_msg("PT2", name, lineno=node.lineno)
             # else:
             #     print("valid", node.lineno, name)
 
@@ -33,6 +34,12 @@ class BasicsAnalyser(ast.NodeVisitor):
         # e.g. when importing module without as-keyword (as)name will be None.
         except TypeError:
             pass
+
+        # using keyword actually creates syntax error to ast.parse therefore 
+        # this test is no in used
+        # if(keyword.iskeyword(name)):
+        #     self.model.add_msg("PT2-1", name, lineno=node.lineno)
+
 
     def iterate_arg_names(self, node, *args, **kwargs):
         """Method to collect all argument names from a given function node.
@@ -145,7 +152,8 @@ class BasicsAnalyser(ast.NodeVisitor):
         try:
             # Check if there is no break in infinite loop
             if(utils.is_always_true(node.test)
-                    and not utils.get_child_instance(node, (ast.Break, ast.Return))):
+                    and not utils.get_child_instance(node, 
+                    (ast.Break, ast.Return, ast.Raise))):
                 self.model.add_msg("PT4-1", lineno=node.lineno)
         except AttributeError:
             pass
@@ -250,6 +258,8 @@ class BasicsAnalyser(ast.NodeVisitor):
 
     def visit_Raise(self, node, *args, **kwargs):
         self._check_unreachable_code(node, "raise")
+
+    # TODO check if yield or yield from is followed by any code?
 
     # Rest are placeholders
     def visit_If(self, node, *args, **kwargs):

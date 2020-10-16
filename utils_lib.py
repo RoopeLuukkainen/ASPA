@@ -76,7 +76,7 @@ NOTE = 3
 GOOD = 4
 DEBUG = 5
 
-# <...> means not yet used
+# <...> or commented code means not used
 MSG = {
     "ENG": {
         "default": ("Error occured!", ERROR),
@@ -84,14 +84,15 @@ MSG = {
                         + "Probably too few *args.", DEBUG), # Debug
         "type_error": ("Abstract Syntax Tree parameter has wrong type, e.g. None.", DEBUG), # Debug
         "syntax_error": ("File has a syntax error.", ERROR),
-        "PT0": ("Name '{}' contains other than A-Z, 0-9 and underscore characters.", WARNING),
         "PT1": ("Command '{}' is used.", NOTE),
+        "PT2": ("Name '{}' contains other than A-Z, 0-9 and underscore characters.", WARNING),
+        # "PT2-1": ("Name '{}' is Python keyword.", WARNING), # using keyword actually creates syntax error to ast.parse
         "PT4-1": ("Loop never breaks.", ERROR),
         "PT5": ("Unreachable code after command '{}'.", ERROR),
         "AR1": (f"No function defition for '{MAIN_FUNC_NAME}'.", NOTE),
         "AR2-1": ("Definition of the function '{}' is not at the global scope.", ERROR),
         "AR3": ("Global variable '{}'.", ERROR),
-        "AR3-2": ("Variable or object is used in global scope '{}.{}'.", ERROR), # Works only with objects
+        # "AR3-2": ("Variable or object is used in global scope '{}.{}'.", ERROR), # Works only with objects
         "AR4": ("Recursive function call.", NOTE),
         "AR5-1": ("Function '{}' requires at least {} parameters, but {} given.", ERROR),
         "AR5-2": ("Function '{}' requires at most {} parameters, but {} given.", ERROR),
@@ -101,8 +102,7 @@ MSG = {
         "AR6-2": ("Return statement at the middle of the function.", NOTE),
         "AR6-3": ("Missing value from the return-statement.", WARNING),
         "AR6-4": ("Return value is a constant.", NOTE),
-        "AR6-5": ("<Lines after the return-statement.>", ERROR),
-        "AR7": ("Statement which should not be in global scope.", WARNING),
+        "AR7": ("<Statement which should not be in global scope.>", WARNING),
         # "MR1": ("Element '{}' should be before '{}'.", WARNING),
         "MR1": ("Statement seem to be in wrong location.", WARNING),
         "MR2-3": ("Function call '{}()' is {} function call in global scope. There "
@@ -113,7 +113,6 @@ MSG = {
         "MR3": ("Module '{}' is imported again.", ERROR),
         "MR3-1": ("From module '{}' function(s) or module(s) are imported again.", WARNING),
         "MR4": ("Import of the module '{}' is not at the global scope.", ERROR),
-        "MR4-1": ("<Import of the module '{}' is not at the beginning of the file.>", WARNING),
         "MR5": ("Missing some or all header comments at {} first lines of the file.", WARNING),
         "PK1": ("Error handling has only one (1) except.", NOTE),
         "PK1-1": ("Missing exception type.", WARNING),
@@ -144,14 +143,15 @@ MSG = {
                       + "liian vähän argumentteja (*args).", DEBUG), # Debug
         "type_error": ("Syntaksipuun parametri on väärää tyyppiä, esim. None.", DEBUG), # Debug
         "syntax_error": ("Tiedostossa on syntaksi virhe.", ERROR),
-        "PT0": ("Nimessä '{}' on muita kuin A-Z, 0-9 ja alaviiva merkkejä.", WARNING),
         "PT1": ("Komentoa '{}' on käytetty.", NOTE),
+        "PT2": ("Nimessä '{}' on muita kuin A-Z, 0-9 ja alaviiva merkkejä.", WARNING),
+        # "PT2-1": ("Nimi '{}' on Pythonin avainsana.", WARNING), # using keyword actually creates syntax error to ast.parse
         "PT4-1": ("Silmukkaa ei koskaan pysäytetä.", ERROR),
-        "PT5": ("Koodirivejä kommenon '{}' jälkeen.", ERROR),
+        "PT5": ("Koodirivejä komennon '{}' jälkeen.", ERROR),
         "AR1": (f"Ohjelmasta ei löytynyt määrittelyä '{MAIN_FUNC_NAME}':lle.", NOTE),
         "AR2-1": ("Aliohjelman '{}' määrittely ei ole päätasolla.", ERROR),
         "AR3": ("Globaalimuuttuja '{}'.", ERROR),
-        "AR3-2": ("Muuttujan tai olion globaali käyttö '{}.{}'.", ERROR),
+        # "AR3-2": ("Muuttujan tai olion globaali käyttö '{}.{}'.", ERROR),
         "AR4": ("Rekursiivinen aliohjelmakutsu.", NOTE),
         "AR5-1": ("Aliohjelma '{}' vaatii vähintään {} kpl parametreja, mutta {} lähetetty.", ERROR),
         "AR5-2": ("Aliohjelma '{}' vaatii enintään {} kpl parametreja, mutta {} lähetetty.", ERROR),
@@ -159,10 +159,9 @@ MSG = {
         "AR6": ("Aliohjelman '{}' lopusta puuttuu return-komento.", ERROR),
         "AR6-1": ("Käytetään generaattoria '{}' aliohjelmassa '{}'.", NOTE), # Yield and yield from detection
         "AR6-2": ("Keskellä aliohjelmaa on return.", NOTE),
-        "AR6-3": ("return-kommenosta puuttuu paluuarvo.", WARNING),
+        "AR6-3": ("return-komennosta puuttuu paluuarvo.", WARNING),
         "AR6-4": ("Paluuarvo on vakio.", NOTE),
-        "AR6-5": ("<Koodirivejä return-komennon jälkeen.>", ERROR),
-        "AR7": ("Komento, jonka ei tulisi olla päätasolla.", WARNING),
+        "AR7": ("<Komento, jonka ei tulisi olla päätasolla.>", WARNING),
         # "MR1": ("Komennon '{}' pitäisi olla ennen '{}'.", WARNING),
         "MR1": ("Komento vaikuttaisi olevan väärässä kohdin tiedostoa.", WARNING),
         "MR2-3": ("Aliohjelmakutsu '{}()' on {}. aliohjelmakutsu. Pitäisi olla vain "
@@ -171,7 +170,6 @@ MSG = {
         "MR3": ("Kirjasto '{}' sisällytetään (eng. import) uudelleen.", ERROR),
         "MR3-1": ("Kirjastosta '{}' sisällytetään sisältöä uudelleen.", WARNING),
         "MR4": ("Kirjaston '{}' sisällytys (eng. import) ei ole päätasolla.", ERROR),
-        "MR4-1": ("<Kirjaston '{}' sisällytys (eng. import) ei ole tiedoston alussa.>", WARNING),
         "MR5": ("Tiedostossa ei ole kaikkia alkukommentteja tiedoston {}"
                 + " ensimmäisellä rivillä.", WARNING),
         "PK1": ("Virheenkäsittelyssä vain yksi (1) except.", NOTE),
@@ -182,7 +180,7 @@ MSG = {
         "TK1": ("Tiedostokahva '{}' on sulkematta.", ERROR),
         "TK1-1": ("Tällä kurssilla '{}':n käyttö ei ole suositeltu rakenne.", NOTE),
         "TK1-2": ("Tiedostokahva '{}' suljetaan except-haarassa.", WARNING),
-        "TK1-3": ("Tiedoston sulkukommenosta '{}.{}' puuttuvat sulut.", ERROR),
+        "TK1-3": ("Tiedoston sulkukomenosta '{}.{}' puuttuvat sulut.", ERROR),
         "TK2": ("Tiedosto-operaatio '{}.{}' eri aliohjelmassa kuin avaus ja sulkeminen.", ERROR),
         "TR2-1": ("Luokan käyttö suoraan ilman objektia '{}.{}'.", ERROR),
         "TR2-2": ("Olion luonnista puuttuvat sulkeet. Pitäisi olla '{}()'.", ERROR),
