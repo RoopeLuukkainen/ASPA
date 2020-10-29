@@ -324,13 +324,15 @@ def add_siblings(tree):
             # body, orelse, handlers or finalbody
             if(isinstance(field[1], (list, tuple))):
                 previous_sibling = None
+                last = None
                 for child_node in field[1]:
                     if(previous_sibling):
                         previous_sibling.next_sibling = child_node
                     child_node.previous_sibling = previous_sibling
                     previous_sibling = child_node
-                else:
-                    child_node.next_sibling = None
+                    last = child_node
+                if(last):
+                    last.next_sibling = None
 
     # # Print siblings
     # for node in ast.walk(tree):

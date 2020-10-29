@@ -132,12 +132,25 @@ class FiledialogPanel(tk.Frame):
         initdir = self.root
         # File dialog
         if(dir):
-            path = filedialog.askdirectory(initialdir=initdir, title=utils.GUI[self.parent.LANG]["select_folder"])
+            path = filedialog.askdirectory(
+                initialdir=initdir,
+                title=utils.GUI[self.parent.LANG]["select_folder"]
+            )
         else:
-            path = filedialog.askopenfilename(initialdir=initdir, title=utils.GUI[self.parent.LANG]["select_file"],
-                        filetype = (("Python", "*.py"), (utils.GUI[self.parent.LANG]["all_files"], "*")))
+            path = filedialog.askopenfilename(
+                initialdir=initdir,
+                title=utils.GUI[self.parent.LANG]["select_file"],
+                filetypes=(
+                    ("Python", "*.py"),
+                    (utils.GUI[self.parent.LANG]["all_files"], "*")
+                ),
+                multiple=True
+            )
 
-        if(path != ""):
+        if(isinstance(path, tuple)):
+            for p in path:
+                self.add_file(p)
+        elif(path):
             self.add_file(path)
         return None
 
