@@ -102,7 +102,7 @@ MSG = {
         "AR6-2": ("Return statement at the middle of the function.", NOTE),
         "AR6-3": ("Missing value from the return-statement.", WARNING),
         "AR6-4": ("Return value is a constant.", NOTE),
-        "AR7": ("<Statement which should not be in global scope.>", WARNING),
+        # "AR7": ("<Statement which should not be in global scope.>", WARNING),
         # "MR1": ("Element '{}' should be before '{}'.", WARNING),
         "MR1": ("Statement seem to be in wrong location.", WARNING),
         "MR2-3": ("Function call '{}()' is {} function call in global scope. There "
@@ -161,7 +161,7 @@ MSG = {
         "AR6-2": ("Keskellä aliohjelmaa on return.", NOTE),
         "AR6-3": ("return-komennosta puuttuu paluuarvo.", WARNING),
         "AR6-4": ("Paluuarvo on vakio.", NOTE),
-        "AR7": ("<Komento, jonka ei tulisi olla päätasolla.>", WARNING),
+        # "AR7": ("<Komento, jonka ei tulisi olla päätasolla.>", WARNING),
         # "MR1": ("Komennon '{}' pitäisi olla ennen '{}'.", WARNING),
         "MR1": ("Komento vaikuttaisi olevan väärässä kohdin tiedostoa.", WARNING),
         "MR2-3": ("Aliohjelmakutsu '{}()' on {}. aliohjelmakutsu. Pitäisi olla vain "
