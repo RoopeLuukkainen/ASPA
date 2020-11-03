@@ -5,6 +5,7 @@ __author__ = "RL"
 import ast
 
 import utils_lib as utils
+import templates
 
 class PreAnalyser(ast.NodeVisitor):
     """
@@ -57,7 +58,7 @@ class PreAnalyser(ast.NodeVisitor):
             name = f"{self.library}.{name}"
         if(not name in self.import_dict.keys()):
             self.import_dict[name] = list()
-        self.import_dict[name].append(utils.ImportTemplate(
+        self.import_dict[name].append(templates.ImportTemplate(
             name, node.lineno, node, import_from=import_from))
 
     def _store_assign(self, node):
@@ -95,10 +96,18 @@ class PreAnalyser(ast.NodeVisitor):
                         or utils.get_parent_instance(node,
                         (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)) is None):
                     if(isinstance(node.value, (ast.Constant, ast.Tuple))):
-                        self.constant_dict[name] = utils.GlobalTemplate(name, var.lineno, var)
+                        self.constant_dict[name] = templates.GlobalTemplate(
+                                                        name,
+                                                        var.lineno,
+                                                        var
+                                                    )
                         # print(f"Const, {name}-{var.lineno}")
                     else:
-                        self.global_dict[name] = utils.GlobalTemplate(name, var.lineno, var)
+                        self.global_dict[name] = templates.GlobalTemplate(
+                                                    name,
+                                                    var.lineno,
+                                                    var
+                                                )
                         # print(f"Global, {name}-{var.lineno}")
                 # else:
                 #     print("skip", node.lineno)
@@ -111,7 +120,7 @@ class PreAnalyser(ast.NodeVisitor):
             key = f"{parent.name}.{key}"
         if(self.library):
             key = f"{self.library}.{key}"
-        self.class_dict[key] = utils.ClassTemplate(
+        self.class_dict[key] = templates.ClassTemplate(
             node.name, node.lineno, node)
 
     def _store_function(self, node):
@@ -125,9 +134,10 @@ class PreAnalyser(ast.NodeVisitor):
             key = f"{parent.name}.{key}"
         if(self.library):
             key = f"{self.library}.{key}"
-        #  TODO: If key exist then there are two identically named functions in same scope
+        #  TODO: If key exist then there are two identically named functions 
+        # in same scope
         # Could use similar list solution as with imports
-        self.function_dict[key] = utils.FunctionTemplate(
+        self.function_dict[key] = templates.FunctionTemplate(
             node.name, node.lineno, node, pos_args, kw_args)
 
     def _store_call(self, node):
@@ -135,9 +145,11 @@ class PreAnalyser(ast.NodeVisitor):
             if(node.col_offset == 0 
                     or utils.get_parent_instance(node,
                     (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)) is None):
-                self.call_dict[node.func.id] = utils.CallTemplate(node.func.id,
-                                                                  node.lineno,
-                                                                  node)
+                self.call_dict[node.func.id] = utils.CallTemplate(
+                                                    node.func.id,
+                                                    node.lineno,
+                                                    node
+                                                )
         except AttributeError:
             pass
 

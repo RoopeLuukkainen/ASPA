@@ -155,7 +155,7 @@ MSG = {
         "AR4": ("Rekursiivinen aliohjelmakutsu.", NOTE),
         "AR5-1": ("Aliohjelma '{}' vaatii vähintään {} kpl parametreja, mutta {} lähetetty.", ERROR),
         "AR5-2": ("Aliohjelma '{}' vaatii enintään {} kpl parametreja, mutta {} lähetetty.", ERROR),
-        "AR5-3": ("Aliohjelmakutsussa '{}', '{}' on virheellinen muuttujan nimi.", ERROR),
+        "AR5-3": ("Aliohjelmakutsussa '{}', '{}' on virheellinen parametrin nimi.", ERROR), # Using word parametri here, not argumentti
         "AR6": ("Aliohjelman '{}' lopusta puuttuu return-komento.", ERROR),
         "AR6-1": ("Käytetään generaattoria '{}' aliohjelmassa '{}'.", NOTE), # Yield and yield from detection
         "AR6-2": ("Keskellä aliohjelmaa on return.", NOTE),
@@ -263,39 +263,7 @@ GUI = {
     }
 }
 
-# TODO General NodeTemplate
-class FunctionTemplate:
-    def __init__(self, name, lineno, astree, pos_args, kw_args):
-        self.name = name
-        self.pos_args = pos_args # Positional arguments before *args
-        self.kw_args = kw_args # Keyword arguments before **kwargs
-        self.astree = astree # AST of the function
-        self.lineno = lineno
 
-class ImportTemplate:
-    def __init__(self, name, lineno, astree, import_from=False):
-        self.name = name
-        self.import_from = import_from 
-        self.astree = astree # AST of the 'import'/'import from' node
-        self.lineno = lineno
-
-class ClassTemplate:
-    def __init__(self, name, lineno, astree):
-        self.name = name
-        self.astree = astree # AST of the 'import'/'import from' node
-        self.lineno = lineno
-
-class GlobalTemplate:
-    def __init__(self, name, lineno, astree):
-        self.name = name
-        self.astree = astree # AST of the 'import'/'import from' node
-        self.lineno = lineno
-
-class CallTemplate:
-    def __init__(self, name, lineno, astree):
-        self.name = name
-        self.astree = astree # AST of the 'import'/'import from' node
-        self.lineno = lineno
 
 
 # AST improvement utilities
