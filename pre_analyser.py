@@ -4,7 +4,8 @@ __author__ = "RL"
 
 import ast
 
-import utils_lib as utils
+# import utils_lib as utils
+import analysis_utils as a_utils
 import templates
 
 class PreAnalyser(ast.NodeVisitor):
@@ -85,15 +86,13 @@ class PreAnalyser(ast.NodeVisitor):
         for var in node.targets[:]:
             for name in get_names(var, names): # name must be str or int
                 if(name in self.global_dict.keys()):
-                    # print(f"in G, {name}-{var.lineno}")
                     continue
 
                 elif(name in self.constant_dict.keys()):
                     self.global_dict[name] = self.constant_dict.pop(name, None)
-                    # print(f"Change, {name}-{var.lineno}")
 
                 elif(var.col_offset == 0 
-                        or utils.get_parent_instance(node,
+                        or a_utils.get_parent_instance(node,
                         (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)) is None):
                     if(isinstance(node.value, (ast.Constant, ast.Tuple))):
                         self.constant_dict[name] = templates.GlobalTemplate(
@@ -101,20 +100,16 @@ class PreAnalyser(ast.NodeVisitor):
                                                         var.lineno,
                                                         var
                                                     )
-                        # print(f"Const, {name}-{var.lineno}")
                     else:
                         self.global_dict[name] = templates.GlobalTemplate(
                                                     name,
                                                     var.lineno,
                                                     var
                                                 )
-                        # print(f"Global, {name}-{var.lineno}")
-                # else:
-                #     print("skip", node.lineno)
 
     def _store_class(self, node):
         key = node.name
-        parent = utils.get_parent_instance(node, 
+        parent = a_utils.get_parent_instance(node, 
             (ast.ClassDef, ast.FunctionDef, ast.AsyncFunctionDef))
         if(parent):
             key = f"{parent.name}.{key}"
@@ -128,7 +123,7 @@ class PreAnalyser(ast.NodeVisitor):
         pos_args = [i.arg for i in node.args.args]
         kw_args = [i.arg for i in node.args.kwonlyargs]
 
-        parent = utils.get_parent_instance(node, 
+        parent = a_utils.get_parent_instance(node, 
             (ast.ClassDef, ast.FunctionDef, ast.AsyncFunctionDef))
         if(parent):
             key = f"{parent.name}.{key}"
@@ -143,9 +138,9 @@ class PreAnalyser(ast.NodeVisitor):
     def _store_call(self, node):
         try:
             if(node.col_offset == 0 
-                    or utils.get_parent_instance(node,
+                    or a_utils.get_parent_instance(node,
                     (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)) is None):
-                self.call_dict[node.func.id] = utils.CallTemplate(
+                self.call_dict[node.func.id] = templates.CallTemplate(
                                                     node.func.id,
                                                     node.lineno,
                                                     node

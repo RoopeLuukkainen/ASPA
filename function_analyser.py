@@ -5,6 +5,7 @@ __author__ = "RL"
 import ast
 
 import utils_lib as utils
+import analysis_utils as a_utils
 
 class FunctionAnalyser(ast.NodeVisitor):
     # Initialisation
@@ -18,7 +19,7 @@ class FunctionAnalyser(ast.NodeVisitor):
         """
         # Col offset should detect every function definition which is indended
         if(node.col_offset > 0
-                or utils.get_parent_instance(node, 
+                or a_utils.get_parent_instance(node, 
                 (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)) is not None):
             self.model.add_msg("AR2-1", node.name, lineno=node.lineno)
 
@@ -68,7 +69,7 @@ class FunctionAnalyser(ast.NodeVisitor):
     def _check_recursion(self, node, func, *args, **kwargs):
         # Recursive function calls.
         try:
-            if(func == utils.get_parent_instance(node,
+            if(func == a_utils.get_parent_instance(node,
                     (ast.FunctionDef, ast.AsyncFunctionDef)).name):
                 self.model.add_msg("AR4", lineno=node.lineno)
         except AttributeError:  # AttributeError occus e.g. when function name is searched from global scope
@@ -128,7 +129,7 @@ class FunctionAnalyser(ast.NodeVisitor):
     #     # Global variable detection
     #     for var in node.targets[:]:
     #         if(node.col_offset == 0
-    #                 or utils.get_parent_instance(node,
+    #                 or a_utils.get_parent_instance(node,
     #                 (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)) is None):
     #             if(isinstance(var, ast.Attribute)):
     #                 self.model.add_msg("AR3-2", var.value.id, var.attr, lineno=var.lineno)
@@ -275,7 +276,7 @@ class FunctionAnalyser(ast.NodeVisitor):
         """Method to detect usage of yield."""
         self.model.add_msg("AR6-1",
             "yield",
-            utils.get_parent_instance(node, (ast.FunctionDef, ast.AsyncFunctionDef)).name,
+            a_utils.get_parent_instance(node, (ast.FunctionDef, ast.AsyncFunctionDef)).name,
             lineno=node.lineno)
         self.generic_visit(node)
 
@@ -283,6 +284,6 @@ class FunctionAnalyser(ast.NodeVisitor):
         """Method to detect usage of yield from."""
         self.model.add_msg("AR6-1",
             "yield from",
-            utils.get_parent_instance(node, (ast.FunctionDef, ast.AsyncFunctionDef)).name,
+            a_utils.get_parent_instance(node, (ast.FunctionDef, ast.AsyncFunctionDef)).name,
             lineno=node.lineno)
         self.generic_visit(node)

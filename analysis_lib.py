@@ -16,6 +16,7 @@ import function_analyser
 
 # Utility libraries
 import utils_lib as utils
+import analysis_utils as a_utils
 
 class Model:
     def __init__(self, controller):
@@ -264,8 +265,8 @@ class Model:
 
             else:
                 files_in_dir = os.listdir(dir_path)
-                utils.add_parents(tree)
-                utils.add_siblings(tree)
+                a_utils.add_parents(tree)
+                a_utils.add_siblings(tree)
                 self.pre_analyse_tree(tree, files_in_dir, dir_path)
                 
                 # TODO: optimise such that os.listdir is done only once per directory

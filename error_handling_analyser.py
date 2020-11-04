@@ -4,7 +4,8 @@ __author__ = "RL"
 
 import ast
 
-import utils_lib as utils
+# import utils_lib as utils
+import analysis_utils as a_utils
 
 class ErrorHandlingAnalyser(ast.NodeVisitor):
     # Initialisation
@@ -56,7 +57,7 @@ class ErrorHandlingAnalyser(ast.NodeVisitor):
         if(hasattr(node.func, "id") 
                 and node.func.id == "open" 
                 and hasattr(node, "parent_node")
-                and utils.get_parent_instance(node, ast.Try, 
+                and a_utils.get_parent_instance(node, ast.Try, 
                     denied=(ast.FunctionDef, ast.AsyncFunctionDef)) is None):
             self.model.add_msg("PK3", lineno=node.lineno)
         self.generic_visit(node)
@@ -73,7 +74,7 @@ class ErrorHandlingAnalyser(ast.NodeVisitor):
 
         try:
             if(node.attr in self.file_operations
-                    and utils.get_parent_instance(node, ast.Try,
+                    and a_utils.get_parent_instance(node, ast.Try,
                     denied=(ast.FunctionDef, ast.AsyncFunctionDef)) is None):
                 self.model.add_msg("PK4", node.value.id, node.attr, lineno=node.lineno)
         except AttributeError:
@@ -87,9 +88,9 @@ class ErrorHandlingAnalyser(ast.NodeVisitor):
             # print(names)
 
             if(node.iter.id in names
-                    and utils.get_parent_instance(node, ast.Try,
+                    and a_utils.get_parent_instance(node, ast.Try,
                     denied=(ast.FunctionDef, ast.AsyncFunctionDef)) is None):
-                # utils.get_parent_instance(node, (ast.FunctionDef, ast.AsyncFunctionDef))
+                # a_utils.get_parent_instance(node, (ast.FunctionDef, ast.AsyncFunctionDef))
                     
                 self.model.add_msg("PK4b", f"for {node.target.id} in {node.iter.id}", lineno=node.lineno)
         except (AttributeError, TypeError):

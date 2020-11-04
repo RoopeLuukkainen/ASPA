@@ -5,7 +5,8 @@ __author__ = "RL"
 import ast
 
 
-import utils_lib as utils
+# import utils_lib as utils
+import analysis_utils as a_utils
 
 class DataStructureAnalyser(ast.NodeVisitor):
    # Initialisations
@@ -29,7 +30,7 @@ class DataStructureAnalyser(ast.NodeVisitor):
         # Object creating without parenthesis
         try:
             name = node.value.id
-            parent = utils.get_parent_instance(node, 
+            parent = a_utils.get_parent_instance(node, 
                 (ast.ClassDef, ast.FunctionDef, ast.AsyncFunctionDef))
 
             if(name in classes or f"{parent.name}.{name}" in classes):
@@ -45,7 +46,7 @@ class DataStructureAnalyser(ast.NodeVisitor):
         """
         # Col offset should detect every class definition which is indended
         if(node.col_offset > 0
-                or utils.get_parent_instance(node, 
+                or a_utils.get_parent_instance(node, 
                 (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)) is not None):
             self.model.add_msg("TR2-3", node.name, lineno=node.lineno)
 

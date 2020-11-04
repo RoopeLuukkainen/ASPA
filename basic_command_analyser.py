@@ -7,6 +7,7 @@ import ast
 import re
 
 import utils_lib as utils
+import analysis_utils as a_utils
 
 class BasicsAnalyser(ast.NodeVisitor):
     """Class to do static analysis by visiting nodes of Abstract Syntax
@@ -128,10 +129,10 @@ class BasicsAnalyser(ast.NodeVisitor):
 
             # Unreachable code check
             if(call_name == "exit"):
-                self._check_unreachable_code(utils.get_parent_instance(node, ast.Expr),
+                self._check_unreachable_code(a_utils.get_parent_instance(node, ast.Expr),
                                             "exit")
             elif(call_name == "quit"):
-                self._check_unreachable_code(utils.get_parent_instance(node, ast.Expr), 
+                self._check_unreachable_code(a_utils.get_parent_instance(node, ast.Expr), 
                                             "quit")
         except AttributeError:
             try:
@@ -140,7 +141,7 @@ class BasicsAnalyser(ast.NodeVisitor):
 
                 # Unreachable code check
                 if(attribute_name == "sys" and call_name == "exit"):
-                    self._check_unreachable_code(utils.get_parent_instance(node, ast.Expr),
+                    self._check_unreachable_code(a_utils.get_parent_instance(node, ast.Expr),
                                                 "sys.exit")
 
             except AttributeError:

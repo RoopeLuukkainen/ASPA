@@ -5,7 +5,8 @@ __author__ = "RL"
 import ast
 
 
-import utils_lib as utils
+# import utils_lib as utils
+import analysis_utils as a_utils
 
 class FileHandlingAnalyser(ast.NodeVisitor):
     # Initally opened and closed were SETs of names, that was super easy and efficient but not complete solution
@@ -22,8 +23,8 @@ class FileHandlingAnalyser(ast.NodeVisitor):
             for opened in opened_files:
                 if(closed.id == opened.id
                         and closed.lineno >= opened.lineno
-                        and utils.get_parent_instance(opened, (ast.FunctionDef, ast.AsyncFunctionDef))
-                        is utils.get_parent_instance(closed, (ast.FunctionDef, ast.AsyncFunctionDef))):
+                        and a_utils.get_parent_instance(opened, (ast.FunctionDef, ast.AsyncFunctionDef))
+                        is a_utils.get_parent_instance(closed, (ast.FunctionDef, ast.AsyncFunctionDef))):
                     temp = opened
             if(temp):  # After for loop to find last file handle
                 try:
@@ -38,7 +39,7 @@ class FileHandlingAnalyser(ast.NodeVisitor):
 
     def check_same_parent(self, node, attr, parent=tuple()):
         try:
-            func = utils.get_parent_instance(node, parent)
+            func = a_utils.get_parent_instance(node, parent)
             name = node.value.id
             line = node.lineno
             has_close = False
@@ -76,9 +77,9 @@ class FileHandlingAnalyser(ast.NodeVisitor):
         """
         try:
             if(node.attr == "close"):
-                if(utils.get_parent_instance(node, ast.ExceptHandler) is not None):
+                if(a_utils.get_parent_instance(node, ast.ExceptHandler) is not None):
                     self.model.add_msg("TK1-2", node.value.id, lineno=node.lineno)
-                if(utils.get_parent_instance(node, ast.Call) is None):
+                if(a_utils.get_parent_instance(node, ast.Call) is None):
                     self.model.add_msg("TK1-3", node.value.id, "close", lineno=node.lineno)
                 if(hasattr(node, "value") and isinstance(node.value, ast.Name)):
                     self.model.set_files_closed(node.value, append=True)
