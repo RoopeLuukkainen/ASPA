@@ -1,7 +1,4 @@
 """Class file. Contains ExamAnalyser class."""
-__version__ = "0.3.1"
-__author__ = "RL"
-
 import ast
 # import keyword
 import re

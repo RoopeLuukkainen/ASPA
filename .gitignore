@@ -1,6 +1,3 @@
-# ignore python cache
-__pycache__/
-
 # ignore vscode config files
 .vscode/
 
@@ -34,10 +31,6 @@ viope_json_parser.py
 # ignore all result files
 results/
 tarkistukset*.txt
-
-# GUI test files
-GUI_test/
-
 
 
 # FROM GITHUB:

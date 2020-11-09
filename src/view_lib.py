@@ -1,3 +1,4 @@
+"""Module for TKinter GUI frames."""
 try:
     import Tkinter as tk  # Python 2
     from Tkinter import ttk         # Not tested

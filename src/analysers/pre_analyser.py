@@ -1,7 +1,4 @@
 """Class file. Contains PreAnalyser class."""
-__version__ = "0.0.1"
-__author__ = "RL"
-
 import ast
 
 import src.analysers.analysis_utils as a_utils

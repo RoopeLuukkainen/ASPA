@@ -1,7 +1,4 @@
 """Class file. Contains FunctionAnalyser class."""
-__version__ = "0.2.0"
-__author__ = "RL"
-
 import ast
 
 import src.config.config as cnf

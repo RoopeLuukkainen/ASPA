@@ -1,7 +1,4 @@
 """Class file. Contains FileStructureAnalyser class."""
-__version__ = "0.1.2"
-__author__ = "RL"
-
 import ast
 
 import src.analysers.analysis_utils as a_utils

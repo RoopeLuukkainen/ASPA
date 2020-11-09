@@ -1,6 +1,20 @@
 """Configuration file containing predefined constants."""
 
 import ast
+import pathlib
+
+DEFAULT_SETTINGS = {
+    "root": str(pathlib.Path(__file__).parent.absolute()),
+    "language": "FIN",
+    "dump_tree": False,
+    "console_print": False,
+    "file_write": True,
+    "GUI_print": True,
+    "result_path": str(pathlib.Path(__file__).parent.absolute().joinpath("tarkistukset.txt")),
+    "only_leaf_files": False,
+    "show_statistics": False,
+    "settings_file": "settings.json"
+}
 
 # Analysis constants
 MAIN_FUNC_NAME = "paaohjelma"
@@ -45,6 +59,14 @@ ALLOWED_ELEMENTS = {ast.Import, ast.ImportFrom, ast.Assign, ast.ClassDef,
 # }
 
 # Analysis category names
+CHECKBOX_OPTIONS = ["basic",
+                    "function",
+                    "file_handling",
+                    "data_structure",
+                    "library",
+                    "exception_handling"
+                   ]
+
 TEXT = {
     "FIN": {
         "basic": "Perustoiminnot",

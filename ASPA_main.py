@@ -1,45 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """The main file for ASPA - static analyser."""
-__version__ = "0.1.1"
+__version__ = "0.1.2"
 __author__ = "RL"
 
-import json
-import pathlib
-
 import src.GUI as GUI
-from src.utils_lib import read_file, write_file
-
-DEFAULT_SETTINGS = {
-    "root": str(pathlib.Path(__file__).parent.absolute()),
-    "language": "FIN",
-    "dump_tree": False,
-    "console_print": False,
-    "file_write": True,
-    "GUI_print": True,
-    "result_path": str(pathlib.Path(__file__).parent.absolute().joinpath("tarkistukset.txt")),
-    "only_leaf_files": False,
-    "show_statistics": False
-}
-
-def add_fixed_settings(settings):
-    settings["checkbox_options"] = ["basic", "function", "file_handling", "data_structure", "library", "exception_handling"]
-
-
-def init_settings():
-    settings_file = "settings.json"
-    settings = DEFAULT_SETTINGS # Currently reference not copy
-
-    content = read_file(settings_file, settings_file=True)
-    if(content):
-        for key, value in json.loads(content).items():
-            settings[key] = value
-    else:
-        content = json.dumps(settings, indent=4)
-        write_file(settings_file, content, mode="w")
-    add_fixed_settings(settings)
-    return settings
-
+from src.utils_lib import init_settings
 
 def main():
     settings = init_settings()

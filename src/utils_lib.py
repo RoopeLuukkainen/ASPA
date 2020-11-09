@@ -1,9 +1,7 @@
-"""Library containing utility functions general use."""
-__version__ = "0.1.5"
-__author__ = "RL"
-
+"""Module containing utility functions general use."""
 import ast
 import os
+import json
 
 import src.config.config as cnf
 
@@ -156,3 +154,22 @@ def create_dash(a="-", dash_count=80, get_dash=False):
     else:
         print(a*dash_count)
 
+
+# INIT FUNCTIONS
+def add_fixed_settings(settings):
+    settings["checkbox_options"] = cnf.CHECKBOX_OPTIONS
+
+
+def init_settings():
+    settings = cnf.DEFAULT_SETTINGS # Currently reference not copy
+    settings_file = settings["settings_file"]
+
+    content = read_file(settings_file, settings_file=True)
+    if(content):
+        for key, value in json.loads(content).items():
+            settings[key] = value
+    else:
+        content = json.dumps(settings, indent=4)
+        write_file(settings_file, content, mode="w")
+    add_fixed_settings(settings)
+    return settings

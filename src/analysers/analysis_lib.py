@@ -1,6 +1,4 @@
 """File to handle ASPA static analysers."""
-__version__ = "0.1.1"
-__author__ = "RL"
 
 import ast
 import os
