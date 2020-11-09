@@ -14,7 +14,17 @@ class FunctionAnalyser(ast.NodeVisitor):
         self.MISSING_RETURN_ALLOWED = cnf.MISSING_RETURN_ALLOWED
 
     # General methods
-    # TODO: add check return check (copy from FunctionDef) and include missing retrun allowed cases
+    def _check_return(self, node, *args, **kwargs):
+        last = node.body[-1]
+        try:
+            if(not (isinstance(last, ast.Return)
+                        or (isinstance(last, ast.Expr) 
+                        and isinstance(last.value, (ast.Yield, ast.YieldFrom))))
+                    and not "*" in self.MISSING_RETURN_ALLOWED 
+                    and not node.name in self.MISSING_RETURN_ALLOWED):
+                self.model.add_msg("AR6", node.name, lineno=node.lineno)
+        except AttributeError:
+            pass
 
     def _check_nested_function(self, node, *args, **kwargs):
         """Method to check
@@ -257,21 +267,8 @@ class FunctionAnalyser(ast.NodeVisitor):
         TODO Does not find:
         1. If there are multiple returns
         """
-        # has_return = False
-        # for elem in node.body:
-        #     if(isinstance(elem, ast.Return)):
-        #         has_return = True
 
-        # else:  # this match if 1 layer of function body has no return, 
-                 # doesn't work if return is indented more
-        #     if(not has_return):
-        #         self.model.add_msg("AR6", node.name, lineno=node.lineno)
-
-        if(not isinstance(node.body[-1], ast.Return)):
-        #         and node.body[-1] is not ast.Yield
-        #         and node.body[-1] is not ast.YieldFrom): # Doesn't work because yield (from) are inside expr node
-            self.model.add_msg("AR6", node.name, lineno=node.lineno)
-
+        self._check_return(node)
         self._check_nested_function(node)
         self.generic_visit(node)
 
@@ -279,6 +276,7 @@ class FunctionAnalyser(ast.NodeVisitor):
         """Method to check usage of async functions. Currently checks:
         1. If function declaration is nested.
         """
+        self._check_return(node)
         self._check_nested_function(node)
         self.generic_visit(node)
 
