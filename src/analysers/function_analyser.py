@@ -192,8 +192,13 @@ class FunctionAnalyser(ast.NodeVisitor):
                 and hasattr(return_value, "value")):
             pass
 
-        # This match variables, sets, tuples, lists, dictionaries.
-        elif(isinstance(return_value, (ast.Name, ast.List, ast.Tuple, ast.Dict, ast.Set))):
+        # This match tuples include also multiple retun values case.
+        elif(isinstance(return_value, ast.Tuple)):
+            self.model.add_msg("AR6-5", lineno=node.lineno)
+            pass
+
+        # This match variables, sets, lists, dictionaries.
+        elif(isinstance(return_value, (ast.Name, ast.List, ast.Dict, ast.Set))):
             pass
 
         # This match objects and other values with attributes.
@@ -214,9 +219,7 @@ class FunctionAnalyser(ast.NodeVisitor):
         # return 1 + 2
         # return a or b
         else:
-            pass
-            #TODO: Remove test print when not needed anymore
-            # print("<TEST: Palautetaan jotain mitä ei tunnistettu!>", return_value.lineno) # Debug
+            self.model.add_msg("AR6-6", lineno=node.lineno)
         self.generic_visit(node)
 
     def visit_Call(self, node, *args, **kwargs):
