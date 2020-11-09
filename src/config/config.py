@@ -19,7 +19,16 @@ DEFAULT_SETTINGS = {
 # Analysis constants
 MAIN_FUNC_NAME = "paaohjelma"
 
-IGNORE = {"PT1", "PK1", "MR5", "AR6-1", "AR6-2"} # Add keys of ignored error messages
+# Add names of special functions which are allowed/denied inside class.
+# Use * to match any function names. Allowed overrides denied.
+ALLOWED_FUNCTIONS = {"__init__"}
+DENIED_FUNCTIONS = {"*"}
+
+# Add function names which are allowed to miss return command.
+MISSING_RETURN_ALLOWED = {"__init__"}
+
+# Add keys of ignored error messages
+IGNORE = {"PT1", "PK1", "MR5", "AR6-1", "AR6-2"}
 GENERAL = 0
 ERROR = 1
 WARNING = 2

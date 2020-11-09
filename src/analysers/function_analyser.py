@@ -8,24 +8,34 @@ class FunctionAnalyser(ast.NodeVisitor):
     # Initialisation
     def __init__(self, model):
         self.model = model
+        self.MAIN_FUNC_NAME = cnf.MAIN_FUNC_NAME
+        self.ALLOWED_FUNC = cnf.ALLOWED_FUNCTIONS
+        self.DENIED_FUNC = cnf.DENIED_FUNCTIONS
+        self.MISSING_RETURN_ALLOWED = cnf.MISSING_RETURN_ALLOWED
 
     # General methods
+    # TODO: add check return check (copy from FunctionDef) and include missing retrun allowed cases
+
     def _check_nested_function(self, node, *args, **kwargs):
         """Method to check
         1. function definition is not at a global scope.
         """
+        name = node.name
         # Col offset should detect every function definition which is indended
         if(node.col_offset > 0
                 or a_utils.get_parent_instance(node, 
                 (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)) is not None):
-            self.model.add_msg("AR2-1", node.name, lineno=node.lineno)
+
+            if((not "*" in self.ALLOWED_FUNC and not name in self.ALLOWED_FUNC)
+                    and (name in self.DENIED_FUNC or "*" in self.DENIED_FUNC)):
+                self.model.add_msg("AR2-1", name, lineno=node.lineno)
 
     def check_main_function(self, *args, **kwargs):
         if(len(self.model.get_call_dict().keys()) > 0
-                and not cnf.MAIN_FUNC_NAME in self.model.get_function_dict().keys()):
+                and not self.MAIN_FUNC_NAME in self.model.get_function_dict().keys()):
             self.model.add_msg("AR1")
 
-        # if(not cnf.MAIN_FUNC_NAME in self.model.get_call_dict().keys()):
+        # if(not self.MAIN_FUNC_NAME in self.model.get_call_dict().keys()):
         #     pass # No paaohjelma called
 
     def check_element_order(self, body, element_order, *args, **kwargs):
