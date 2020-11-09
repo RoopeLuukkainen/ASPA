@@ -7,8 +7,8 @@ __author__ = "RL"
 import json
 import pathlib
 
-import GUI
-from utils_lib import read_file, write_file
+import src.GUI as GUI
+from src.utils_lib import read_file, write_file
 
 DEFAULT_SETTINGS = {
     "root": str(pathlib.Path(__file__).parent.absolute()),

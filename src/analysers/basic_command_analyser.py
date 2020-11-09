@@ -6,8 +6,7 @@ import ast
 # import keyword
 import re
 
-import utils_lib as utils
-import analysis_utils as a_utils
+import src.analysers.analysis_utils as a_utils
 
 class BasicsAnalyser(ast.NodeVisitor):
     """Class to do static analysis by visiting nodes of Abstract Syntax
@@ -152,8 +151,8 @@ class BasicsAnalyser(ast.NodeVisitor):
         # Found a while loop
         try:
             # Check if there is no break in infinite loop
-            if(utils.is_always_true(node.test)
-                    and not utils.get_child_instance(node, 
+            if(a_utils.is_always_true(node.test)
+                    and not a_utils.get_child_instance(node, 
                     (ast.Break, ast.Return, ast.Raise))):
                 self.model.add_msg("PT4-1", lineno=node.lineno)
         except AttributeError:

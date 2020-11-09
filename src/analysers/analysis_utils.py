@@ -90,3 +90,19 @@ def get_child_instance(node, allowed, denied=tuple()):
         elif(isinstance(child_node, denied)):
             break
     return child
+
+
+def is_always_true(test):
+    """
+    Function to define cases where conditional test is always true.
+    'test' should be ast.Compare type or ast.Constant. Returns truth
+    value.
+    TODO: Add more always true cases.
+    """
+    is_true = False
+    try:
+        if(isinstance(test, ast.Constant) and test.value == True):
+            is_true = True
+    except AttributeError:
+        pass
+    return is_true

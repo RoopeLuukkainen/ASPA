@@ -4,9 +4,8 @@ __author__ = "RL"
 
 import ast
 
-# import utils_lib as utils
-import analysis_utils as a_utils
-import templates
+import src.analysers.analysis_utils as a_utils
+import src.config.templates as templates
 
 class PreAnalyser(ast.NodeVisitor):
     """
