@@ -8,6 +8,7 @@ def add_parents(tree):
         for child_node in ast.iter_child_nodes(node):
             child_node.parent_node = node
 
+
 def add_siblings(tree):
     """
     Function to add previous_sibling and next_sibling attributes to each
@@ -106,3 +107,19 @@ def is_always_true(test):
     except AttributeError:
         pass
     return is_true
+
+
+def get_attribute_name(node):
+    try:
+        name = node.id
+    except AttributeError:
+        try:
+            name = ""
+            temp = node
+            while hasattr(temp, "attr"):
+                name = f"{name}.{temp.attr}"
+                temp = temp.value
+            name = f"{temp.id}{name}"
+        except AttributeError:
+            raise
+    return name

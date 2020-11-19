@@ -16,7 +16,13 @@ class FileHandlingAnalyser(ast.NodeVisitor):
         left_open = list(opened_files)
         for closed in closed_files:
             for opened in opened_files:
-                if(closed.id == opened.id
+                try:
+                    closed_name = a_utils.get_attribute_name(closed)
+                    opened_name = a_utils.get_attribute_name(opened)
+                    # print(closed_name, opened_name)
+                except AttributeError:
+                    continue
+                if(closed_name == opened_name
                         and closed.lineno >= opened.lineno
                         and a_utils.get_parent_instance(opened, (ast.FunctionDef, ast.AsyncFunctionDef))
                         is a_utils.get_parent_instance(closed, (ast.FunctionDef, ast.AsyncFunctionDef))):
@@ -29,7 +35,12 @@ class FileHandlingAnalyser(ast.NodeVisitor):
                     pass  # In this case same file is closed again
 
         for file in left_open:
-            self.model.add_msg("TK1", file.id, lineno=file.lineno)
+            try:
+                name = a_utils.get_attribute_name(file)
+            except AttributeError:
+                continue
+
+            self.model.add_msg("TK1", name, lineno=file.lineno)
         return None
 
     def check_same_parent(self, node, attr, parent=tuple()):
@@ -76,10 +87,13 @@ class FileHandlingAnalyser(ast.NodeVisitor):
                     self.model.add_msg("TK1-2", node.value.id, lineno=node.lineno)
                 if(a_utils.get_parent_instance(node, ast.Call) is None):
                     self.model.add_msg("TK1-3", node.value.id, "close", lineno=node.lineno)
-                if(hasattr(node, "value") and isinstance(node.value, ast.Name)):
-                    self.model.set_files_closed(node.value, append=True)
 
-            elif(node.attr in self.file_operations):
+                self.model.set_files_closed(node.value, append=True)
+        except AttributeError:
+            pass
+
+        try:
+            if(node.attr in self.file_operations):
                 self.check_same_parent(node, node.attr, (ast.FunctionDef, ast.AsyncFunctionDef))
         except AttributeError:
             pass

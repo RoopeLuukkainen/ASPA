@@ -32,8 +32,9 @@ class ErrorHandlingAnalyser(ast.NodeVisitor):
             if(not node.handlers):
                 pass
             elif(len(node.handlers) < 2):
-                self.model.add_msg("PK1", lineno=node.lineno) 
-                if(node.handlers[0].type == None): # TODO: THIS IS SAME check as "i.type == None" below, improve somehow
+                self.model.add_msg("PK1", lineno=node.lineno)
+                # TODO: THIS IS SAME check as "i.type == None" below, improve somehow
+                if(node.handlers[0].type == None):
                     self.model.add_msg("PK1-1", lineno=node.handlers[0].lineno)
             else:
                 for i in node.handlers[:-1]:
@@ -82,7 +83,7 @@ class ErrorHandlingAnalyser(ast.NodeVisitor):
         try:
             names = [i.id for i in self.model.get_files_opened()]
             # print(names)
-
+            # TODO: add check that file is opened in same function
             if(node.iter.id in names
                     and a_utils.get_parent_instance(node, ast.Try,
                     denied=(ast.FunctionDef, ast.AsyncFunctionDef)) is None):
