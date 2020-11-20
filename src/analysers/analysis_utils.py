@@ -73,6 +73,18 @@ def get_parent_instance(node, allowed, denied=tuple()):
     return parent
 
 
+def has_same_parent(node, others, allowed, denied=tuple()):
+    # NOT YET TESTED
+    parent = get_parent_instance(node, allowed, denied)
+    if(isinstance(others, (list, tuple, set))):
+        for i in others:
+            if(not parent or (parent != get_parent_instance(i, allowed, denied))):
+                return False
+    elif(not parent or (parent != get_parent_instance(others, allowed, denied))):
+        return False
+    return True
+
+
 def get_child_instance(node, allowed, denied=tuple()):
     """
     Function to get child instance of a node.
@@ -114,12 +126,15 @@ def get_attribute_name(node):
         name = node.id
     except AttributeError:
         try:
-            name = ""
+            name_parts = []
             temp = node
             while hasattr(temp, "attr"):
-                name = f"{name}.{temp.attr}"
+                name_parts.insert(0, temp.attr)
                 temp = temp.value
-            name = f"{temp.id}{name}"
+            name = ".".join([temp.id] + name_parts) #f"{}{name}"
+            name_parts.clear()
         except AttributeError:
+            name_parts.clear()
+            print("\nasds\n", node.lineno)
             raise
     return name

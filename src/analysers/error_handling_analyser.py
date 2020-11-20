@@ -71,9 +71,12 @@ class ErrorHandlingAnalyser(ast.NodeVisitor):
             if(node.attr in self.file_operations
                     and a_utils.get_parent_instance(node, ast.Try,
                     denied=(ast.FunctionDef, ast.AsyncFunctionDef)) is None):
-                self.model.add_msg("PK4", node.value.id, node.attr, lineno=node.lineno)
+                self.model.add_msg(
+                    "PK4",
+                    a_utils.get_attribute_name(node),
+                    lineno=node.lineno
+                )
         except AttributeError:
-            # print("visit_Attribute, Attribute error", node, node.lineno)
             pass
         self.generic_visit(node)
 
@@ -90,14 +93,14 @@ class ErrorHandlingAnalyser(ast.NodeVisitor):
             # Only works if there is one call, not call inside calls
             elif(isinstance(node.iter, ast.Call) and node.iter.func.id == "enumerate"):
                 iter_name = a_utils.get_attribute_name(node.iter.args[0])
-            print(node.lineno, "-", iter_name)
+
             if(iter_name in names
                     and a_utils.get_parent_instance(node, ast.Try,
                     denied=(ast.FunctionDef, ast.AsyncFunctionDef)) is None):
                 try:
-                    self.model.add_msg("PK4b", f"for {node.target.id} in {iter_name}", lineno=node.lineno)
+                    self.model.add_msg("PK4", f"for {node.target.id} in {iter_name}", lineno=node.lineno)
                 except AttributeError:
-                    self.model.add_msg("PK4b", f"for ... in ...", lineno=node.lineno)
+                    self.model.add_msg("PK4", f"for ... in ...", lineno=node.lineno)
 
         except (AttributeError, TypeError):
             pass

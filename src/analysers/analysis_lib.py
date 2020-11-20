@@ -273,12 +273,11 @@ class Model:
                     # TODO: optimise such that os.listdir is done only once per directory
                     self.analyse_tree(tree, files_in_dir, content, selections)
 
-            except Exception:# as e:
+            except Exception:
                 self.clear_analysis_data()
                 self.messages.clear()
                 self.add_msg("tool_error", filename)
                 self.save_messages("analysis_error")
-                # print(e)
 
             self.format_all_messages(filename, path)
             self.clear_analysis_data()
@@ -311,9 +310,6 @@ class Model:
                     if(not func in self.function_dict.keys()):
                         self.function_dict[func] = value
                 analyser.clear_all()
-
-        # for key, value in self.function_dict.items():
-        #     print(key, value)
 
     def analyse_tree(self, tree, file_list, content, selections):
         """Function to conduct selected static analyses."""
