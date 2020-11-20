@@ -19,7 +19,7 @@ class FileHandlingAnalyser(ast.NodeVisitor):
                 try:
                     closed_name = a_utils.get_attribute_name(closed)
                     opened_name = a_utils.get_attribute_name(opened)
-                    # print(closed_name, opened_name)
+
                 except AttributeError:
                     continue
                 if(closed_name == opened_name

@@ -135,6 +135,5 @@ def get_attribute_name(node):
             name_parts.clear()
         except AttributeError:
             name_parts.clear()
-            print("\nasds\n", node.lineno)
             raise
     return name
