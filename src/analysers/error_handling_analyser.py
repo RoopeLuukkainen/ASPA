@@ -46,7 +46,6 @@ class ErrorHandlingAnalyser(ast.NodeVisitor):
 
         self.generic_visit(node)
 
-
     def visit_Call(self, node, *args, **kwargs):
         """Method to check if node is:
         1. Missing try - except around file opening.
@@ -58,7 +57,6 @@ class ErrorHandlingAnalyser(ast.NodeVisitor):
                     denied=(ast.FunctionDef, ast.AsyncFunctionDef)) is None):
             self.model.add_msg("PK3", lineno=node.lineno)
         self.generic_visit(node)
-
 
     def visit_Attribute(self, node, *args, **kwargs):
         """Method to check if node is:
@@ -81,15 +79,26 @@ class ErrorHandlingAnalyser(ast.NodeVisitor):
 
     def visit_For(self, node, *args, **kwargs):
         try:
-            names = [i.id for i in self.model.get_files_opened()]
-            # print(names)
+            names = [a_utils.get_attribute_name(i) for i in self.model.get_files_opened()]
             # TODO: add check that file is opened in same function
-            if(node.iter.id in names
+
+            iter_name = ""
+            if(isinstance(node.iter, (ast.Name, ast.Attribute))):
+                iter_name = a_utils.get_attribute_name(node.iter)
+            
+            # Special case for 'for ... in enumerate(filehandle)'
+            # Only works if there is one call, not call inside calls
+            elif(isinstance(node.iter, ast.Call) and node.iter.func.id == "enumerate"):
+                iter_name = a_utils.get_attribute_name(node.iter.args[0])
+            print(node.lineno, "-", iter_name)
+            if(iter_name in names
                     and a_utils.get_parent_instance(node, ast.Try,
                     denied=(ast.FunctionDef, ast.AsyncFunctionDef)) is None):
-                # a_utils.get_parent_instance(node, (ast.FunctionDef, ast.AsyncFunctionDef))
-                    
-                self.model.add_msg("PK4b", f"for {node.target.id} in {node.iter.id}", lineno=node.lineno)
+                try:
+                    self.model.add_msg("PK4b", f"for {node.target.id} in {iter_name}", lineno=node.lineno)
+                except AttributeError:
+                    self.model.add_msg("PK4b", f"for ... in ...", lineno=node.lineno)
+
         except (AttributeError, TypeError):
             pass
         self.generic_visit(node)
