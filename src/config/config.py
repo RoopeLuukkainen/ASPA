@@ -84,7 +84,8 @@ TEXT = {
         "data_structure": "Tietorakenteet",
         "library": "Kirjaston käyttö",
         "exception_handling": "Poikkeustenkäsittely",
-        "file_error": "Tiedostovirhe" # File error e.g. SyntaxError
+        "file_error": "Tiedostovirhe", # File error e.g. SyntaxError
+        "ASPA_error": "Analysointi virhe"  # Analysing error in ASPA
     },
     "ENG": {
         "basic": "Basic commands",
@@ -93,7 +94,8 @@ TEXT = {
         "data_structure": "Data structures",
         "library": "Library usage",
         "exception_handling": "Exception handling",
-        "file_error": "File Error" # File error e.g. SyntaxError
+        "file_error": "File Error", # File error e.g. SyntaxError
+        "ASPA_error": "Analysis error" # Analysing error in ASPA
     }
 }
 
@@ -145,6 +147,7 @@ GUI = {
 
 
 TOOL_NAME = "ASPA - Abstrakti SyntaksiPuu Analysaattori"
+TOOL_NAME_SHORT = "ASPA"
 BG_COLOR = None #"#bababa" #None # "#383838"
 FRAME_COLOR = None #"#ffcfcf"
 PAD = 5
@@ -208,6 +211,7 @@ MSG = {
                         + "Probably too few *args.", DEBUG), # Debug
         "type_error": ("Abstract Syntax Tree parameter has wrong type, e.g. None.", DEBUG), # Debug
         "syntax_error": ("File has a syntax error.", ERROR),
+        "tool_error": (f"{TOOL_NAME_SHORT} error while analysing the file '{{}}'.", ERROR),
         "PT1": ("Command '{}' is used.", NOTE),
         "PT2": ("Name '{}' contains other than A-Z, 0-9 and underscore characters.", WARNING),
         # "PT2-1": ("Name '{}' is Python keyword.", WARNING), # using keyword actually creates syntax error to ast.parse
@@ -269,6 +273,7 @@ MSG = {
                       + "liian vähän argumentteja (*args).", DEBUG), # Debug
         "type_error": ("Syntaksipuun parametri on väärää tyyppiä, esim. None.", DEBUG), # Debug
         "syntax_error": ("Tiedostossa on syntaksi virhe.", ERROR),
+        "tool_error": (f"{TOOL_NAME_SHORT}:n virhe analysoitaessa tiedostoa '{{}}'.", ERROR),
         "PT1": ("Komentoa '{}' on käytetty.", NOTE),
         "PT2": ("Nimessä '{}' on muita kuin A-Z, 0-9 ja alaviiva merkkejä.", WARNING),
         # "PT2-1": ("Nimi '{}' on Pythonin avainsana.", WARNING), # using keyword actually creates syntax error to ast.parse

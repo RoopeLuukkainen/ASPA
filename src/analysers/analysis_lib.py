@@ -240,37 +240,45 @@ class Model:
 
     def analyse(self, pathlist, selections):
         for path in pathlist:
-            content = utils.read_file(path)
-            filename = os.path.basename(path)
-            dir_path = os.path.dirname(path)
-
-            if(self.settings["console_print"]):
-                utils.create_dash()
-                print(str(path))
-                print(f"Analysing file: {filename}\n")
-            # print(f"Analysoidaan tiedostoa: {filename, path}\n")
-
-            # Create a abstract syntax tree and add parent nodes
             try:
-                tree = ast.parse(content, filename)
-            except SyntaxError:
-                self.add_msg("syntax_error")
-                self.save_messages("file_error")
+                content = utils.read_file(path)
+                filename = os.path.basename(path)
+                dir_path = os.path.dirname(path)
 
-            # When content is not str or AST (e.g. None), usually due failed
-            # file reading.
-            except TypeError:
-                self.add_msg("type_error")
-                self.save_messages("file_error")
+                if(self.settings["console_print"]):
+                    utils.create_dash()
+                    print(str(path))
+                    print(f"Analysing file: {filename}\n")
+                # print(f"Analysoidaan tiedostoa: {filename, path}\n")
 
-            else:
-                files_in_dir = os.listdir(dir_path)
-                a_utils.add_parents(tree)
-                a_utils.add_siblings(tree)
-                self.pre_analyse_tree(tree, files_in_dir, dir_path)
-                
-                # TODO: optimise such that os.listdir is done only once per directory
-                self.analyse_tree(tree, files_in_dir, content, selections)
+                # Create a abstract syntax tree and add parent nodes
+                try:
+                    tree = ast.parse(content, filename)
+                except SyntaxError:
+                    self.add_msg("syntax_error")
+                    self.save_messages("file_error")
+
+                # When content is not str or AST (e.g. None), usually due failed
+                # file reading.
+                except TypeError:
+                    self.add_msg("type_error")
+                    self.save_messages("file_error")
+
+                else:
+                    files_in_dir = os.listdir(dir_path)
+                    a_utils.add_parents(tree)
+                    a_utils.add_siblings(tree)
+                    self.pre_analyse_tree(tree, files_in_dir, dir_path)
+                    
+                    # TODO: optimise such that os.listdir is done only once per directory
+                    self.analyse_tree(tree, files_in_dir, content, selections)
+
+            except Exception:# as e:
+                self.clear_analysis_data()
+                self.messages.clear()
+                self.add_msg("tool_error", filename)
+                self.save_messages("analysis_error")
+                # print(e)
 
             self.format_all_messages(filename, path)
             self.clear_analysis_data()
