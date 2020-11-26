@@ -30,15 +30,24 @@ class FunctionAnalyser(ast.NodeVisitor):
         """Method to check
         1. function definition is not at a global scope.
         """
-        name = node.name
+        try:
+            name = node.name
+        except AttributeError:
+            return None
         # Col offset should detect every function definition which is indended
         if(node.col_offset > 0
                 or a_utils.get_parent_instance(node, 
                 (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)) is not None):
 
-            if((not "*" in self.ALLOWED_FUNC and not name in self.ALLOWED_FUNC)
-                    and (name in self.DENIED_FUNC or "*" in self.DENIED_FUNC)):
+            # This if check if there are allowed names for methods given.
+            if(((not "*" in self.ALLOWED_FUNC and not name in self.ALLOWED_FUNC)
+                 and (name in self.DENIED_FUNC or "*" in self.DENIED_FUNC))
+                    or (a_utils.get_parent_instance(node, ast.ClassDef) is None)):
+                # If function name is not in denied and not in allowed
+                # AND there is class as parent, then no error.
                 self.model.add_msg("AR2-1", name, lineno=node.lineno)
+        return None
+
 
     def check_main_function(self, *args, **kwargs):
         if(len(self.model.get_call_dict().keys()) > 0
@@ -47,6 +56,7 @@ class FunctionAnalyser(ast.NodeVisitor):
 
         # if(not self.MAIN_FUNC_NAME in self.model.get_call_dict().keys()):
         #     pass # No paaohjelma called
+        return None
 
     def check_element_order(self, body, element_order, *args, **kwargs):
         """Method to check if ast.nodes in 'body' are in desired order.
@@ -93,6 +103,10 @@ class FunctionAnalyser(ast.NodeVisitor):
             pass
 
     def _check_paramenters(self, node, func, *args, **kwargs):
+        # FIXME: check case where function is called with keyword like
+        # def func(a, b): pass
+        # func(a, b=1)
+
         def count_args(func, funs, *args, **kwargs):
             has_args = True if(funs[func].astree.args.vararg) else False
             has_kwargs = True if(funs[func].astree.args.kwarg) else False
@@ -135,6 +149,18 @@ class FunctionAnalyser(ast.NodeVisitor):
 
 
    # Visits
+    def visit_Assign(self, node, *args, **kwargs):
+        # Adding attribute to function detection
+        # NOTE: quite identical to detection TR2-1, i.e. CLASS is used directly without an object.
+        functions = self.model.get_function_dict().keys()
+
+        try:
+            for var in node.targets[:]:
+                name = a_utils.get_attribute_name(var, splitted=True)
+                if(isinstance(var, ast.Attribute) and name[0] in functions):
+                    self.model.add_msg("AR7", ".".join(name), lineno=var.lineno)
+        except AttributeError:
+            pass
     # def visit_Assign(self, node, *args, **kwargs):
     #     """Method to find:
     #     1. Global variables by checking col_offset i.e. indention
