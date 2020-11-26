@@ -232,7 +232,8 @@ MSG = {
         "AR6-4": ("Return value is a constant.", NOTE),
         "AR6-5": ("Returning multiple values at once.", NOTE),
         "AR6-6": ("Returning something else than a variable or constant.", NOTE),
-        # "AR7": ("<Statement which should not be in global scope.>", WARNING),
+        "AR7": ("Assigning an attribute to the function '{}'.", ERROR),
+        # "AR8": ("<Statement which should not be in global scope.>", WARNING),
         # "MR1": ("Element '{}' should be before '{}'.", WARNING),
         "MR1": ("Statement seem to be in wrong location.", WARNING),
         "MR2-3": ("Function call '{}()' is {} function call in global scope. There "
@@ -294,7 +295,8 @@ MSG = {
         "AR6-4": ("Paluuarvo on vakio.", NOTE),
         "AR6-5": ("Palautetaan useita paluuarvoja.", NOTE),
         "AR6-6": ("Palautetaan jotain muuta kuin muuttujia tai avainsana.", NOTE),
-        # "AR7": ("<Komento, jonka ei tulisi olla päätasolla.>", WARNING),
+        "AR7": ("Aliohjelmalle määritetään attribuuttia '{}'.", ERROR),
+        # "AR8": ("<Komento, jonka ei tulisi olla päätasolla.>", WARNING),
         # "MR1": ("Komennon '{}' pitäisi olla ennen '{}'.", WARNING),
         "MR1": ("Komento vaikuttaisi olevan väärässä kohdin tiedostoa.", WARNING),
         "MR2-3": ("Aliohjelmakutsu '{}()' on {}. aliohjelmakutsu. Pitäisi olla vain "
