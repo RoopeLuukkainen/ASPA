@@ -121,7 +121,7 @@ def is_always_true(test):
     return is_true
 
 
-def get_attribute_name(node):
+def get_attribute_name(node, splitted=False):
     try:
         name = node.id
     except AttributeError:
@@ -131,9 +131,12 @@ def get_attribute_name(node):
             while hasattr(temp, "attr"):
                 name_parts.insert(0, temp.attr)
                 temp = temp.value
-            name = ".".join([temp.id] + name_parts) #f"{}{name}"
-            name_parts.clear()
+            if(splitted):
+                name = [temp.id] + name_parts
+            else:
+                name = ".".join([temp.id] + name_parts)
         except AttributeError:
-            name_parts.clear()
             raise
+        finally:
+            name_parts.clear()
     return name
