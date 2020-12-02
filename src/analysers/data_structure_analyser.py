@@ -7,6 +7,27 @@ class DataStructureAnalyser(ast.NodeVisitor):
    # Initialisations
     def __init__(self, model):
         self.model = model
+        self._local_objects = []
+        self._list_addition_attributes = {"append", "extend", "insert"}
+
+   # General methods
+    def _detect_objects(self, tree):
+        self._local_objects.clear()
+        classes = self.model.get_class_dict().keys()
+        parent = tree.name
+
+        for node in ast.walk(tree):
+            try:
+                name = node.value.func.id
+                if(isinstance(node, ast.Assign)
+                    and ((name in classes)
+                        or (f"{parent}.{name}" in classes))):
+
+                    for i in node.targets:
+                        self._local_objects.append(a_utils.get_attribute_name(i))
+            except AttributeError:
+                pass
+        return None
 
    # Visits
     def visit_Assign(self, node, *args, **kwargs):
@@ -51,5 +72,48 @@ class DataStructureAnalyser(ast.NodeVisitor):
 
         if(not node.name.isupper()):
             self.model.add_msg("TR2-4", node.name, lineno=node.lineno)
+
+        self.generic_visit(node)
+
+    def visit_FunctionDef(self, node, *args, **kwargs):
+        """Method to call detect objects for current namespace."""
+        self._detect_objects(node)
+        self.generic_visit(node)
+
+    def visit_AsyncFunctionDef(self, node, *args, **kwargs):
+        """Method to call detect objects for current namespace."""
+        self._detect_objects(node)
+        self.generic_visit(node)
+
+    def visit_Attribute(self, node, *args, **kwargs):
+        """
+        """
+
+        # The check of adding object's attribute to the list is only done when 
+        # it is done inside a loop
+        if(a_utils.get_parent_instance(node, (ast.While, ast.For))):
+            try:
+                name = a_utils.get_attribute_name(node.value)
+                if(name in self._local_objects):
+                    parent = a_utils.get_parent_instance(node, (ast.List, ast.Call))
+
+                    # This detect list_name += [...] and list_name = list_name + [...]
+                    # and cases with extend where list_name.extend([...])
+                    if(isinstance(parent, ast.List)):
+                        self.model.add_msg("TR3-1", lineno=node.lineno)
+
+                    # This detect list_name.append() and list_name.insert()
+                    # and in some cases list_name.extend()
+                    elif(isinstance(parent, ast.Call) 
+                            and isinstance(parent.func, (ast.Attribute))
+                            and parent.func.attr in self._list_addition_attributes):
+                        self.model.add_msg("TR3-1", lineno=node.lineno)
+        
+                    #  This detect all cases inside list(...)-call
+                    elif(isinstance(parent, ast.Call) and parent.func.id == "list"):
+                        self.model.add_msg("TR3-1", lineno=node.lineno)
+
+            except AttributeError:
+                pass
 
         self.generic_visit(node)
