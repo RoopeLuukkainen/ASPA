@@ -1,0 +1,83 @@
+2020-11-20_14-49-23
+================================================================================
+E:/GitHub/ASPA/test_files/analysis_examples.py
+analysis_examples.py
+
+Perustoiminnot, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Tiedon tulostaminen ruudulle' 'Tiedon lukeminen käyttäjältä' 'Valintarakenne' 'Toistorakenteet':
+Rivi 257: Koodirivejä komennon 'break' jälkeen.
+Rivi 258: Koodirivejä komennon 'continue' jälkeen.
+Rivi 259: Koodirivejä komennon 'raise' jälkeen.
+Rivi 262: Koodirivejä komennon 'quit' jälkeen.
+Rivi 263: Koodirivejä komennon 'exit' jälkeen.
+Rivi 264: Koodirivejä komennon 'sys.exit' jälkeen.
+Rivi 266: Koodirivejä komennon 'return' jälkeen.
+Rivi 281: Silmukkaa ei koskaan pysäytetä.
+Rivi 295: Nimessä 'pääohjelma' on muita kuin A-Z, 0-9 ja alaviiva merkkejä.
+Rivi 296: Nimessä 'IKÄ' on muita kuin A-Z, 0-9 ja alaviiva merkkejä.
+
+Aliohjelmat, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Aliohjelmat':
+Rivi 182: Aliohjelma 'foo' vaatii vähintään 2 kpl parametreja, mutta 1 lähetetty.
+Rivi 183: Aliohjelma 'foo' vaatii enintään 2 kpl parametreja, mutta 3 lähetetty.
+Rivi 184: Aliohjelma 'lib_example.fun2' vaatii vähintään 1 kpl parametreja, mutta 0 lähetetty.
+Rivi 185: Aliohjelma 'lib_example.fun2' vaatii enintään 1 kpl parametreja, mutta 2 lähetetty.
+Rivi 186: Aliohjelmakutsussa 'lib_example.fun2', 'x' on virheellinen parametrin nimi.
+Rivi 197: Palautetaan jotain muuta kuin muuttujia tai avainsana.
+Rivi 200: Palautetaan useita paluuarvoja.
+Rivi 205: Paluuarvo on vakio.
+Rivi 207: Aliohjelman 'AR6' lopusta puuttuu return-komento.
+Rivi 215: return-komennosta puuttuu paluuarvo.
+Rivi 218: Rekursiivinen aliohjelmakutsu.
+Rivi 242: Aliohjelman 'nest2' määrittely ei ole päätasolla.
+Rivi 243: Aliohjelman 'nest3' määrittely ei ole päätasolla.
+Rivi 144: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+Rivi 145: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+Rivi 163: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+Rivi 225: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+Rivi 227: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+Rivi 231: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+Rivi 232: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+Rivi 309: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+Rivi 311: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+Rivi 325: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+Rivi 227: Globaalimuuttuja 'e'.
+Rivi 231: Globaalimuuttuja 'variable'.
+Rivi 232: Globaalimuuttuja 'global_list'.
+
+Tiedostonkäsittely, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Tiedostoon kirjoittaminen' 'Tiedostosta lukeminen':
+Rivi 33: Tiedosto-operaatio 'file_handle.readline' eri aliohjelmassa kuin avaus ja sulkeminen.
+Rivi 55: Tiedostokahva 'tk1_2' suljetaan except-osiossa.
+Rivi 62: Tällä kurssilla 'with open':n käyttö ei ole suositeltu rakenne.
+Rivi 117: Tiedoston sulkukomenosta 'fhandle.close' puuttuvat sulut.
+Rivi 127: Tiedosto-operaatio 'fhandle.write' eri aliohjelmassa kuin avaus ja sulkeminen.
+Rivi 128: Tiedosto-operaatio 'fhandle.writelines' eri aliohjelmassa kuin avaus ja sulkeminen.
+Rivi 85: Tiedostokahva 'obj.attr1.attr2.attr3.fhandle' on sulkematta.
+Rivi 122: Tiedostokahva 'fhandle' on sulkematta.
+
+Tietorakenteet, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Aliohjelmat' 'Listan käsittely' 'Monimutkaisempi tietorakenne':
+Rivi 14: Luokan 'c_1' nimi ei ole kirjoitettu SUURAAKKOSIN.
+Rivi 18: Luokkaa 'C_2' ei ole määritelty päätasolla.
+Rivi 20: Luokan käyttö suoraan ilman oliota 'c_1.var'.
+Rivi 21: Olion luonnista puuttuvat sulkeet. Pitäisi olla 'C_2()'.
+
+Kirjaston käyttö, tyylirikkeitä havaittu, ole hyvä ja katso 'Luku 8 asiat kokoava esimerkki':
+Rivi 156: Kirjaston 'sys' sisällytys (eng. import) ei ole päätasolla.
+Rivi 156: Kirjaston 'os' sisällytys (eng. import) ei ole päätasolla.
+Rivi 157: Kirjaston 'datetime' sisällytys (eng. import) ei ole päätasolla.
+Rivi 163: Kirjasto 'lib_example' sisällytetään (eng. import) uudelleen.
+Rivi 157: Kirjastosta 'datetime' sisällytetään sisältöä uudelleen.
+Rivi 311: Päätason aliohjelmakutsu 'kirjasto.aliohjelma()' ei viittaa tiedoston pääohjelmaan.
+Rivi 324: Aliohjelmakutsu 'paaohjelma()' on 3. aliohjelmakutsu. Pitäisi olla vain yksi (1) aliohjelmakutsu 'paaohjelma()'.
+Rivi 325: Aliohjelmakutsu 'MR2_3()' on 4. aliohjelmakutsu. Pitäisi olla vain yksi (1) aliohjelmakutsu 'paaohjelma()'.
+
+Poikkeustenkäsittely, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Poikkeukset':
+Rivi 77: Tiedosto-operaatiosta 'for i in fhandle' puuttuu poikkeustenkäsittely.
+Rivi 79: Tiedosto-operaatiosta 'for ... in ...' puuttuu poikkeustenkäsittely.
+Rivi 88: Tiedosto-operaatiosta 'for i in obj.attr1.attr2.attr3.fhandle' puuttuu poikkeustenkäsittely.
+Rivi 90: Tiedosto-operaatiosta 'for ... in ...' puuttuu poikkeustenkäsittely.
+Rivi 103: Tiedoston avaamisesta puuttuu poikkeustenkäsittely.
+Rivi 104: Tiedosto-operaatiosta 'fhandle.readline' puuttuu poikkeustenkäsittely.
+Rivi 105: Tiedosto-operaatiosta 'fhandle.read' puuttuu poikkeustenkäsittely.
+Rivi 106: Tiedosto-operaatiosta 'fhandle.readlines' puuttuu poikkeustenkäsittely.
+Rivi 123: Exceptistä puuttuu virhetyyppi.
+Rivi 127: Tiedosto-operaatiosta 'fhandle.write' puuttuu poikkeustenkäsittely.
+Rivi 128: Tiedosto-operaatiosta 'fhandle.writelines' puuttuu poikkeustenkäsittely.
