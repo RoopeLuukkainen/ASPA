@@ -4,6 +4,6 @@ PT1 check detects usage of function calls defined in configuration.
 
 def PT1(): 
     print("Hello World!")
-    temp = range(len(str(int(round(float("1.2345"), 2)))))
+    print(range(len(str(int(round(float("1.2345"), 2))))))
     return None
 # PT1()

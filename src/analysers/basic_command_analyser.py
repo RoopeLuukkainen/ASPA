@@ -11,6 +11,7 @@ class BasicsAnalyser(ast.NodeVisitor):
     Tree. Uses 'ast' module and local 'utils_lib'.
     TODO: Make this basic command analyser, e.g. if, while, for etc.
     """
+
     def __init__(self, model):
         self.model = model
         self.searched_commands = cnf.SEARCHED_COMMANDS
@@ -22,6 +23,7 @@ class BasicsAnalyser(ast.NodeVisitor):
         i.e. they can have only letters from a to z (both upper and lowercase), 
         underscore or numbers, and may not start with a number.
         """
+
         try:
             if(not self.valid_naming.match(name)):  # Must be re.match, not re.search
                 self.model.add_msg("PT2", name, lineno=node.lineno)
@@ -34,7 +36,7 @@ class BasicsAnalyser(ast.NodeVisitor):
             pass
 
         # using keyword actually creates syntax error to ast.parse therefore 
-        # this test is no in used
+        # this test is no in use
         # if(keyword.iskeyword(name)):
         #     self.model.add_msg("PT2-1", name, lineno=node.lineno)
 
@@ -45,6 +47,7 @@ class BasicsAnalyser(ast.NodeVisitor):
         **kwargs).
         Return list of tuples in format [(node, name), (node, name)]
         """
+
         arg_names = list()
         # Positional and keyword arguments, i.e. all but *args and **kwargs
         try:
