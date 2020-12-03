@@ -3,6 +3,7 @@ import ast
 # import keyword
 import re
 
+import src.config.config as cnf
 import src.analysers.analysis_utils as a_utils
 
 class BasicsAnalyser(ast.NodeVisitor):
@@ -12,7 +13,7 @@ class BasicsAnalyser(ast.NodeVisitor):
     """
     def __init__(self, model):
         self.model = model
-        self.required_commands = {"round", "print", "range", "int", "len", "float", "str"} # Examples
+        self.searched_commands = cnf.SEARCHED_COMMANDS
         self.valid_naming = re.compile(r"^[a-zA-Z_][a-zA-Z0-9_]*$")
 
     def check_valid_name(self, node, name, *args, **kwargs):
@@ -120,7 +121,7 @@ class BasicsAnalyser(ast.NodeVisitor):
 
             # Command called check
             if(isinstance(node.func, ast.Name) 
-                    and call_name in self.required_commands):
+                    and call_name in self.searched_commands):
                 self.model.add_msg("PT1", call_name, lineno=node.lineno)
 
             # Unreachable code check

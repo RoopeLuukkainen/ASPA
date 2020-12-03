@@ -27,6 +27,8 @@ DENIED_FUNCTIONS = {"*"}
 # Add function names which are allowed to miss return command.
 MISSING_RETURN_ALLOWED = {"__init__"}
 
+SEARCHED_COMMANDS = {"round", "print", "range", "int", "len", "float", "str"} # Examples
+
 # Add keys of ignored error messages
 IGNORE = {"PT1", "PK1", "MR5", "AR6-1", "AR6-2"}
 GENERAL = 0
@@ -36,7 +38,10 @@ NOTE = 3
 GOOD = 4
 DEBUG = 5
 
+# Element orders are tuples with following format:
+# (allowed ast types, required names, denied names, element id)
 ELEMENT_ORDER = (# Header comment should be first
+                 (ast.Expr, ("Docstring", ), tuple(), "E0"),
                  ((ast.Import, ast.ImportFrom), tuple(), tuple(), "E1"),
                  (ast.Assign, tuple(), tuple(), "E3"),
                  (ast.ClassDef, tuple(), tuple(), "E2"),
@@ -50,6 +55,7 @@ ALLOWED_ELEMENTS = {ast.Import, ast.ImportFrom, ast.Assign, ast.ClassDef,
 
 # ELEMENT_TEXT = {
 #     "ENG": {
+#         "E0": "Docstring",
 #         "E1": "Imports",
 #         "E2": "Class definitions",
 #         "E3": "Constants",
@@ -58,6 +64,7 @@ ALLOWED_ELEMENTS = {ast.Import, ast.ImportFrom, ast.Assign, ast.ClassDef,
 #         "E6": f"{MAIN_FUNC_NAME}() call"
 #     },
 #     "FIN": {
+#         "E0": "Dokumentaatiorivi (docstring)",
 #         "E1": "Sisällytykset",
 #         "E2": "Luokkien määrittelyt",
 #         "E3": "Kiintoarvot",

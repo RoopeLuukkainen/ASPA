@@ -86,9 +86,20 @@ class FunctionAnalyser(ast.NodeVisitor):
         for item in body:  # Check items from top to bottom
             temp = cur
             for elem in element_order[cur:]:
-                if(isinstance(item, elem[0]) and check_name(item, elem[1], elem[2])):
-                    cur = temp
-                    break
+                if(isinstance(item, elem[0])):
+                    try:
+                        if(check_name(item, elem[1], elem[2])):
+                            cur = temp
+                            break
+                        elif("Docstring" in elem[1] 
+                                and isinstance(item.value, ast.Constant)
+                                and isinstance(item.value.value, str)):
+                            # Only one docstring is allowed therefore moves to
+                            # next element
+                            cur = temp = temp + 1
+                            break
+                    except AttributeError:
+                        pass
                 temp += 1
             else:
                 self.model.add_msg("MR1", lineno=item.lineno)
