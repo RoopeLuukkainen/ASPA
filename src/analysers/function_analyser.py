@@ -117,6 +117,12 @@ class FunctionAnalyser(ast.NodeVisitor):
         # FIXME: check case where function is called with keyword like
         # def func(a, b): pass
         # func(a, b=1)
+        #
+        # FIXME doesn't detect directly imported functions, i.e. from import ...
+        # with function name or with *
+        #
+        # FIXME: doesn't test functions from libraries which are named with as-
+        # keyword, i.e. import library as lib
 
         def count_args(func, funs, *args, **kwargs):
             has_args = True if(funs[func].astree.args.vararg) else False
@@ -144,10 +150,10 @@ class FunctionAnalyser(ast.NodeVisitor):
         # Parameter and argument check tested with Python 3.8.5
         try:
             funs = self.model.get_function_dict()
-            functionnames = funs.keys()
-            if(func in functionnames):
+            function_names = funs.keys()
+            if(func in function_names):
                 count_args(func, funs)
-        except (AttributeError, KeyError, UnboundLocalError):
+        except (AttributeError, KeyError):
             # print(f"Error at {node.lineno}, with {node}") # Debug
             pass
         except:
@@ -222,15 +228,21 @@ class FunctionAnalyser(ast.NodeVisitor):
             1. constant keyword None, True, False etc.
             2. variable, set, tuple, list, dictionary.
             3. object or other value with attributes
-            4. function call, recursive call is detected in visit_Call method
+            4. function call, recursive call is detected in visit_Call 
+               method
 
         TODO Does not find:
         1. If there are multiple returns
-        2. If return is unreachable due to the logical condition, trivial
-            cases are check with basic command check for unreachable code.
+        2. If return is unreachable due to the logical condition,
+           trivial cases are check with basic command check for
+           unreachable code.
+        3. Functions with yield should not give return errors, e.g. AR6
+           missing return at the end of the function. This partially
+           works e.g. when yield is the last command AR6 is ignored.
+           However, yield is rarely the last command of function body.
         """
 
-        # NOTE FIXME: Deprecated since version 3.8: 
+        # NOTE Deprecated since version 3.8: 
         # Methods visit_Num(), visit_Str(), visit_Bytes(), visit_NameConstant() 
         # and visit_Ellipsis() are deprecated now and will not be called in
         # future Python versions. Add the visit_Constant() method to handle all

@@ -232,7 +232,7 @@ MSG = {
         "AR5-1": ("Function '{}' requires at least {} parameters, but {} given.", ERROR),
         "AR5-2": ("Function '{}' requires at most {} parameters, but {} given.", ERROR),
         "AR5-3": ("In call of function '{}', '{}' is invalid keyword argument.", ERROR),
-        "AR6": ("Missing return at the end of the function '{}'.", ERROR),
+        "AR6": ("Missing return at the end of the function '{}'.", WARNING),
         "AR6-1": ("Usage of '{}' in function '{}'.", NOTE), # Yield and yield from detection
         "AR6-2": ("Return statement at the middle of the function.", NOTE),
         "AR6-3": ("Missing value from the return-statement.", WARNING),
@@ -298,7 +298,7 @@ MSG = {
         "AR5-1": ("Aliohjelma '{}' vaatii vähintään {} kpl parametreja, mutta {} lähetetty.", ERROR),
         "AR5-2": ("Aliohjelma '{}' vaatii enintään {} kpl parametreja, mutta {} lähetetty.", ERROR),
         "AR5-3": ("Aliohjelmakutsussa '{}', '{}' on virheellinen parametrin nimi.", ERROR), # Using word parametri here, not argumentti
-        "AR6": ("Aliohjelman '{}' lopusta puuttuu return-komento.", ERROR),
+        "AR6": ("Aliohjelman '{}' lopusta puuttuu return-komento.", WARNING),
         "AR6-1": ("Käytetään generaattoria '{}' aliohjelmassa '{}'.", NOTE), # Yield and yield from detection
         "AR6-2": ("Keskellä aliohjelmaa on return.", NOTE),
         "AR6-3": ("return-komennosta puuttuu paluuarvo.", WARNING),

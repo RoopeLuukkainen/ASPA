@@ -1,0 +1,195 @@
+2020-12-04_18-48-14
+================================================================================
+E:/GitHub/ASPA/tests/AR_functions\AR1_no_paaohjelma.py
+AR1_no_paaohjelma.py
+
+Basic commands: No violations detected.
+
+Functions, violations detected please see Liite 5 'Aliohjelmat':
+No function defition for 'paaohjelma'.
+Line 13: Statement seem to be in wrong location.
+
+File handling: No violations detected.
+
+Data structures: No violations detected.
+
+Library usage: No violations detected.
+
+Exception handling: No violations detected.
+================================================================================
+E:/GitHub/ASPA/tests/AR_functions\AR2-1_local_scope_function.py
+AR2-1_local_scope_function.py
+
+Basic commands: No violations detected.
+
+Functions, violations detected please see Liite 5 'Aliohjelmat':
+Line 15: Definition of the function 'nested_method' is not at the global scope.
+Line 16: Definition of the function 'nested_method_2' is not at the global scope.
+Line 22: Definition of the function 'nest1' is not at the global scope.
+Line 23: Definition of the function 'nest2' is not at the global scope.
+Line 24: Definition of the function 'nest3' is not at the global scope.
+
+File handling: No violations detected.
+
+Data structures: No violations detected.
+
+Library usage: No violations detected.
+
+Exception handling: No violations detected.
+================================================================================
+E:/GitHub/ASPA/tests/AR_functions\AR3_global_object.py
+AR3_global_object.py
+
+Basic commands: No violations detected.
+
+Functions, violations detected please see Liite 5 'Aliohjelmat':
+No function defition for 'paaohjelma'.
+Line 9: Statement seem to be in wrong location.
+Line 9: Global variable 'global_object'.
+
+File handling: No violations detected.
+
+Data structures: No violations detected.
+
+Library usage: No violations detected.
+
+Exception handling: No violations detected.
+================================================================================
+E:/GitHub/ASPA/tests/AR_functions\AR3_global_variable.py
+AR3_global_variable.py
+
+Basic commands: No violations detected.
+
+Functions, violations detected please see Liite 5 'Aliohjelmat':
+Line 22: Global variable 'with_global_keyword'.
+Line 22: Global variable 'another_global'.
+Line 5: Global variable 'variable'.
+Line 6: Global variable 'global_list'.
+Line 11: Global variable 'unless_assigned_again'.
+
+File handling: No violations detected.
+
+Data structures: No violations detected.
+
+Library usage: No violations detected.
+
+Exception handling: No violations detected.
+================================================================================
+E:/GitHub/ASPA/tests/AR_functions\AR4_recursive_function.py
+AR4_recursive_function.py
+
+Basic commands: No violations detected.
+
+Functions, violations detected please see Liite 5 'Aliohjelmat':
+Line 11: Recursive function call.
+
+File handling: No violations detected.
+
+Data structures: No violations detected.
+
+Library usage: No violations detected.
+
+Exception handling: No violations detected.
+================================================================================
+E:/GitHub/ASPA/tests/AR_functions\AR5_parameters.py
+AR5_parameters.py
+
+Basic commands: No violations detected.
+
+Functions, violations detected please see Liite 5 'Aliohjelmat':
+Line 37: Function 'func1' requires at least 2 parameters, but 1 given.
+Line 38: Function 'func2' requires at least 2 parameters, but 1 given.
+Line 39: Function 'func3' requires at least 2 parameters, but 1 given.
+Line 40: Function 'func4' requires at least 2 parameters, but 1 given.
+Line 44: Function 'example_lib.func1' requires at least 2 parameters, but 1 given.
+Line 45: Function 'example_lib.func2' requires at least 2 parameters, but 1 given.
+Line 46: Function 'example_lib.func3' requires at least 2 parameters, but 1 given.
+Line 47: Function 'example_lib.func4' requires at least 2 parameters, but 1 given.
+Line 55: Function 'func0' requires at most 0 parameters, but 3 given.
+Line 56: Function 'func1' requires at most 2 parameters, but 3 given.
+Line 60: Function 'func5' requires at most 0 parameters, but 3 given.
+Line 63: Function 'example_lib.func1' requires at most 2 parameters, but 3 given.
+Line 67: Function 'example_lib.func5' requires at most 0 parameters, but 3 given.
+Line 74: In call of function 'func2', 'd' is invalid keyword argument.
+Line 75: In call of function 'func3', 'd' is invalid keyword argument.
+Line 79: In call of function 'example_lib.func2', 'd' is invalid keyword argument.
+Line 80: In call of function 'example_lib.func3', 'd' is invalid keyword argument.
+
+File handling: No violations detected.
+
+Data structures: No violations detected.
+
+Library usage: No violations detected.
+
+Exception handling: No violations detected.
+================================================================================
+E:/GitHub/ASPA/tests/AR_functions\AR6-1_yield.py
+AR6-1_yield.py
+
+Basic commands: No violations detected.
+
+Functions, violations detected please see Liite 5 'Aliohjelmat':
+Line 5: Missing return at the end of the function 'AR6_1'.
+
+File handling: No violations detected.
+
+Data structures: No violations detected.
+
+Library usage: No violations detected.
+
+Exception handling: No violations detected.
+================================================================================
+E:/GitHub/ASPA/tests/AR_functions\AR6_return.py
+AR6_return.py
+
+Basic commands: No violations detected.
+
+Functions, violations detected please see Liite 5 'Aliohjelmat':
+Line 19: Missing return at the end of the function 'AR6'.
+Line 28: Missing value from the return-statement.
+Line 31: Return value is a constant.
+Line 34: Return value is a constant.
+Line 38: Returning multiple values at once.
+Line 42: Returning something else than a variable or constant.
+Line 46: Returning something else than a variable or constant.
+Line 50: Returning something else than a variable or constant.
+
+File handling: No violations detected.
+
+Data structures: No violations detected.
+
+Library usage: No violations detected.
+
+Exception handling: No violations detected.
+================================================================================
+E:/GitHub/ASPA/tests/AR_functions\AR7_function_attribute.py
+AR7_function_attribute.py
+
+Basic commands: No violations detected.
+
+Functions, violations detected please see Liite 5 'Aliohjelmat':
+Line 6: Assigning an attribute to the function 'AR7.attr'.
+Line 10: Assigning an attribute to the function 'AR7.another.attr.nested.attr'.
+
+File handling: No violations detected.
+
+Data structures: No violations detected.
+
+Library usage: No violations detected.
+
+Exception handling: No violations detected.
+================================================================================
+E:/GitHub/ASPA/tests/AR_functions\example_lib.py
+example_lib.py
+
+Basic commands: No violations detected.
+
+Functions: No violations detected.
+
+File handling: No violations detected.
+
+Data structures: No violations detected.
+
+Library usage: No violations detected.
+
+Exception handling: No violations detected.

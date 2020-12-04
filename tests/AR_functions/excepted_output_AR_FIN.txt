@@ -1,0 +1,195 @@
+2020-12-04_18-46-35
+================================================================================
+E:/GitHub/ASPA/tests/AR_functions\AR1_no_paaohjelma.py
+AR1_no_paaohjelma.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Aliohjelmat':
+Ohjelmasta ei löytynyt määrittelyä 'paaohjelma':lle.
+Rivi 13: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+
+Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
+
+Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
+
+Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
+
+Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
+================================================================================
+E:/GitHub/ASPA/tests/AR_functions\AR2-1_local_scope_function.py
+AR2-1_local_scope_function.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Aliohjelmat':
+Rivi 15: Aliohjelman 'nested_method' määrittely ei ole päätasolla.
+Rivi 16: Aliohjelman 'nested_method_2' määrittely ei ole päätasolla.
+Rivi 22: Aliohjelman 'nest1' määrittely ei ole päätasolla.
+Rivi 23: Aliohjelman 'nest2' määrittely ei ole päätasolla.
+Rivi 24: Aliohjelman 'nest3' määrittely ei ole päätasolla.
+
+Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
+
+Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
+
+Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
+
+Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
+================================================================================
+E:/GitHub/ASPA/tests/AR_functions\AR3_global_object.py
+AR3_global_object.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Aliohjelmat':
+Ohjelmasta ei löytynyt määrittelyä 'paaohjelma':lle.
+Rivi 9: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+Rivi 9: Globaalimuuttuja 'global_object'.
+
+Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
+
+Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
+
+Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
+
+Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
+================================================================================
+E:/GitHub/ASPA/tests/AR_functions\AR3_global_variable.py
+AR3_global_variable.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Aliohjelmat':
+Rivi 22: Globaalimuuttuja 'with_global_keyword'.
+Rivi 22: Globaalimuuttuja 'another_global'.
+Rivi 5: Globaalimuuttuja 'variable'.
+Rivi 6: Globaalimuuttuja 'global_list'.
+Rivi 11: Globaalimuuttuja 'unless_assigned_again'.
+
+Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
+
+Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
+
+Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
+
+Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
+================================================================================
+E:/GitHub/ASPA/tests/AR_functions\AR4_recursive_function.py
+AR4_recursive_function.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Aliohjelmat':
+Rivi 11: Rekursiivinen aliohjelmakutsu.
+
+Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
+
+Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
+
+Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
+
+Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
+================================================================================
+E:/GitHub/ASPA/tests/AR_functions\AR5_parameters.py
+AR5_parameters.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Aliohjelmat':
+Rivi 37: Aliohjelma 'func1' vaatii vähintään 2 kpl parametreja, mutta 1 lähetetty.
+Rivi 38: Aliohjelma 'func2' vaatii vähintään 2 kpl parametreja, mutta 1 lähetetty.
+Rivi 39: Aliohjelma 'func3' vaatii vähintään 2 kpl parametreja, mutta 1 lähetetty.
+Rivi 40: Aliohjelma 'func4' vaatii vähintään 2 kpl parametreja, mutta 1 lähetetty.
+Rivi 44: Aliohjelma 'example_lib.func1' vaatii vähintään 2 kpl parametreja, mutta 1 lähetetty.
+Rivi 45: Aliohjelma 'example_lib.func2' vaatii vähintään 2 kpl parametreja, mutta 1 lähetetty.
+Rivi 46: Aliohjelma 'example_lib.func3' vaatii vähintään 2 kpl parametreja, mutta 1 lähetetty.
+Rivi 47: Aliohjelma 'example_lib.func4' vaatii vähintään 2 kpl parametreja, mutta 1 lähetetty.
+Rivi 55: Aliohjelma 'func0' vaatii enintään 0 kpl parametreja, mutta 3 lähetetty.
+Rivi 56: Aliohjelma 'func1' vaatii enintään 2 kpl parametreja, mutta 3 lähetetty.
+Rivi 60: Aliohjelma 'func5' vaatii enintään 0 kpl parametreja, mutta 3 lähetetty.
+Rivi 63: Aliohjelma 'example_lib.func1' vaatii enintään 2 kpl parametreja, mutta 3 lähetetty.
+Rivi 67: Aliohjelma 'example_lib.func5' vaatii enintään 0 kpl parametreja, mutta 3 lähetetty.
+Rivi 74: Aliohjelmakutsussa 'func2', 'd' on virheellinen parametrin nimi.
+Rivi 75: Aliohjelmakutsussa 'func3', 'd' on virheellinen parametrin nimi.
+Rivi 79: Aliohjelmakutsussa 'example_lib.func2', 'd' on virheellinen parametrin nimi.
+Rivi 80: Aliohjelmakutsussa 'example_lib.func3', 'd' on virheellinen parametrin nimi.
+
+Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
+
+Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
+
+Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
+
+Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
+================================================================================
+E:/GitHub/ASPA/tests/AR_functions\AR6-1_yield.py
+AR6-1_yield.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Aliohjelmat':
+Rivi 5: Aliohjelman 'AR6_1' lopusta puuttuu return-komento.
+
+Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
+
+Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
+
+Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
+
+Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
+================================================================================
+E:/GitHub/ASPA/tests/AR_functions\AR6_return.py
+AR6_return.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Aliohjelmat':
+Rivi 19: Aliohjelman 'AR6' lopusta puuttuu return-komento.
+Rivi 28: return-komennosta puuttuu paluuarvo.
+Rivi 31: Paluuarvo on vakio.
+Rivi 34: Paluuarvo on vakio.
+Rivi 38: Palautetaan useita paluuarvoja.
+Rivi 42: Palautetaan jotain muuta kuin muuttujia tai avainsana.
+Rivi 46: Palautetaan jotain muuta kuin muuttujia tai avainsana.
+Rivi 50: Palautetaan jotain muuta kuin muuttujia tai avainsana.
+
+Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
+
+Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
+
+Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
+
+Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
+================================================================================
+E:/GitHub/ASPA/tests/AR_functions\AR7_function_attribute.py
+AR7_function_attribute.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Aliohjelmat':
+Rivi 6: Aliohjelmalle määritetään attribuuttia 'AR7.attr'.
+Rivi 10: Aliohjelmalle määritetään attribuuttia 'AR7.another.attr.nested.attr'.
+
+Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
+
+Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
+
+Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
+
+Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
+================================================================================
+E:/GitHub/ASPA/tests/AR_functions\example_lib.py
+example_lib.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat: Ei tunnistettu tyylirikkomuksia.
+
+Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
+
+Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
+
+Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
+
+Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
