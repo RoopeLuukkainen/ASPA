@@ -265,6 +265,11 @@ class Model:
                     self.save_messages("file_error")
 
                 else:
+                    # Dump tree
+                    if(self.settings["dump_tree"]):
+                        self.dump_tree(tree)
+
+                    # Static analysis
                     files_in_dir = os.listdir(dir_path)
                     a_utils.add_parents(tree)
                     a_utils.add_siblings(tree)
@@ -315,14 +320,6 @@ class Model:
         """Function to conduct selected static analyses."""
         self.file_list = file_list
 
-        # DUMP tree
-        if(self.settings["dump_tree"]):
-            utils.create_dash()
-            print(ast.dump(tree, include_attributes=True))
-            print()
-            print(ast.dump(tree, include_attributes=False))
-            utils.create_dash()
-
         for opt in self.checkbox_options:
             if(selections[opt]):
                 analyser = self.analysers[opt]
@@ -351,3 +348,12 @@ class Model:
                         pass
 
                 self.save_messages(opt)
+
+   ####################################################################
+   #  Debug functions
+    def dump_tree(self, tree):
+        utils.create_dash()
+        print(ast.dump(tree, include_attributes=True))
+        print()
+        print(ast.dump(tree, include_attributes=False))
+        utils.create_dash()
