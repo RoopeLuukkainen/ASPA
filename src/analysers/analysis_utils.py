@@ -16,25 +16,38 @@ def add_siblings(tree):
     nodes which are inside these iterable bodies, if no there is no
     previous or next sibling the respective value will be None.
 
-    NOTE that:
+    NOTE 1:
     Useful iterable bodies are body, orelse, handlers and finalbody,
     however, also type_ignores, decorator_list, argument lists (e.g. 
     args and kw_defaults) will get sibling attributes.
+
+    NOTE 2:
+    In addition global-keyword creates Global node which has str typed
+    elements and this creates attribute error when trying to assign
+    values to next_sibling and previous_sibling attrbutes.
     """
     for node in ast.walk(tree):
         for field in ast.iter_fields(node): # Yield a tuple of (fieldname, value)
 
             # There could be check that name of the field is either 
-            # body, orelse, handlers or finalbody
+            # body, orelse, handlers or finalbody 
+            # but not in 'names' used in Global node.
             if(isinstance(field[1], (list, tuple))):
-                previous_sibling = None
-                last = None
+                previous_sibling = last = None
                 for child_node in field[1]:
-                    if(previous_sibling):
-                        previous_sibling.next_sibling = child_node
-                    child_node.previous_sibling = previous_sibling
-                    previous_sibling = child_node
-                    last = child_node
+                    try:
+                        if(previous_sibling):
+                            previous_sibling.next_sibling = child_node
+
+                        child_node.previous_sibling = previous_sibling
+                        previous_sibling = last = child_node
+
+                    # This error may occur e.g. when 
+                    #   'str' object has no attribute 'previous_sibling'
+                    # which is case e.g. with global-keyword creating node
+                    #   Global(names=['with_global_keyword']),
+                    except AttributeError:
+                        pass
                 if(last):
                     last.next_sibling = None
 
