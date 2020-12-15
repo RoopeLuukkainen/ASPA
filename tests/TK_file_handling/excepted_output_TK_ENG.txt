@@ -1,0 +1,84 @@
+2020-12-15_16-30-14
+================================================================================
+E:/GitHub/ASPA/tests/TK_file_handling\TK1-1_with_open.py
+TK1-1_with_open.py
+
+Basic commands: No violations detected.
+
+Functions: No violations detected.
+
+File handling, violations detected please see Liite 5 'Tiedostoon kirjoittaminen' 'Tiedostosta lukeminen':
+Line 8: In this course usage of 'with open' is not recommended.
+
+Data structures: No violations detected.
+
+Library usage: No violations detected.
+
+Exception handling: No violations detected.
+================================================================================
+E:/GitHub/ASPA/tests/TK_file_handling\TK1-2_close_in_except.py
+TK1-2_close_in_except.py
+
+Basic commands: No violations detected.
+
+Functions: No violations detected.
+
+File handling, violations detected please see Liite 5 'Tiedostoon kirjoittaminen' 'Tiedostosta lukeminen':
+Line 10: File handle 'f1' is closed in except-branch.
+Line 13: File handle 'f2' is closed in except-branch.
+
+Data structures: No violations detected.
+
+Library usage: No violations detected.
+
+Exception handling: No violations detected.
+================================================================================
+E:/GitHub/ASPA/tests/TK_file_handling\TK1-3_close_missing_parenthesis.py
+TK1-3_close_missing_parenthesis.py
+
+Basic commands: No violations detected.
+
+Functions: No violations detected.
+
+File handling, violations detected please see Liite 5 'Tiedostoon kirjoittaminen' 'Tiedostosta lukeminen':
+Line 10: Missing parenthesis from file closing 'f1.close'.
+
+Data structures: No violations detected.
+
+Library usage: No violations detected.
+
+Exception handling: No violations detected.
+================================================================================
+E:/GitHub/ASPA/tests/TK_file_handling\TK1_file_left_open.py
+TK1_file_left_open.py
+
+Basic commands: No violations detected.
+
+Functions: No violations detected.
+
+File handling, violations detected please see Liite 5 'Tiedostoon kirjoittaminen' 'Tiedostosta lukeminen':
+Line 34: In this course usage of 'with open' is not recommended.
+Line 28: File handle 'f2' is left open.
+
+Data structures: No violations detected.
+
+Library usage: No violations detected.
+
+Exception handling: No violations detected.
+================================================================================
+E:/GitHub/ASPA/tests/TK_file_handling\TK2_file_open_operation_close.py
+TK2_file_open_operation_close.py
+
+Basic commands: No violations detected.
+
+Functions: No violations detected.
+
+File handling, violations detected please see Liite 5 'Tiedostoon kirjoittaminen' 'Tiedostosta lukeminen':
+Line 28: File operation 'f.readline' is in different function than file open and close.
+Line 20: File handle 'f' is left open.
+
+Data structures: No violations detected.
+
+Library usage: No violations detected.
+
+Exception handling: No violations detected.
