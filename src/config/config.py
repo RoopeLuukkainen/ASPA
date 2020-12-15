@@ -243,10 +243,10 @@ MSG = {
         # "AR8": ("<Statement which should not be in global scope.>", WARNING),
         # "MR1": ("Element '{}' should be before '{}'.", WARNING),
         "MR1": ("Statement seem to be in wrong location.", WARNING),
-        "MR2-3": ("Function call '{}()' is {} function call in global scope. There "
-                + f"should be only one (1) function call '{MAIN_FUNC_NAME}()'.",
+        "MR2-3": ("Function call '{}()' is {} function call at the global scope."
+                + f" There should be only one (1) function call '{MAIN_FUNC_NAME}()'.",
                 WARNING),
-        "MR2-4": ("Function call '{}.{}()' in global scope does not call the"
+        "MR2-4": ("Function call '{}()' at the global scope does not call the"
                 + "main function.", WARNING),
         "MR3": ("Module '{}' is imported again.", ERROR),
         "MR3-1": ("From module '{}' function(s) or module(s) are imported again.", WARNING),
@@ -311,7 +311,7 @@ MSG = {
         "MR1": ("Komento vaikuttaisi olevan väärässä kohdin tiedostoa.", WARNING),
         "MR2-3": ("Aliohjelmakutsu '{}()' on {}. aliohjelmakutsu. Pitäisi olla vain "
                 + f"yksi (1) aliohjelmakutsu '{MAIN_FUNC_NAME}()'.", WARNING),
-        "MR2-4": ("Päätason aliohjelmakutsu '{}.{}()' ei viittaa tiedoston pääohjelmaan.", WARNING),
+        "MR2-4": ("Päätason aliohjelmakutsu '{}()' ei viittaa tiedoston pääohjelmaan.", WARNING),
         "MR3": ("Kirjasto '{}' sisällytetään (eng. import) uudelleen.", ERROR),
         "MR3-1": ("Kirjastosta '{}' sisällytetään sisältöä uudelleen.", WARNING),
         "MR4": ("Kirjaston '{}' sisällytys (eng. import) ei ole päätasolla.", ERROR),

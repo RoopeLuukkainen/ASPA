@@ -1,0 +1,268 @@
+2020-12-15_13-18-15
+================================================================================
+E:/GitHub/ASPA/tests/MR_file_structure\MR1_element_order_correct.py
+MR1_element_order_correct.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat: Ei tunnistettu tyylirikkomuksia.
+
+Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
+
+Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
+
+Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
+
+Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
+================================================================================
+E:/GitHub/ASPA/tests/MR_file_structure\MR1_element_order_wrong1.py
+MR1_element_order_wrong1.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Aliohjelmat':
+Rivi 16: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+Rivi 17: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+Rivi 18: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+Rivi 19: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+Rivi 22: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+
+Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
+
+Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
+
+Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
+
+Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
+================================================================================
+E:/GitHub/ASPA/tests/MR_file_structure\MR1_element_order_wrong2.py
+MR1_element_order_wrong2.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Aliohjelmat':
+Rivi 20: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+
+Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
+
+Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
+
+Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
+
+Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
+================================================================================
+E:/GitHub/ASPA/tests/MR_file_structure\MR1_element_order_wrong3.py
+MR1_element_order_wrong3.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Aliohjelmat':
+Rivi 17: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+Rivi 20: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+Rivi 23: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+
+Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
+
+Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
+
+Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
+
+Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
+================================================================================
+E:/GitHub/ASPA/tests/MR_file_structure\MR1_element_order_wrong4.py
+MR1_element_order_wrong4.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Aliohjelmat':
+Rivi 39: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+
+Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
+
+Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
+
+Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
+
+Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
+================================================================================
+E:/GitHub/ASPA/tests/MR_file_structure\MR1_element_order_wrong5.py
+MR1_element_order_wrong5.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Aliohjelmat':
+Rivi 11: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+Rivi 26: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+Rivi 40: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+
+Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
+
+Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
+
+Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
+
+Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
+================================================================================
+E:/GitHub/ASPA/tests/MR_file_structure\MR1_element_order_wrong6.py
+MR1_element_order_wrong6.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Aliohjelmat':
+Rivi 9: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+Rivi 16: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+Rivi 20: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+Rivi 23: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+Rivi 27: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+Rivi 30: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+Rivi 33: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+Rivi 37: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+Rivi 40: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+Rivi 41: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+Rivi 42: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+Rivi 43: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+
+Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
+
+Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
+
+Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
+
+Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
+================================================================================
+E:/GitHub/ASPA/tests/MR_file_structure\MR2-3_global_scope_call.py
+MR2-3_global_scope_call.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Aliohjelmat':
+Rivi 13: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+Rivi 14: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+
+Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
+
+Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
+
+Kirjaston käyttö, tyylirikkeitä havaittu, ole hyvä ja katso 'Luku 8 asiat kokoava esimerkki':
+Rivi 13: Aliohjelmakutsu 'MR2_3()' on 2. aliohjelmakutsu. Pitäisi olla vain yksi (1) aliohjelmakutsu 'paaohjelma()'.
+Rivi 14: Aliohjelmakutsu 'MR2_3()' on 3. aliohjelmakutsu. Pitäisi olla vain yksi (1) aliohjelmakutsu 'paaohjelma()'.
+
+Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
+================================================================================
+E:/GitHub/ASPA/tests/MR_file_structure\MR2-4_not_main_function_call.py
+MR2-4_not_main_function_call.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Aliohjelmat':
+Rivi 12: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+Rivi 13: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+
+Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
+
+Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
+
+Kirjaston käyttö, tyylirikkeitä havaittu, ole hyvä ja katso 'Luku 8 asiat kokoava esimerkki':
+Rivi 12: Päätason aliohjelmakutsu 'math.sqrt()' ei viittaa tiedoston pääohjelmaan.
+Rivi 13: Päätason aliohjelmakutsu 'datetime.datetime.strptime()' ei viittaa tiedoston pääohjelmaan.
+
+Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
+================================================================================
+E:/GitHub/ASPA/tests/MR_file_structure\MR3-1_MR4_from_module_imported_again.py
+MR3-1_MR4_from_module_imported_again.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Aliohjelmat':
+Rivi 14: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+
+Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
+
+Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
+
+Kirjaston käyttö, tyylirikkeitä havaittu, ole hyvä ja katso 'Luku 8 asiat kokoava esimerkki':
+Rivi 12: Kirjaston 'datetime' sisällytys (eng. import) ei ole päätasolla.
+Rivi 14: Kirjastosta 'math' sisällytetään sisältöä uudelleen.
+Rivi 12: Kirjastosta 'datetime' sisällytetään sisältöä uudelleen.
+Rivi 9: Kirjastosta 'random' sisällytetään sisältöä uudelleen.
+
+Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
+================================================================================
+E:/GitHub/ASPA/tests/MR_file_structure\MR3_MR4_module_imported_again.py
+MR3_MR4_module_imported_again.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Aliohjelmat':
+Rivi 12: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+
+Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
+
+Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
+
+Kirjaston käyttö, tyylirikkeitä havaittu, ole hyvä ja katso 'Luku 8 asiat kokoava esimerkki':
+Rivi 10: Kirjaston 'datetime' sisällytys (eng. import) ei ole päätasolla.
+Rivi 12: Kirjasto 'math' sisällytetään (eng. import) uudelleen.
+Rivi 10: Kirjasto 'datetime' sisällytetään (eng. import) uudelleen.
+
+Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
+================================================================================
+E:/GitHub/ASPA/tests/MR_file_structure\MR5_header_comments_correct.py
+MR5_header_comments_correct.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat: Ei tunnistettu tyylirikkomuksia.
+
+Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
+
+Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
+
+Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
+
+Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
+================================================================================
+E:/GitHub/ASPA/tests/MR_file_structure\MR5_header_comments_wrong1.py
+MR5_header_comments_wrong1.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat: Ei tunnistettu tyylirikkomuksia.
+
+Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
+
+Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
+
+Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
+
+Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
+================================================================================
+E:/GitHub/ASPA/tests/MR_file_structure\MR5_header_comments_wrong2.py
+MR5_header_comments_wrong2.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat: Ei tunnistettu tyylirikkomuksia.
+
+Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
+
+Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
+
+Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
+
+Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
+================================================================================
+E:/GitHub/ASPA/tests/MR_file_structure\MR5_header_comments_wrong3.py
+MR5_header_comments_wrong3.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat: Ei tunnistettu tyylirikkomuksia.
+
+Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
+
+Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
+
+Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
+
+Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.

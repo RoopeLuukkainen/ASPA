@@ -1,0 +1,268 @@
+2020-12-15_13-19-15
+================================================================================
+E:/GitHub/ASPA/tests/MR_file_structure\MR1_element_order_correct.py
+MR1_element_order_correct.py
+
+Basic commands: No violations detected.
+
+Functions: No violations detected.
+
+File handling: No violations detected.
+
+Data structures: No violations detected.
+
+Library usage: No violations detected.
+
+Exception handling: No violations detected.
+================================================================================
+E:/GitHub/ASPA/tests/MR_file_structure\MR1_element_order_wrong1.py
+MR1_element_order_wrong1.py
+
+Basic commands: No violations detected.
+
+Functions, violations detected please see Liite 5 'Aliohjelmat':
+Line 16: Statement seem to be in wrong location.
+Line 17: Statement seem to be in wrong location.
+Line 18: Statement seem to be in wrong location.
+Line 19: Statement seem to be in wrong location.
+Line 22: Statement seem to be in wrong location.
+
+File handling: No violations detected.
+
+Data structures: No violations detected.
+
+Library usage: No violations detected.
+
+Exception handling: No violations detected.
+================================================================================
+E:/GitHub/ASPA/tests/MR_file_structure\MR1_element_order_wrong2.py
+MR1_element_order_wrong2.py
+
+Basic commands: No violations detected.
+
+Functions, violations detected please see Liite 5 'Aliohjelmat':
+Line 20: Statement seem to be in wrong location.
+
+File handling: No violations detected.
+
+Data structures: No violations detected.
+
+Library usage: No violations detected.
+
+Exception handling: No violations detected.
+================================================================================
+E:/GitHub/ASPA/tests/MR_file_structure\MR1_element_order_wrong3.py
+MR1_element_order_wrong3.py
+
+Basic commands: No violations detected.
+
+Functions, violations detected please see Liite 5 'Aliohjelmat':
+Line 17: Statement seem to be in wrong location.
+Line 20: Statement seem to be in wrong location.
+Line 23: Statement seem to be in wrong location.
+
+File handling: No violations detected.
+
+Data structures: No violations detected.
+
+Library usage: No violations detected.
+
+Exception handling: No violations detected.
+================================================================================
+E:/GitHub/ASPA/tests/MR_file_structure\MR1_element_order_wrong4.py
+MR1_element_order_wrong4.py
+
+Basic commands: No violations detected.
+
+Functions, violations detected please see Liite 5 'Aliohjelmat':
+Line 39: Statement seem to be in wrong location.
+
+File handling: No violations detected.
+
+Data structures: No violations detected.
+
+Library usage: No violations detected.
+
+Exception handling: No violations detected.
+================================================================================
+E:/GitHub/ASPA/tests/MR_file_structure\MR1_element_order_wrong5.py
+MR1_element_order_wrong5.py
+
+Basic commands: No violations detected.
+
+Functions, violations detected please see Liite 5 'Aliohjelmat':
+Line 11: Statement seem to be in wrong location.
+Line 26: Statement seem to be in wrong location.
+Line 40: Statement seem to be in wrong location.
+
+File handling: No violations detected.
+
+Data structures: No violations detected.
+
+Library usage: No violations detected.
+
+Exception handling: No violations detected.
+================================================================================
+E:/GitHub/ASPA/tests/MR_file_structure\MR1_element_order_wrong6.py
+MR1_element_order_wrong6.py
+
+Basic commands: No violations detected.
+
+Functions, violations detected please see Liite 5 'Aliohjelmat':
+Line 9: Statement seem to be in wrong location.
+Line 16: Statement seem to be in wrong location.
+Line 20: Statement seem to be in wrong location.
+Line 23: Statement seem to be in wrong location.
+Line 27: Statement seem to be in wrong location.
+Line 30: Statement seem to be in wrong location.
+Line 33: Statement seem to be in wrong location.
+Line 37: Statement seem to be in wrong location.
+Line 40: Statement seem to be in wrong location.
+Line 41: Statement seem to be in wrong location.
+Line 42: Statement seem to be in wrong location.
+Line 43: Statement seem to be in wrong location.
+
+File handling: No violations detected.
+
+Data structures: No violations detected.
+
+Library usage: No violations detected.
+
+Exception handling: No violations detected.
+================================================================================
+E:/GitHub/ASPA/tests/MR_file_structure\MR2-3_global_scope_call.py
+MR2-3_global_scope_call.py
+
+Basic commands: No violations detected.
+
+Functions, violations detected please see Liite 5 'Aliohjelmat':
+Line 13: Statement seem to be in wrong location.
+Line 14: Statement seem to be in wrong location.
+
+File handling: No violations detected.
+
+Data structures: No violations detected.
+
+Library usage, violations detected please see 'Luku 8 asiat kokoava esimerkki':
+Line 13: Function call 'MR2_3()' is 2 function call at the global scope. There should be only one (1) function call 'paaohjelma()'.
+Line 14: Function call 'MR2_3()' is 3 function call at the global scope. There should be only one (1) function call 'paaohjelma()'.
+
+Exception handling: No violations detected.
+================================================================================
+E:/GitHub/ASPA/tests/MR_file_structure\MR2-4_not_main_function_call.py
+MR2-4_not_main_function_call.py
+
+Basic commands: No violations detected.
+
+Functions, violations detected please see Liite 5 'Aliohjelmat':
+Line 12: Statement seem to be in wrong location.
+Line 13: Statement seem to be in wrong location.
+
+File handling: No violations detected.
+
+Data structures: No violations detected.
+
+Library usage, violations detected please see 'Luku 8 asiat kokoava esimerkki':
+Line 12: Function call 'math.sqrt()' at the global scope does not call themain function.
+Line 13: Function call 'datetime.datetime.strptime()' at the global scope does not call themain function.
+
+Exception handling: No violations detected.
+================================================================================
+E:/GitHub/ASPA/tests/MR_file_structure\MR3-1_MR4_from_module_imported_again.py
+MR3-1_MR4_from_module_imported_again.py
+
+Basic commands: No violations detected.
+
+Functions, violations detected please see Liite 5 'Aliohjelmat':
+Line 14: Statement seem to be in wrong location.
+
+File handling: No violations detected.
+
+Data structures: No violations detected.
+
+Library usage, violations detected please see 'Luku 8 asiat kokoava esimerkki':
+Line 12: Import of the module 'datetime' is not at the global scope.
+Line 14: From module 'math' function(s) or module(s) are imported again.
+Line 12: From module 'datetime' function(s) or module(s) are imported again.
+Line 9: From module 'random' function(s) or module(s) are imported again.
+
+Exception handling: No violations detected.
+================================================================================
+E:/GitHub/ASPA/tests/MR_file_structure\MR3_MR4_module_imported_again.py
+MR3_MR4_module_imported_again.py
+
+Basic commands: No violations detected.
+
+Functions, violations detected please see Liite 5 'Aliohjelmat':
+Line 12: Statement seem to be in wrong location.
+
+File handling: No violations detected.
+
+Data structures: No violations detected.
+
+Library usage, violations detected please see 'Luku 8 asiat kokoava esimerkki':
+Line 10: Import of the module 'datetime' is not at the global scope.
+Line 12: Module 'math' is imported again.
+Line 10: Module 'datetime' is imported again.
+
+Exception handling: No violations detected.
+================================================================================
+E:/GitHub/ASPA/tests/MR_file_structure\MR5_header_comments_correct.py
+MR5_header_comments_correct.py
+
+Basic commands: No violations detected.
+
+Functions: No violations detected.
+
+File handling: No violations detected.
+
+Data structures: No violations detected.
+
+Library usage: No violations detected.
+
+Exception handling: No violations detected.
+================================================================================
+E:/GitHub/ASPA/tests/MR_file_structure\MR5_header_comments_wrong1.py
+MR5_header_comments_wrong1.py
+
+Basic commands: No violations detected.
+
+Functions: No violations detected.
+
+File handling: No violations detected.
+
+Data structures: No violations detected.
+
+Library usage: No violations detected.
+
+Exception handling: No violations detected.
+================================================================================
+E:/GitHub/ASPA/tests/MR_file_structure\MR5_header_comments_wrong2.py
+MR5_header_comments_wrong2.py
+
+Basic commands: No violations detected.
+
+Functions: No violations detected.
+
+File handling: No violations detected.
+
+Data structures: No violations detected.
+
+Library usage: No violations detected.
+
+Exception handling: No violations detected.
+================================================================================
+E:/GitHub/ASPA/tests/MR_file_structure\MR5_header_comments_wrong3.py
+MR5_header_comments_wrong3.py
+
+Basic commands: No violations detected.
+
+Functions: No violations detected.
+
+File handling: No violations detected.
+
+Data structures: No violations detected.
+
+Library usage: No violations detected.
+
+Exception handling: No violations detected.

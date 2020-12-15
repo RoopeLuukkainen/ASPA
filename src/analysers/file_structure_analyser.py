@@ -27,20 +27,20 @@ class FileStructureAnalyser(ast.NodeVisitor):
         # file.__doc__ could be used to check docstring.
         # Could use regex to match 10 lines and find words from there.
 
-        author = student_no = date = coop = False
+        author = student_num = date = coop = False
         for line in content.split("\n", n)[:n]:
             # Could add error for each of missing words (then use regex)
             line = line.strip()
             if("Tekijä" in line):
                 author = True
             elif("Opiskelijanumero" in line):
-                student_no = True
+                student_num = True
             elif("Päivämäärä" in line):
                 date = True
             elif("Yhteistyö" in line):
                 coop = True
 
-            if(author and student_no and date and coop):
+            if(author and student_num and date and coop):
                 break
         else:
             self.model.add_msg("MR5", n, lineno=1)
@@ -55,14 +55,26 @@ class FileStructureAnalyser(ast.NodeVisitor):
             if(hasattr(node, "value") and isinstance(node.value, ast.Call)):
                 call_count += 1
                 try:
-                    if(node.value.func.id in fun_list and call_count > 1):
-                        self.model.add_msg("MR2-3", node.value.func.id, call_count, lineno=node.lineno)
+                    name = a_utils.get_attribute_name(node.value.func)
+                    if(name in fun_list and call_count > 1):
+                        self.model.add_msg(
+                            "MR2-3",
+                            name,
+                            call_count,
+                            lineno=node.lineno
+                        )
                 except AttributeError:
                     pass
 
                 try:  # TODO: Check that node is not class which has the main function in it
                     if(isinstance(node.value.func, ast.Attribute)):
-                        self.model.add_msg("MR2-4", node.value.func.value.id, node.value.func.attr, lineno=node.lineno)
+                            # node.value.func.value.id,
+                            # node.value.func.attr,
+                        self.model.add_msg(
+                            "MR2-4",
+                            a_utils.get_attribute_name(node.value.func),
+                            lineno=node.lineno
+                        )
                 except AttributeError:
                     pass
 
