@@ -1,0 +1,72 @@
+2020-12-15_13-49-51
+================================================================================
+E:/GitHub/ASPA/tests/PK_exception_handling\PK1-1_missing_exception_type.py
+PK1-1_missing_exception_type.py
+
+Basic commands: No violations detected.
+
+Functions: No violations detected.
+
+File handling: No violations detected.
+
+Data structures: No violations detected.
+
+Library usage: No violations detected.
+
+Exception handling, violations detected please see Liite 5 'Poikkeukset':
+Line 10: Missing exception type.
+================================================================================
+E:/GitHub/ASPA/tests/PK_exception_handling\PK1_only_one_except_branch.py
+PK1_only_one_except_branch.py
+
+Basic commands: No violations detected.
+
+Functions: No violations detected.
+
+File handling: No violations detected.
+
+Data structures: No violations detected.
+
+Library usage: No violations detected.
+
+Exception handling: No violations detected.
+================================================================================
+E:/GitHub/ASPA/tests/PK_exception_handling\PK3_file_open_miss_exception_handling.py
+PK3_file_open_miss_exception_handling.py
+
+Basic commands: No violations detected.
+
+Functions: No violations detected.
+
+File handling, violations detected please see Liite 5 'Tiedostoon kirjoittaminen' 'Tiedostosta lukeminen':
+Line 21: In this course usage of 'with open' is not recommended.
+Line 31: In this course usage of 'with open' is not recommended.
+
+Data structures: No violations detected.
+
+Library usage: No violations detected.
+
+Exception handling, violations detected please see Liite 5 'Poikkeukset':
+Line 26: Missing exception handling from the file opening.
+Line 28: Missing exception handling from the file opening.
+Line 31: Missing exception handling from the file opening.
+================================================================================
+E:/GitHub/ASPA/tests/PK_exception_handling\PK4_file_operation_miss_exception_handling.py
+PK4_file_operation_miss_exception_handling.py
+
+Basic commands: No violations detected.
+
+Functions: No violations detected.
+
+File handling: No violations detected.
+
+Data structures: No violations detected.
+
+Library usage: No violations detected.
+
+Exception handling, violations detected please see Liite 5 'Poikkeukset':
+Line 15: Missing exception handling from the file operation 't.fhandle.write'.
+Line 23: Missing exception handling from the file operation 'f.readline'.
+Line 24: Missing exception handling from the file operation 'f.read'.
+Line 25: Missing exception handling from the file operation 'f.readlines'.
+Line 26: Missing exception handling from the file operation 'for _ in f'.
