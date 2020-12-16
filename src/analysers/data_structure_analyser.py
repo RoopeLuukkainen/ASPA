@@ -1,5 +1,6 @@
 """Class file. Contains DataStructureAnalyser class."""
 import ast
+import copy
 
 import src.analysers.analysis_utils as a_utils
 
@@ -7,16 +8,35 @@ class DataStructureAnalyser(ast.NodeVisitor):
    # Initialisations
     def __init__(self, model):
         self.model = model
-        self._local_objects = []
+        self._local_objects = dict()
         self._list_addition_attributes = {"append", "extend", "insert"}
 
    # General methods
     def _detect_objects(self, tree):
-        self._local_objects.clear()
+        _objects = list()
+
         classes = self.model.get_class_dict().keys()
         parent = tree.name
 
+        # temp_tree = copy.deepcopy(tree)
+
+        # Linenumber are positive therefore this inactivate skip
+        skip_end = -1
         for node in ast.walk(tree):
+
+            # Used to skip nested functions and classes
+            try:
+                if(skip_end >= node.lineno):
+                    continue
+                elif(isinstance(node,
+                        (ast.ClassDef, ast.FunctionDef, ast.AsyncFunctionDef))
+                        and node is not tree):
+                    skip_end = node.end_lineno
+                    continue
+            except AttributeError:
+                continue
+
+            # Object detection
             try:
                 name = node.value.func.id
                 if(isinstance(node, ast.Assign)
@@ -24,9 +44,11 @@ class DataStructureAnalyser(ast.NodeVisitor):
                         or (f"{parent}.{name}" in classes))):
 
                     for i in node.targets:
-                        self._local_objects.append(a_utils.get_attribute_name(i))
+                        _objects.append(a_utils.get_attribute_name(i))
             except AttributeError:
                 pass
+
+        self._local_objects[tree] = _objects
         return None
 
    # Visits
@@ -50,7 +72,7 @@ class DataStructureAnalyser(ast.NodeVisitor):
         # Object creation without parenthesis
         try:
             name = node.value.id
-            parent = a_utils.get_parent_instance(node, 
+            parent = a_utils.get_parent_instance(node,
                 (ast.ClassDef, ast.FunctionDef, ast.AsyncFunctionDef))
 
             if(name in classes or f"{parent.name}.{name}" in classes):
@@ -66,7 +88,7 @@ class DataStructureAnalyser(ast.NodeVisitor):
         """
         # Col offset should detect every class definition which is indended
         if(node.col_offset > 0
-                or a_utils.get_parent_instance(node, 
+                or a_utils.get_parent_instance(node,
                 (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)) is not None):
             self.model.add_msg("TR2-3", node.name, lineno=node.lineno)
 
@@ -89,12 +111,14 @@ class DataStructureAnalyser(ast.NodeVisitor):
         """
         """
 
-        # The check of adding object's attribute to the list is only done when 
+        # The check of adding object's attribute to the list is only done when
         # it is done inside a loop
         if(a_utils.get_parent_instance(node, (ast.While, ast.For))):
+            func = a_utils.get_parent_instance(node,
+                    (ast.FunctionDef, ast.AsyncFunctionDef))
             try:
                 name = a_utils.get_attribute_name(node.value)
-                if(name in self._local_objects):
+                if(name in self._local_objects[func]):
                     parent = a_utils.get_parent_instance(node, (ast.List, ast.Call))
 
                     # This detect list_name += [...] and list_name = list_name + [...]
@@ -104,16 +128,16 @@ class DataStructureAnalyser(ast.NodeVisitor):
 
                     # This detect list_name.append() and list_name.insert()
                     # and in some cases list_name.extend()
-                    elif(isinstance(parent, ast.Call) 
+                    elif(isinstance(parent, ast.Call)
                             and isinstance(parent.func, (ast.Attribute))
                             and parent.func.attr in self._list_addition_attributes):
                         self.model.add_msg("TR3-1", lineno=node.lineno)
-        
+
                     #  This detect all cases inside list(...)-call
                     elif(isinstance(parent, ast.Call) and parent.func.id == "list"):
                         self.model.add_msg("TR3-1", lineno=node.lineno)
 
-            except AttributeError:
+            except (AttributeError, KeyError):
                 pass
 
         self.generic_visit(node)

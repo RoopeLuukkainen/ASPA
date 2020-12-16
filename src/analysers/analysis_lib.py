@@ -356,4 +356,6 @@ class Model:
         print(ast.dump(tree, include_attributes=True))
         print()
         print(ast.dump(tree, include_attributes=False))
+        print()
+        print(ast.dump(tree, annotate_fields=False, include_attributes=False))
         utils.create_dash()
