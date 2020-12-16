@@ -108,7 +108,8 @@ class DataStructureAnalyser(ast.NodeVisitor):
         self.generic_visit(node)
 
     def visit_Attribute(self, node, *args, **kwargs):
-        """
+        """Method to check
+        1. Object attributes are added into a list inside a loop.
         """
 
         # The check of adding object's attribute to the list is only done when
