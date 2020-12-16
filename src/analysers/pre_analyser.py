@@ -63,16 +63,15 @@ class PreAnalyser(ast.NodeVisitor):
             name.clear()
             try:
                 if(isinstance(var, ast.Attribute)):
-                    # name.append(var.value.id)
-                    # print(f"{var.lineno} - {var.value.id} - A")
                     pass
+
                 elif(isinstance(var, ast.Tuple)):
                     for i in var.elts:
                         name.append(i.id)
-                        # print(f"{var.lineno} - {i.id} - T")
+
                 else:
                     name.append(var.id)
-                    # print(f"{var.lineno} - {var.id} - else")
+
             except AttributeError:
                 pass
             return name
@@ -90,6 +89,9 @@ class PreAnalyser(ast.NodeVisitor):
                 elif(var.col_offset == 0 
                         or a_utils.get_parent_instance(node,
                         (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)) is None):
+
+                    # TODO: imporove this to detect tuples created with 
+                    # tuple(), which is Call not Tuple
                     if(isinstance(node.value, (ast.Constant, ast.Tuple))):
                         self.constant_dict[name] = templates.GlobalTemplate(
                                                         name,
