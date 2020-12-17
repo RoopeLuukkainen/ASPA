@@ -1,24 +1,22 @@
 """Class file. Contains DataStructureAnalyser class."""
 import ast
-import copy
 
-import src.analysers.analysis_utils as a_utils
+import src.analysers.analysis_utils as au
+import src.config.templates as templates
 
 class DataStructureAnalyser(ast.NodeVisitor):
    # Initialisations
     def __init__(self, model):
         self.model = model
-        self._local_objects = dict()
+        self._local_objects = {}
         self._list_addition_attributes = {"append", "extend", "insert"}
 
    # General methods
     def _detect_objects(self, tree):
-        _objects = list()
+        _objects = []
 
         classes = self.model.get_class_dict().keys()
         parent = tree.name
-
-        # temp_tree = copy.deepcopy(tree)
 
         # Linenumber are positive therefore this inactivate skip
         skip_end = -1
@@ -44,12 +42,58 @@ class DataStructureAnalyser(ast.NodeVisitor):
                         or (f"{parent}.{name}" in classes))):
 
                     for i in node.targets:
-                        _objects.append(a_utils.get_attribute_name(i))
+                        # _objects.append(au.get_attribute_name(i))
+                        # print(1)
+                        # print(ast.dump(i, include_attributes=True), node.lineno)
+                        _objects.append(
+                            templates.ObjectTemplate(
+                                au.get_attribute_name(i),
+                                node.lineno,
+                                i
+                            )
+                        )
+                        # print()
             except AttributeError:
                 pass
 
         self._local_objects[tree] = _objects
         return None
+
+    def _get_local_object_names(self, func=None):
+        """
+        Method to return names of the objects within given function. If
+        no func-argument is given search objects from every function.
+
+        Names are returned as a list of strings.
+        """
+        names = []
+        if(func):
+            for i in self._local_objects[func]:
+                names.append(i.name)
+        else:
+            for value in self._local_objects.values():
+                for i in value:
+                    names.append(i.name)
+        return names
+
+    def _get_object_by_name(self, obj_name, func=None):
+        """
+        Method to return the first object with given name obj_name. If
+        func-argument is given search objects only from that function.
+        """
+        obj = None
+        if(func):
+            for i in self._local_objects[func]:
+                if(i.name == obj_name):
+                    obj = i
+                    break
+        else:
+            for value in self._local_objects.values():
+                for i in value:
+                    if(i.name == obj_name):
+                        obj = i
+                        break
+        return obj
 
    # Visits
     def visit_Assign(self, node, *args, **kwargs):
@@ -57,28 +101,78 @@ class DataStructureAnalyser(ast.NodeVisitor):
         1. Direct usage of CLASS variables via class itself.
         2. Assiging CLASS to variable, i.e. object = CLASS <without parenthesis>
         """
-        # Usaging class directly without an object
-        # NOTE: identical to detection AR-7, i.e. assigning attribute to function.
         classes = self.model.get_class_dict().keys()
 
+        # Using class directly without an object
+        # NOTE: identical to detection AR-7, i.e. assigning attribute to function.
         try:
             for var in node.targets[:]:
-                name = a_utils.get_attribute_name(var, splitted=True)
+                name = au.get_attribute_name(var, splitted=True)
                 if(isinstance(var, ast.Attribute) and name[0] in classes):
                     self.model.add_msg("TR2-1", ".".join(name), lineno=var.lineno)
         except AttributeError:
             pass
 
-        # Object creation without parenthesis
+        # Object creation without parenthesis, work when assigned value
+        # i.e. node.value is class name.
         try:
-            name = node.value.id
-            parent = a_utils.get_parent_instance(node,
+            name = au.get_attribute_name(node.value)
+            parent = au.get_parent_instance(node,
                 (ast.ClassDef, ast.FunctionDef, ast.AsyncFunctionDef))
 
             if(name in classes or f"{parent.name}.{name}" in classes):
                 self.model.add_msg("TR2-2", name, lineno=node.lineno)
         except AttributeError:
             pass
+
+        # Object creation outside a loop and object (attribute) values
+        # are assigned inside the loop and then object is put into a
+        # list.
+        for i in node.targets:
+            try:
+                # Check if value is assigned to an object (or other attribute)
+                if(not isinstance(i, ast.Attribute)):
+                    continue
+
+                loop = au.get_parent_instance(node,
+                    (ast.While, ast.For))
+
+                # Check if assign is inside a loop, if not no other
+                # target can be inside a loop either.
+                if(not loop):
+                    break
+
+                func = au.get_parent_instance(node,
+                    (ast.FunctionDef, ast.AsyncFunctionDef))
+                name_list = au.get_attribute_name(i, splitted=True)
+                obj = self._get_object_by_name(".".join(name_list[:-1]), func)
+                loop2 = au.get_parent_instance(obj.astree, (ast.While, ast.For))
+
+                # Check if the object is created in same function as
+                # value is assigned to its attribute but creation is not
+                # in the same loop.
+                if(not obj or (loop2 == loop)):
+                    continue
+
+                # TODO: This is now done everytime object attribute is
+                # assigned inside loop. Optimize this such that objects
+                # are first gathered and then only one walk to check all
+                # of them.
+                for elem in ast.walk(loop):
+                    try:
+                        if((obj.name == au.get_attribute_name(elem))
+                            and au.is_added_to_data_structure(
+                                elem,
+                                ast.List,
+                                "list",
+                                self._list_addition_attributes
+                            )
+                        ):
+                            self.model.add_msg("TR3-2", lineno=obj.lineno)
+                    except AttributeError:
+                        pass
+            except AttributeError:
+                pass
 
         self.generic_visit(node)
 
@@ -88,7 +182,7 @@ class DataStructureAnalyser(ast.NodeVisitor):
         """
         # Col offset should detect every class definition which is indended
         if(node.col_offset > 0
-                or a_utils.get_parent_instance(node,
+                or au.get_parent_instance(node,
                 (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)) is not None):
             self.model.add_msg("TR2-3", node.name, lineno=node.lineno)
 
@@ -114,30 +208,21 @@ class DataStructureAnalyser(ast.NodeVisitor):
 
         # The check of adding object's attribute to the list is only done when
         # it is done inside a loop
-        if(a_utils.get_parent_instance(node, (ast.While, ast.For))):
-            func = a_utils.get_parent_instance(node,
+        if(au.get_parent_instance(node, (ast.While, ast.For))):
+            func = au.get_parent_instance(node,
                     (ast.FunctionDef, ast.AsyncFunctionDef))
             try:
-                name = a_utils.get_attribute_name(node.value)
-                if(name in self._local_objects[func]):
-                    parent = a_utils.get_parent_instance(node, (ast.List, ast.Call))
+                name = au.get_attribute_name(node.value)
 
-                    # This detect list_name += [...] and list_name = list_name + [...]
-                    # and cases with extend where list_name.extend([...])
-                    if(isinstance(parent, ast.List)):
-                        self.model.add_msg("TR3-1", lineno=node.lineno)
-
-                    # This detect list_name.append() and list_name.insert()
-                    # and in some cases list_name.extend()
-                    elif(isinstance(parent, ast.Call)
-                            and isinstance(parent.func, (ast.Attribute))
-                            and parent.func.attr in self._list_addition_attributes):
-                        self.model.add_msg("TR3-1", lineno=node.lineno)
-
-                    #  This detect all cases inside list(...)-call
-                    elif(isinstance(parent, ast.Call) and parent.func.id == "list"):
-                        self.model.add_msg("TR3-1", lineno=node.lineno)
-
+                if(name in self._get_local_object_names(func)
+                    and au.is_added_to_data_structure(
+                        node,
+                        ast.List,
+                        "list",
+                        self._list_addition_attributes
+                    )
+                ):
+                    self.model.add_msg("TR3-1", lineno=node.lineno)
             except (AttributeError, KeyError):
                 pass
 

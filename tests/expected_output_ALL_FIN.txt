@@ -1,4 +1,4 @@
-2020-12-17_11-03-54
+2020-12-17_15-47-32
 ================================================================================
 E:/GitHub/ASPA/tests\AR_functions\AR1_no_paaohjelma.py
 AR1_no_paaohjelma.py
@@ -855,6 +855,39 @@ Rivi 52: Olion attribuutti lisätään listaan silmukan sisällä.
 Rivi 82: Olion attribuutti lisätään listaan silmukan sisällä.
 Rivi 91: Luokkaa 'FAKE' ei ole määritelty päätasolla.
 Rivi 103: Olion attribuutti lisätään listaan silmukan sisällä.
+
+Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
+
+Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
+================================================================================
+E:/GitHub/ASPA/tests\TR_data_structure\TR3-2_object_outside_loop.py
+TR3-2_object_outside_loop.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat: Ei tunnistettu tyylirikkomuksia.
+
+Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
+
+Tietorakenteet, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Aliohjelmat' 'Listan käsittely' 'Monimutkaisempi tietorakenne':
+Rivi 12: Olion luonti silmukan ulkopuolella, mutta arvojen päivitys ja listaan lisääminen silmukassa.
+Rivi 12: Olion luonti silmukan ulkopuolella, mutta arvojen päivitys ja listaan lisääminen silmukassa.
+Rivi 12: Olion luonti silmukan ulkopuolella, mutta arvojen päivitys ja listaan lisääminen silmukassa.
+Rivi 12: Olion luonti silmukan ulkopuolella, mutta arvojen päivitys ja listaan lisääminen silmukassa.
+Rivi 12: Olion luonti silmukan ulkopuolella, mutta arvojen päivitys ja listaan lisääminen silmukassa.
+Rivi 12: Olion luonti silmukan ulkopuolella, mutta arvojen päivitys ja listaan lisääminen silmukassa.
+Rivi 12: Olion luonti silmukan ulkopuolella, mutta arvojen päivitys ja listaan lisääminen silmukassa.
+Rivi 12: Olion luonti silmukan ulkopuolella, mutta arvojen päivitys ja listaan lisääminen silmukassa.
+Rivi 12: Olion luonti silmukan ulkopuolella, mutta arvojen päivitys ja listaan lisääminen silmukassa.
+Rivi 13: Olion luonti silmukan ulkopuolella, mutta arvojen päivitys ja listaan lisääminen silmukassa.
+Rivi 13: Olion luonti silmukan ulkopuolella, mutta arvojen päivitys ja listaan lisääminen silmukassa.
+Rivi 13: Olion luonti silmukan ulkopuolella, mutta arvojen päivitys ja listaan lisääminen silmukassa.
+Rivi 13: Olion luonti silmukan ulkopuolella, mutta arvojen päivitys ja listaan lisääminen silmukassa.
+Rivi 13: Olion luonti silmukan ulkopuolella, mutta arvojen päivitys ja listaan lisääminen silmukassa.
+Rivi 13: Olion luonti silmukan ulkopuolella, mutta arvojen päivitys ja listaan lisääminen silmukassa.
+Rivi 13: Olion luonti silmukan ulkopuolella, mutta arvojen päivitys ja listaan lisääminen silmukassa.
+Rivi 13: Olion luonti silmukan ulkopuolella, mutta arvojen päivitys ja listaan lisääminen silmukassa.
+Rivi 13: Olion luonti silmukan ulkopuolella, mutta arvojen päivitys ja listaan lisääminen silmukassa.
 
 Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
 

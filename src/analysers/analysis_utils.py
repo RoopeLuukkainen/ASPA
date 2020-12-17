@@ -1,9 +1,11 @@
 """Library containing utility functions for static analysers."""
+
 import ast
 
 # AST improvement utilities
 def add_parents(tree):
     """Function to add parent_node attribute to each node in AST."""
+
     for node in ast.walk(tree):
         for child_node in ast.iter_child_nodes(node):
             child_node.parent_node = node
@@ -18,7 +20,7 @@ def add_siblings(tree):
 
     NOTE 1:
     Useful iterable bodies are body, orelse, handlers and finalbody,
-    however, also type_ignores, decorator_list, argument lists (e.g. 
+    however, also type_ignores, decorator_list, argument lists (e.g.
     args and kw_defaults) will get sibling attributes.
 
     NOTE 2:
@@ -26,11 +28,12 @@ def add_siblings(tree):
     elements and this creates attribute error when trying to assign
     values to next_sibling and previous_sibling attrbutes.
     """
+
     for node in ast.walk(tree):
         for field in ast.iter_fields(node): # Yield a tuple of (fieldname, value)
 
-            # There could be check that name of the field is either 
-            # body, orelse, handlers or finalbody 
+            # There could be check that name of the field is either
+            # body, orelse, handlers or finalbody
             # but not in 'names' used in Global node.
             if(isinstance(field[1], (list, tuple))):
                 previous_sibling = last = None
@@ -42,7 +45,7 @@ def add_siblings(tree):
                         child_node.previous_sibling = previous_sibling
                         previous_sibling = last = child_node
 
-                    # This error may occur e.g. when 
+                    # This error may occur e.g. when
                     #   'str' object has no attribute 'previous_sibling'
                     # which is case e.g. with global-keyword creating node
                     #   Global(names=['with_global_keyword']),
@@ -68,14 +71,15 @@ def add_siblings(tree):
 # AST search utilities
 def get_parent_instance(node, allowed, denied=tuple()):
     """
-    Function to get parent instance of a node. 
+    Function to get parent instance of a node.
     'allowed' argument defines type of the desired parent, it should be
     any of the ast node types and can be tuple. Optional argument '
     denied' defines not allowed parents as ast node types.
-    
-    If allowed type is found, returns found node, if denied type is 
+
+    If allowed type is found, returns found node, if denied type is
     found first or neither of them is found returns None.
     """
+
     temp = node
     parent = None
     while(hasattr(temp, "parent_node") and not isinstance(temp, denied)):
@@ -104,10 +108,11 @@ def get_child_instance(node, allowed, denied=tuple()):
     'allowed' argument defines type of the desired child, it should be
     any of the ast node types and can be tuple. Optional argument '
     denied' defines not allowed children as ast node types.
-    
-    If allowed type is found, returns found node, if denied type is 
+
+    If allowed type is found, returns found node, if denied type is
     found first or neither of them is found returns None.
     """
+
     child = None
     for child_node in ast.walk(node):
         if(isinstance(child_node, allowed)):
@@ -117,7 +122,7 @@ def get_child_instance(node, allowed, denied=tuple()):
             break
     return child
 
-
+# AST tests and gets
 def is_always_true(test):
     """
     Function to define cases where conditional test is always true.
@@ -125,6 +130,7 @@ def is_always_true(test):
     value.
     TODO: Add more always true cases.
     """
+
     is_true = False
     try:
         if(isinstance(test, ast.Constant) and test.value == True):
@@ -132,6 +138,33 @@ def is_always_true(test):
     except AttributeError:
         pass
     return is_true
+
+
+def is_added_to_data_structure(node, data_stuct_node, data_stuct_name, add_attrs):
+    """Helper function to detect if node is added to a datastucture.
+    So far tested and commented only with ast.List.
+    """
+
+    is_added = False
+    parent = get_parent_instance(node, (data_stuct_node, ast.Call))
+
+    # This detect list_name += [...] and list_name = list_name + [...]
+    # and cases with extend where list_name.extend([...])
+    if(isinstance(parent, data_stuct_node)):
+        is_added = True
+
+    # This detect list_name.append() and list_name.insert()
+    # and in some cases list_name.extend()
+    elif(isinstance(parent, ast.Call)
+            and isinstance(parent.func, (ast.Attribute))
+            and parent.func.attr in add_attrs):
+        is_added = True
+
+    #  This detect all cases inside list(...)-call
+    elif(isinstance(parent, ast.Call) and parent.func.id == data_stuct_name):
+        is_added = True
+
+    return is_added
 
 
 def get_attribute_name(node, splitted=False):

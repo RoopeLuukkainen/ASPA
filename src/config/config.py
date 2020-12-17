@@ -268,7 +268,8 @@ MSG = {
         "TR2-4": ("Name of the class '{}' is not in UPPERCASE.", NOTE),
         # "TR3": ("Object created.", NOTE),
         "TR3-1": ("Object's attribute is added to a list in every loop iteration.", WARNING),
-        "TR3-2": ("Object is created outside a loop but used inside the loop.", WARNING),
+        "TR3-2": ("Object is created outside a loop but usage and addition to"
+                + "a list is inside the loop.", WARNING),
         "OK": (": No violations detected.", GOOD),
         "NOTE": (", violations detected please see", GENERAL),
         "LINE": ("Line", GENERAL),
@@ -333,7 +334,8 @@ MSG = {
         "TR2-4": ("Luokan '{}' nimi ei ole kirjoitettu SUURAAKKOSIN.", NOTE),
         # "TR3": ("Olion luonti.", NOTE),
         "TR3-1": ("Olion attribuutti lisätään listaan silmukan sisällä.", WARNING),
-        "TR3-2": ("Olion luonti silmukan ulkopuolella, mutta käyttö silmukassa.", WARNING),
+        "TR3-2": ("Olion luonti silmukan ulkopuolella, mutta arvojen päivitys"
+                + " ja listaan lisääminen silmukassa.", WARNING),
         "NOTE": (", tyylirikkeitä havaittu, ole hyvä ja katso", GENERAL),
         "OK": (": Ei tunnistettu tyylirikkomuksia.", GOOD),
         "LINE": ("Rivi", GENERAL),
