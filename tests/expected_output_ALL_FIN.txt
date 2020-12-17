@@ -1,83 +1,861 @@
-2020-11-20_14-49-23
+2020-12-17_11-03-54
 ================================================================================
-E:/GitHub/ASPA/test_files/analysis_examples.py
-analysis_examples.py
+E:/GitHub/ASPA/tests\AR_functions\AR1_no_paaohjelma.py
+AR1_no_paaohjelma.py
 
-Perustoiminnot, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Tiedon tulostaminen ruudulle' 'Tiedon lukeminen käyttäjältä' 'Valintarakenne' 'Toistorakenteet':
-Rivi 257: Koodirivejä komennon 'break' jälkeen.
-Rivi 258: Koodirivejä komennon 'continue' jälkeen.
-Rivi 259: Koodirivejä komennon 'raise' jälkeen.
-Rivi 262: Koodirivejä komennon 'quit' jälkeen.
-Rivi 263: Koodirivejä komennon 'exit' jälkeen.
-Rivi 264: Koodirivejä komennon 'sys.exit' jälkeen.
-Rivi 266: Koodirivejä komennon 'return' jälkeen.
-Rivi 281: Silmukkaa ei koskaan pysäytetä.
-Rivi 295: Nimessä 'pääohjelma' on muita kuin A-Z, 0-9 ja alaviiva merkkejä.
-Rivi 296: Nimessä 'IKÄ' on muita kuin A-Z, 0-9 ja alaviiva merkkejä.
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
 
 Aliohjelmat, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Aliohjelmat':
-Rivi 182: Aliohjelma 'foo' vaatii vähintään 2 kpl parametreja, mutta 1 lähetetty.
-Rivi 183: Aliohjelma 'foo' vaatii enintään 2 kpl parametreja, mutta 3 lähetetty.
-Rivi 184: Aliohjelma 'lib_example.fun2' vaatii vähintään 1 kpl parametreja, mutta 0 lähetetty.
-Rivi 185: Aliohjelma 'lib_example.fun2' vaatii enintään 1 kpl parametreja, mutta 2 lähetetty.
-Rivi 186: Aliohjelmakutsussa 'lib_example.fun2', 'x' on virheellinen parametrin nimi.
-Rivi 197: Palautetaan jotain muuta kuin muuttujia tai avainsana.
-Rivi 200: Palautetaan useita paluuarvoja.
-Rivi 205: Paluuarvo on vakio.
-Rivi 207: Aliohjelman 'AR6' lopusta puuttuu return-komento.
-Rivi 215: return-komennosta puuttuu paluuarvo.
-Rivi 218: Rekursiivinen aliohjelmakutsu.
-Rivi 242: Aliohjelman 'nest2' määrittely ei ole päätasolla.
-Rivi 243: Aliohjelman 'nest3' määrittely ei ole päätasolla.
-Rivi 144: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
-Rivi 145: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
-Rivi 163: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
-Rivi 225: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
-Rivi 227: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
-Rivi 231: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
-Rivi 232: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
-Rivi 309: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
-Rivi 311: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
-Rivi 325: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
-Rivi 227: Globaalimuuttuja 'e'.
-Rivi 231: Globaalimuuttuja 'variable'.
-Rivi 232: Globaalimuuttuja 'global_list'.
+Ohjelmasta ei löytynyt määrittelyä 'paaohjelma':lle.
+Rivi 13: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
 
-Tiedostonkäsittely, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Tiedostoon kirjoittaminen' 'Tiedostosta lukeminen':
-Rivi 33: Tiedosto-operaatio 'file_handle.readline' eri aliohjelmassa kuin avaus ja sulkeminen.
-Rivi 55: Tiedostokahva 'tk1_2' suljetaan except-osiossa.
-Rivi 62: Tällä kurssilla 'with open':n käyttö ei ole suositeltu rakenne.
-Rivi 117: Tiedoston sulkukomenosta 'fhandle.close' puuttuvat sulut.
-Rivi 127: Tiedosto-operaatio 'fhandle.write' eri aliohjelmassa kuin avaus ja sulkeminen.
-Rivi 128: Tiedosto-operaatio 'fhandle.writelines' eri aliohjelmassa kuin avaus ja sulkeminen.
-Rivi 85: Tiedostokahva 'obj.attr1.attr2.attr3.fhandle' on sulkematta.
-Rivi 122: Tiedostokahva 'fhandle' on sulkematta.
+Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
 
-Tietorakenteet, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Aliohjelmat' 'Listan käsittely' 'Monimutkaisempi tietorakenne':
-Rivi 14: Luokan 'c_1' nimi ei ole kirjoitettu SUURAAKKOSIN.
-Rivi 18: Luokkaa 'C_2' ei ole määritelty päätasolla.
-Rivi 20: Luokan käyttö suoraan ilman oliota 'c_1.var'.
-Rivi 21: Olion luonnista puuttuvat sulkeet. Pitäisi olla 'C_2()'.
+Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
+
+Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
+
+Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
+================================================================================
+E:/GitHub/ASPA/tests\AR_functions\AR2-1_local_scope_function.py
+AR2-1_local_scope_function.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Aliohjelmat':
+Rivi 15: Aliohjelman 'nested_method' määrittely ei ole päätasolla.
+Rivi 16: Aliohjelman 'nested_method_2' määrittely ei ole päätasolla.
+Rivi 22: Aliohjelman 'nest1' määrittely ei ole päätasolla.
+Rivi 23: Aliohjelman 'nest2' määrittely ei ole päätasolla.
+Rivi 24: Aliohjelman 'nest3' määrittely ei ole päätasolla.
+
+Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
+
+Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
+
+Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
+
+Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
+================================================================================
+E:/GitHub/ASPA/tests\AR_functions\AR3_global_object.py
+AR3_global_object.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Aliohjelmat':
+Ohjelmasta ei löytynyt määrittelyä 'paaohjelma':lle.
+Rivi 9: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+Rivi 9: Globaalimuuttuja 'global_object'.
+
+Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
+
+Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
+
+Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
+
+Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
+================================================================================
+E:/GitHub/ASPA/tests\AR_functions\AR3_global_variable.py
+AR3_global_variable.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Aliohjelmat':
+Rivi 22: Globaalimuuttuja 'with_global_keyword'.
+Rivi 22: Globaalimuuttuja 'another_global'.
+Rivi 5: Globaalimuuttuja 'variable'.
+Rivi 6: Globaalimuuttuja 'global_list'.
+Rivi 11: Globaalimuuttuja 'unless_assigned_again'.
+
+Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
+
+Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
+
+Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
+
+Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
+================================================================================
+E:/GitHub/ASPA/tests\AR_functions\AR3_global_variable_2.py
+AR3_global_variable_2.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Aliohjelmat':
+Rivi 45: Globaalimuuttuja 'a'.
+Rivi 6: Globaalimuuttuja 'abc'.
+Rivi 8: Globaalimuuttuja 'a'.
+Rivi 9: Globaalimuuttuja 'd'.
+Rivi 10: Globaalimuuttuja 'e'.
+Rivi 11: Globaalimuuttuja 'g'.
+Rivi 12: Globaalimuuttuja 'd2'.
+Rivi 13: Globaalimuuttuja 'e2'.
+Rivi 16: Globaalimuuttuja 'g2'.
+Rivi 19: Globaalimuuttuja 'j'.
+
+Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
+
+Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
+
+Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
+
+Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
+================================================================================
+E:/GitHub/ASPA/tests\AR_functions\AR4_recursive_function.py
+AR4_recursive_function.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Aliohjelmat':
+Rivi 11: Rekursiivinen aliohjelmakutsu.
+
+Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
+
+Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
+
+Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
+
+Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
+================================================================================
+E:/GitHub/ASPA/tests\AR_functions\AR5_parameters.py
+AR5_parameters.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Aliohjelmat':
+Rivi 37: Aliohjelma 'func1' vaatii vähintään 2 kpl parametreja, mutta 1 lähetetty.
+Rivi 38: Aliohjelma 'func2' vaatii vähintään 2 kpl parametreja, mutta 1 lähetetty.
+Rivi 39: Aliohjelma 'func3' vaatii vähintään 2 kpl parametreja, mutta 1 lähetetty.
+Rivi 40: Aliohjelma 'func4' vaatii vähintään 2 kpl parametreja, mutta 1 lähetetty.
+Rivi 44: Aliohjelma 'example_lib.func1' vaatii vähintään 2 kpl parametreja, mutta 1 lähetetty.
+Rivi 45: Aliohjelma 'example_lib.func2' vaatii vähintään 2 kpl parametreja, mutta 1 lähetetty.
+Rivi 46: Aliohjelma 'example_lib.func3' vaatii vähintään 2 kpl parametreja, mutta 1 lähetetty.
+Rivi 47: Aliohjelma 'example_lib.func4' vaatii vähintään 2 kpl parametreja, mutta 1 lähetetty.
+Rivi 55: Aliohjelma 'func0' vaatii enintään 0 kpl parametreja, mutta 3 lähetetty.
+Rivi 56: Aliohjelma 'func1' vaatii enintään 2 kpl parametreja, mutta 3 lähetetty.
+Rivi 60: Aliohjelma 'func5' vaatii enintään 0 kpl parametreja, mutta 3 lähetetty.
+Rivi 63: Aliohjelma 'example_lib.func1' vaatii enintään 2 kpl parametreja, mutta 3 lähetetty.
+Rivi 67: Aliohjelma 'example_lib.func5' vaatii enintään 0 kpl parametreja, mutta 3 lähetetty.
+Rivi 74: Aliohjelmakutsussa 'func2', 'd' on virheellinen parametrin nimi.
+Rivi 75: Aliohjelmakutsussa 'func3', 'd' on virheellinen parametrin nimi.
+Rivi 79: Aliohjelmakutsussa 'example_lib.func2', 'd' on virheellinen parametrin nimi.
+Rivi 80: Aliohjelmakutsussa 'example_lib.func3', 'd' on virheellinen parametrin nimi.
+
+Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
+
+Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
+
+Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
+
+Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
+================================================================================
+E:/GitHub/ASPA/tests\AR_functions\AR6-1_yield.py
+AR6-1_yield.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Aliohjelmat':
+Rivi 5: Aliohjelman 'AR6_1' lopusta puuttuu return-komento.
+
+Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
+
+Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
+
+Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
+
+Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
+================================================================================
+E:/GitHub/ASPA/tests\AR_functions\AR6_return.py
+AR6_return.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Aliohjelmat':
+Rivi 19: Aliohjelman 'AR6' lopusta puuttuu return-komento.
+Rivi 28: return-komennosta puuttuu paluuarvo.
+Rivi 31: Paluuarvo on vakio.
+Rivi 34: Paluuarvo on vakio.
+Rivi 38: Palautetaan useita paluuarvoja.
+Rivi 42: Palautetaan jotain muuta kuin muuttujia tai avainsana.
+Rivi 46: Palautetaan jotain muuta kuin muuttujia tai avainsana.
+Rivi 50: Palautetaan jotain muuta kuin muuttujia tai avainsana.
+
+Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
+
+Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
+
+Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
+
+Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
+================================================================================
+E:/GitHub/ASPA/tests\AR_functions\AR7_function_attribute.py
+AR7_function_attribute.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Aliohjelmat':
+Rivi 6: Aliohjelmalle määritetään attribuuttia 'AR7.attr'.
+Rivi 10: Aliohjelmalle määritetään attribuuttia 'AR7.another.attr.nested.attr'.
+
+Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
+
+Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
+
+Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
+
+Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
+================================================================================
+E:/GitHub/ASPA/tests\AR_functions\example_lib.py
+example_lib.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat: Ei tunnistettu tyylirikkomuksia.
+
+Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
+
+Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
+
+Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
+
+Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
+================================================================================
+E:/GitHub/ASPA/tests\MR_file_structure\MR1_element_order_correct.py
+MR1_element_order_correct.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat: Ei tunnistettu tyylirikkomuksia.
+
+Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
+
+Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
+
+Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
+
+Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
+================================================================================
+E:/GitHub/ASPA/tests\MR_file_structure\MR1_element_order_wrong1.py
+MR1_element_order_wrong1.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Aliohjelmat':
+Rivi 16: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+Rivi 17: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+Rivi 18: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+Rivi 19: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+Rivi 22: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+
+Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
+
+Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
+
+Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
+
+Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
+================================================================================
+E:/GitHub/ASPA/tests\MR_file_structure\MR1_element_order_wrong2.py
+MR1_element_order_wrong2.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Aliohjelmat':
+Rivi 20: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+
+Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
+
+Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
+
+Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
+
+Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
+================================================================================
+E:/GitHub/ASPA/tests\MR_file_structure\MR1_element_order_wrong3.py
+MR1_element_order_wrong3.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Aliohjelmat':
+Rivi 17: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+Rivi 20: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+Rivi 23: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+
+Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
+
+Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
+
+Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
+
+Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
+================================================================================
+E:/GitHub/ASPA/tests\MR_file_structure\MR1_element_order_wrong4.py
+MR1_element_order_wrong4.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Aliohjelmat':
+Rivi 39: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+
+Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
+
+Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
+
+Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
+
+Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
+================================================================================
+E:/GitHub/ASPA/tests\MR_file_structure\MR1_element_order_wrong5.py
+MR1_element_order_wrong5.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Aliohjelmat':
+Rivi 11: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+Rivi 26: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+Rivi 40: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+
+Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
+
+Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
+
+Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
+
+Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
+================================================================================
+E:/GitHub/ASPA/tests\MR_file_structure\MR1_element_order_wrong6.py
+MR1_element_order_wrong6.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Aliohjelmat':
+Rivi 9: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+Rivi 16: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+Rivi 20: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+Rivi 23: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+Rivi 27: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+Rivi 30: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+Rivi 33: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+Rivi 37: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+Rivi 40: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+Rivi 41: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+Rivi 42: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+Rivi 43: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+
+Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
+
+Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
+
+Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
+
+Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
+================================================================================
+E:/GitHub/ASPA/tests\MR_file_structure\MR2-3_global_scope_call.py
+MR2-3_global_scope_call.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Aliohjelmat':
+Rivi 13: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+Rivi 14: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+
+Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
+
+Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
 
 Kirjaston käyttö, tyylirikkeitä havaittu, ole hyvä ja katso 'Luku 8 asiat kokoava esimerkki':
-Rivi 156: Kirjaston 'sys' sisällytys (eng. import) ei ole päätasolla.
-Rivi 156: Kirjaston 'os' sisällytys (eng. import) ei ole päätasolla.
-Rivi 157: Kirjaston 'datetime' sisällytys (eng. import) ei ole päätasolla.
-Rivi 163: Kirjasto 'lib_example' sisällytetään (eng. import) uudelleen.
-Rivi 157: Kirjastosta 'datetime' sisällytetään sisältöä uudelleen.
-Rivi 311: Päätason aliohjelmakutsu 'kirjasto.aliohjelma()' ei viittaa tiedoston pääohjelmaan.
-Rivi 324: Aliohjelmakutsu 'paaohjelma()' on 3. aliohjelmakutsu. Pitäisi olla vain yksi (1) aliohjelmakutsu 'paaohjelma()'.
-Rivi 325: Aliohjelmakutsu 'MR2_3()' on 4. aliohjelmakutsu. Pitäisi olla vain yksi (1) aliohjelmakutsu 'paaohjelma()'.
+Rivi 13: Aliohjelmakutsu 'MR2_3()' on 2. aliohjelmakutsu. Pitäisi olla vain yksi (1) aliohjelmakutsu 'paaohjelma()'.
+Rivi 14: Aliohjelmakutsu 'MR2_3()' on 3. aliohjelmakutsu. Pitäisi olla vain yksi (1) aliohjelmakutsu 'paaohjelma()'.
+
+Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
+================================================================================
+E:/GitHub/ASPA/tests\MR_file_structure\MR2-4_not_main_function_call.py
+MR2-4_not_main_function_call.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Aliohjelmat':
+Rivi 12: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+Rivi 13: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+
+Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
+
+Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
+
+Kirjaston käyttö, tyylirikkeitä havaittu, ole hyvä ja katso 'Luku 8 asiat kokoava esimerkki':
+Rivi 12: Päätason aliohjelmakutsu 'math.sqrt()' ei viittaa tiedoston pääohjelmaan.
+Rivi 13: Päätason aliohjelmakutsu 'datetime.datetime.strptime()' ei viittaa tiedoston pääohjelmaan.
+
+Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
+================================================================================
+E:/GitHub/ASPA/tests\MR_file_structure\MR3-1_MR4_from_module_imported_again.py
+MR3-1_MR4_from_module_imported_again.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Aliohjelmat':
+Rivi 14: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+
+Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
+
+Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
+
+Kirjaston käyttö, tyylirikkeitä havaittu, ole hyvä ja katso 'Luku 8 asiat kokoava esimerkki':
+Rivi 12: Kirjaston 'datetime' sisällytys (eng. import) ei ole päätasolla.
+Rivi 14: Kirjastosta 'math' sisällytetään sisältöä uudelleen.
+Rivi 12: Kirjastosta 'datetime' sisällytetään sisältöä uudelleen.
+Rivi 9: Kirjastosta 'random' sisällytetään sisältöä uudelleen.
+
+Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
+================================================================================
+E:/GitHub/ASPA/tests\MR_file_structure\MR3_MR4_module_imported_again.py
+MR3_MR4_module_imported_again.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Aliohjelmat':
+Rivi 12: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+
+Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
+
+Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
+
+Kirjaston käyttö, tyylirikkeitä havaittu, ole hyvä ja katso 'Luku 8 asiat kokoava esimerkki':
+Rivi 10: Kirjaston 'datetime' sisällytys (eng. import) ei ole päätasolla.
+Rivi 12: Kirjasto 'math' sisällytetään (eng. import) uudelleen.
+Rivi 10: Kirjasto 'datetime' sisällytetään (eng. import) uudelleen.
+
+Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
+================================================================================
+E:/GitHub/ASPA/tests\MR_file_structure\MR5_header_comments_correct.py
+MR5_header_comments_correct.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat: Ei tunnistettu tyylirikkomuksia.
+
+Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
+
+Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
+
+Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
+
+Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
+================================================================================
+E:/GitHub/ASPA/tests\MR_file_structure\MR5_header_comments_wrong1.py
+MR5_header_comments_wrong1.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat: Ei tunnistettu tyylirikkomuksia.
+
+Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
+
+Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
+
+Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
+
+Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
+================================================================================
+E:/GitHub/ASPA/tests\MR_file_structure\MR5_header_comments_wrong2.py
+MR5_header_comments_wrong2.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat: Ei tunnistettu tyylirikkomuksia.
+
+Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
+
+Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
+
+Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
+
+Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
+================================================================================
+E:/GitHub/ASPA/tests\MR_file_structure\MR5_header_comments_wrong3.py
+MR5_header_comments_wrong3.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat: Ei tunnistettu tyylirikkomuksia.
+
+Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
+
+Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
+
+Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
+
+Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
+================================================================================
+E:/GitHub/ASPA/tests\PK_exception_handling\PK1-1_missing_exception_type.py
+PK1-1_missing_exception_type.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat: Ei tunnistettu tyylirikkomuksia.
+
+Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
+
+Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
+
+Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
 
 Poikkeustenkäsittely, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Poikkeukset':
-Rivi 77: Tiedosto-operaatiosta 'for i in fhandle' puuttuu poikkeustenkäsittely.
-Rivi 79: Tiedosto-operaatiosta 'for ... in ...' puuttuu poikkeustenkäsittely.
-Rivi 88: Tiedosto-operaatiosta 'for i in obj.attr1.attr2.attr3.fhandle' puuttuu poikkeustenkäsittely.
-Rivi 90: Tiedosto-operaatiosta 'for ... in ...' puuttuu poikkeustenkäsittely.
-Rivi 103: Tiedoston avaamisesta puuttuu poikkeustenkäsittely.
-Rivi 104: Tiedosto-operaatiosta 'fhandle.readline' puuttuu poikkeustenkäsittely.
-Rivi 105: Tiedosto-operaatiosta 'fhandle.read' puuttuu poikkeustenkäsittely.
-Rivi 106: Tiedosto-operaatiosta 'fhandle.readlines' puuttuu poikkeustenkäsittely.
-Rivi 123: Exceptistä puuttuu virhetyyppi.
-Rivi 127: Tiedosto-operaatiosta 'fhandle.write' puuttuu poikkeustenkäsittely.
-Rivi 128: Tiedosto-operaatiosta 'fhandle.writelines' puuttuu poikkeustenkäsittely.
+Rivi 10: Exceptistä puuttuu virhetyyppi.
+================================================================================
+E:/GitHub/ASPA/tests\PK_exception_handling\PK1_only_one_except_branch.py
+PK1_only_one_except_branch.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat: Ei tunnistettu tyylirikkomuksia.
+
+Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
+
+Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
+
+Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
+
+Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
+================================================================================
+E:/GitHub/ASPA/tests\PK_exception_handling\PK3_file_open_miss_exception_handling.py
+PK3_file_open_miss_exception_handling.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat: Ei tunnistettu tyylirikkomuksia.
+
+Tiedostonkäsittely, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Tiedostoon kirjoittaminen' 'Tiedostosta lukeminen':
+Rivi 21: Tällä kurssilla 'with open':n käyttö ei ole suositeltu rakenne.
+Rivi 31: Tällä kurssilla 'with open':n käyttö ei ole suositeltu rakenne.
+
+Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
+
+Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
+
+Poikkeustenkäsittely, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Poikkeukset':
+Rivi 26: Tiedoston avaamisesta puuttuu poikkeustenkäsittely.
+Rivi 28: Tiedoston avaamisesta puuttuu poikkeustenkäsittely.
+Rivi 31: Tiedoston avaamisesta puuttuu poikkeustenkäsittely.
+================================================================================
+E:/GitHub/ASPA/tests\PK_exception_handling\PK4_file_operation_miss_exception_handling.py
+PK4_file_operation_miss_exception_handling.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat: Ei tunnistettu tyylirikkomuksia.
+
+Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
+
+Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
+
+Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
+
+Poikkeustenkäsittely, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Poikkeukset':
+Rivi 15: Tiedosto-operaatiosta 't.fhandle.write' puuttuu poikkeustenkäsittely.
+Rivi 23: Tiedosto-operaatiosta 'f.readline' puuttuu poikkeustenkäsittely.
+Rivi 24: Tiedosto-operaatiosta 'f.read' puuttuu poikkeustenkäsittely.
+Rivi 25: Tiedosto-operaatiosta 'f.readlines' puuttuu poikkeustenkäsittely.
+Rivi 26: Tiedosto-operaatiosta 'for _ in f' puuttuu poikkeustenkäsittely.
+Rivi 40: Tiedosto-operaatiosta 'for this_is_a_bug in f' puuttuu poikkeustenkäsittely.
+================================================================================
+E:/GitHub/ASPA/tests\PT_basic_command\PT1_print_call.py
+PT1_print_call.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat: Ei tunnistettu tyylirikkomuksia.
+
+Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
+
+Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
+
+Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
+
+Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
+================================================================================
+E:/GitHub/ASPA/tests\PT_basic_command\PT2_naming.py
+PT2_naming.py
+
+Perustoiminnot, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Tiedon tulostaminen ruudulle' 'Tiedon lukeminen käyttäjältä' 'Valintarakenne' 'Toistorakenteet':
+Rivi 12: Nimessä 'systäämi' on muita kuin A-Z, 0-9 ja alaviiva merkkejä.
+Rivi 13: Nimessä 'pår' on muita kuin A-Z, 0-9 ja alaviiva merkkejä.
+Rivi 21: Nimessä 'ÄÖÅ' on muita kuin A-Z, 0-9 ja alaviiva merkkejä.
+Rivi 25: Nimessä 'ääkkönen' on muita kuin A-Z, 0-9 ja alaviiva merkkejä.
+Rivi 28: Nimessä 'ÄÄKKÖNEN' on muita kuin A-Z, 0-9 ja alaviiva merkkejä.
+Rivi 31: Nimessä 'é' on muita kuin A-Z, 0-9 ja alaviiva merkkejä.
+Rivi 34: Nimessä 'è' on muita kuin A-Z, 0-9 ja alaviiva merkkejä.
+Rivi 37: Nimessä 'vör' on muita kuin A-Z, 0-9 ja alaviiva merkkejä.
+Rivi 37: Nimessä 'í' on muita kuin A-Z, 0-9 ja alaviiva merkkejä.
+Rivi 40: Nimessä 'vääär' on muita kuin A-Z, 0-9 ja alaviiva merkkejä.
+Rivi 40: Nimessä 'Öû' on muita kuin A-Z, 0-9 ja alaviiva merkkejä.
+Rivi 40: Nimessä 'årgs' on muita kuin A-Z, 0-9 ja alaviiva merkkejä.
+Rivi 40: Nimessä 'kwärgs' on muita kuin A-Z, 0-9 ja alaviiva merkkejä.
+Rivi 40: Nimessä 'Ì' on muita kuin A-Z, 0-9 ja alaviiva merkkejä.
+Rivi 69: Nimessä 'å' on muita kuin A-Z, 0-9 ja alaviiva merkkejä.
+Rivi 70: Nimessä 'ä' on muita kuin A-Z, 0-9 ja alaviiva merkkejä.
+Rivi 71: Nimessä 'ö' on muita kuin A-Z, 0-9 ja alaviiva merkkejä.
+Rivi 72: Nimessä 'ü' on muita kuin A-Z, 0-9 ja alaviiva merkkejä.
+Rivi 79: Nimessä 'ääö' on muita kuin A-Z, 0-9 ja alaviiva merkkejä.
+Rivi 79: Nimessä 'ÖÖÄ_' on muita kuin A-Z, 0-9 ja alaviiva merkkejä.
+Rivi 100: Nimessä 'învÄlÏd' on muita kuin A-Z, 0-9 ja alaviiva merkkejä.
+Rivi 118: Nimessä 'ZÄ' on muita kuin A-Z, 0-9 ja alaviiva merkkejä.
+Rivi 123: Nimessä 'Kävö' on muita kuin A-Z, 0-9 ja alaviiva merkkejä.
+
+Aliohjelmat: Ei tunnistettu tyylirikkomuksia.
+
+Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
+
+Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
+
+Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
+
+Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
+================================================================================
+E:/GitHub/ASPA/tests\PT_basic_command\PT4-1_infinite_loop.py
+PT4-1_infinite_loop.py
+
+Perustoiminnot, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Tiedon tulostaminen ruudulle' 'Tiedon lukeminen käyttäjältä' 'Valintarakenne' 'Toistorakenteet':
+Rivi 14: Silmukkaa ei koskaan pysäytetä.
+
+Aliohjelmat: Ei tunnistettu tyylirikkomuksia.
+
+Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
+
+Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
+
+Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
+
+Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
+================================================================================
+E:/GitHub/ASPA/tests\PT_basic_command\PT5_unreachable_code.py
+PT5_unreachable_code.py
+
+Perustoiminnot, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Tiedon tulostaminen ruudulle' 'Tiedon lukeminen käyttäjältä' 'Valintarakenne' 'Toistorakenteet':
+Rivi 13: Koodirivejä komennon 'break' jälkeen.
+Rivi 14: Koodirivejä komennon 'continue' jälkeen.
+Rivi 15: Koodirivejä komennon 'raise' jälkeen.
+Rivi 18: Koodirivejä komennon 'quit' jälkeen.
+Rivi 19: Koodirivejä komennon 'exit' jälkeen.
+Rivi 20: Koodirivejä komennon 'sys.exit' jälkeen.
+Rivi 22: Koodirivejä komennon 'return' jälkeen.
+Rivi 29: Koodirivejä komennon 'return' jälkeen.
+Rivi 32: Koodirivejä komennon 'sys.exit' jälkeen.
+Rivi 33: Koodirivejä komennon 'exit' jälkeen.
+Rivi 34: Koodirivejä komennon 'quit' jälkeen.
+Rivi 37: Koodirivejä komennon 'return' jälkeen.
+Rivi 42: Koodirivejä komennon 'continue' jälkeen.
+Rivi 43: Koodirivejä komennon 'break' jälkeen.
+Rivi 46: Koodirivejä komennon 'return' jälkeen.
+Rivi 47: Koodirivejä komennon 'raise' jälkeen.
+Rivi 54: Koodirivejä komennon 'return' jälkeen.
+Rivi 56: Koodirivejä komennon 'return' jälkeen.
+Rivi 59: Koodirivejä komennon 'return' jälkeen.
+Rivi 62: Koodirivejä komennon 'return' jälkeen.
+Rivi 65: Koodirivejä komennon 'return' jälkeen.
+Rivi 70: Koodirivejä komennon 'return' jälkeen.
+Rivi 73: Koodirivejä komennon 'return' jälkeen.
+
+Aliohjelmat: Ei tunnistettu tyylirikkomuksia.
+
+Tiedostonkäsittely, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Tiedostoon kirjoittaminen' 'Tiedostosta lukeminen':
+Rivi 53: Tällä kurssilla 'with open':n käyttö ei ole suositeltu rakenne.
+
+Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
+
+Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
+
+Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
+================================================================================
+E:/GitHub/ASPA/tests\TK_file_handling\TK1-1_with_open.py
+TK1-1_with_open.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat: Ei tunnistettu tyylirikkomuksia.
+
+Tiedostonkäsittely, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Tiedostoon kirjoittaminen' 'Tiedostosta lukeminen':
+Rivi 8: Tällä kurssilla 'with open':n käyttö ei ole suositeltu rakenne.
+
+Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
+
+Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
+
+Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
+================================================================================
+E:/GitHub/ASPA/tests\TK_file_handling\TK1-2_close_in_except.py
+TK1-2_close_in_except.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat: Ei tunnistettu tyylirikkomuksia.
+
+Tiedostonkäsittely, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Tiedostoon kirjoittaminen' 'Tiedostosta lukeminen':
+Rivi 10: Tiedostokahva 'f1' suljetaan except-osiossa.
+Rivi 13: Tiedostokahva 'f2' suljetaan except-osiossa.
+
+Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
+
+Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
+
+Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
+================================================================================
+E:/GitHub/ASPA/tests\TK_file_handling\TK1-3_close_missing_parenthesis.py
+TK1-3_close_missing_parenthesis.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat: Ei tunnistettu tyylirikkomuksia.
+
+Tiedostonkäsittely, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Tiedostoon kirjoittaminen' 'Tiedostosta lukeminen':
+Rivi 10: Tiedoston sulkukomenosta 'f1.close' puuttuvat sulut.
+
+Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
+
+Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
+
+Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
+================================================================================
+E:/GitHub/ASPA/tests\TK_file_handling\TK1_file_left_open.py
+TK1_file_left_open.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat: Ei tunnistettu tyylirikkomuksia.
+
+Tiedostonkäsittely, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Tiedostoon kirjoittaminen' 'Tiedostosta lukeminen':
+Rivi 34: Tällä kurssilla 'with open':n käyttö ei ole suositeltu rakenne.
+Rivi 28: Tiedostokahva 'f2' on sulkematta.
+
+Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
+
+Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
+
+Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
+================================================================================
+E:/GitHub/ASPA/tests\TK_file_handling\TK2_file_open_operation_close.py
+TK2_file_open_operation_close.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat: Ei tunnistettu tyylirikkomuksia.
+
+Tiedostonkäsittely, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Tiedostoon kirjoittaminen' 'Tiedostosta lukeminen':
+Rivi 28: Tiedosto-operaatio 'f.readline' eri aliohjelmassa kuin avaus ja sulkeminen.
+Rivi 20: Tiedostokahva 'f' on sulkematta.
+
+Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
+
+Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
+
+Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
+================================================================================
+E:/GitHub/ASPA/tests\TR_data_structure\TR2-1_using_class_without_object.py
+TR2-1_using_class_without_object.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat: Ei tunnistettu tyylirikkomuksia.
+
+Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
+
+Tietorakenteet, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Aliohjelmat' 'Listan käsittely' 'Monimutkaisempi tietorakenne':
+Rivi 10: Luokan käyttö suoraan ilman oliota 'FOO.attr'.
+
+Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
+
+Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
+================================================================================
+E:/GitHub/ASPA/tests\TR_data_structure\TR2-2_object_creation_miss_parenthesis.py
+TR2-2_object_creation_miss_parenthesis.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat: Ei tunnistettu tyylirikkomuksia.
+
+Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
+
+Tietorakenteet, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Aliohjelmat' 'Listan käsittely' 'Monimutkaisempi tietorakenne':
+Rivi 11: Olion luonnista puuttuvat sulkeet. Pitäisi olla 'FOO()'.
+Rivi 15: Olion luonnista puuttuvat sulkeet. Pitäisi olla 'FOO()'.
+
+Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
+
+Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
+================================================================================
+E:/GitHub/ASPA/tests\TR_data_structure\TR2-3_non_global_class.py
+TR2-3_non_global_class.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat: Ei tunnistettu tyylirikkomuksia.
+
+Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
+
+Tietorakenteet, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Aliohjelmat' 'Listan käsittely' 'Monimutkaisempi tietorakenne':
+Rivi 6: Luokkaa 'BARBAR' ei ole määritelty päätasolla.
+Rivi 10: Luokkaa 'FOO' ei ole määritelty päätasolla.
+
+Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
+
+Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
+================================================================================
+E:/GitHub/ASPA/tests\TR_data_structure\TR2-4_lowercase_class.py
+TR2-4_lowercase_class.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat: Ei tunnistettu tyylirikkomuksia.
+
+Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
+
+Tietorakenteet, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Aliohjelmat' 'Listan käsittely' 'Monimutkaisempi tietorakenne':
+Rivi 6: Luokan 'bar' nimi ei ole kirjoitettu SUURAAKKOSIN.
+Rivi 9: Luokan 'BaRBaR' nimi ei ole kirjoitettu SUURAAKKOSIN.
+
+Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
+
+Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
+================================================================================
+E:/GitHub/ASPA/tests\TR_data_structure\TR3-1_attribute_to_list.py
+TR3-1_attribute_to_list.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Aliohjelmat':
+Rivi 71: Aliohjelman 'temp' määrittely ei ole päätasolla.
+Rivi 77: Aliohjelman 'test1' määrittely ei ole päätasolla.
+Rivi 85: Aliohjelman 'test2' määrittely ei ole päätasolla.
+Rivi 88: Aliohjelman 'test3' määrittely ei ole päätasolla.
+
+Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
+
+Tietorakenteet, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Aliohjelmat' 'Listan käsittely' 'Monimutkaisempi tietorakenne':
+Rivi 18: Olion attribuutti lisätään listaan silmukan sisällä.
+Rivi 19: Olion attribuutti lisätään listaan silmukan sisällä.
+Rivi 20: Olion attribuutti lisätään listaan silmukan sisällä.
+Rivi 20: Olion attribuutti lisätään listaan silmukan sisällä.
+Rivi 21: Olion attribuutti lisätään listaan silmukan sisällä.
+Rivi 21: Olion attribuutti lisätään listaan silmukan sisällä.
+Rivi 22: Olion attribuutti lisätään listaan silmukan sisällä.
+Rivi 23: Olion attribuutti lisätään listaan silmukan sisällä.
+Rivi 24: Olion attribuutti lisätään listaan silmukan sisällä.
+Rivi 25: Olion attribuutti lisätään listaan silmukan sisällä.
+Rivi 25: Olion attribuutti lisätään listaan silmukan sisällä.
+Rivi 45: Olion attribuutti lisätään listaan silmukan sisällä.
+Rivi 46: Olion attribuutti lisätään listaan silmukan sisällä.
+Rivi 47: Olion attribuutti lisätään listaan silmukan sisällä.
+Rivi 47: Olion attribuutti lisätään listaan silmukan sisällä.
+Rivi 48: Olion attribuutti lisätään listaan silmukan sisällä.
+Rivi 48: Olion attribuutti lisätään listaan silmukan sisällä.
+Rivi 49: Olion attribuutti lisätään listaan silmukan sisällä.
+Rivi 50: Olion attribuutti lisätään listaan silmukan sisällä.
+Rivi 51: Olion attribuutti lisätään listaan silmukan sisällä.
+Rivi 52: Olion attribuutti lisätään listaan silmukan sisällä.
+Rivi 52: Olion attribuutti lisätään listaan silmukan sisällä.
+Rivi 82: Olion attribuutti lisätään listaan silmukan sisällä.
+Rivi 91: Luokkaa 'FAKE' ei ole määritelty päätasolla.
+Rivi 103: Olion attribuutti lisätään listaan silmukan sisällä.
+
+Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
+
+Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.

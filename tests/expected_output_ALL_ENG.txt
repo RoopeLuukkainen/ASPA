@@ -1,83 +1,861 @@
-2020-11-20_14-49-23
+2020-12-17_11-04-53
 ================================================================================
-E:/GitHub/ASPA/test_files/analysis_examples.py
-analysis_examples.py
+E:/GitHub/ASPA/tests\AR_functions\AR1_no_paaohjelma.py
+AR1_no_paaohjelma.py
 
-Perustoiminnot, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Tiedon tulostaminen ruudulle' 'Tiedon lukeminen käyttäjältä' 'Valintarakenne' 'Toistorakenteet':
-Rivi 257: Koodirivejä komennon 'break' jälkeen.
-Rivi 258: Koodirivejä komennon 'continue' jälkeen.
-Rivi 259: Koodirivejä komennon 'raise' jälkeen.
-Rivi 262: Koodirivejä komennon 'quit' jälkeen.
-Rivi 263: Koodirivejä komennon 'exit' jälkeen.
-Rivi 264: Koodirivejä komennon 'sys.exit' jälkeen.
-Rivi 266: Koodirivejä komennon 'return' jälkeen.
-Rivi 281: Silmukkaa ei koskaan pysäytetä.
-Rivi 295: Nimessä 'pääohjelma' on muita kuin A-Z, 0-9 ja alaviiva merkkejä.
-Rivi 296: Nimessä 'IKÄ' on muita kuin A-Z, 0-9 ja alaviiva merkkejä.
+Basic commands: No violations detected.
 
-Aliohjelmat, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Aliohjelmat':
-Rivi 182: Aliohjelma 'foo' vaatii vähintään 2 kpl parametreja, mutta 1 lähetetty.
-Rivi 183: Aliohjelma 'foo' vaatii enintään 2 kpl parametreja, mutta 3 lähetetty.
-Rivi 184: Aliohjelma 'lib_example.fun2' vaatii vähintään 1 kpl parametreja, mutta 0 lähetetty.
-Rivi 185: Aliohjelma 'lib_example.fun2' vaatii enintään 1 kpl parametreja, mutta 2 lähetetty.
-Rivi 186: Aliohjelmakutsussa 'lib_example.fun2', 'x' on virheellinen parametrin nimi.
-Rivi 197: Palautetaan jotain muuta kuin muuttujia tai avainsana.
-Rivi 200: Palautetaan useita paluuarvoja.
-Rivi 205: Paluuarvo on vakio.
-Rivi 207: Aliohjelman 'AR6' lopusta puuttuu return-komento.
-Rivi 215: return-komennosta puuttuu paluuarvo.
-Rivi 218: Rekursiivinen aliohjelmakutsu.
-Rivi 242: Aliohjelman 'nest2' määrittely ei ole päätasolla.
-Rivi 243: Aliohjelman 'nest3' määrittely ei ole päätasolla.
-Rivi 144: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
-Rivi 145: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
-Rivi 163: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
-Rivi 225: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
-Rivi 227: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
-Rivi 231: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
-Rivi 232: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
-Rivi 309: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
-Rivi 311: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
-Rivi 325: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
-Rivi 227: Globaalimuuttuja 'e'.
-Rivi 231: Globaalimuuttuja 'variable'.
-Rivi 232: Globaalimuuttuja 'global_list'.
+Functions, violations detected please see Liite 5 'Aliohjelmat':
+No function defition for 'paaohjelma'.
+Line 13: Statement seem to be in wrong location.
 
-Tiedostonkäsittely, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Tiedostoon kirjoittaminen' 'Tiedostosta lukeminen':
-Rivi 33: Tiedosto-operaatio 'file_handle.readline' eri aliohjelmassa kuin avaus ja sulkeminen.
-Rivi 55: Tiedostokahva 'tk1_2' suljetaan except-osiossa.
-Rivi 62: Tällä kurssilla 'with open':n käyttö ei ole suositeltu rakenne.
-Rivi 117: Tiedoston sulkukomenosta 'fhandle.close' puuttuvat sulut.
-Rivi 127: Tiedosto-operaatio 'fhandle.write' eri aliohjelmassa kuin avaus ja sulkeminen.
-Rivi 128: Tiedosto-operaatio 'fhandle.writelines' eri aliohjelmassa kuin avaus ja sulkeminen.
-Rivi 85: Tiedostokahva 'obj.attr1.attr2.attr3.fhandle' on sulkematta.
-Rivi 122: Tiedostokahva 'fhandle' on sulkematta.
+File handling: No violations detected.
 
-Tietorakenteet, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Aliohjelmat' 'Listan käsittely' 'Monimutkaisempi tietorakenne':
-Rivi 14: Luokan 'c_1' nimi ei ole kirjoitettu SUURAAKKOSIN.
-Rivi 18: Luokkaa 'C_2' ei ole määritelty päätasolla.
-Rivi 20: Luokan käyttö suoraan ilman oliota 'c_1.var'.
-Rivi 21: Olion luonnista puuttuvat sulkeet. Pitäisi olla 'C_2()'.
+Data structures: No violations detected.
 
-Kirjaston käyttö, tyylirikkeitä havaittu, ole hyvä ja katso 'Luku 8 asiat kokoava esimerkki':
-Rivi 156: Kirjaston 'sys' sisällytys (eng. import) ei ole päätasolla.
-Rivi 156: Kirjaston 'os' sisällytys (eng. import) ei ole päätasolla.
-Rivi 157: Kirjaston 'datetime' sisällytys (eng. import) ei ole päätasolla.
-Rivi 163: Kirjasto 'lib_example' sisällytetään (eng. import) uudelleen.
-Rivi 157: Kirjastosta 'datetime' sisällytetään sisältöä uudelleen.
-Rivi 311: Päätason aliohjelmakutsu 'kirjasto.aliohjelma()' ei viittaa tiedoston pääohjelmaan.
-Rivi 324: Aliohjelmakutsu 'paaohjelma()' on 3. aliohjelmakutsu. Pitäisi olla vain yksi (1) aliohjelmakutsu 'paaohjelma()'.
-Rivi 325: Aliohjelmakutsu 'MR2_3()' on 4. aliohjelmakutsu. Pitäisi olla vain yksi (1) aliohjelmakutsu 'paaohjelma()'.
+Library usage: No violations detected.
 
-Poikkeustenkäsittely, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Poikkeukset':
-Rivi 77: Tiedosto-operaatiosta 'for i in fhandle' puuttuu poikkeustenkäsittely.
-Rivi 79: Tiedosto-operaatiosta 'for ... in ...' puuttuu poikkeustenkäsittely.
-Rivi 88: Tiedosto-operaatiosta 'for i in obj.attr1.attr2.attr3.fhandle' puuttuu poikkeustenkäsittely.
-Rivi 90: Tiedosto-operaatiosta 'for ... in ...' puuttuu poikkeustenkäsittely.
-Rivi 103: Tiedoston avaamisesta puuttuu poikkeustenkäsittely.
-Rivi 104: Tiedosto-operaatiosta 'fhandle.readline' puuttuu poikkeustenkäsittely.
-Rivi 105: Tiedosto-operaatiosta 'fhandle.read' puuttuu poikkeustenkäsittely.
-Rivi 106: Tiedosto-operaatiosta 'fhandle.readlines' puuttuu poikkeustenkäsittely.
-Rivi 123: Exceptistä puuttuu virhetyyppi.
-Rivi 127: Tiedosto-operaatiosta 'fhandle.write' puuttuu poikkeustenkäsittely.
-Rivi 128: Tiedosto-operaatiosta 'fhandle.writelines' puuttuu poikkeustenkäsittely.
+Exception handling: No violations detected.
+================================================================================
+E:/GitHub/ASPA/tests\AR_functions\AR2-1_local_scope_function.py
+AR2-1_local_scope_function.py
+
+Basic commands: No violations detected.
+
+Functions, violations detected please see Liite 5 'Aliohjelmat':
+Line 15: Definition of the function 'nested_method' is not at the global scope.
+Line 16: Definition of the function 'nested_method_2' is not at the global scope.
+Line 22: Definition of the function 'nest1' is not at the global scope.
+Line 23: Definition of the function 'nest2' is not at the global scope.
+Line 24: Definition of the function 'nest3' is not at the global scope.
+
+File handling: No violations detected.
+
+Data structures: No violations detected.
+
+Library usage: No violations detected.
+
+Exception handling: No violations detected.
+================================================================================
+E:/GitHub/ASPA/tests\AR_functions\AR3_global_object.py
+AR3_global_object.py
+
+Basic commands: No violations detected.
+
+Functions, violations detected please see Liite 5 'Aliohjelmat':
+No function defition for 'paaohjelma'.
+Line 9: Statement seem to be in wrong location.
+Line 9: Global variable 'global_object'.
+
+File handling: No violations detected.
+
+Data structures: No violations detected.
+
+Library usage: No violations detected.
+
+Exception handling: No violations detected.
+================================================================================
+E:/GitHub/ASPA/tests\AR_functions\AR3_global_variable.py
+AR3_global_variable.py
+
+Basic commands: No violations detected.
+
+Functions, violations detected please see Liite 5 'Aliohjelmat':
+Line 22: Global variable 'with_global_keyword'.
+Line 22: Global variable 'another_global'.
+Line 5: Global variable 'variable'.
+Line 6: Global variable 'global_list'.
+Line 11: Global variable 'unless_assigned_again'.
+
+File handling: No violations detected.
+
+Data structures: No violations detected.
+
+Library usage: No violations detected.
+
+Exception handling: No violations detected.
+================================================================================
+E:/GitHub/ASPA/tests\AR_functions\AR3_global_variable_2.py
+AR3_global_variable_2.py
+
+Basic commands: No violations detected.
+
+Functions, violations detected please see Liite 5 'Aliohjelmat':
+Line 45: Global variable 'a'.
+Line 6: Global variable 'abc'.
+Line 8: Global variable 'a'.
+Line 9: Global variable 'd'.
+Line 10: Global variable 'e'.
+Line 11: Global variable 'g'.
+Line 12: Global variable 'd2'.
+Line 13: Global variable 'e2'.
+Line 16: Global variable 'g2'.
+Line 19: Global variable 'j'.
+
+File handling: No violations detected.
+
+Data structures: No violations detected.
+
+Library usage: No violations detected.
+
+Exception handling: No violations detected.
+================================================================================
+E:/GitHub/ASPA/tests\AR_functions\AR4_recursive_function.py
+AR4_recursive_function.py
+
+Basic commands: No violations detected.
+
+Functions, violations detected please see Liite 5 'Aliohjelmat':
+Line 11: Recursive function call.
+
+File handling: No violations detected.
+
+Data structures: No violations detected.
+
+Library usage: No violations detected.
+
+Exception handling: No violations detected.
+================================================================================
+E:/GitHub/ASPA/tests\AR_functions\AR5_parameters.py
+AR5_parameters.py
+
+Basic commands: No violations detected.
+
+Functions, violations detected please see Liite 5 'Aliohjelmat':
+Line 37: Function 'func1' requires at least 2 parameters, but 1 given.
+Line 38: Function 'func2' requires at least 2 parameters, but 1 given.
+Line 39: Function 'func3' requires at least 2 parameters, but 1 given.
+Line 40: Function 'func4' requires at least 2 parameters, but 1 given.
+Line 44: Function 'example_lib.func1' requires at least 2 parameters, but 1 given.
+Line 45: Function 'example_lib.func2' requires at least 2 parameters, but 1 given.
+Line 46: Function 'example_lib.func3' requires at least 2 parameters, but 1 given.
+Line 47: Function 'example_lib.func4' requires at least 2 parameters, but 1 given.
+Line 55: Function 'func0' requires at most 0 parameters, but 3 given.
+Line 56: Function 'func1' requires at most 2 parameters, but 3 given.
+Line 60: Function 'func5' requires at most 0 parameters, but 3 given.
+Line 63: Function 'example_lib.func1' requires at most 2 parameters, but 3 given.
+Line 67: Function 'example_lib.func5' requires at most 0 parameters, but 3 given.
+Line 74: In call of function 'func2', 'd' is invalid keyword argument.
+Line 75: In call of function 'func3', 'd' is invalid keyword argument.
+Line 79: In call of function 'example_lib.func2', 'd' is invalid keyword argument.
+Line 80: In call of function 'example_lib.func3', 'd' is invalid keyword argument.
+
+File handling: No violations detected.
+
+Data structures: No violations detected.
+
+Library usage: No violations detected.
+
+Exception handling: No violations detected.
+================================================================================
+E:/GitHub/ASPA/tests\AR_functions\AR6-1_yield.py
+AR6-1_yield.py
+
+Basic commands: No violations detected.
+
+Functions, violations detected please see Liite 5 'Aliohjelmat':
+Line 5: Missing return at the end of the function 'AR6_1'.
+
+File handling: No violations detected.
+
+Data structures: No violations detected.
+
+Library usage: No violations detected.
+
+Exception handling: No violations detected.
+================================================================================
+E:/GitHub/ASPA/tests\AR_functions\AR6_return.py
+AR6_return.py
+
+Basic commands: No violations detected.
+
+Functions, violations detected please see Liite 5 'Aliohjelmat':
+Line 19: Missing return at the end of the function 'AR6'.
+Line 28: Missing value from the return-statement.
+Line 31: Return value is a constant.
+Line 34: Return value is a constant.
+Line 38: Returning multiple values at once.
+Line 42: Returning something else than a variable or constant.
+Line 46: Returning something else than a variable or constant.
+Line 50: Returning something else than a variable or constant.
+
+File handling: No violations detected.
+
+Data structures: No violations detected.
+
+Library usage: No violations detected.
+
+Exception handling: No violations detected.
+================================================================================
+E:/GitHub/ASPA/tests\AR_functions\AR7_function_attribute.py
+AR7_function_attribute.py
+
+Basic commands: No violations detected.
+
+Functions, violations detected please see Liite 5 'Aliohjelmat':
+Line 6: Assigning an attribute to the function 'AR7.attr'.
+Line 10: Assigning an attribute to the function 'AR7.another.attr.nested.attr'.
+
+File handling: No violations detected.
+
+Data structures: No violations detected.
+
+Library usage: No violations detected.
+
+Exception handling: No violations detected.
+================================================================================
+E:/GitHub/ASPA/tests\AR_functions\example_lib.py
+example_lib.py
+
+Basic commands: No violations detected.
+
+Functions: No violations detected.
+
+File handling: No violations detected.
+
+Data structures: No violations detected.
+
+Library usage: No violations detected.
+
+Exception handling: No violations detected.
+================================================================================
+E:/GitHub/ASPA/tests\MR_file_structure\MR1_element_order_correct.py
+MR1_element_order_correct.py
+
+Basic commands: No violations detected.
+
+Functions: No violations detected.
+
+File handling: No violations detected.
+
+Data structures: No violations detected.
+
+Library usage: No violations detected.
+
+Exception handling: No violations detected.
+================================================================================
+E:/GitHub/ASPA/tests\MR_file_structure\MR1_element_order_wrong1.py
+MR1_element_order_wrong1.py
+
+Basic commands: No violations detected.
+
+Functions, violations detected please see Liite 5 'Aliohjelmat':
+Line 16: Statement seem to be in wrong location.
+Line 17: Statement seem to be in wrong location.
+Line 18: Statement seem to be in wrong location.
+Line 19: Statement seem to be in wrong location.
+Line 22: Statement seem to be in wrong location.
+
+File handling: No violations detected.
+
+Data structures: No violations detected.
+
+Library usage: No violations detected.
+
+Exception handling: No violations detected.
+================================================================================
+E:/GitHub/ASPA/tests\MR_file_structure\MR1_element_order_wrong2.py
+MR1_element_order_wrong2.py
+
+Basic commands: No violations detected.
+
+Functions, violations detected please see Liite 5 'Aliohjelmat':
+Line 20: Statement seem to be in wrong location.
+
+File handling: No violations detected.
+
+Data structures: No violations detected.
+
+Library usage: No violations detected.
+
+Exception handling: No violations detected.
+================================================================================
+E:/GitHub/ASPA/tests\MR_file_structure\MR1_element_order_wrong3.py
+MR1_element_order_wrong3.py
+
+Basic commands: No violations detected.
+
+Functions, violations detected please see Liite 5 'Aliohjelmat':
+Line 17: Statement seem to be in wrong location.
+Line 20: Statement seem to be in wrong location.
+Line 23: Statement seem to be in wrong location.
+
+File handling: No violations detected.
+
+Data structures: No violations detected.
+
+Library usage: No violations detected.
+
+Exception handling: No violations detected.
+================================================================================
+E:/GitHub/ASPA/tests\MR_file_structure\MR1_element_order_wrong4.py
+MR1_element_order_wrong4.py
+
+Basic commands: No violations detected.
+
+Functions, violations detected please see Liite 5 'Aliohjelmat':
+Line 39: Statement seem to be in wrong location.
+
+File handling: No violations detected.
+
+Data structures: No violations detected.
+
+Library usage: No violations detected.
+
+Exception handling: No violations detected.
+================================================================================
+E:/GitHub/ASPA/tests\MR_file_structure\MR1_element_order_wrong5.py
+MR1_element_order_wrong5.py
+
+Basic commands: No violations detected.
+
+Functions, violations detected please see Liite 5 'Aliohjelmat':
+Line 11: Statement seem to be in wrong location.
+Line 26: Statement seem to be in wrong location.
+Line 40: Statement seem to be in wrong location.
+
+File handling: No violations detected.
+
+Data structures: No violations detected.
+
+Library usage: No violations detected.
+
+Exception handling: No violations detected.
+================================================================================
+E:/GitHub/ASPA/tests\MR_file_structure\MR1_element_order_wrong6.py
+MR1_element_order_wrong6.py
+
+Basic commands: No violations detected.
+
+Functions, violations detected please see Liite 5 'Aliohjelmat':
+Line 9: Statement seem to be in wrong location.
+Line 16: Statement seem to be in wrong location.
+Line 20: Statement seem to be in wrong location.
+Line 23: Statement seem to be in wrong location.
+Line 27: Statement seem to be in wrong location.
+Line 30: Statement seem to be in wrong location.
+Line 33: Statement seem to be in wrong location.
+Line 37: Statement seem to be in wrong location.
+Line 40: Statement seem to be in wrong location.
+Line 41: Statement seem to be in wrong location.
+Line 42: Statement seem to be in wrong location.
+Line 43: Statement seem to be in wrong location.
+
+File handling: No violations detected.
+
+Data structures: No violations detected.
+
+Library usage: No violations detected.
+
+Exception handling: No violations detected.
+================================================================================
+E:/GitHub/ASPA/tests\MR_file_structure\MR2-3_global_scope_call.py
+MR2-3_global_scope_call.py
+
+Basic commands: No violations detected.
+
+Functions, violations detected please see Liite 5 'Aliohjelmat':
+Line 13: Statement seem to be in wrong location.
+Line 14: Statement seem to be in wrong location.
+
+File handling: No violations detected.
+
+Data structures: No violations detected.
+
+Library usage, violations detected please see 'Luku 8 asiat kokoava esimerkki':
+Line 13: Function call 'MR2_3()' is 2 function call at the global scope. There should be only one (1) function call 'paaohjelma()'.
+Line 14: Function call 'MR2_3()' is 3 function call at the global scope. There should be only one (1) function call 'paaohjelma()'.
+
+Exception handling: No violations detected.
+================================================================================
+E:/GitHub/ASPA/tests\MR_file_structure\MR2-4_not_main_function_call.py
+MR2-4_not_main_function_call.py
+
+Basic commands: No violations detected.
+
+Functions, violations detected please see Liite 5 'Aliohjelmat':
+Line 12: Statement seem to be in wrong location.
+Line 13: Statement seem to be in wrong location.
+
+File handling: No violations detected.
+
+Data structures: No violations detected.
+
+Library usage, violations detected please see 'Luku 8 asiat kokoava esimerkki':
+Line 12: Function call 'math.sqrt()' at the global scope does not call themain function.
+Line 13: Function call 'datetime.datetime.strptime()' at the global scope does not call themain function.
+
+Exception handling: No violations detected.
+================================================================================
+E:/GitHub/ASPA/tests\MR_file_structure\MR3-1_MR4_from_module_imported_again.py
+MR3-1_MR4_from_module_imported_again.py
+
+Basic commands: No violations detected.
+
+Functions, violations detected please see Liite 5 'Aliohjelmat':
+Line 14: Statement seem to be in wrong location.
+
+File handling: No violations detected.
+
+Data structures: No violations detected.
+
+Library usage, violations detected please see 'Luku 8 asiat kokoava esimerkki':
+Line 12: Import of the module 'datetime' is not at the global scope.
+Line 14: From module 'math' function(s) or module(s) are imported again.
+Line 12: From module 'datetime' function(s) or module(s) are imported again.
+Line 9: From module 'random' function(s) or module(s) are imported again.
+
+Exception handling: No violations detected.
+================================================================================
+E:/GitHub/ASPA/tests\MR_file_structure\MR3_MR4_module_imported_again.py
+MR3_MR4_module_imported_again.py
+
+Basic commands: No violations detected.
+
+Functions, violations detected please see Liite 5 'Aliohjelmat':
+Line 12: Statement seem to be in wrong location.
+
+File handling: No violations detected.
+
+Data structures: No violations detected.
+
+Library usage, violations detected please see 'Luku 8 asiat kokoava esimerkki':
+Line 10: Import of the module 'datetime' is not at the global scope.
+Line 12: Module 'math' is imported again.
+Line 10: Module 'datetime' is imported again.
+
+Exception handling: No violations detected.
+================================================================================
+E:/GitHub/ASPA/tests\MR_file_structure\MR5_header_comments_correct.py
+MR5_header_comments_correct.py
+
+Basic commands: No violations detected.
+
+Functions: No violations detected.
+
+File handling: No violations detected.
+
+Data structures: No violations detected.
+
+Library usage: No violations detected.
+
+Exception handling: No violations detected.
+================================================================================
+E:/GitHub/ASPA/tests\MR_file_structure\MR5_header_comments_wrong1.py
+MR5_header_comments_wrong1.py
+
+Basic commands: No violations detected.
+
+Functions: No violations detected.
+
+File handling: No violations detected.
+
+Data structures: No violations detected.
+
+Library usage: No violations detected.
+
+Exception handling: No violations detected.
+================================================================================
+E:/GitHub/ASPA/tests\MR_file_structure\MR5_header_comments_wrong2.py
+MR5_header_comments_wrong2.py
+
+Basic commands: No violations detected.
+
+Functions: No violations detected.
+
+File handling: No violations detected.
+
+Data structures: No violations detected.
+
+Library usage: No violations detected.
+
+Exception handling: No violations detected.
+================================================================================
+E:/GitHub/ASPA/tests\MR_file_structure\MR5_header_comments_wrong3.py
+MR5_header_comments_wrong3.py
+
+Basic commands: No violations detected.
+
+Functions: No violations detected.
+
+File handling: No violations detected.
+
+Data structures: No violations detected.
+
+Library usage: No violations detected.
+
+Exception handling: No violations detected.
+================================================================================
+E:/GitHub/ASPA/tests\PK_exception_handling\PK1-1_missing_exception_type.py
+PK1-1_missing_exception_type.py
+
+Basic commands: No violations detected.
+
+Functions: No violations detected.
+
+File handling: No violations detected.
+
+Data structures: No violations detected.
+
+Library usage: No violations detected.
+
+Exception handling, violations detected please see Liite 5 'Poikkeukset':
+Line 10: Missing exception type.
+================================================================================
+E:/GitHub/ASPA/tests\PK_exception_handling\PK1_only_one_except_branch.py
+PK1_only_one_except_branch.py
+
+Basic commands: No violations detected.
+
+Functions: No violations detected.
+
+File handling: No violations detected.
+
+Data structures: No violations detected.
+
+Library usage: No violations detected.
+
+Exception handling: No violations detected.
+================================================================================
+E:/GitHub/ASPA/tests\PK_exception_handling\PK3_file_open_miss_exception_handling.py
+PK3_file_open_miss_exception_handling.py
+
+Basic commands: No violations detected.
+
+Functions: No violations detected.
+
+File handling, violations detected please see Liite 5 'Tiedostoon kirjoittaminen' 'Tiedostosta lukeminen':
+Line 21: In this course usage of 'with open' is not recommended.
+Line 31: In this course usage of 'with open' is not recommended.
+
+Data structures: No violations detected.
+
+Library usage: No violations detected.
+
+Exception handling, violations detected please see Liite 5 'Poikkeukset':
+Line 26: Missing exception handling from the file opening.
+Line 28: Missing exception handling from the file opening.
+Line 31: Missing exception handling from the file opening.
+================================================================================
+E:/GitHub/ASPA/tests\PK_exception_handling\PK4_file_operation_miss_exception_handling.py
+PK4_file_operation_miss_exception_handling.py
+
+Basic commands: No violations detected.
+
+Functions: No violations detected.
+
+File handling: No violations detected.
+
+Data structures: No violations detected.
+
+Library usage: No violations detected.
+
+Exception handling, violations detected please see Liite 5 'Poikkeukset':
+Line 15: Missing exception handling from the file operation 't.fhandle.write'.
+Line 23: Missing exception handling from the file operation 'f.readline'.
+Line 24: Missing exception handling from the file operation 'f.read'.
+Line 25: Missing exception handling from the file operation 'f.readlines'.
+Line 26: Missing exception handling from the file operation 'for _ in f'.
+Line 40: Missing exception handling from the file operation 'for this_is_a_bug in f'.
+================================================================================
+E:/GitHub/ASPA/tests\PT_basic_command\PT1_print_call.py
+PT1_print_call.py
+
+Basic commands: No violations detected.
+
+Functions: No violations detected.
+
+File handling: No violations detected.
+
+Data structures: No violations detected.
+
+Library usage: No violations detected.
+
+Exception handling: No violations detected.
+================================================================================
+E:/GitHub/ASPA/tests\PT_basic_command\PT2_naming.py
+PT2_naming.py
+
+Basic commands, violations detected please see Liite 5 'Tiedon tulostaminen ruudulle' 'Tiedon lukeminen käyttäjältä' 'Valintarakenne' 'Toistorakenteet':
+Line 12: Name 'systäämi' contains other than A-Z, 0-9 and underscore characters.
+Line 13: Name 'pår' contains other than A-Z, 0-9 and underscore characters.
+Line 21: Name 'ÄÖÅ' contains other than A-Z, 0-9 and underscore characters.
+Line 25: Name 'ääkkönen' contains other than A-Z, 0-9 and underscore characters.
+Line 28: Name 'ÄÄKKÖNEN' contains other than A-Z, 0-9 and underscore characters.
+Line 31: Name 'é' contains other than A-Z, 0-9 and underscore characters.
+Line 34: Name 'è' contains other than A-Z, 0-9 and underscore characters.
+Line 37: Name 'vör' contains other than A-Z, 0-9 and underscore characters.
+Line 37: Name 'í' contains other than A-Z, 0-9 and underscore characters.
+Line 40: Name 'vääär' contains other than A-Z, 0-9 and underscore characters.
+Line 40: Name 'Öû' contains other than A-Z, 0-9 and underscore characters.
+Line 40: Name 'årgs' contains other than A-Z, 0-9 and underscore characters.
+Line 40: Name 'kwärgs' contains other than A-Z, 0-9 and underscore characters.
+Line 40: Name 'Ì' contains other than A-Z, 0-9 and underscore characters.
+Line 69: Name 'å' contains other than A-Z, 0-9 and underscore characters.
+Line 70: Name 'ä' contains other than A-Z, 0-9 and underscore characters.
+Line 71: Name 'ö' contains other than A-Z, 0-9 and underscore characters.
+Line 72: Name 'ü' contains other than A-Z, 0-9 and underscore characters.
+Line 79: Name 'ääö' contains other than A-Z, 0-9 and underscore characters.
+Line 79: Name 'ÖÖÄ_' contains other than A-Z, 0-9 and underscore characters.
+Line 100: Name 'învÄlÏd' contains other than A-Z, 0-9 and underscore characters.
+Line 118: Name 'ZÄ' contains other than A-Z, 0-9 and underscore characters.
+Line 123: Name 'Kävö' contains other than A-Z, 0-9 and underscore characters.
+
+Functions: No violations detected.
+
+File handling: No violations detected.
+
+Data structures: No violations detected.
+
+Library usage: No violations detected.
+
+Exception handling: No violations detected.
+================================================================================
+E:/GitHub/ASPA/tests\PT_basic_command\PT4-1_infinite_loop.py
+PT4-1_infinite_loop.py
+
+Basic commands, violations detected please see Liite 5 'Tiedon tulostaminen ruudulle' 'Tiedon lukeminen käyttäjältä' 'Valintarakenne' 'Toistorakenteet':
+Line 14: Loop never breaks.
+
+Functions: No violations detected.
+
+File handling: No violations detected.
+
+Data structures: No violations detected.
+
+Library usage: No violations detected.
+
+Exception handling: No violations detected.
+================================================================================
+E:/GitHub/ASPA/tests\PT_basic_command\PT5_unreachable_code.py
+PT5_unreachable_code.py
+
+Basic commands, violations detected please see Liite 5 'Tiedon tulostaminen ruudulle' 'Tiedon lukeminen käyttäjältä' 'Valintarakenne' 'Toistorakenteet':
+Line 13: Unreachable code after command 'break'.
+Line 14: Unreachable code after command 'continue'.
+Line 15: Unreachable code after command 'raise'.
+Line 18: Unreachable code after command 'quit'.
+Line 19: Unreachable code after command 'exit'.
+Line 20: Unreachable code after command 'sys.exit'.
+Line 22: Unreachable code after command 'return'.
+Line 29: Unreachable code after command 'return'.
+Line 32: Unreachable code after command 'sys.exit'.
+Line 33: Unreachable code after command 'exit'.
+Line 34: Unreachable code after command 'quit'.
+Line 37: Unreachable code after command 'return'.
+Line 42: Unreachable code after command 'continue'.
+Line 43: Unreachable code after command 'break'.
+Line 46: Unreachable code after command 'return'.
+Line 47: Unreachable code after command 'raise'.
+Line 54: Unreachable code after command 'return'.
+Line 56: Unreachable code after command 'return'.
+Line 59: Unreachable code after command 'return'.
+Line 62: Unreachable code after command 'return'.
+Line 65: Unreachable code after command 'return'.
+Line 70: Unreachable code after command 'return'.
+Line 73: Unreachable code after command 'return'.
+
+Functions: No violations detected.
+
+File handling, violations detected please see Liite 5 'Tiedostoon kirjoittaminen' 'Tiedostosta lukeminen':
+Line 53: In this course usage of 'with open' is not recommended.
+
+Data structures: No violations detected.
+
+Library usage: No violations detected.
+
+Exception handling: No violations detected.
+================================================================================
+E:/GitHub/ASPA/tests\TK_file_handling\TK1-1_with_open.py
+TK1-1_with_open.py
+
+Basic commands: No violations detected.
+
+Functions: No violations detected.
+
+File handling, violations detected please see Liite 5 'Tiedostoon kirjoittaminen' 'Tiedostosta lukeminen':
+Line 8: In this course usage of 'with open' is not recommended.
+
+Data structures: No violations detected.
+
+Library usage: No violations detected.
+
+Exception handling: No violations detected.
+================================================================================
+E:/GitHub/ASPA/tests\TK_file_handling\TK1-2_close_in_except.py
+TK1-2_close_in_except.py
+
+Basic commands: No violations detected.
+
+Functions: No violations detected.
+
+File handling, violations detected please see Liite 5 'Tiedostoon kirjoittaminen' 'Tiedostosta lukeminen':
+Line 10: File handle 'f1' is closed in except-branch.
+Line 13: File handle 'f2' is closed in except-branch.
+
+Data structures: No violations detected.
+
+Library usage: No violations detected.
+
+Exception handling: No violations detected.
+================================================================================
+E:/GitHub/ASPA/tests\TK_file_handling\TK1-3_close_missing_parenthesis.py
+TK1-3_close_missing_parenthesis.py
+
+Basic commands: No violations detected.
+
+Functions: No violations detected.
+
+File handling, violations detected please see Liite 5 'Tiedostoon kirjoittaminen' 'Tiedostosta lukeminen':
+Line 10: Missing parenthesis from file closing 'f1.close'.
+
+Data structures: No violations detected.
+
+Library usage: No violations detected.
+
+Exception handling: No violations detected.
+================================================================================
+E:/GitHub/ASPA/tests\TK_file_handling\TK1_file_left_open.py
+TK1_file_left_open.py
+
+Basic commands: No violations detected.
+
+Functions: No violations detected.
+
+File handling, violations detected please see Liite 5 'Tiedostoon kirjoittaminen' 'Tiedostosta lukeminen':
+Line 34: In this course usage of 'with open' is not recommended.
+Line 28: File handle 'f2' is left open.
+
+Data structures: No violations detected.
+
+Library usage: No violations detected.
+
+Exception handling: No violations detected.
+================================================================================
+E:/GitHub/ASPA/tests\TK_file_handling\TK2_file_open_operation_close.py
+TK2_file_open_operation_close.py
+
+Basic commands: No violations detected.
+
+Functions: No violations detected.
+
+File handling, violations detected please see Liite 5 'Tiedostoon kirjoittaminen' 'Tiedostosta lukeminen':
+Line 28: File operation 'f.readline' is in different function than file open and close.
+Line 20: File handle 'f' is left open.
+
+Data structures: No violations detected.
+
+Library usage: No violations detected.
+
+Exception handling: No violations detected.
+================================================================================
+E:/GitHub/ASPA/tests\TR_data_structure\TR2-1_using_class_without_object.py
+TR2-1_using_class_without_object.py
+
+Basic commands: No violations detected.
+
+Functions: No violations detected.
+
+File handling: No violations detected.
+
+Data structures, violations detected please see Liite 5 'Aliohjelmat' 'Listan käsittely' 'Monimutkaisempi tietorakenne':
+Line 10: Class is being used directly without an object 'FOO.attr'.
+
+Library usage: No violations detected.
+
+Exception handling: No violations detected.
+================================================================================
+E:/GitHub/ASPA/tests\TR_data_structure\TR2-2_object_creation_miss_parenthesis.py
+TR2-2_object_creation_miss_parenthesis.py
+
+Basic commands: No violations detected.
+
+Functions: No violations detected.
+
+File handling: No violations detected.
+
+Data structures, violations detected please see Liite 5 'Aliohjelmat' 'Listan käsittely' 'Monimutkaisempi tietorakenne':
+Line 11: Missing parenthesis from object creation. Should be 'FOO()'.
+Line 15: Missing parenthesis from object creation. Should be 'FOO()'.
+
+Library usage: No violations detected.
+
+Exception handling: No violations detected.
+================================================================================
+E:/GitHub/ASPA/tests\TR_data_structure\TR2-3_non_global_class.py
+TR2-3_non_global_class.py
+
+Basic commands: No violations detected.
+
+Functions: No violations detected.
+
+File handling: No violations detected.
+
+Data structures, violations detected please see Liite 5 'Aliohjelmat' 'Listan käsittely' 'Monimutkaisempi tietorakenne':
+Line 6: Class 'BARBAR' is not defined in global scope.
+Line 10: Class 'FOO' is not defined in global scope.
+
+Library usage: No violations detected.
+
+Exception handling: No violations detected.
+================================================================================
+E:/GitHub/ASPA/tests\TR_data_structure\TR2-4_lowercase_class.py
+TR2-4_lowercase_class.py
+
+Basic commands: No violations detected.
+
+Functions: No violations detected.
+
+File handling: No violations detected.
+
+Data structures, violations detected please see Liite 5 'Aliohjelmat' 'Listan käsittely' 'Monimutkaisempi tietorakenne':
+Line 6: Name of the class 'bar' is not in UPPERCASE.
+Line 9: Name of the class 'BaRBaR' is not in UPPERCASE.
+
+Library usage: No violations detected.
+
+Exception handling: No violations detected.
+================================================================================
+E:/GitHub/ASPA/tests\TR_data_structure\TR3-1_attribute_to_list.py
+TR3-1_attribute_to_list.py
+
+Basic commands: No violations detected.
+
+Functions, violations detected please see Liite 5 'Aliohjelmat':
+Line 71: Definition of the function 'temp' is not at the global scope.
+Line 77: Definition of the function 'test1' is not at the global scope.
+Line 85: Definition of the function 'test2' is not at the global scope.
+Line 88: Definition of the function 'test3' is not at the global scope.
+
+File handling: No violations detected.
+
+Data structures, violations detected please see Liite 5 'Aliohjelmat' 'Listan käsittely' 'Monimutkaisempi tietorakenne':
+Line 18: Object's attribute is added to a list in every loop iteration.
+Line 19: Object's attribute is added to a list in every loop iteration.
+Line 20: Object's attribute is added to a list in every loop iteration.
+Line 20: Object's attribute is added to a list in every loop iteration.
+Line 21: Object's attribute is added to a list in every loop iteration.
+Line 21: Object's attribute is added to a list in every loop iteration.
+Line 22: Object's attribute is added to a list in every loop iteration.
+Line 23: Object's attribute is added to a list in every loop iteration.
+Line 24: Object's attribute is added to a list in every loop iteration.
+Line 25: Object's attribute is added to a list in every loop iteration.
+Line 25: Object's attribute is added to a list in every loop iteration.
+Line 45: Object's attribute is added to a list in every loop iteration.
+Line 46: Object's attribute is added to a list in every loop iteration.
+Line 47: Object's attribute is added to a list in every loop iteration.
+Line 47: Object's attribute is added to a list in every loop iteration.
+Line 48: Object's attribute is added to a list in every loop iteration.
+Line 48: Object's attribute is added to a list in every loop iteration.
+Line 49: Object's attribute is added to a list in every loop iteration.
+Line 50: Object's attribute is added to a list in every loop iteration.
+Line 51: Object's attribute is added to a list in every loop iteration.
+Line 52: Object's attribute is added to a list in every loop iteration.
+Line 52: Object's attribute is added to a list in every loop iteration.
+Line 82: Object's attribute is added to a list in every loop iteration.
+Line 91: Class 'FAKE' is not defined in global scope.
+Line 103: Object's attribute is added to a list in every loop iteration.
+
+Library usage: No violations detected.
+
+Exception handling: No violations detected.
