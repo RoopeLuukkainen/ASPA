@@ -100,6 +100,9 @@ class DataStructureAnalyser(ast.NodeVisitor):
         """Method to find:
         1. Direct usage of CLASS variables via class itself.
         2. Assiging CLASS to variable, i.e. object = CLASS <without parenthesis>
+        3. Object creation outside a loop and object (attribute) values
+           are assigned inside the loop and then object is put into a
+           list.
         """
         classes = self.model.get_class_dict().keys()
 
