@@ -1,4 +1,4 @@
-"""Library file containing all ASPA ast checks."""
+"""Library file containing generally used ASPA ast checks."""
 
 import ast
 
