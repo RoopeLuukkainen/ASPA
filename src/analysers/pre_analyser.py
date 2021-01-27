@@ -86,11 +86,11 @@ class PreAnalyser(ast.NodeVisitor):
                 elif(name in self.constant_dict.keys()):
                     self.global_dict[name] = self.constant_dict.pop(name, None)
 
-                elif(var.col_offset == 0 
-                        or a_utils.get_parent_instance(node,
+                elif(var.col_offset == 0
+                        or a_utils.get_parent(node,
                         (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)) is None):
 
-                    # TODO: imporove this to detect tuples created with 
+                    # TODO: imporove this to detect tuples created with
                     # tuple(), which is Call not Tuple
                     if(isinstance(node.value, (ast.Constant, ast.Tuple))):
                         self.constant_dict[name] = templates.GlobalTemplate(
@@ -107,7 +107,7 @@ class PreAnalyser(ast.NodeVisitor):
 
     def _store_class(self, node):
         key = node.name
-        parent = a_utils.get_parent_instance(node, 
+        parent = a_utils.get_parent(node,
             (ast.ClassDef, ast.FunctionDef, ast.AsyncFunctionDef))
         if(parent):
             key = f"{parent.name}.{key}"
@@ -121,13 +121,13 @@ class PreAnalyser(ast.NodeVisitor):
         pos_args = [i.arg for i in node.args.args]
         kw_args = [i.arg for i in node.args.kwonlyargs]
 
-        parent = a_utils.get_parent_instance(node, 
+        parent = a_utils.get_parent(node,
             (ast.ClassDef, ast.FunctionDef, ast.AsyncFunctionDef))
         if(parent):
             key = f"{parent.name}.{key}"
         if(self.library):
             key = f"{self.library}.{key}"
-        #  TODO: If key exist then there are two identically named functions 
+        #  TODO: If key exist then there are two identically named functions
         # in same scope
         # Could use similar list solution as with imports
         self.function_dict[key] = templates.FunctionTemplate(
@@ -135,8 +135,8 @@ class PreAnalyser(ast.NodeVisitor):
 
     def _store_call(self, node):
         try:
-            if(node.col_offset == 0 
-                    or a_utils.get_parent_instance(node,
+            if(node.col_offset == 0
+                    or a_utils.get_parent(node,
                     (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)) is None):
                 self.call_dict[node.func.id] = templates.CallTemplate(
                                                     node.func.id,

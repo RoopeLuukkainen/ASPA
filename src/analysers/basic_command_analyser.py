@@ -20,7 +20,7 @@ class BasicsAnalyser(ast.NodeVisitor):
     def check_valid_name(self, node, name, *args, **kwargs):
         """Method to validate given name, e.g. variable name or function name.
         Valid names must match following regex pattern ^[a-zA-Z_][a-zA-Z0-9_]*$
-        i.e. they can have only letters from a to z (both upper and lowercase), 
+        i.e. they can have only letters from a to z (both upper and lowercase),
         underscore or numbers, and may not start with a number.
         """
 
@@ -30,12 +30,12 @@ class BasicsAnalyser(ast.NodeVisitor):
             # else:
             #     print("valid", node.lineno, name)
 
-        # TypeError Can oocur when name is not string or bytes-like object, 
+        # TypeError Can oocur when name is not string or bytes-like object,
         # e.g. when importing module without as-keyword (as)name will be None.
         except TypeError:
             pass
 
-        # using keyword actually creates syntax error to ast.parse therefore 
+        # using keyword actually creates syntax error to ast.parse therefore
         # this test is no in use
         # if(keyword.iskeyword(name)):
         #     self.model.add_msg("PT2-1", name, lineno=node.lineno)
@@ -123,16 +123,16 @@ class BasicsAnalyser(ast.NodeVisitor):
             attribute_name = None  # Library, class or object name which is referred
 
             # Command called check
-            if(isinstance(node.func, ast.Name) 
+            if(isinstance(node.func, ast.Name)
                     and call_name in self.searched_commands):
                 self.model.add_msg("PT1", call_name, lineno=node.lineno)
 
             # Unreachable code check
             if(call_name == "exit"):
-                self._check_unreachable_code(a_utils.get_parent_instance(node, ast.Expr),
+                self._check_unreachable_code(a_utils.get_parent(node, ast.Expr),
                                             "exit")
             elif(call_name == "quit"):
-                self._check_unreachable_code(a_utils.get_parent_instance(node, ast.Expr), 
+                self._check_unreachable_code(a_utils.get_parent(node, ast.Expr),
                                             "quit")
         except AttributeError:
             try:
@@ -141,7 +141,7 @@ class BasicsAnalyser(ast.NodeVisitor):
 
                 # Unreachable code check
                 if(attribute_name == "sys" and call_name == "exit"):
-                    self._check_unreachable_code(a_utils.get_parent_instance(node, ast.Expr),
+                    self._check_unreachable_code(a_utils.get_parent(node, ast.Expr),
                                                 "sys.exit")
 
             except AttributeError:
@@ -153,7 +153,7 @@ class BasicsAnalyser(ast.NodeVisitor):
         try:
             # Check if there is no break in infinite loop
             if(a_utils.is_always_true(node.test)
-                    and not a_utils.get_child_instance(node, 
+                    and not a_utils.get_child_instance(node,
                     (ast.Break, ast.Return, ast.Raise))):
                 self.model.add_msg("PT4-1", lineno=node.lineno)
         except AttributeError:

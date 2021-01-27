@@ -120,7 +120,7 @@ class DataStructureAnalyser(ast.NodeVisitor):
         # i.e. node.value is class name.
         try:
             name = au.get_attribute_name(node.value)
-            parent = au.get_parent_instance(node,
+            parent = au.get_parent(node,
                 (ast.ClassDef, ast.FunctionDef, ast.AsyncFunctionDef))
 
             if(name in classes or f"{parent.name}.{name}" in classes):
@@ -137,19 +137,18 @@ class DataStructureAnalyser(ast.NodeVisitor):
                 if(not isinstance(i, ast.Attribute)):
                     continue
 
-                loop = au.get_parent_instance(node,
-                    (ast.While, ast.For))
+                loop = au.get_parent(node, (ast.While, ast.For))
 
                 # Check if assign is inside a loop, if not no other
                 # target can be inside a loop either.
                 if(not loop):
                     break
 
-                func = au.get_parent_instance(node,
-                    (ast.FunctionDef, ast.AsyncFunctionDef))
+                func = au.get_parent(node,
+(ast.FunctionDef, ast.AsyncFunctionDef))
                 name_list = au.get_attribute_name(i, splitted=True)
                 obj = self._get_object_by_name(".".join(name_list[:-1]), func)
-                loop2 = au.get_parent_instance(obj.astree, (ast.While, ast.For))
+                loop2 = au.get_parent(obj.astree, (ast.While, ast.For))
 
                 # Check if the object is created in same function as
                 # value is assigned to its attribute but creation is not
@@ -185,7 +184,7 @@ class DataStructureAnalyser(ast.NodeVisitor):
         """
         # Col offset should detect every class definition which is indended
         if(node.col_offset > 0
-                or au.get_parent_instance(node,
+                or au.get_parent(node,
                 (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)) is not None):
             self.model.add_msg("TR2-3", node.name, lineno=node.lineno)
 
@@ -211,8 +210,8 @@ class DataStructureAnalyser(ast.NodeVisitor):
 
         # The check of adding object's attribute to the list is only done when
         # it is done inside a loop
-        if(au.get_parent_instance(node, (ast.While, ast.For))):
-            func = au.get_parent_instance(node,
+        if(au.get_parent(node, (ast.While, ast.For))):
+            func = au.get_parent(node,
                     (ast.FunctionDef, ast.AsyncFunctionDef))
             try:
                 name = au.get_attribute_name(node.value)

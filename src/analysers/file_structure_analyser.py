@@ -50,7 +50,7 @@ class FileStructureAnalyser(ast.NodeVisitor):
         """
         call_count = 0
         # TODO: Parse nested function names, which are in format parent.functionName
-        fun_list = self.model.get_function_dict().keys() 
+        fun_list = self.model.get_function_dict().keys()
         for node in tree.body:
             if(hasattr(node, "value") and isinstance(node.value, ast.Call)):
                 call_count += 1
@@ -87,7 +87,7 @@ class FileStructureAnalyser(ast.NodeVisitor):
 
     def _check_import(self, node, lib_name, importFrom=False):
         # Check if import is not at global namespace
-        if(a_utils.get_parent_instance(node, 
+        if(a_utils.get_parent(node,
                 (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)) is not None):
             self.model.add_msg("MR4", lib_name, lineno=node.lineno)
 

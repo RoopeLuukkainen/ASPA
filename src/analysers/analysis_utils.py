@@ -69,7 +69,7 @@ def add_siblings(tree):
     #         print("---", node)
 
 # AST search utilities
-def get_parent_instance(node, allowed, denied=tuple()):
+def get_parent(node, allowed, denied=tuple()):
     """
     Function to get parent instance of a node.
     'allowed' argument defines type of the desired parent, it should be
@@ -92,12 +92,12 @@ def get_parent_instance(node, allowed, denied=tuple()):
 
 def has_same_parent(node, others, allowed, denied=tuple()):
     # NOT YET TESTED
-    parent = get_parent_instance(node, allowed, denied)
+    parent = get_parent(node, allowed, denied)
     if(isinstance(others, (list, tuple, set))):
         for i in others:
-            if(not parent or (parent != get_parent_instance(i, allowed, denied))):
+            if(not parent or (parent != get_parent(i, allowed, denied))):
                 return False
-    elif(not parent or (parent != get_parent_instance(others, allowed, denied))):
+    elif(not parent or (parent != get_parent(others, allowed, denied))):
         return False
     return True
 
@@ -146,7 +146,7 @@ def is_added_to_data_structure(node, data_stuct_node, data_stuct_name, add_attrs
     """
 
     is_added = False
-    parent = get_parent_instance(node, (data_stuct_node, ast.Call))
+    parent = get_parent(node, (data_stuct_node, ast.Call))
 
     # This detect list_name += [...] and list_name = list_name + [...]
     # and cases with extend where list_name.extend([...])

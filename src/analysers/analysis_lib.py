@@ -274,7 +274,7 @@ class Model:
                     a_utils.add_parents(tree)
                     a_utils.add_siblings(tree)
                     self.pre_analyse_tree(tree, files_in_dir, dir_path)
-                    
+
                     # TODO: optimise such that os.listdir is done only once per directory
                     self.analyse_tree(tree, files_in_dir, content, selections)
 

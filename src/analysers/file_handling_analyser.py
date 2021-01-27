@@ -24,8 +24,8 @@ class FileHandlingAnalyser(ast.NodeVisitor):
                     continue
                 if(closed_name == opened_name
                         and closed.lineno >= opened.lineno
-                        and a_utils.get_parent_instance(opened, (ast.FunctionDef, ast.AsyncFunctionDef))
-                        is a_utils.get_parent_instance(closed, (ast.FunctionDef, ast.AsyncFunctionDef))):
+                        and a_utils.get_parent(opened, (ast.FunctionDef, ast.AsyncFunctionDef))
+                        is a_utils.get_parent(closed, (ast.FunctionDef, ast.AsyncFunctionDef))):
                     temp = opened
             if(temp):  # After for loop to find last file handle
                 try:
@@ -45,7 +45,7 @@ class FileHandlingAnalyser(ast.NodeVisitor):
 
     def check_same_parent(self, node, attr, parent=tuple()):
         try:
-            func = a_utils.get_parent_instance(node, parent)
+            func = a_utils.get_parent(node, parent)
             name = node.value.id
             line = node.lineno
             has_close = False
@@ -83,9 +83,9 @@ class FileHandlingAnalyser(ast.NodeVisitor):
         """
         try:
             if(node.attr == "close"):
-                if(a_utils.get_parent_instance(node, ast.ExceptHandler) is not None):
+                if(a_utils.get_parent(node, ast.ExceptHandler) is not None):
                     self.model.add_msg("TK1-2", node.value.id, lineno=node.lineno)
-                if(a_utils.get_parent_instance(node, ast.Call) is None):
+                if(a_utils.get_parent(node, ast.Call) is None):
                     self.model.add_msg("TK1-3", node.value.id, "close", lineno=node.lineno)
 
                 self.model.set_files_closed(node.value, append=True)
