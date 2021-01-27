@@ -129,11 +129,15 @@ class BasicsAnalyser(ast.NodeVisitor):
 
             # Unreachable code check
             if(call_name == "exit"):
-                self._check_unreachable_code(au.get_parent(node, ast.Expr),
-                                            "exit")
+                self._check_unreachable_code(
+                    au.get_parent(node, ast.Expr),
+                    "exit"
+                )
             elif(call_name == "quit"):
-                self._check_unreachable_code(au.get_parent(node, ast.Expr),
-                                            "quit")
+                self._check_unreachable_code(
+                    au.get_parent(node, ast.Expr),
+                    "quit"
+                )
         except AttributeError:
             try:
                 call_name = node.func.attr  # Name of the called function or class
@@ -141,8 +145,10 @@ class BasicsAnalyser(ast.NodeVisitor):
 
                 # Unreachable code check
                 if(attribute_name == "sys" and call_name == "exit"):
-                    self._check_unreachable_code(au.get_parent(node, ast.Expr),
-                                                "sys.exit")
+                    self._check_unreachable_code(
+                        au.get_parent(node, ast.Expr),
+                        "sys.exit"
+                    )
 
             except AttributeError:
                 pass
@@ -153,8 +159,10 @@ class BasicsAnalyser(ast.NodeVisitor):
         try:
             # Check if there is no break in infinite loop
             if(au.is_always_true(node.test)
-                    and not au.get_child_instance(node,
-                    (ast.Break, ast.Return, ast.Raise))):
+                    and not au.get_child_instance(
+                        node,
+                        (ast.Break, ast.Return, ast.Raise)
+                    )):
                 self.model.add_msg("PT4-1", lineno=node.lineno)
         except AttributeError:
             pass

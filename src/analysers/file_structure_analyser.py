@@ -2,6 +2,7 @@
 import ast
 
 import src.analysers.analysis_utils as au
+import src.config.config as cnf
 
 class FileStructureAnalyser(ast.NodeVisitor):
     """
@@ -87,8 +88,7 @@ class FileStructureAnalyser(ast.NodeVisitor):
 
     def _check_import(self, node, lib_name, importFrom=False):
         # Check if import is not at global namespace
-        if(au.get_parent(node,
-                (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)) is not None):
+        if(au.get_parent(node, cnf.CLS_FUNC) is not None):
             self.model.add_msg("MR4", lib_name, lineno=node.lineno)
 
    # Visits

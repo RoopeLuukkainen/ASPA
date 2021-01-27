@@ -3,6 +3,7 @@ import ast
 
 import src.analysers.analysis_utils as au
 import src.analysers.ast_checks as ac
+import src.config.config as cnf
 
 class ErrorHandlingAnalyser(ast.NodeVisitor):
     # Initialisation
@@ -76,8 +77,7 @@ class ErrorHandlingAnalyser(ast.NodeVisitor):
 
         try:
             if(node.attr in self.file_operations
-                    and au.get_parent(node, ast.Try,
-                    denied=(ast.FunctionDef, ast.AsyncFunctionDef)) is None):
+                    and au.get_parent(node, ast.Try, denied=cnf.FUNC) is None):
                 self.model.add_msg(
                     "PK4",
                     au.get_attribute_name(node),
@@ -102,10 +102,10 @@ class ErrorHandlingAnalyser(ast.NodeVisitor):
                 iter_name = au.get_attribute_name(node.iter.args[0])
 
             if(iter_name in names
-                    and au.get_parent(node, ast.Try,
-                    denied=(ast.FunctionDef, ast.AsyncFunctionDef)) is None):
+                    and au.get_parent(node, ast.Try, denied=cnf.FUNC) is None):
                 try:
-                    self.model.add_msg("PK4", f"for {node.target.id} in {iter_name}", lineno=node.lineno)
+                    self.model.add_msg(
+                        "PK4", f"for {node.target.id} in {iter_name}",lineno=node.lineno)
                 except AttributeError:
                     self.model.add_msg("PK4", f"for ... in ...", lineno=node.lineno)
 

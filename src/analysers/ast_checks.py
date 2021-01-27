@@ -3,14 +3,10 @@
 import ast
 
 import src.analysers.analysis_utils as au
-
-# Constants
-FUNC = (ast.FunctionDef, ast.AsyncFunctionDef)
-CLS_FUNC = (ast.ClassDef, ast.FunctionDef, ast.AsyncFunctionDef)
-LOOP = (ast.For, ast.While)
+import src.config.config as cnf
 
 # AST checks
-def has_exception_handling(node, denied=FUNC):
+def has_exception_handling(node, denied=cnf.FUNC):
     """ Check to determine if node is inside exception handling."""
 
     if au.get_parent(node, ast.Try, denied=denied) is None:

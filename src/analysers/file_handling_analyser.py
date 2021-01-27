@@ -2,6 +2,7 @@
 import ast
 
 import src.analysers.analysis_utils as au
+import src.config.config as cnf
 
 class FileHandlingAnalyser(ast.NodeVisitor):
     # Initally opened and closed were SETs of names, that was super easy and efficient but not complete solution
@@ -24,8 +25,8 @@ class FileHandlingAnalyser(ast.NodeVisitor):
                     continue
                 if(closed_name == opened_name
                         and closed.lineno >= opened.lineno
-                        and au.get_parent(opened, (ast.FunctionDef, ast.AsyncFunctionDef))
-                        is au.get_parent(closed, (ast.FunctionDef, ast.AsyncFunctionDef))):
+                        and au.get_parent(opened, cnf.FUNC)
+                        is au.get_parent(closed, cnf.FUNC)):
                     temp = opened
             if(temp):  # After for loop to find last file handle
                 try:
@@ -94,7 +95,7 @@ class FileHandlingAnalyser(ast.NodeVisitor):
 
         try:
             if(node.attr in self.file_operations):
-                self.check_same_parent(node, node.attr, (ast.FunctionDef, ast.AsyncFunctionDef))
+                self.check_same_parent(node, node.attr, cnf.FUNC)
         except AttributeError:
             pass
         self.generic_visit(node)

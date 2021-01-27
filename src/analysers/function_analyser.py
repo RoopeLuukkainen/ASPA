@@ -1,8 +1,8 @@
 """Class file. Contains FunctionAnalyser class."""
 import ast
 
-import src.config.config as cnf
 import src.analysers.analysis_utils as au
+import src.config.config as cnf
 
 class FunctionAnalyser(ast.NodeVisitor):
     # Initialisation
@@ -19,7 +19,7 @@ class FunctionAnalyser(ast.NodeVisitor):
         try:
             if(not (isinstance(last, ast.Return)
                         or (isinstance(last, ast.Expr)
-                        and isinstance(last.value, (ast.Yield, ast.YieldFrom))))
+                        and isinstance(last.value, cnf.YIELD)))
                     and not "*" in self.MISSING_RETURN_ALLOWED
                     and not node.name in self.MISSING_RETURN_ALLOWED):
                 self.model.add_msg("AR6", node.name, lineno=node.lineno)
@@ -36,8 +36,7 @@ class FunctionAnalyser(ast.NodeVisitor):
             return None
         # Col offset should detect every function definition which is indended
         if(node.col_offset > 0
-                or au.get_parent(node,
-                (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)) is not None):
+                or au.get_parent(node, cnf.CLS_FUNC) is not None):
 
             # This if check if there are allowed names for methods given.
             if(((not "*" in self.ALLOWED_FUNC and not name in self.ALLOWED_FUNC)
@@ -107,8 +106,7 @@ class FunctionAnalyser(ast.NodeVisitor):
     def _check_recursion(self, node, func, *args, **kwargs):
         # Recursive function calls.
         try:
-            if(func == au.get_parent(node,
-                    (ast.FunctionDef, ast.AsyncFunctionDef)).name):
+            if(func == au.get_parent(node, cnf.FUNC).name):
                 self.model.add_msg("AR4", lineno=node.lineno)
         except AttributeError:  # AttributeError occus e.g. when function name is searched from global scope
             pass
@@ -248,7 +246,7 @@ class FunctionAnalyser(ast.NodeVisitor):
         # future Python versions. Add the visit_Constant() method to handle all
         # constant nodes.
 
-        if(not isinstance(node.parent_node, (ast.FunctionDef, ast.AsyncFunctionDef))):
+        if(not isinstance(node.parent_node, cnf.FUNC)):
             self.model.add_msg("AR6-2", lineno=node.lineno)
 
         return_value = node.value
@@ -331,16 +329,20 @@ class FunctionAnalyser(ast.NodeVisitor):
 
     def visit_Yield(self, node, *args, **kwargs):
         """Method to detect usage of yield."""
-        self.model.add_msg("AR6-1",
+        self.model.add_msg(
+            "AR6-1",
             "yield",
-            au.get_parent(node, (ast.FunctionDef, ast.AsyncFunctionDef)).name,
-            lineno=node.lineno)
+            au.get_parent(node, cnf.FUNC).name,
+            lineno=node.lineno
+        )
         self.generic_visit(node)
 
     def visit_YieldFrom(self, node, *args, **kwargs):
         """Method to detect usage of yield from."""
-        self.model.add_msg("AR6-1",
+        self.model.add_msg(
+            "AR6-1",
             "yield from",
-            au.get_parent(node, (ast.FunctionDef, ast.AsyncFunctionDef)).name,
-            lineno=node.lineno)
+            au.get_parent(node, cnf.FUNC).name,
+            lineno=node.lineno
+        )
         self.generic_visit(node)
