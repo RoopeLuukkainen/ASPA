@@ -13,7 +13,8 @@ DEFAULT_SETTINGS = {
     "result_path": str(pathlib.Path(__file__).parent.absolute().joinpath("tarkistukset.txt")),
     "only_leaf_files": False,
     "show_statistics": False,
-    "settings_file": "settings.json"
+    "settings_file": "settings.json",
+    "BKT_analysis": False
 }
 
 # Analysis constants

@@ -2,11 +2,13 @@
 import ast
 
 import src.analysers.analysis_utils as a_utils
+import src.analysers.ast_checks as ac
 
 class ErrorHandlingAnalyser(ast.NodeVisitor):
     # Initialisation
     def __init__(self, model):
         self.model = model
+        self.BKTA = model.settings["BKT_analysis"]
         self.file_operations = {"read", "readline", "readlines", "write", "writelines"}
    # Getters
 
@@ -18,12 +20,12 @@ class ErrorHandlingAnalyser(ast.NodeVisitor):
     def visit_Try(self, node, *args, **kwargs):
         """Method to check if node is:
         1. Try with only one exception branch
-        2. Exception branch missing an error type. Excluding the last 
+        2. Exception branch missing an error type. Excluding the last
             exception IF there are more than one exception branches.
 
         ast.Try has lists for each branchtype: handlers=[], orelse=[], finalbody=[],
         which are for excepts, else and finally, respectively
-        
+
         Does not analyse
         1. finally branches
         2. else branches
@@ -50,12 +52,16 @@ class ErrorHandlingAnalyser(ast.NodeVisitor):
         """Method to check if node is:
         1. Missing try - except around file opening.
         """
-        if(hasattr(node.func, "id") 
-                and node.func.id == "open" 
-                and hasattr(node, "parent_node")
-                and a_utils.get_parent_instance(node, ast.Try, 
-                    denied=(ast.FunctionDef, ast.AsyncFunctionDef)) is None):
-            self.model.add_msg("PK3", lineno=node.lineno)
+        try:
+            if node.func.id == "open":
+                if not ac.has_exception_handling(node):
+                    self.model.add_msg("PK3", lineno=node.lineno)
+                elif self.BKTA:
+                    pass
+                    # File opening has correct exception handling
+        except AttributeError:
+            pass
+
         self.generic_visit(node)
 
     def visit_Attribute(self, node, *args, **kwargs):
@@ -69,7 +75,7 @@ class ErrorHandlingAnalyser(ast.NodeVisitor):
 
         try:
             if(node.attr in self.file_operations
-                    and a_utils.get_parent_instance(node, ast.Try,
+                    and a_utils.get_parent(node, ast.Try,
                     denied=(ast.FunctionDef, ast.AsyncFunctionDef)) is None):
                 self.model.add_msg(
                     "PK4",
@@ -88,14 +94,14 @@ class ErrorHandlingAnalyser(ast.NodeVisitor):
             iter_name = ""
             if(isinstance(node.iter, (ast.Name, ast.Attribute))):
                 iter_name = a_utils.get_attribute_name(node.iter)
-            
+
             # Special case for 'for ... in enumerate(filehandle)'
             # Only works if there is one call, not call inside calls
             elif(isinstance(node.iter, ast.Call) and node.iter.func.id == "enumerate"):
                 iter_name = a_utils.get_attribute_name(node.iter.args[0])
 
             if(iter_name in names
-                    and a_utils.get_parent_instance(node, ast.Try,
+                    and a_utils.get_parent(node, ast.Try,
                     denied=(ast.FunctionDef, ast.AsyncFunctionDef)) is None):
                 try:
                     self.model.add_msg("PK4", f"for {node.target.id} in {iter_name}", lineno=node.lineno)
