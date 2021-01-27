@@ -17,6 +17,7 @@ DEFAULT_SETTINGS = {
     "BKT_analysis": False
 }
 
+# -----------------------------------------------------------------------------#
 # Analysis constants
 MAIN_FUNC_NAME = "paaohjelma"
 
@@ -75,6 +76,13 @@ ALLOWED_ELEMENTS = {ast.Import, ast.ImportFrom, ast.Assign, ast.ClassDef,
 #     }
 # }
 
+# AST class type sets
+FUNC = (ast.FunctionDef, ast.AsyncFunctionDef)
+CLS_FUNC = (ast.ClassDef, ast.FunctionDef, ast.AsyncFunctionDef)
+LOOP = (ast.For, ast.While)
+YIELD = (ast.Yield, ast.YieldFrom)
+
+# -----------------------------------------------------------------------------#
 # Analysis category names
 CHECKBOX_OPTIONS = ["basic",
                     "function",
@@ -107,6 +115,7 @@ TEXT = {
     }
 }
 
+# -----------------------------------------------------------------------------#
 # GUI constants
 GUI = {
     "FIN": {
@@ -211,6 +220,7 @@ TITLE_TO_EXAMPLES = {
     "file_error": ("EX12",)
 }
 
+# -----------------------------------------------------------------------------#
 # Violation messages
 MSG = {
     "ENG": {
