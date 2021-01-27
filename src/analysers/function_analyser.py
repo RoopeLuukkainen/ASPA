@@ -2,7 +2,7 @@
 import ast
 
 import src.config.config as cnf
-import src.analysers.analysis_utils as a_utils
+import src.analysers.analysis_utils as au
 
 class FunctionAnalyser(ast.NodeVisitor):
     # Initialisation
@@ -36,13 +36,13 @@ class FunctionAnalyser(ast.NodeVisitor):
             return None
         # Col offset should detect every function definition which is indended
         if(node.col_offset > 0
-                or a_utils.get_parent(node,
+                or au.get_parent(node,
                 (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)) is not None):
 
             # This if check if there are allowed names for methods given.
             if(((not "*" in self.ALLOWED_FUNC and not name in self.ALLOWED_FUNC)
                  and (name in self.DENIED_FUNC or "*" in self.DENIED_FUNC))
-                    or (a_utils.get_parent(node, ast.ClassDef) is None)):
+                    or (au.get_parent(node, ast.ClassDef) is None)):
                 # If function name is not in denied and not in allowed
                 # AND there is class as parent, then no error.
                 self.model.add_msg("AR2-1", name, lineno=node.lineno)
@@ -107,7 +107,7 @@ class FunctionAnalyser(ast.NodeVisitor):
     def _check_recursion(self, node, func, *args, **kwargs):
         # Recursive function calls.
         try:
-            if(func == a_utils.get_parent(node,
+            if(func == au.get_parent(node,
                     (ast.FunctionDef, ast.AsyncFunctionDef)).name):
                 self.model.add_msg("AR4", lineno=node.lineno)
         except AttributeError:  # AttributeError occus e.g. when function name is searched from global scope
@@ -173,7 +173,7 @@ class FunctionAnalyser(ast.NodeVisitor):
 
         try:
             for var in node.targets[:]:
-                name = a_utils.get_attribute_name(var, splitted=True)
+                name = au.get_attribute_name(var, splitted=True)
                 if(isinstance(var, ast.Attribute) and name[0] in functions):
                     self.model.add_msg("AR7", ".".join(name), lineno=var.lineno)
         except AttributeError:
@@ -189,7 +189,7 @@ class FunctionAnalyser(ast.NodeVisitor):
     #     # Global variable detection
     #     for var in node.targets[:]:
     #         if(node.col_offset == 0
-    #                 or a_utils.get_parent(node,
+    #                 or au.get_parent(node,
     #                 (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)) is None):
     #             if(isinstance(var, ast.Attribute)):
     #                 self.model.add_msg("AR3-2", var.value.id, var.attr, lineno=var.lineno)
@@ -333,7 +333,7 @@ class FunctionAnalyser(ast.NodeVisitor):
         """Method to detect usage of yield."""
         self.model.add_msg("AR6-1",
             "yield",
-            a_utils.get_parent(node, (ast.FunctionDef, ast.AsyncFunctionDef)).name,
+            au.get_parent(node, (ast.FunctionDef, ast.AsyncFunctionDef)).name,
             lineno=node.lineno)
         self.generic_visit(node)
 
@@ -341,6 +341,6 @@ class FunctionAnalyser(ast.NodeVisitor):
         """Method to detect usage of yield from."""
         self.model.add_msg("AR6-1",
             "yield from",
-            a_utils.get_parent(node, (ast.FunctionDef, ast.AsyncFunctionDef)).name,
+            au.get_parent(node, (ast.FunctionDef, ast.AsyncFunctionDef)).name,
             lineno=node.lineno)
         self.generic_visit(node)

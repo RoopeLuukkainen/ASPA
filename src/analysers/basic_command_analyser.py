@@ -4,7 +4,7 @@ import ast
 import re
 
 import src.config.config as cnf
-import src.analysers.analysis_utils as a_utils
+import src.analysers.analysis_utils as au
 
 class BasicsAnalyser(ast.NodeVisitor):
     """Class to do static analysis by visiting nodes of Abstract Syntax
@@ -129,10 +129,10 @@ class BasicsAnalyser(ast.NodeVisitor):
 
             # Unreachable code check
             if(call_name == "exit"):
-                self._check_unreachable_code(a_utils.get_parent(node, ast.Expr),
+                self._check_unreachable_code(au.get_parent(node, ast.Expr),
                                             "exit")
             elif(call_name == "quit"):
-                self._check_unreachable_code(a_utils.get_parent(node, ast.Expr),
+                self._check_unreachable_code(au.get_parent(node, ast.Expr),
                                             "quit")
         except AttributeError:
             try:
@@ -141,7 +141,7 @@ class BasicsAnalyser(ast.NodeVisitor):
 
                 # Unreachable code check
                 if(attribute_name == "sys" and call_name == "exit"):
-                    self._check_unreachable_code(a_utils.get_parent(node, ast.Expr),
+                    self._check_unreachable_code(au.get_parent(node, ast.Expr),
                                                 "sys.exit")
 
             except AttributeError:
@@ -152,8 +152,8 @@ class BasicsAnalyser(ast.NodeVisitor):
         # Found a while loop
         try:
             # Check if there is no break in infinite loop
-            if(a_utils.is_always_true(node.test)
-                    and not a_utils.get_child_instance(node,
+            if(au.is_always_true(node.test)
+                    and not au.get_child_instance(node,
                     (ast.Break, ast.Return, ast.Raise))):
                 self.model.add_msg("PT4-1", lineno=node.lineno)
         except AttributeError:

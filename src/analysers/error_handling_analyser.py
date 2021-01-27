@@ -1,7 +1,7 @@
 """Class file. Contains ErrorHandlingAnalyser class."""
 import ast
 
-import src.analysers.analysis_utils as a_utils
+import src.analysers.analysis_utils as au
 import src.analysers.ast_checks as ac
 
 class ErrorHandlingAnalyser(ast.NodeVisitor):
@@ -57,6 +57,7 @@ class ErrorHandlingAnalyser(ast.NodeVisitor):
                 if not ac.has_exception_handling(node):
                     self.model.add_msg("PK3", lineno=node.lineno)
                 elif self.BKTA:
+                    au.dump_node(node)
                     pass
                     # File opening has correct exception handling
         except AttributeError:
@@ -75,11 +76,11 @@ class ErrorHandlingAnalyser(ast.NodeVisitor):
 
         try:
             if(node.attr in self.file_operations
-                    and a_utils.get_parent(node, ast.Try,
+                    and au.get_parent(node, ast.Try,
                     denied=(ast.FunctionDef, ast.AsyncFunctionDef)) is None):
                 self.model.add_msg(
                     "PK4",
-                    a_utils.get_attribute_name(node),
+                    au.get_attribute_name(node),
                     lineno=node.lineno
                 )
         except AttributeError:
@@ -88,20 +89,20 @@ class ErrorHandlingAnalyser(ast.NodeVisitor):
 
     def visit_For(self, node, *args, **kwargs):
         try:
-            names = [a_utils.get_attribute_name(i) for i in self.model.get_files_opened()]
+            names = [au.get_attribute_name(i) for i in self.model.get_files_opened()]
             # TODO: add check that file is opened in same function
 
             iter_name = ""
             if(isinstance(node.iter, (ast.Name, ast.Attribute))):
-                iter_name = a_utils.get_attribute_name(node.iter)
+                iter_name = au.get_attribute_name(node.iter)
 
             # Special case for 'for ... in enumerate(filehandle)'
             # Only works if there is one call, not call inside calls
             elif(isinstance(node.iter, ast.Call) and node.iter.func.id == "enumerate"):
-                iter_name = a_utils.get_attribute_name(node.iter.args[0])
+                iter_name = au.get_attribute_name(node.iter.args[0])
 
             if(iter_name in names
-                    and a_utils.get_parent(node, ast.Try,
+                    and au.get_parent(node, ast.Try,
                     denied=(ast.FunctionDef, ast.AsyncFunctionDef)) is None):
                 try:
                     self.model.add_msg("PK4", f"for {node.target.id} in {iter_name}", lineno=node.lineno)

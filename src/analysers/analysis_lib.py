@@ -6,7 +6,7 @@ import os
 # Utility libraries
 from ..config import config as cnf
 import src.utils_lib as utils
-import src.analysers.analysis_utils as a_utils
+import src.analysers.analysis_utils as au
 
 # AST analysers
 import src.analysers.pre_analyser as pre_analyser
@@ -225,7 +225,7 @@ class Model:
             utils.write_file(self.settings["result_path"], write_content, mode="a")
 
         if(self.settings["GUI_print"]):
-            # GUI_content = f"{a_utils.create_dash(get_dash=True)}\n{path}\n{filename}\n{content}"
+            # GUI_content = f"{au.create_dash(get_dash=True)}\n{path}\n{filename}\n{content}"
             line_list.insert(0, (utils.create_dash(a="=", get_dash=True), cnf.GENERAL))
             line_list.insert(1, (path, cnf.GENERAL))
             line_list.insert(2, (filename, cnf.GENERAL))
@@ -271,8 +271,8 @@ class Model:
 
                     # Static analysis
                     files_in_dir = os.listdir(dir_path)
-                    a_utils.add_parents(tree)
-                    a_utils.add_siblings(tree)
+                    au.add_parents(tree)
+                    au.add_siblings(tree)
                     self.pre_analyse_tree(tree, files_in_dir, dir_path)
 
                     # TODO: optimise such that os.listdir is done only once per directory

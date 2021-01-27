@@ -1,7 +1,7 @@
 """Class file. Contains FileHandlingAnalyser class."""
 import ast
 
-import src.analysers.analysis_utils as a_utils
+import src.analysers.analysis_utils as au
 
 class FileHandlingAnalyser(ast.NodeVisitor):
     # Initally opened and closed were SETs of names, that was super easy and efficient but not complete solution
@@ -17,15 +17,15 @@ class FileHandlingAnalyser(ast.NodeVisitor):
         for closed in closed_files:
             for opened in opened_files:
                 try:
-                    closed_name = a_utils.get_attribute_name(closed)
-                    opened_name = a_utils.get_attribute_name(opened)
+                    closed_name = au.get_attribute_name(closed)
+                    opened_name = au.get_attribute_name(opened)
 
                 except AttributeError:
                     continue
                 if(closed_name == opened_name
                         and closed.lineno >= opened.lineno
-                        and a_utils.get_parent(opened, (ast.FunctionDef, ast.AsyncFunctionDef))
-                        is a_utils.get_parent(closed, (ast.FunctionDef, ast.AsyncFunctionDef))):
+                        and au.get_parent(opened, (ast.FunctionDef, ast.AsyncFunctionDef))
+                        is au.get_parent(closed, (ast.FunctionDef, ast.AsyncFunctionDef))):
                     temp = opened
             if(temp):  # After for loop to find last file handle
                 try:
@@ -36,7 +36,7 @@ class FileHandlingAnalyser(ast.NodeVisitor):
 
         for file in left_open:
             try:
-                name = a_utils.get_attribute_name(file)
+                name = au.get_attribute_name(file)
             except AttributeError:
                 continue
 
@@ -45,7 +45,7 @@ class FileHandlingAnalyser(ast.NodeVisitor):
 
     def check_same_parent(self, node, attr, parent=tuple()):
         try:
-            func = a_utils.get_parent(node, parent)
+            func = au.get_parent(node, parent)
             name = node.value.id
             line = node.lineno
             has_close = False
@@ -83,9 +83,9 @@ class FileHandlingAnalyser(ast.NodeVisitor):
         """
         try:
             if(node.attr == "close"):
-                if(a_utils.get_parent(node, ast.ExceptHandler) is not None):
+                if(au.get_parent(node, ast.ExceptHandler) is not None):
                     self.model.add_msg("TK1-2", node.value.id, lineno=node.lineno)
-                if(a_utils.get_parent(node, ast.Call) is None):
+                if(au.get_parent(node, ast.Call) is None):
                     self.model.add_msg("TK1-3", node.value.id, "close", lineno=node.lineno)
 
                 self.model.set_files_closed(node.value, append=True)

@@ -1,7 +1,7 @@
 """Class file. Contains PreAnalyser class."""
 import ast
 
-import src.analysers.analysis_utils as a_utils
+import src.analysers.analysis_utils as au
 import src.config.templates as templates
 
 class PreAnalyser(ast.NodeVisitor):
@@ -87,7 +87,7 @@ class PreAnalyser(ast.NodeVisitor):
                     self.global_dict[name] = self.constant_dict.pop(name, None)
 
                 elif(var.col_offset == 0
-                        or a_utils.get_parent(node,
+                        or au.get_parent(node,
                         (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)) is None):
 
                     # TODO: imporove this to detect tuples created with
@@ -107,7 +107,7 @@ class PreAnalyser(ast.NodeVisitor):
 
     def _store_class(self, node):
         key = node.name
-        parent = a_utils.get_parent(node,
+        parent = au.get_parent(node,
             (ast.ClassDef, ast.FunctionDef, ast.AsyncFunctionDef))
         if(parent):
             key = f"{parent.name}.{key}"
@@ -121,7 +121,7 @@ class PreAnalyser(ast.NodeVisitor):
         pos_args = [i.arg for i in node.args.args]
         kw_args = [i.arg for i in node.args.kwonlyargs]
 
-        parent = a_utils.get_parent(node,
+        parent = au.get_parent(node,
             (ast.ClassDef, ast.FunctionDef, ast.AsyncFunctionDef))
         if(parent):
             key = f"{parent.name}.{key}"
@@ -136,7 +136,7 @@ class PreAnalyser(ast.NodeVisitor):
     def _store_call(self, node):
         try:
             if(node.col_offset == 0
-                    or a_utils.get_parent(node,
+                    or au.get_parent(node,
                     (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)) is None):
                 self.call_dict[node.func.id] = templates.CallTemplate(
                                                     node.func.id,
