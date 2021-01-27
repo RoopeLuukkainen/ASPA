@@ -2,7 +2,7 @@
 import ast
 
 import src.analysers.analysis_utils as au
-import src.analysers.ast_checks as ac
+# import src.analysers.ast_checks as ac
 import src.config.config as cnf
 
 class ErrorHandlingAnalyser(ast.NodeVisitor):
@@ -16,6 +16,25 @@ class ErrorHandlingAnalyser(ast.NodeVisitor):
    # Setters
 
    # General methods
+    def _has_exception_handling(self, node, denied=cnf.FUNC):
+        """ Check to determine if node is inside exception handling."""
+
+        if au.get_parent(node, ast.Try, denied=denied) is None:
+            return False
+        return True
+
+    def _check_exception_handling(self, node):
+        try:
+            if node.func.id == "open":
+                if not self._has_exception_handling(node):
+                    self.model.add_msg("PK3", lineno=node.lineno)
+                elif self.BKTA:
+                    au.dump_node(node)
+                    pass
+                    # File opening has correct exception handling
+        except AttributeError:
+            pass
+
 
    # Visits
     def visit_Try(self, node, *args, **kwargs):
@@ -31,6 +50,7 @@ class ErrorHandlingAnalyser(ast.NodeVisitor):
         1. finally branches
         2. else branches
         """
+
         try:
             if(not node.handlers):
                 pass
@@ -53,16 +73,17 @@ class ErrorHandlingAnalyser(ast.NodeVisitor):
         """Method to check if node is:
         1. Missing try - except around file opening.
         """
-        try:
-            if node.func.id == "open":
-                if not ac.has_exception_handling(node):
-                    self.model.add_msg("PK3", lineno=node.lineno)
-                elif self.BKTA:
-                    au.dump_node(node)
-                    pass
-                    # File opening has correct exception handling
-        except AttributeError:
-            pass
+        self._check_exception_handling(node)
+        # try:
+        #     # if node.func.id == "open":
+        #     #     if not ac.has_exception_handling(node):
+        #     #         self.model.add_msg("PK3", lineno=node.lineno)
+        #     #     elif self.BKTA:
+        #     #         au.dump_node(node)
+        #     #         pass
+        #     #         # File opening has correct exception handling
+        # except AttributeError:
+        #     pass
 
         self.generic_visit(node)
 
