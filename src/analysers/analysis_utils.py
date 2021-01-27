@@ -186,3 +186,8 @@ def get_attribute_name(node, splitted=False):
         finally:
             name_parts.clear()
     return name
+
+####################################################################
+#  Debug functions
+def dump_node(node):
+    print(f"{node.lineno}: {ast.dump(node)}")
