@@ -1,4 +1,4 @@
-2020-12-17_15-47-32
+2021-01-29_14-14-22
 ================================================================================
 E:/GitHub/ASPA/tests\AR_functions\AR1_no_paaohjelma.py
 AR1_no_paaohjelma.py
@@ -155,6 +155,8 @@ Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
 
 Aliohjelmat, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Aliohjelmat':
 Rivi 5: Aliohjelman 'AR6_1' lopusta puuttuu return-komento.
+Rivi 8: Käytetään generaattoria 'yield' aliohjelmassa 'AR6_1'.
+Rivi 11: Käytetään generaattoria 'yield from' aliohjelmassa 'AR6_1_b'.
 
 Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
 
@@ -473,6 +475,36 @@ Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
 ================================================================================
 E:/GitHub/ASPA/tests\MR_file_structure\MR5_header_comments_wrong3.py
 MR5_header_comments_wrong3.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat: Ei tunnistettu tyylirikkomuksia.
+
+Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
+
+Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
+
+Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
+
+Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
+================================================================================
+E:/GitHub/ASPA/tests\OK_files\empty.py
+empty.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat: Ei tunnistettu tyylirikkomuksia.
+
+Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
+
+Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
+
+Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
+
+Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
+================================================================================
+E:/GitHub/ASPA/tests\OK_files\paaohjelma.py
+paaohjelma.py
 
 Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
 

@@ -32,7 +32,8 @@ MISSING_RETURN_ALLOWED = {"__init__"}
 SEARCHED_COMMANDS = {"round", "print", "range", "int", "len", "float", "str"} # Examples
 
 # Add keys of ignored error messages
-IGNORE = {"PT1", "PK1", "MR5", "AR6-1", "AR6-2"}
+IGNORE = {"PT1", "PK1", "MR5", "AR6-2"}
+# IGNORE = {"PT1", "PK1", "MR5", "AR6-1", "AR6-2"}
 GENERAL = 0
 ERROR = 1
 WARNING = 2

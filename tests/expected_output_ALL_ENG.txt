@@ -1,4 +1,4 @@
-2020-12-17_11-04-53
+2021-01-29_14-17-03
 ================================================================================
 E:/GitHub/ASPA/tests\AR_functions\AR1_no_paaohjelma.py
 AR1_no_paaohjelma.py
@@ -155,6 +155,8 @@ Basic commands: No violations detected.
 
 Functions, violations detected please see Liite 5 'Aliohjelmat':
 Line 5: Missing return at the end of the function 'AR6_1'.
+Line 8: Usage of 'yield' in function 'AR6_1'.
+Line 11: Usage of 'yield from' in function 'AR6_1_b'.
 
 File handling: No violations detected.
 
@@ -473,6 +475,36 @@ Exception handling: No violations detected.
 ================================================================================
 E:/GitHub/ASPA/tests\MR_file_structure\MR5_header_comments_wrong3.py
 MR5_header_comments_wrong3.py
+
+Basic commands: No violations detected.
+
+Functions: No violations detected.
+
+File handling: No violations detected.
+
+Data structures: No violations detected.
+
+Library usage: No violations detected.
+
+Exception handling: No violations detected.
+================================================================================
+E:/GitHub/ASPA/tests\OK_files\empty.py
+empty.py
+
+Basic commands: No violations detected.
+
+Functions: No violations detected.
+
+File handling: No violations detected.
+
+Data structures: No violations detected.
+
+Library usage: No violations detected.
+
+Exception handling: No violations detected.
+================================================================================
+E:/GitHub/ASPA/tests\OK_files\paaohjelma.py
+paaohjelma.py
 
 Basic commands: No violations detected.
 
@@ -855,6 +887,39 @@ Line 52: Object's attribute is added to a list in every loop iteration.
 Line 82: Object's attribute is added to a list in every loop iteration.
 Line 91: Class 'FAKE' is not defined in global scope.
 Line 103: Object's attribute is added to a list in every loop iteration.
+
+Library usage: No violations detected.
+
+Exception handling: No violations detected.
+================================================================================
+E:/GitHub/ASPA/tests\TR_data_structure\TR3-2_object_outside_loop.py
+TR3-2_object_outside_loop.py
+
+Basic commands: No violations detected.
+
+Functions: No violations detected.
+
+File handling: No violations detected.
+
+Data structures, violations detected please see Liite 5 'Aliohjelmat' 'Listan käsittely' 'Monimutkaisempi tietorakenne':
+Line 12: Object is created outside a loop but usage and addition toa list is inside the loop.
+Line 12: Object is created outside a loop but usage and addition toa list is inside the loop.
+Line 12: Object is created outside a loop but usage and addition toa list is inside the loop.
+Line 12: Object is created outside a loop but usage and addition toa list is inside the loop.
+Line 12: Object is created outside a loop but usage and addition toa list is inside the loop.
+Line 12: Object is created outside a loop but usage and addition toa list is inside the loop.
+Line 12: Object is created outside a loop but usage and addition toa list is inside the loop.
+Line 12: Object is created outside a loop but usage and addition toa list is inside the loop.
+Line 12: Object is created outside a loop but usage and addition toa list is inside the loop.
+Line 13: Object is created outside a loop but usage and addition toa list is inside the loop.
+Line 13: Object is created outside a loop but usage and addition toa list is inside the loop.
+Line 13: Object is created outside a loop but usage and addition toa list is inside the loop.
+Line 13: Object is created outside a loop but usage and addition toa list is inside the loop.
+Line 13: Object is created outside a loop but usage and addition toa list is inside the loop.
+Line 13: Object is created outside a loop but usage and addition toa list is inside the loop.
+Line 13: Object is created outside a loop but usage and addition toa list is inside the loop.
+Line 13: Object is created outside a loop but usage and addition toa list is inside the loop.
+Line 13: Object is created outside a loop but usage and addition toa list is inside the loop.
 
 Library usage: No violations detected.
 
