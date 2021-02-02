@@ -22,7 +22,7 @@ class Model:
     def __init__(self, controller):
         self.controller = controller
         self.settings = self.controller.get_settings()
-        self.violation_occurances = dict()
+        self.violation_occurances = {}
 
         try:
             self.language = self.settings["language"]
@@ -34,7 +34,14 @@ class Model:
             self.checkbox_options = self.settings["checkbox_options"]
         except KeyError:   # This should not be possible if defaults settings are not changed
             # These could be in utils not in settings
-            self.checkbox_options = ["basic", "function", "file_handling", "data_structure", "library", "exception_handling"]
+            self.checkbox_options = [
+                "basic",
+                "function",
+                "file_handling",
+                "data_structure",
+                "library",
+                "exception_handling"
+            ]
         # There is possibility that there are no 6 elements in checkbox options,
         # but that is modified in the code then, i.e. not by user
         try:
@@ -52,25 +59,25 @@ class Model:
         self.pre_analyser = pre_analyser.PreAnalyser()
 
         # Variable data structures (used by function_analyser)
-        self.global_variables = dict()
+        self.global_variables = {}
         self.local_variables = set()
-        self.call_dict = dict()
+        self.call_dict = {}
 
         # File handling (used by file_handling_analyser)
-        self.files_opened = list()
-        self.files_closed =  list()
+        self.files_opened = []
+        self.files_closed =  []
 
         # File structure list and dict used by file_structure_analyser and data_structure_analyser
-        self.function_dict = dict()
-        self.class_dict = dict()
+        self.function_dict = {}
+        self.class_dict = {}
         # File structure lists used by file_structure_analyser
-        self.file_list = list()
-        self.lib_list = list()
-        self.import_dict = dict()
+        self.file_list = []
+        self.lib_list = []
+        self.import_dict = {}
 
         # Messages
-        self.messages = list()
-        self.all_messages = list()
+        self.messages = []
+        self.all_messages = []
 
    # List getters
     def get_call_dict(self):
@@ -197,103 +204,71 @@ class Model:
         self.all_messages.append((title, tuple(self.messages)))
         self.messages.clear()
 
-    # TODO: MOVE TO -> controller -> view
-    def format_all_messages(self, filename, path):
-        # TODO: Change such that only line_list is used.
-        line_list = list()
+    def parse_ast(self, content, filename, create_msg=True):
+        """
+        Creates an abstract syntax tree and adds both parent and sibling
+        nodes.
+        Return: Python ast typed tree or None if parse fails.
+        """
+        tree = None
+        try:
+            tree = ast.parse(content, filename)
 
-        content = ""
-        for title_key, msgs in self.all_messages:
-            if(len(msgs) == 0):
-                line_list.append(("", cnf.GENERAL))
-                line_list.append(utils.create_title('OK', title_key, lang=self.language))
-                content += f"\n{utils.create_title('OK', title_key, lang=self.language)[0]}\n"
-                continue
+        except SyntaxError:
+            if create_msg:
+                self.add_msg("syntax_error")
+                self.save_messages("file_error")
 
-            line_list.append(("", cnf.GENERAL))
-            line_list.append(utils.create_title('NOTE', title_key, lang=self.language))
-            content += f"\n{utils.create_title('NOTE', title_key, lang=self.language)[0]}:\n"
-            for lineno, code, args in msgs:
-                line_list.append(utils.create_msg(code, *args, lineno=lineno, lang=self.language))
-                content += utils.create_msg(code, *args, lineno=lineno, lang=self.language)[0] + "\n"
+        # When content is not str or AST (e.g. None), usually due failed
+        # file reading.
+        except TypeError:
+            if create_msg:
+                self.add_msg("type_error")
+                self.save_messages("file_error")
 
-        if(self.settings["console_print"]):
-            print(content)
+        else:
+            au.add_parents(tree)
+            au.add_siblings(tree)
 
-        if(self.settings["file_write"]):
-            write_content = f"{utils.create_dash(a='=', get_dash=True)}\n{path}\n{filename}\n{content}"
-            utils.write_file(self.settings["result_path"], write_content, mode="a")
+        finally:
+            return tree
 
-        if(self.settings["GUI_print"]):
-            # GUI_content = f"{au.create_dash(get_dash=True)}\n{path}\n{filename}\n{content}"
-            line_list.insert(0, (utils.create_dash(a="=", get_dash=True), cnf.GENERAL))
-            line_list.insert(1, (path, cnf.GENERAL))
-            line_list.insert(2, (filename, cnf.GENERAL))
-            self.controller.update_result(line_list)
+    def analyse(self, tree, content, dir_path, filename, selections):
+        """
+        Analysis wrapper for preanalyser and analyser which do analysis
+        for abstract syntax tree and file content from the ast is
+        created.
 
-        if(self.settings["show_statistics"]):
-            # Currently only cumulative count to console.
-            # TODO: TEMPRORAL: Add to file and GUI too, OR make this own function
-            for key, value in self.violation_occurances.items():
-                print(f"{key}: {value}")
-            print()
+        Return: List of violation messages.
+        """
 
-    def analyse(self, pathlist, selections):
-        for path in pathlist:
-            try:
-                content = utils.read_file(path)
-                filename = os.path.basename(path)
-                dir_path = os.path.dirname(path)
+        try:
+            # TODO: optimise such that os.listdir is done only once per directory
+            files_in_dir = os.listdir(dir_path)
+            self.pre_analyse_tree(tree, files_in_dir, dir_path)
+            self.analyse_tree(tree, files_in_dir, content, selections)
 
-                if(self.settings["console_print"]):
-                    utils.create_dash()
-                    print(str(path))
-                    print(f"Analysing file: {filename}\n")
-                # print(f"Analysoidaan tiedostoa: {filename, path}\n")
-
-                # Create a abstract syntax tree and add parent nodes
-                try:
-                    tree = ast.parse(content, filename)
-                except SyntaxError:
-                    self.add_msg("syntax_error")
-                    self.save_messages("file_error")
-
-                # When content is not str or AST (e.g. None), usually due failed
-                # file reading.
-                except TypeError:
-                    self.add_msg("type_error")
-                    self.save_messages("file_error")
-
-                else:
-                    # Dump tree
-                    if(self.settings["dump_tree"]):
-                        self.dump_tree(tree)
-
-                    # Static analysis
-                    files_in_dir = os.listdir(dir_path)
-                    au.add_parents(tree)
-                    au.add_siblings(tree)
-                    self.pre_analyse_tree(tree, files_in_dir, dir_path)
-
-                    # TODO: optimise such that os.listdir is done only once per directory
-                    self.analyse_tree(tree, files_in_dir, content, selections)
-
-            except Exception:
-                self.clear_analysis_data()
-                self.messages.clear()
-                self.add_msg("tool_error", filename)
-                self.save_messages("analysis_error")
-
-            self.format_all_messages(filename, path)
+        except Exception:
             self.clear_analysis_data()
+            self.messages.clear()
+            self.add_msg("tool_error", filename)
+            self.save_messages("analysis_error")
+
+        return self.all_messages
 
     def pre_analyse_tree(self, tree, files, dir_path):
+        """
+        Preanalyses abstract syntax tree and all imported local
+        libraries.
+        """
+
         self.pre_analyser.visit(tree)
         self.class_dict = self.pre_analyser.get_class_dict()
         self.function_dict = self.pre_analyser.get_function_dict()
         self.import_dict = self.pre_analyser.get_import_dict()
         self.global_variables = self.pre_analyser.get_global_dict()
-        self.constant_variables = self.pre_analyser.get_constant_dict() # This need setter, getter and initialisation if used
+         # This need setter, getter and initialisation if used
+        self.constant_variables = self.pre_analyser.get_constant_dict()
         self.call_dict = self.pre_analyser.get_call_dict()
         self.pre_analyser.clear_all()
 
@@ -303,10 +278,9 @@ class Model:
             if(filename in files):
                 self.lib_list.append(i)
                 content = utils.read_file(os.path.join(dir_path, filename))
-                try:
-                    tree = ast.parse(content, filename)
-                except SyntaxError:
-                    pass
+
+                if not (tree := self.parse_ast(content, filename, create_msg=False)):
+                    continue
 
                 # Preanalysing imported local files
                 analyser = pre_analyser.PreAnalyser(library=i)
@@ -317,7 +291,13 @@ class Model:
                 analyser.clear_all()
 
     def analyse_tree(self, tree, file_list, content, selections):
-        """Function to conduct selected static analyses."""
+        """
+        Analyses abstract syntax tree and file content from the ast is
+        created. Execute only analyses marked with selections argument.
+
+        Return: List of violation messages.
+        """
+
         self.file_list = file_list
 
         for opt in self.checkbox_options:
@@ -327,7 +307,10 @@ class Model:
 
                 if(opt == "file_handling"):
                     # Check left open files
-                    analyser.check_left_open_files(self.files_opened, self.files_closed)
+                    analyser.check_left_open_files(
+                        self.files_opened,
+                        self.files_closed
+                    )
 
                 elif(opt == "function"):
                     analyser.check_main_function()
@@ -348,6 +331,32 @@ class Model:
                         pass
 
                 self.save_messages(opt)
+
+    def format_results(self, filename, path, all_messages):
+        line_list = []
+        for title_key, msgs in all_messages:
+            if(len(msgs) == 0):
+                line_list.append(("", cnf.GENERAL))
+                line_list.append(
+                    utils.create_title('OK', title_key, lang=self.language)
+                )
+                continue
+
+            line_list.append(("", cnf.GENERAL))
+            line_list.append(
+                utils.create_title('NOTE', title_key, lang=self.language)
+            )
+
+            for lineno, code, args in msgs:
+                line_list.append(
+                    utils.create_msg(code, *args, lineno=lineno, lang=self.language)
+                )
+
+        line_list.insert(0, (utils.create_dash(character="=", get_dash=True), cnf.GENERAL))
+        line_list.insert(1, (path, cnf.GENERAL))
+        line_list.insert(2, (filename, cnf.GENERAL))
+
+        return line_list
 
    ####################################################################
    #  Debug functions

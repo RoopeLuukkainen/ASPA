@@ -18,9 +18,11 @@ TOOL_NAME = cnf.TOOL_NAME
 
 
 class GUICLASS(tk.Tk):
-    """Main class for GUI. Master for every used GUI element. The main frame and
-    menubar are inlcuded in the here other GUI elements are in view.
-    Works as a MVP model presenter/ MVC model controller."""
+    """Main class for GUI. Master for every used GUI element. The main
+    frame and menubar are inlcuded in the here other GUI elements are
+    in view. Works as a MVP model presenter/ MVC model controller.
+    """
+
     def __init__(self, *args, settings={}, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
         # tk.Tk.iconbitmap(self, default="icon.ico")  # To change logo icon
@@ -42,13 +44,22 @@ class GUICLASS(tk.Tk):
 
         # File menu
         filemenu = tk.Menu(menubar, tearoff=0)
-        filemenu.add_command(label=cnf.GUI[self.lang]["results"], command=lambda: self.show_page(view.ResultPage))
-        filemenu.add_command(label=cnf.GUI[self.lang]["exit"], command=quit)
+        filemenu.add_command(
+            label=cnf.GUI[self.lang]["results"],
+            command=lambda: self.show_page(view.ResultPage)
+        )
+        filemenu.add_command(
+            label=cnf.GUI[self.lang]["exit"],
+            command=quit
+        )
         menubar.add_cascade(label=cnf.GUI[self.lang]["filemenu"], menu=filemenu)
 
         # Help menu
         helpmenu = tk.Menu(menubar, tearoff=1)
-        helpmenu.add_command(label=cnf.GUI[self.lang]["help"], command=lambda: self.show_page(view.HelpPage))
+        helpmenu.add_command(
+            label=cnf.GUI[self.lang]["help"],
+            command=lambda: self.show_page(view.HelpPage)
+        )
         menubar.add_cascade(label=cnf.GUI[self.lang]["helpmenu"], menu=helpmenu)
 
         # Display the menu
@@ -65,7 +76,8 @@ class GUICLASS(tk.Tk):
         return self.lang
 
     def get_settings(self):
-        return self.settings  # Settings are not changed when where asked so no need to send copy.
+        # Settings are not changed when where asked so no need to send copy.
+        return self.settings
 
     def show_page(self, cont):
         page = self.pages[cont]
@@ -93,19 +105,51 @@ class GUICLASS(tk.Tk):
         timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 
         # # Timestamp to filename  (temporal solution!!)
-        # self.settings["result_path"] = os.path.join(self.settings["root"], 
+        # self.settings["result_path"] = os.path.join(self.settings["root"],
         #     f"tarkistukset_{os.path.basename(filelist[0])}_{timestamp}.txt")  # Give error if file list is empty. Not yet fixed because temporal solution
         # # temporal ends
 
         utils.write_file(self.settings["result_path"], timestamp + "\n")
-        self.pages[view.ResultPage].clear_result()  # Clears previous results
-        self.line_count = self.pages[view.ResultPage].show_info()  # Init new results with default info
-        self.show_page(view.ResultPage)
-        self.model.analyse(filelist, selections)
-        return None
 
-    def update_result(self, messages):
-        self.line_count = self.pages[view.ResultPage].add_result(
-                                              messages, counter=self.line_count)
-        # self.pages[view.ResultPage].add_result(result)
+        result_page = self.pages[view.ResultPage]
+        result_page.clear_result()  # Clears previous results
+        result_page.show_info()  # Init new results with default info
+        self.show_page(view.ResultPage)
+
+        for filepath in filelist:
+            content = utils.read_file(filepath)
+            filename = os.path.basename(filepath)
+            dir_path = os.path.dirname(filepath)
+
+            # No check for tree being None etc. before analysis because
+            # analyses will create violation if tree is not valid. Only
+            # dump checks if tree is not True.
+            tree = self.model.parse_ast(content, filename)
+
+            # Dump tree
+            if(tree and self.settings["dump_tree"]):
+                self.model.dump_tree(tree)
+
+            # Call analyser
+            results = self.model.analyse(
+                tree,
+                content,
+                dir_path,
+                filename,
+                selections
+            )
+
+            # Format results
+            formated_results = self.model.format_results(
+                filename,
+                filepath,
+                results
+            )
+
+            # Show results and clear results
+            result_page.show_results(formated_results)
+            self.model.clear_analysis_data()
+            formated_results.clear()
+
+        result_page.set_line_counter(0)
         return None

@@ -1,4 +1,5 @@
 """Module for TKinter GUI frames."""
+
 try:
     import Tkinter as tk  # Python 2
     from Tkinter import ttk         # Not tested
@@ -41,7 +42,6 @@ class CheckboxPanel(tk.Frame):
             fg=FONT_COLOR,
             font=LARGE_FONT
         ).grid(row=0, column=0, columnspan=2, padx=PAD, pady=PAD)
-    #    tk.Label(self, text=utils.GUI[parent.LANG]["preset_title"], bg=BG_COLOR, fg=FONT_COLOR, font=LARGE_FONT).grid(row=0, column=3, padx=PAD, pady=PAD)
 
         self.selected_analysis = dict()
         count = 0
@@ -50,7 +50,7 @@ class CheckboxPanel(tk.Frame):
             self.selected_analysis[i] = tk.IntVar()
             self.selected_analysis[i].set(1)
             try:
-                option = cnf.TEXT[parent.LANG][i]#ENG_TEXT[i]#FIN_TEXT[i]
+                option = cnf.TEXT[parent.LANG][i]
             except KeyError:
                 option = i
             cb = tk.Checkbutton(
@@ -61,27 +61,6 @@ class CheckboxPanel(tk.Frame):
                 variable=self.selected_analysis[i]
             )
             cb.grid(row=count, column=1, sticky=tk.W)
-
-        # tk.Label(self, text="try-except rakenteet", bg=BG_COLOR, fg=FONT_COLOR, font=SMALL_FONT).grid(row=count+1, column=1, padx=PAD, sticky="w")#, pady=PAD)
-
-
-    #    # Predefined options buttons
-    #     buttons = list()
-
-    #     b_clear = ttk.Button(self, text=utils.GUI[parent.LANG]["clear"],
-    #         command=lambda: self.check(self.selected_analysis.keys(), 0))
-    #     b_clear.grid(row=1, column=3, padx=PAD, pady=PAD, sticky=tk.W + tk.E)
-    #     buttons.append(b_clear)
-
-    #     for i in range(1, len(checkbox_options)):
-    #         b = ttk.Button(self, text=f"{utils.GUI[parent.LANG]['exam_level']} {i}",  # Here could be also week number range
-    #             command=lambda i=i: self.check(checkbox_options[0:i]))
-    #         b.grid(row=i+1, column=3, padx=PAD, pady=PAD, sticky=tk.W + tk.E)
-    #         buttons.append(b)
-
-    #     # Hotfix to make last one being all
-    #     buttons[-1].config(text=f"{utils.GUI[parent.LANG]['exam_level']} {len(checkbox_options)-1} / {utils.GUI[parent.LANG]['course_project_short']}", 
-    #                        command=lambda: self.check(self.selected_analysis.keys()))
 
     def check(self, keys, value=1):
         """Method to set given value for given checkboxes."""
@@ -333,7 +312,6 @@ class ResultPage(tk.Frame):
         ]
         self.display_result(infos)
         infos.clear()
-        return c
 
     def display_result(self, messages, counter=0):
         if not counter:
@@ -341,9 +319,9 @@ class ResultPage(tk.Frame):
         line_counter = counter
 
         self.result_textbox.config(state="normal")
-        line_counter = counter
         for msg in messages:
-            line_counter += 1 # Text box lines start from 1 therefore add at the beginning
+            # Text box lines start from 1 therefore add at the beginning
+            line_counter += 1
             self.result_textbox.insert(tk.END, f"{msg[0]}\n")
             if(len(msg) >= 4):
                 s = f"{line_counter}.0 + {msg[2]}c"
@@ -368,9 +346,35 @@ class ResultPage(tk.Frame):
         textbox.tag_add(tag, start, end)
 
     def clear_result(self):
+        """Method to clear results textbox."""
+
         self.result_textbox.config(state="normal")
         self.result_textbox.delete(1.0, tk.END)
         self.result_textbox.config(state="disabled")
+
+    def show_results(self, line_list):
+        """Method to show analysis results in selected output channels."""
+
+        # Last \n is added because of file.write() command doesn't add it.
+        content = "\n".join((map(lambda elem: elem[0], line_list))) + "\n"
+        if(self.settings["console_print"]):
+            print(content, end="")
+
+        if(self.settings["file_write"]):
+            utils.write_file(self.settings["result_path"], content, mode="a")
+
+        if(self.settings["GUI_print"]):
+            self.display_result(line_list)
+
+    def print_statistics(self, statistics):
+        """Method to print basic statistics of found violations.
+        Currently contains only counts of each violation type.
+        """
+
+        utils.create_dash()
+        for key, value in statistics.items():
+            print(f"{key}: {value}")
+        print()
 
 
 class HelpPage(tk.Frame):
@@ -441,3 +445,12 @@ class SettingsPage(tk.Frame):
         back_button.grid(row=0, column=0, padx=PAD, pady=PAD, sticky=tk.E)
         # exit_button = ttk.Button(button_group, text="Sulje ohjelma", command=quit)
         # exit_button.grid(row=0, column=1, padx=PAD, pady=PAD, sticky=tk.W)
+
+
+class CLI():
+    """
+    Upcoming class for command line views.
+    """
+
+    def __init__(self):
+        pass

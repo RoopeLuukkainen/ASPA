@@ -1,5 +1,5 @@
 """Module containing utility functions general use."""
-import ast
+# import ast
 import os
 import json
 
@@ -22,7 +22,7 @@ DEBUG = cnf.DEBUG
 # General utilities
 
 def ignore_check(code):
-    if(code in IGNORE):
+    if code in IGNORE:
         return True
     else:
         return False
@@ -37,18 +37,18 @@ def create_msg(code, *args, lineno=-1, lang="FIN"):
     1. msg - violation message - string
     2. severity - severity level of message - integer number
         (numbers are predefined global constants)
-    3. start - character index of violation message's start position 
+    3. start - character index of violation message's start position
         - integer number
-    4. end - character index of violation message's end position 
+    4. end - character index of violation message's end position
         - integer number
     """
     msg = ""
     start = 0
     end = 0
     severity = MSG[lang]["default"][1]
-    if(lineno < 0):
-        pass
-    elif(lang):
+    # if lineno < 0:
+    #     pass
+    if lineno >= 0 and lang:
         msg = f"{MSG[lang]['LINE'][0]} {lineno}: "
         start = len(msg)
 
@@ -81,24 +81,26 @@ def create_title(code, title_key, lang="FIN"):
     start = 0
     end = 0
     severity = GENERAL
-    if(title):
+    if title:
         msg = title
         start = len(msg) + 1
 
     try:
-        if(title_key != "analysis_error"):
+        if title_key != "analysis_error":
             msg += MSG[lang][code][0]
             severity = MSG[lang][code][1]
 
-            if(code == "NOTE"):
+            if code == "NOTE":
                 exs = TITLE_TO_EXAMPLES[title_key]
                 for i in exs:
-                    if(i == "EX0"):
+                    if i == "EX0":
                         msg += f" {EXAMPLES[i]}"
                     else:
                         msg += f" '{EXAMPLES[i]}'"
+                msg += ":"
     except KeyError:
         pass
+
     finally:
         end = len(msg)
 
@@ -106,19 +108,20 @@ def create_title(code, title_key, lang="FIN"):
 
 
 def crawl_dirs(paths, only_leaf_files=False):
-    filelist = list()
+    filelist = []
     for path in paths:
-        if(os.path.isdir(path)):
+        if os.path.isdir(path):
             for current_dir, dirs, all_files in os.walk(path):
-                if(not all_files or (only_leaf_files and dirs)):
+                if not all_files or (only_leaf_files and dirs):
                     continue
                 files = [f for f in all_files if(f.endswith(".py"))]
 
                 for f in files:
                     filelist.append(os.path.join(current_dir, f))
-        elif(os.path.isfile(path) and path.endswith(".py")):
+        elif os.path.isfile(path) and path.endswith(".py"):
             filelist.append(path)
-        # else # file is a special file e.g. socket, FIFO or device file OR not .py file.
+        # else # file is a special file e.g. socket, FIFO or device file
+        # OR not .py file.
     return filelist
 
 
@@ -126,9 +129,9 @@ def read_file(filepath, encoding="UTF-8", settings_file=False):
     content = None
     try:
         with open(filepath, "r", encoding=encoding) as f_handle:
-            content = f_handle.read() # Add pass / fail metadata extraction 
+            content = f_handle.read() # Add pass / fail metadata extraction
     except OSError:
-        if(not settings_file):
+        if not settings_file:
             print("OSError while reading a file", filepath)
     except:
         pass
@@ -141,7 +144,7 @@ def write_file(filepath, content, mode="w", encoding="UTF-8"):
             f_handle.write(content)
     except OSError:
         print("OSError while writing a file", filepath)
-    except:
+    except Exception:
         print("Other error than OSError with file", filepath)
     return None
 
@@ -150,11 +153,11 @@ def print_title(title):
     print(f"--- {title} ---")
 
 
-def create_dash(a="-", dash_count=80, get_dash=False):
-    if(get_dash):
-        return a*dash_count
+def create_dash(character="-", dash_count=80, get_dash=False):
+    if get_dash:
+        return character * dash_count
     else:
-        print(a*dash_count)
+        print(character * dash_count)
 
 
 # INIT FUNCTIONS
@@ -167,7 +170,7 @@ def init_settings():
     settings_file = settings["settings_file"]
 
     content = read_file(settings_file, settings_file=True)
-    if(content):
+    if content:
         for key, value in json.loads(content).items():
             settings[key] = value
     else:

@@ -29,7 +29,7 @@ class ErrorHandlingAnalyser(ast.NodeVisitor):
                 if not self._has_exception_handling(node):
                     self.model.add_msg("PK3", lineno=node.lineno)
                 elif self.BKTA:
-                    au.dump_node(node)
+                    # au.dump_node(node)
                     pass
                     # File opening has correct exception handling
         except AttributeError:
