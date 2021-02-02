@@ -29,12 +29,18 @@ HIGHLIGHT = cnf.HIGHLIGHT
 
 class CheckboxPanel(tk.Frame):
     """Class to view checkbox panel. Usage clarification:
-    in __init__ the self (i.e. inherited tk.Frame) 
+    in __init__ the self (i.e. inherited tk.Frame)
     is a master to all elements in this frame.
     """
     def __init__(self, parent, checkbox_options):
         tk.Frame.__init__(self, parent, bd=BD, relief=BD_STYLE)
-        tk.Label(self, text=cnf.GUI[parent.LANG]["select_analysis_title"], bg=BG_COLOR, fg=FONT_COLOR, font=LARGE_FONT).grid(row=0, column=0, columnspan=2, padx=PAD, pady=PAD)
+        tk.Label(
+            self,
+            text=cnf.GUI[parent.LANG]["select_analysis_title"],
+            bg=BG_COLOR,
+            fg=FONT_COLOR,
+            font=LARGE_FONT
+        ).grid(row=0, column=0, columnspan=2, padx=PAD, pady=PAD)
     #    tk.Label(self, text=utils.GUI[parent.LANG]["preset_title"], bg=BG_COLOR, fg=FONT_COLOR, font=LARGE_FONT).grid(row=0, column=3, padx=PAD, pady=PAD)
 
         self.selected_analysis = dict()
@@ -47,8 +53,13 @@ class CheckboxPanel(tk.Frame):
                 option = cnf.TEXT[parent.LANG][i]#ENG_TEXT[i]#FIN_TEXT[i]
             except KeyError:
                 option = i
-            cb = tk.Checkbutton(master=self, text=option, width=20, anchor=tk.W, 
-                                variable=self.selected_analysis[i])
+            cb = tk.Checkbutton(
+                master=self,
+                text=option,
+                width=20,
+                anchor=tk.W,
+                variable=self.selected_analysis[i]
+            )
             cb.grid(row=count, column=1, sticky=tk.W)
 
         # tk.Label(self, text="try-except rakenteet", bg=BG_COLOR, fg=FONT_COLOR, font=SMALL_FONT).grid(row=count+1, column=1, padx=PAD, sticky="w")#, pady=PAD)
@@ -97,18 +108,52 @@ class FiledialogPanel(tk.Frame):
         self.parent = parent
 
         # Title label
-        tk.Label(self, text=cnf.GUI[parent.LANG]["filepaths"], bg=BG_COLOR, fg=FONT_COLOR, font=LARGE_FONT).grid(row=0, column=0, sticky=tk.W, padx=PAD, pady=PAD)
+        tk.Label(
+            self,
+            text=cnf.GUI[parent.LANG]["filepaths"],
+            bg=BG_COLOR,
+            fg=FONT_COLOR,
+            font=LARGE_FONT
+        ).grid(row=0, column=0, sticky=tk.W, padx=PAD, pady=PAD)
 
         # File dialog buttons
-        ttk.Button(self, text=cnf.GUI[parent.LANG]["select_file"], command=self.get_filedialog).grid(row=0, column=1, padx=PAD, pady=PAD, sticky=tk.E)
-        ttk.Button(self, text=cnf.GUI[parent.LANG]["select_folder"], command=lambda: self.get_filedialog(dir=True)).grid(row=0, column=2, padx=PAD, pady=PAD, sticky=tk.E)
-        ttk.Button(self, text=cnf.GUI[parent.LANG]["clear"], command=self.clear_files).grid(row=0, column=3, padx=PAD, pady=PAD, sticky=tk.E)
+        ttk.Button(
+            self,
+            text=cnf.GUI[parent.LANG]["select_file"],
+            command=self.get_filedialog
+        ).grid(row=0, column=1, padx=PAD, pady=PAD, sticky=tk.E)
+
+        ttk.Button(
+            self,
+            text=cnf.GUI[parent.LANG]["select_folder"],
+            command=lambda: self.get_filedialog(dir=True)
+        ).grid(row=0, column=2, padx=PAD, pady=PAD, sticky=tk.E)
+
+        ttk.Button(
+            self,
+            text=cnf.GUI[parent.LANG]["clear"],
+            command=self.clear_files
+        ).grid(row=0, column=3, padx=PAD, pady=PAD, sticky=tk.E)
 
 
         # Create output text box
-        self.filebox = tk.Text(self, width=50, height=10, bg=BG_COLOR, fg=FONT_COLOR, font=NORMAL_FONT)#font=SMALL_FONT)
-        self.filebox.grid(row=1, column=0, columnspan=4, sticky="nesw", padx=PAD, pady=PAD)
-        
+        self.filebox = tk.Text(
+            self,
+            width=50,
+            height=10,
+            bg=BG_COLOR,
+            fg=FONT_COLOR,
+            font=NORMAL_FONT #font=SMALL_FONT)
+        )
+        self.filebox.grid(
+            row=1,
+            column=0,
+            columnspan=4,
+            sticky="nesw",
+            padx=PAD,
+            pady=PAD
+        )
+
         # self.filebox.insert(0.0, "E:/GitLab/ast-analyser/test_files/example2.py\nE:/GitLab/ast-analyser/test_files/lib_example.py\n") # TODO: remove this line
         #self.filebox.insert(0.0, "E:/GitLab/ast-analyser/test_files/analysis_examples.py") # TODO: remove this line
 
@@ -170,7 +215,11 @@ class ControlPanel(tk.Frame):
         button_group = tk.Frame(master=self, bg=FRAME_COLOR)
         button_group.pack(side=tk.TOP)
 
-        run_button = ttk.Button(button_group, text=cnf.GUI[parent.LANG]["execute_analysis"], command=parent.analyse)
+        run_button = ttk.Button(
+            button_group,
+            text=cnf.GUI[parent.LANG]["execute_analysis"],
+            command=parent.analyse
+        )
         run_button.grid(row=0, column=0, padx=PAD, pady=PAD, sticky=tk.E)
 
         # exit_button = ttk.Button(button_group, text="Sulje ohjelma", command=quit) #command=parent.close_window)
@@ -180,7 +229,7 @@ class ControlPanel(tk.Frame):
 
 class AnalysePage(tk.Frame):
     """Class to view analyse page. Usage clarification:
-    in __init__ the self (i.e. inherited tk.Frame) 
+    in __init__ the self (i.e. inherited tk.Frame)
     is a master to all elements in this frame.
     """
     def __init__(self, parent, controller, settings):
@@ -204,7 +253,7 @@ class AnalysePage(tk.Frame):
         # check_panel.pack(side="left", fill="both", expand=True)
         # file_panel.pack(side="right", fill="both", expand=True)
 
-        # button_all = ttk.Button(self, text="All", 
+        # button_all = ttk.Button(self, text="All",
         #                     command=lambda: controller.show_page(ResultPage))
         # button_all.pack()
 
@@ -217,15 +266,24 @@ class AnalysePage(tk.Frame):
 
 class ResultPage(tk.Frame):
     """Class to view result page. Usage clarification:
-    in __init__ the self (i.e. tk.Frame typed class) 
+    in __init__ the self (i.e. tk.Frame typed class)
     is a master to all elements in this frame.
     """
     def __init__(self, parent, controller, settings):
         tk.Frame.__init__(self, parent)
         self.LANG = controller.get_lang()
+        self.settings = settings
+        self.lang = settings["language"]
+        self.line_counter = 0
 
         # Title label
-        label = tk.Label(self, text=cnf.GUI[self.LANG]["analysis_result"], bg=BG_COLOR, fg=FONT_COLOR, font=LARGE_FONT)
+        label = tk.Label(
+            self,
+            text=cnf.GUI[self.LANG]["analysis_result"],
+            bg=BG_COLOR,
+            fg=FONT_COLOR,
+            font=LARGE_FONT
+        )
         label.pack(padx=PAD, pady=PAD)
 
         # Result textbox frame
@@ -234,9 +292,17 @@ class ResultPage(tk.Frame):
         result_frame.grid_rowconfigure(0, weight=1)
         result_frame.grid_columnconfigure(0, weight=1)
 
-        self.result_textbox = tk.Text(result_frame, state="disabled", height=15)
+        self.result_textbox = tk.Text(
+            result_frame,
+            state="disabled",
+            height=15
+        )
         self.result_textbox.grid(column=0, row=0, pady=PAD, sticky="nsew")
-        scrollbar = ttk.Scrollbar(result_frame, orient=tk.VERTICAL, command=self.result_textbox.yview)
+        scrollbar = ttk.Scrollbar(
+            result_frame,
+            orient=tk.VERTICAL,
+            command=self.result_textbox.yview
+        )
         scrollbar.grid(column=1, row=0, sticky="ns", pady=PAD)
         self.result_textbox.configure(yscrollcommand=scrollbar.set)
 
@@ -244,23 +310,35 @@ class ResultPage(tk.Frame):
         button_group = tk.Frame(master=self, bg=FRAME_COLOR)
         button_group.pack(side=tk.BOTTOM)
 
-        back_button = ttk.Button(button_group, text=cnf.GUI[self.LANG]["back"],
-                                command=lambda: controller.show_page(AnalysePage))
+        back_button = ttk.Button(
+            button_group,
+            text=cnf.GUI[self.LANG]["back"],
+            command=lambda: controller.show_page(AnalysePage)
+        )
         back_button.grid(row=0, column=0, padx=PAD, pady=PAD, sticky=tk.E)
         # exit_button = ttk.Button(button_group, text="Sulje ohjelma", command=quit)
         # exit_button.grid(row=0, column=1, padx=PAD, pady=PAD, sticky=tk.W)
 
-    def show_info(self, counter=0):
+    def set_line_counter(self, counter, update=False):
+        if update:
+            self.line_counter += counter
+        else:
+            self.line_counter = counter
+
+    def show_info(self):
         infos = [
             utils.create_msg("NOTE_INFO"),
             utils.create_msg("WARNING_INFO"),
             utils.create_msg("ERROR_INFO")
         ]
-        c = self.add_result(infos, counter=counter)
+        self.display_result(infos)
         infos.clear()
         return c
 
-    def add_result(self, messages, counter=0):
+    def display_result(self, messages, counter=0):
+        if not counter:
+            counter = self.line_counter
+        line_counter = counter
 
         self.result_textbox.config(state="normal")
         line_counter = counter
@@ -273,7 +351,7 @@ class ResultPage(tk.Frame):
                 self.colour_text(msg[1], start=s, end=e)
 
         self.result_textbox.config(state="disabled")
-        return line_counter
+        self.line_counter = line_counter
 
     def colour_text(self, tag, start="1.0", end=tk.END):
         textbox = self.result_textbox
@@ -282,9 +360,11 @@ class ResultPage(tk.Frame):
         except KeyError:
             color = FONT_COLOR
 
-        textbox.tag_configure(tag,
-                              font=font.Font(textbox, textbox.cget("font")),
-                              foreground=color)
+        textbox.tag_configure(
+            tag,
+            font=font.Font(textbox, textbox.cget("font")),
+            foreground=color
+        )
         textbox.tag_add(tag, start, end)
 
     def clear_result(self):
@@ -295,14 +375,20 @@ class ResultPage(tk.Frame):
 
 class HelpPage(tk.Frame):
     """Class to view help page. Usage clarification:
-    in __init__ the self (i.e. tk.Frame typed class) 
+    in __init__ the self (i.e. tk.Frame typed class)
     is a master to all elements in this frame.
     """
     def __init__(self, parent, controller, settings):
         tk.Frame.__init__(self, parent)
         self.LANG = controller.get_lang()
 
-        label = tk.Label(self, text=cnf.GUI[self.LANG]["help"], bg=BG_COLOR, fg=FONT_COLOR, font=LARGE_FONT)
+        label = tk.Label(
+            self,
+            text=cnf.GUI[self.LANG]["help"],
+            bg=BG_COLOR,
+            fg=FONT_COLOR,
+            font=LARGE_FONT
+        )
         label.pack()
 
         help_label = tk.Label(self, text=cnf.GUI[self.LANG]["not_ready_note"])
@@ -312,8 +398,11 @@ class HelpPage(tk.Frame):
         button_group = tk.Frame(master=self, bg=FRAME_COLOR)
         button_group.pack(side=tk.BOTTOM)
 
-        back_button = ttk.Button(button_group, text=cnf.GUI[self.LANG]["back"],
-                                command=lambda: controller.show_page(AnalysePage))
+        back_button = ttk.Button(
+            button_group,
+            text=cnf.GUI[self.LANG]["back"],
+            command=lambda: controller.show_page(AnalysePage)
+        )
         back_button.grid(row=0, column=0, padx=PAD, pady=PAD, sticky=tk.E)
         # exit_button = ttk.Button(button_group, text="Sulje ohjelma", command=quit)
         # exit_button.grid(row=0, column=1, padx=PAD, pady=PAD, sticky=tk.W)
@@ -321,14 +410,20 @@ class HelpPage(tk.Frame):
 
 class SettingsPage(tk.Frame):
     """Class to view settings page. Usage clarification:
-    in __init__ the self (i.e. tk.Frame typed class) 
+    in __init__ the self (i.e. tk.Frame typed class)
     is a master to all elements in this frame.
     """
     def __init__(self, parent, controller, settings):
         tk.Frame.__init__(self, parent)
         self.LANG = controller.get_lang()
 
-        label = tk.Label(self, text=cnf.GUI[self.LANG]["settings"], bg=BG_COLOR, fg=FONT_COLOR, font=LARGE_FONT)
+        label = tk.Label(
+            self,
+            text=cnf.GUI[self.LANG]["settings"],
+            bg=BG_COLOR,
+            fg=FONT_COLOR,
+            font=LARGE_FONT
+        )
         label.pack()
 
         help_label = tk.Label(self, text=cnf.GUI[self.LANG]["not_ready_note"])
@@ -338,8 +433,11 @@ class SettingsPage(tk.Frame):
         button_group = tk.Frame(master=self, bg=FRAME_COLOR)
         button_group.pack(side=tk.BOTTOM)
 
-        back_button = ttk.Button(button_group, text=cnf.GUI[self.LANG]["back"],
-                                command=lambda: controller.show_page(AnalysePage))
+        back_button = ttk.Button(
+            button_group,
+            text=cnf.GUI[self.LANG]["back"],
+            command=lambda: controller.show_page(AnalysePage)
+        )
         back_button.grid(row=0, column=0, padx=PAD, pady=PAD, sticky=tk.E)
         # exit_button = ttk.Button(button_group, text="Sulje ohjelma", command=quit)
         # exit_button.grid(row=0, column=1, padx=PAD, pady=PAD, sticky=tk.W)
