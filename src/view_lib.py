@@ -53,6 +53,7 @@ class CheckboxPanel(tk.Frame):
                 option = cnf.TEXT[parent.LANG][i]
             except KeyError:
                 option = i
+
             cb = tk.Checkbutton(
                 master=self,
                 text=option,
@@ -66,7 +67,7 @@ class CheckboxPanel(tk.Frame):
         """Method to set given value for given checkboxes."""
         for key in self.selected_analysis.keys():
             self.selected_analysis[key].set(0)
-        if(value != 0):
+        if value != 0:
             try:
                 for key in keys:
                     self.selected_analysis[key].set(1)
@@ -132,14 +133,14 @@ class FiledialogPanel(tk.Frame):
             padx=PAD,
             pady=PAD
         )
-
-        # self.filebox.insert(0.0, "E:/GitLab/ast-analyser/test_files/example2.py\nE:/GitLab/ast-analyser/test_files/lib_example.py\n") # TODO: remove this line
-        #self.filebox.insert(0.0, "E:/GitLab/ast-analyser/test_files/analysis_examples.py") # TODO: remove this line
+        # TEMP: remove these lines
+        # self.filebox.insert(0.0, "E:/GitLab/ast-analyser/test_files/example2.py\nE:/GitLab/ast-analyser/test_files/lib_example.py\n")
+        #self.filebox.insert(0.0, "E:/GitLab/ast-analyser/test_files/analysis_examples.py")
 
     def get_filedialog(self, dir=False):
         initdir = self.root
         # File dialog
-        if(dir):
+        if dir:
             path = filedialog.askdirectory(
                 initialdir=initdir,
                 title=cnf.GUI[self.parent.LANG]["select_folder"]
@@ -155,10 +156,10 @@ class FiledialogPanel(tk.Frame):
                 multiple=True
             )
 
-        if(isinstance(path, tuple)):
+        if isinstance(path, tuple):
             for p in path:
                 self.add_file(p)
-        elif(path):
+        elif path:
             self.add_file(path)
         return None
 
@@ -176,16 +177,15 @@ class FiledialogPanel(tk.Frame):
         pathset = set()
         for path in self.filebox.get(0.0, tk.END).split("\n"):
             path = path.strip()
-            if(path != ""):
+            if path != "":
                 pathset.add(path)
-        if(clear):
-            pass # TODO: remove this line
-            # self.clear_files()
+        if clear:
+            self.clear_files()
         return pathset
 
     def get_filepath_list(self, clear=False):
-        # TODO: This should not be used at the end but only during the testing phase
-        # This should be replaced by call to model where list is stored
+        # TEMP: This should not be used at the end. This should be
+        # replaced by call to model where list would be stored.
         return self.parse_filepaths(clear)
 
 class ControlPanel(tk.Frame):
@@ -215,6 +215,7 @@ class AnalysePage(tk.Frame):
         tk.Frame.__init__(self, parent)
         self.controller = controller
         self.LANG = self.controller.get_lang()
+        self.CLEAR_FILEPATHS = settings["clear_filepaths"]
         # self.model = model
 
         self.ctrl_panel = ControlPanel(self)
@@ -239,7 +240,7 @@ class AnalysePage(tk.Frame):
     def analyse(self):
         self.controller.analyse(
             self.check_panel.get_selections(),
-            self.file_panel.get_filepath_list(clear=True)
+            self.file_panel.get_filepath_list(clear=self.CLEAR_FILEPATHS)
         )
 
 
@@ -251,8 +252,7 @@ class ResultPage(tk.Frame):
     def __init__(self, parent, controller, settings):
         tk.Frame.__init__(self, parent)
         self.LANG = controller.get_lang()
-        self.settings = settings
-        self.lang = settings["language"]
+        self.settings = controller.get_settings()# settings
         self.line_counter = 0
 
         # Title label
@@ -323,7 +323,7 @@ class ResultPage(tk.Frame):
             # Text box lines start from 1 therefore add at the beginning
             line_counter += 1
             self.result_textbox.insert(tk.END, f"{msg[0]}\n")
-            if(len(msg) >= 4):
+            if len(msg) >= 4:
                 s = f"{line_counter}.0 + {msg[2]}c"
                 e = f"{line_counter}.0 + {msg[3]}c"
                 self.colour_text(msg[1], start=s, end=e)
@@ -357,13 +357,13 @@ class ResultPage(tk.Frame):
 
         # Last \n is added because of file.write() command doesn't add it.
         content = "\n".join((map(lambda elem: elem[0], line_list))) + "\n"
-        if(self.settings["console_print"]):
+        if self.settings["console_print"]:
             print(content, end="")
 
-        if(self.settings["file_write"]):
+        if self.settings["file_write"]:
             utils.write_file(self.settings["result_path"], content, mode="a")
 
-        if(self.settings["GUI_print"]):
+        if self.settings["GUI_print"]:
             self.display_result(line_list)
 
     def print_statistics(self, statistics):

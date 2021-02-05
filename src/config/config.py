@@ -14,7 +14,8 @@ DEFAULT_SETTINGS = {
     "only_leaf_files": False,
     "show_statistics": False,
     "settings_file": "settings.json",
-    "BKT_analysis": False
+    "BKT_analysis": False,
+    "clear_filepaths": False
 }
 
 # -----------------------------------------------------------------------------#
