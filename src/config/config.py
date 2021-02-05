@@ -359,3 +359,16 @@ MSG = {
         "ERROR_INFO": ("Tällä värillä merkityt viestit ovat virheitä.", ERROR)
     }
 }
+
+# -----------------------------------------------------------------------------#
+# CLI error messages
+CLI_ERROR = {
+    "ENG": {
+        "NO_FILES": "Please select files to be analysed.",
+        "NO_SELECTIONS": "Please select analysis to be executed."
+    },
+    "FIN": {
+        "NO_FILES": "Ole hyvä ja valitse ensin analysoitavat tiedostot.",
+        "NO_SELECTIONS": "Ole hyvä ja valitse ensin suoritettavat analyysit."
+    }
+}

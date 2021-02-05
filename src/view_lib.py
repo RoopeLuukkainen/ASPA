@@ -452,5 +452,8 @@ class CLI():
     Upcoming class for command line views.
     """
 
-    def __init__(self):
-        pass
+    def __init__(self, lang):
+        self.LANG = lang
+
+    def print_error(self, error_code):
+        print(cnf.CLI_ERROR[self.LANG][error_code])

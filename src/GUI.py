@@ -80,8 +80,24 @@ class GUICLASS(tk.Tk):
         return self.settings
 
     def show_page(self, cont):
+        # TODO: Hide pages on background if possible
         page = self.pages[cont]
         page.tkraise()
+
+    def check_selection_validity(self, selections, filepaths):
+        valid = True
+        if sum(selections.values()) == 0:
+            valid = False
+            # TODO: Show GUI message of missing analysis selections
+            if self.settings["console_print"]:
+                self.cli.print_error("NO_SELECTIONS")
+
+        if not filepaths:
+            valid = False
+            # TODO: Show GUI message of missing files
+            if self.settings["console_print"]:
+                self.cli.print_error("NO_FILES")
+        return valid
 
     def tkvar_2_var(self, tk_vars, to_type):
         selections = dict()
@@ -94,11 +110,7 @@ class GUICLASS(tk.Tk):
 
     def analyse(self, selected_analysis, filepaths):
         selections = self.tkvar_2_var(selected_analysis, "int")
-        if(sum(selections.values()) == 0):
-            # TODO: Show message of missing analysis selections
-            return None
-        if(not filepaths):
-            # TODO: Show message of missing files
+        if not self.check_selection_validity(selections, filepaths):
             return None
 
         filelist = utils.crawl_dirs(filepaths, self.settings["only_leaf_files"])
