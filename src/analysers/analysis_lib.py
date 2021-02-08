@@ -5,6 +5,7 @@ import os
 
 # Utility libraries
 from ..config import config as cnf
+from ..config import templates
 import src.utils_lib as utils
 import src.analysers.analysis_utils as au
 
@@ -67,9 +68,11 @@ class Model:
         self.files_opened = []
         self.files_closed =  []
 
-        # File structure list and dict used by file_structure_analyser and data_structure_analyser
+        # File structure list and dict used by file_structure_analyser
+        # and data_structure_analyser
         self.function_dict = {}
         self.class_dict = {}
+
         # File structure lists used by file_structure_analyser
         self.file_list = []
         self.lib_list = []
@@ -79,7 +82,7 @@ class Model:
         self.messages = []
         self.all_messages = []
 
-   # List getters
+   # Datastructure getters
     def get_call_dict(self):
         return dict(self.call_dict)
 
@@ -189,9 +192,13 @@ class Model:
         self.import_dict.clear()
         self.call_dict.clear()
 
-    def add_msg(self, code, *args, lineno=-1):
-        if(not utils.ignore_check(code)):
-            self.messages.append((lineno, code, args))
+    def add_msg(self, code, *args, lineno=-1, status=False):
+        if not utils.ignore_check(code):
+
+            obj = templates.ViolationTemplate(code, args, lineno, status)
+            if status == False:
+                self.messages.append((lineno, code, args))
+
             try:
                 self.violation_occurances[code] += 1
             except KeyError:
@@ -335,14 +342,16 @@ class Model:
     def format_results(self, filename, path, all_messages):
         line_list = []
         for title_key, msgs in all_messages:
-            if(len(msgs) == 0):
-                line_list.append(("", cnf.GENERAL))
+            # Every second line is empty to make view less crowded.
+            line_list.append(("", cnf.GENERAL))
+
+            if(len(msgs) == 0): # No violations in this topic/title
                 line_list.append(
                     utils.create_title('OK', title_key, lang=self.language)
                 )
                 continue
 
-            line_list.append(("", cnf.GENERAL))
+            # There are violations in this topic/title
             line_list.append(
                 utils.create_title('NOTE', title_key, lang=self.language)
             )
@@ -352,6 +361,7 @@ class Model:
                     utils.create_msg(code, *args, lineno=lineno, lang=self.language)
                 )
 
+        # File and filepath info at the beginning of each file.
         line_list.insert(0, (utils.create_dash(character="=", get_dash=True), cnf.GENERAL))
         line_list.insert(1, (path, cnf.GENERAL))
         line_list.insert(2, (filename, cnf.GENERAL))

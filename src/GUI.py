@@ -5,13 +5,14 @@ try:
 except ModuleNotFoundError:
     import tkinter as tk  # Python 3, tested with this
     from tkinter import ttk
-import datetime # for timestamp
+
+import datetime  # for timestamp
 import os
 
-import src.analysers.analysis_lib as analysis # Model
-import src.view_lib as view # View
-import src.utils_lib as utils
+import src.analysers.analysis_lib as analysis  # Model
 import src.config.config as cnf
+import src.utils_lib as utils
+import src.view_lib as view  # View
 
 # Constants
 TOOL_NAME = cnf.TOOL_NAME
@@ -31,7 +32,7 @@ class GUICLASS(tk.Tk):
         self.settings = settings
         self.lang = settings["language"]
         self.model = analysis.Model(self)
-        self.line_count = 0
+        self.cli = view.CLI(self.lang)
 
        # The main frame
         main_frame = tk.Frame(self)
@@ -65,11 +66,12 @@ class GUICLASS(tk.Tk):
         # Display the menu
         tk.Tk.config(self, menu=menubar)
 
+        # Content pages
         self.pages = {}
         for p in (view.AnalysePage, view.ResultPage, view.HelpPage):
             page = p(main_frame, self, self.settings)
             self.pages[p] = page
-            page.grid(row=0, column=0, sticky="nesw")
+            page.grid(row=0, column=0, sticky=tk.NSEW)
         self.show_page(view.AnalysePage)
 
     def get_lang(self):

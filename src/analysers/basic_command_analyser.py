@@ -9,7 +9,6 @@ import src.analysers.analysis_utils as au
 class BasicsAnalyser(ast.NodeVisitor):
     """Class to do static analysis by visiting nodes of Abstract Syntax
     Tree. Uses 'ast' module and local 'utils_lib'.
-    TODO: Make this basic command analyser, e.g. if, while, for etc.
     """
 
     def __init__(self, model):
@@ -268,7 +267,7 @@ class BasicsAnalyser(ast.NodeVisitor):
     def visit_Raise(self, node, *args, **kwargs):
         self._check_unreachable_code(node, "raise")
 
-    # TODO check if yield or yield from is followed by any code?
+    # NOTE: yield or yield from can be followed by another code.
 
     # Rest are placeholders
     def visit_If(self, node, *args, **kwargs):

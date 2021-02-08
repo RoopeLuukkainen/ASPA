@@ -46,7 +46,8 @@ class FileStructureAnalyser(ast.NodeVisitor):
         else:
             self.model.add_msg("MR5", n, lineno=1)
 
-    def has_main_function(self, tree):  # TODO: change this to check of main level function calls
+    def has_main_function(self, tree):
+        # TODO: change this to check of main level function calls
         """
         """
         call_count = 0
