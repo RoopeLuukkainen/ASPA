@@ -1,7 +1,8 @@
 """Module containing utility functions general use."""
 # import ast
-import os
 import json
+import os # TODO replace all os.path operations with pathlib equivalents
+import pathlib
 
 import src.config.config as cnf
 
@@ -138,10 +139,26 @@ def read_file(filepath, encoding="UTF-8", settings_file=False):
     return content
 
 
-def write_file(filepath, content, mode="w", encoding="UTF-8"):
+def write_file(filepath, content, mode="w", encoding="UTF-8", repeat=True):
     try:
         with open(filepath, mode=mode, encoding=encoding) as f_handle:
             f_handle.write(content)
+
+    except FileNotFoundError: # When subdirectory is not found
+        try:
+            path = pathlib.Path(filepath)
+            path.parent.absolute().mkdir(parents=True, exist_ok=True)
+            if repeat:
+                # This call is first level recursion
+                write_file(
+                    filepath,
+                    content,
+                    mode=mode,
+                    encoding=encoding,
+                    repeat=False # To prevent infinite repeat loop
+                )
+        except OSError:
+            print("OSError while writing a file", filepath)
     except OSError:
         print("OSError while writing a file", filepath)
     except Exception:
