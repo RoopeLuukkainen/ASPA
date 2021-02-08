@@ -1,7 +1,7 @@
 """Class file. Contains ErrorHandlingAnalyser class."""
 import ast
 
-import src.analysers.analysis_utils as au
+import src.analysers.analysis_utils as a_utils
 # import src.analysers.ast_checks as ac
 import src.config.config as cnf
 
@@ -9,7 +9,6 @@ class ErrorHandlingAnalyser(ast.NodeVisitor):
     # Initialisation
     def __init__(self, model):
         self.model = model
-        self.BKTA = model.settings["BKT_analysis"]
         self.file_operations = {"read", "readline", "readlines", "write", "writelines"}
    # Getters
 
@@ -19,19 +18,18 @@ class ErrorHandlingAnalyser(ast.NodeVisitor):
     def _has_exception_handling(self, node, denied=cnf.FUNC):
         """ Check to determine if node is inside exception handling."""
 
-        if au.get_parent(node, ast.Try, denied=denied) is None:
+        if a_utils.get_parent(node, ast.Try, denied=denied) is None:
             return False
         return True
 
     def _check_exception_handling(self, node):
         try:
             if node.func.id == "open":
-                if not self._has_exception_handling(node):
-                    self.model.add_msg("PK3", lineno=node.lineno)
-                elif self.BKTA:
-                    # au.dump_node(node)
-                    pass
-                    # File opening has correct exception handling
+                self.model.add_msg(
+                    "PK3",
+                    lineno=node.lineno,
+                    status=self._has_exception_handling(node)
+                )
         except AttributeError:
             pass
 
@@ -74,17 +72,6 @@ class ErrorHandlingAnalyser(ast.NodeVisitor):
         1. Missing try - except around file opening.
         """
         self._check_exception_handling(node)
-        # try:
-        #     # if node.func.id == "open":
-        #     #     if not ac.has_exception_handling(node):
-        #     #         self.model.add_msg("PK3", lineno=node.lineno)
-        #     #     elif self.BKTA:
-        #     #         au.dump_node(node)
-        #     #         pass
-        #     #         # File opening has correct exception handling
-        # except AttributeError:
-        #     pass
-
         self.generic_visit(node)
 
     def visit_Attribute(self, node, *args, **kwargs):
@@ -97,12 +84,12 @@ class ErrorHandlingAnalyser(ast.NodeVisitor):
         """
 
         try:
-            if(node.attr in self.file_operations
-                    and au.get_parent(node, ast.Try, denied=cnf.FUNC) is None):
+            if node.attr in self.file_operations:
                 self.model.add_msg(
                     "PK4",
-                    au.get_attribute_name(node),
-                    lineno=node.lineno
+                    a_utils.get_attribute_name(node),
+                    lineno=node.lineno,
+                    status=self._has_exception_handling(node)
                 )
         except AttributeError:
             pass
@@ -110,25 +97,30 @@ class ErrorHandlingAnalyser(ast.NodeVisitor):
 
     def visit_For(self, node, *args, **kwargs):
         try:
-            names = [au.get_attribute_name(i) for i in self.model.get_files_opened()]
-            # TODO: add check that file is opened in same function
+            names = [a_utils.get_attribute_name(i) for i in self.model.get_files_opened()]
+            # FIXME: add check that file is opened in same function
 
             iter_name = ""
-            if(isinstance(node.iter, (ast.Name, ast.Attribute))):
-                iter_name = au.get_attribute_name(node.iter)
+            if isinstance(node.iter, (ast.Name, ast.Attribute)):
+                iter_name = a_utils.get_attribute_name(node.iter)
 
             # Special case for 'for ... in enumerate(filehandle)'
             # Only works if there is one call, not call inside calls
-            elif(isinstance(node.iter, ast.Call) and node.iter.func.id == "enumerate"):
-                iter_name = au.get_attribute_name(node.iter.args[0])
+            elif isinstance(node.iter, ast.Call) and node.iter.func.id == "enumerate":
+                iter_name = a_utils.get_attribute_name(node.iter.args[0])
 
-            if(iter_name in names
-                    and au.get_parent(node, ast.Try, denied=cnf.FUNC) is None):
+            if iter_name in names:
                 try:
-                    self.model.add_msg(
-                        "PK4", f"for {node.target.id} in {iter_name}",lineno=node.lineno)
+                    msg_arg = f"for {node.target.id} in {iter_name}"
                 except AttributeError:
-                    self.model.add_msg("PK4", f"for ... in ...", lineno=node.lineno)
+                    msg_arg = f"for ... in ..."
+                finally:
+                    self.model.add_msg(
+                        "PK4",
+                        msg_arg,
+                        lineno=node.lineno,
+                        status=self._has_exception_handling(node)
+                    )
 
         except (AttributeError, TypeError):
             pass
