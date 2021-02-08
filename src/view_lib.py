@@ -43,7 +43,7 @@ class CheckboxPanel(tk.Frame):
             font=LARGE_FONT
         ).grid(row=0, column=0, columnspan=2, padx=PAD, pady=PAD)
 
-        self.selected_analysis = dict()
+        self.selected_analysis = {}
         count = 0
         for i in checkbox_options:
             count += 1
@@ -123,19 +123,16 @@ class FiledialogPanel(tk.Frame):
             height=10,
             bg=BG_COLOR,
             fg=FONT_COLOR,
-            font=NORMAL_FONT #font=SMALL_FONT)
+            font=NORMAL_FONT #font=SMALL_FONT
         )
         self.filebox.grid(
             row=1,
             column=0,
             columnspan=4,
-            sticky="nesw",
+            sticky=tk.NSEW,
             padx=PAD,
             pady=PAD
         )
-        # TEMP: remove these lines
-        # self.filebox.insert(0.0, "E:/GitLab/ast-analyser/test_files/example2.py\nE:/GitLab/ast-analyser/test_files/lib_example.py\n")
-        #self.filebox.insert(0.0, "E:/GitLab/ast-analyser/test_files/analysis_examples.py")
 
     def get_filedialog(self, dir=False):
         initdir = self.root
@@ -225,9 +222,9 @@ class AnalysePage(tk.Frame):
         self.grid_columnconfigure((0, 1), weight=1)
         self.grid_rowconfigure(0, weight=1)
 
-        self.check_panel.grid(row=0, column=0, sticky="nesw")
-        self.file_panel.grid(row=0, column=1, sticky="nesw")
-        self.ctrl_panel.grid(row=1, columnspan=2, sticky="ew")
+        self.check_panel.grid(row=0, column=0, sticky=tk.NSEW)
+        self.file_panel.grid(row=0, column=1, sticky=tk.NSEW)
+        self.ctrl_panel.grid(row=1, columnspan=2, sticky=tk.EW)
 
         # ctrl_panel.pack(side="bottom", fill="x", expand=True)
         # check_panel.pack(side="left", fill="both", expand=True)
@@ -276,13 +273,13 @@ class ResultPage(tk.Frame):
             state="disabled",
             height=15
         )
-        self.result_textbox.grid(column=0, row=0, pady=PAD, sticky="nsew")
+        self.result_textbox.grid(column=0, row=0, pady=PAD, sticky=tk.NSEW)
         scrollbar = ttk.Scrollbar(
             result_frame,
             orient=tk.VERTICAL,
             command=self.result_textbox.yview
         )
-        scrollbar.grid(column=1, row=0, sticky="ns", pady=PAD)
+        scrollbar.grid(column=1, row=0, sticky=tk.NS, pady=PAD)
         self.result_textbox.configure(yscrollcommand=scrollbar.set)
 
         # Control buttons
