@@ -56,14 +56,17 @@ class ObjectTemplate(NodeTemplate):
         NodeTemplate.__init__(self, name, lineno, astree)
 
 
-# NOT YET used
 class ViolationTemplate():
     """Template class for violations found during any analysis."""
 
-    def __init__(self, vid, vtype, lineno):
+    def __init__(self, vid, args, lineno, status):
+
         self.vid = vid          # Violation identifier
-        self.vtype = vtype      # Violation type
+        # self.vtype = vtype      # Violation type
+        self.args = args
         self.lineno = lineno
+        self.status = status    # Violation status True/False
+
 
         def get_msg(self):
             """Return a violation message as a string. Violation message
