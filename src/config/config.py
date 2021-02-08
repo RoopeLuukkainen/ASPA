@@ -121,9 +121,10 @@ TEXT = {
 # GUI constants
 GUI = {
     "FIN": {
-        "results": "Tulokset",
         "exit": "Sulje",
         "filemenu": "Toiminnot",
+        "results": "Näytä tulokset",
+        "BKTA": "Tee BKT-analyysi",
         "help": "Käyttöohje",
         "helpmenu": "Ohjeet",
         "select_analysis_title": "Valitse tarkistukset",
@@ -142,9 +143,10 @@ GUI = {
         "not_ready_note": "Työn alla"
     },
     "ENG": {
-        "results": "Results",
         "exit": "Exit",
         "filemenu": "File",
+        "results": "Show results",
+        "BKTA": "Execute BKT analysis",
         "help": "User guide",
         "helpmenu": "Help",
         "select_analysis_title": "Select analyses",
