@@ -91,6 +91,7 @@ class FilepathTemplate():
 
     def __init__(self, path, student=None, week=None, exercise=None, course=None):
         self._path = path
+        self._filename = path.name
         self._student = student
         self._exercise = exercise
         self._week = week
@@ -99,6 +100,10 @@ class FilepathTemplate():
     @property
     def path(self):
         return self._path
+
+    @property
+    def filename(self):
+        return self._filename
 
     @property
     def student(self):

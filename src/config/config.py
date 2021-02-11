@@ -16,9 +16,10 @@ DEFAULT_SETTINGS = {
     "result_file": "results.txt",
     "settings_file": "settings.json",
     "BKT_analysis": False,
-    "BKT_file": "BKT.csv",
+    "BKT_file": "BKTA.csv",
     "excluded_directories": ["__pycache__", ".git"],
     "excluded_files": ["__init__.py"],
+    "subdirectory_order": ["course", "week", "exercise", "student"], # NOT YET USED
     "clear_filepaths": False
 }
 
