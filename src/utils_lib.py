@@ -147,34 +147,31 @@ def directory_crawler(
                 pass
 
     def add_file(file_struct, filepath):
-        if output_format == "list":
-            file_struct.append(filepath)
+        # TODO add settings which allow user to define corresponding numberings
+        # and how many there are and in which order.
+        student = 0
+        exercise = 1
+        week = 2 # exam
+        # course = 3
 
-        elif output_format == "dict":
-            student = 0
-            exercise = 1
-            week = 2 # exam
-            # course = 3
+        student_str = filepath.parents[student].name
+        week_str = filepath.parents[week].name
+        exercise_str = filepath.parents[exercise].name
 
-            student_str = filepath.parents[student].name
-            week_str = filepath.parents[week].name
-            exercise_str = filepath.parents[exercise].name
-
-            file_struct.setdefault(student_str, []).append(templates.FilepathTemplate(
-                path=filepath,
-                student=student_str,
-                week=week_str,
-                exercise=exercise_str
-            ))
+        file_struct.setdefault(student_str, []).append(templates.FilepathTemplate(
+            path=filepath,
+            student=student_str,
+            week=week_str,
+            exercise=exercise_str
+        ))
 
 
-    if output_format == "dict":
-        file_stucture = {}
-    elif output_format == "list":
-        file_stucture = []
+    # List which will include every
+    file_list = []
 
     for path_str in paths:
         path_obj = pathlib.Path(path_str).resolve()
+
         if path_obj.is_dir():
             # for sub in path_obj.glob("**/*.py"): # NOTE glob itself does not
             # allow selecting only leaf files, therefore os.path.walk is used.
@@ -186,14 +183,30 @@ def directory_crawler(
 
                 for f in all_files:
                     if f.endswith(".py") and not f in excluded_files:
-                        add_file(file_stucture, pathlib.Path(current_dir).joinpath(f))
+                        file_list.append(pathlib.Path(current_dir).joinpath(f))
 
         elif (path_obj.is_file()
                 and path_obj.suffix == ".py"
                 and not path_str in excluded_files):
-            add_file(file_stucture, path_obj)
+            file_list.append(path_obj)
 
-    return file_stucture
+    # Transform file_list into requested file structure.
+    if output_format == "list":
+        file_structure = file_list
+
+    elif output_format == "dict":
+        file_structure = {}
+
+        for path_obj in file_list:
+            add_file(file_structure, path_obj)
+        file_list.clear()
+
+    # Else there is invalid output_format then empty list is returned.
+    else:
+        file_list.clear()
+        file_structure = []
+
+    return file_structure
 
 
 def read_file(filepath, encoding="UTF-8", settings_file=False):
