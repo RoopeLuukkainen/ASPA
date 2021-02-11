@@ -1,8 +1,8 @@
 """Module containing utility functions general use."""
 # import ast
 import json
-import os # TODO replace all os.path operations with pathlib equivalents
-import pathlib
+import os       # Only os.walk is used due to the convenient directory exclusion possibility
+import pathlib  # Used for other path operations
 
 import src.config.config as cnf
 import src.config.templates as templates
@@ -112,16 +112,17 @@ def create_title(code, title_key, lang="FIN"):
 def crawl_dirs(paths, only_leaf_files=False):
     filelist = []
     for path in paths:
-        if os.path.isdir(path):
+        path_obj = pathlib.Path(path).resolve()
+        if path_obj.is_dir():
             for current_dir, dirs, all_files in os.walk(path):
                 if not all_files or (only_leaf_files and dirs):
                     continue
                 files = [f for f in all_files if(f.endswith(".py"))]
 
                 for f in files:
-                    filelist.append(os.path.join(current_dir, f))
-        elif os.path.isfile(path) and path.endswith(".py"):
-            filelist.append(path)
+                    filelist.append(pathlib.Path(current_dir).joinpath(f))
+        elif path_obj.is_file() and path_obj.suffix == ".py":
+            filelist.append(path_obj)
         # else # file is a special file e.g. socket, FIFO or device file
         # OR not .py file.
     return filelist

@@ -87,12 +87,12 @@ class GUICLASS(tk.Tk):
 
         for filepath in filelist:
             content = utils.read_file(filepath)
-            filename = os.path.basename(filepath)
-            dir_path = os.path.dirname(filepath)
+            filename = filepath.name
+            dir_path = filepath.parent
 
             # No check for tree being None etc. before analysis because
             # analyses will create violation if tree is not valid. Only
-            # dump checks if tree is not True.
+            # in dumping checks if tree is not True.
             tree = self.model.parse_ast(content, filename)
 
             # Dump tree
@@ -111,7 +111,7 @@ class GUICLASS(tk.Tk):
             # Format results
             formated_results = self.model.format_results(
                 filename,
-                filepath,
+                str(filepath),
                 results
             )
 

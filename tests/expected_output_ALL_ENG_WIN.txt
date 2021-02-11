@@ -1,6 +1,6 @@
-2021-01-29_14-17-03
+2021-02-11_16-11-10
 ================================================================================
-E:/GitHub/ASPA/tests\AR_functions\AR1_no_paaohjelma.py
+E:\GitHub\ASPA\tests\AR_functions\AR1_no_paaohjelma.py
 AR1_no_paaohjelma.py
 
 Basic commands: No violations detected.
@@ -17,7 +17,7 @@ Library usage: No violations detected.
 
 Exception handling: No violations detected.
 ================================================================================
-E:/GitHub/ASPA/tests\AR_functions\AR2-1_local_scope_function.py
+E:\GitHub\ASPA\tests\AR_functions\AR2-1_local_scope_function.py
 AR2-1_local_scope_function.py
 
 Basic commands: No violations detected.
@@ -37,7 +37,7 @@ Library usage: No violations detected.
 
 Exception handling: No violations detected.
 ================================================================================
-E:/GitHub/ASPA/tests\AR_functions\AR3_global_object.py
+E:\GitHub\ASPA\tests\AR_functions\AR3_global_object.py
 AR3_global_object.py
 
 Basic commands: No violations detected.
@@ -55,7 +55,7 @@ Library usage: No violations detected.
 
 Exception handling: No violations detected.
 ================================================================================
-E:/GitHub/ASPA/tests\AR_functions\AR3_global_variable.py
+E:\GitHub\ASPA\tests\AR_functions\AR3_global_variable.py
 AR3_global_variable.py
 
 Basic commands: No violations detected.
@@ -75,7 +75,7 @@ Library usage: No violations detected.
 
 Exception handling: No violations detected.
 ================================================================================
-E:/GitHub/ASPA/tests\AR_functions\AR3_global_variable_2.py
+E:\GitHub\ASPA\tests\AR_functions\AR3_global_variable_2.py
 AR3_global_variable_2.py
 
 Basic commands: No violations detected.
@@ -100,7 +100,7 @@ Library usage: No violations detected.
 
 Exception handling: No violations detected.
 ================================================================================
-E:/GitHub/ASPA/tests\AR_functions\AR4_recursive_function.py
+E:\GitHub\ASPA\tests\AR_functions\AR4_recursive_function.py
 AR4_recursive_function.py
 
 Basic commands: No violations detected.
@@ -116,7 +116,7 @@ Library usage: No violations detected.
 
 Exception handling: No violations detected.
 ================================================================================
-E:/GitHub/ASPA/tests\AR_functions\AR5_parameters.py
+E:\GitHub\ASPA\tests\AR_functions\AR5_parameters.py
 AR5_parameters.py
 
 Basic commands: No violations detected.
@@ -148,7 +148,7 @@ Library usage: No violations detected.
 
 Exception handling: No violations detected.
 ================================================================================
-E:/GitHub/ASPA/tests\AR_functions\AR6-1_yield.py
+E:\GitHub\ASPA\tests\AR_functions\AR6-1_yield.py
 AR6-1_yield.py
 
 Basic commands: No violations detected.
@@ -166,7 +166,7 @@ Library usage: No violations detected.
 
 Exception handling: No violations detected.
 ================================================================================
-E:/GitHub/ASPA/tests\AR_functions\AR6_return.py
+E:\GitHub\ASPA\tests\AR_functions\AR6_return.py
 AR6_return.py
 
 Basic commands: No violations detected.
@@ -189,7 +189,7 @@ Library usage: No violations detected.
 
 Exception handling: No violations detected.
 ================================================================================
-E:/GitHub/ASPA/tests\AR_functions\AR7_function_attribute.py
+E:\GitHub\ASPA\tests\AR_functions\AR7_function_attribute.py
 AR7_function_attribute.py
 
 Basic commands: No violations detected.
@@ -206,7 +206,7 @@ Library usage: No violations detected.
 
 Exception handling: No violations detected.
 ================================================================================
-E:/GitHub/ASPA/tests\AR_functions\example_lib.py
+E:\GitHub\ASPA\tests\AR_functions\example_lib.py
 example_lib.py
 
 Basic commands: No violations detected.
@@ -221,7 +221,7 @@ Library usage: No violations detected.
 
 Exception handling: No violations detected.
 ================================================================================
-E:/GitHub/ASPA/tests\MR_file_structure\MR1_element_order_correct.py
+E:\GitHub\ASPA\tests\MR_file_structure\MR1_element_order_correct.py
 MR1_element_order_correct.py
 
 Basic commands: No violations detected.
@@ -236,7 +236,7 @@ Library usage: No violations detected.
 
 Exception handling: No violations detected.
 ================================================================================
-E:/GitHub/ASPA/tests\MR_file_structure\MR1_element_order_wrong1.py
+E:\GitHub\ASPA\tests\MR_file_structure\MR1_element_order_wrong1.py
 MR1_element_order_wrong1.py
 
 Basic commands: No violations detected.
@@ -256,7 +256,7 @@ Library usage: No violations detected.
 
 Exception handling: No violations detected.
 ================================================================================
-E:/GitHub/ASPA/tests\MR_file_structure\MR1_element_order_wrong2.py
+E:\GitHub\ASPA\tests\MR_file_structure\MR1_element_order_wrong2.py
 MR1_element_order_wrong2.py
 
 Basic commands: No violations detected.
@@ -272,7 +272,7 @@ Library usage: No violations detected.
 
 Exception handling: No violations detected.
 ================================================================================
-E:/GitHub/ASPA/tests\MR_file_structure\MR1_element_order_wrong3.py
+E:\GitHub\ASPA\tests\MR_file_structure\MR1_element_order_wrong3.py
 MR1_element_order_wrong3.py
 
 Basic commands: No violations detected.
@@ -290,7 +290,7 @@ Library usage: No violations detected.
 
 Exception handling: No violations detected.
 ================================================================================
-E:/GitHub/ASPA/tests\MR_file_structure\MR1_element_order_wrong4.py
+E:\GitHub\ASPA\tests\MR_file_structure\MR1_element_order_wrong4.py
 MR1_element_order_wrong4.py
 
 Basic commands: No violations detected.
@@ -306,7 +306,7 @@ Library usage: No violations detected.
 
 Exception handling: No violations detected.
 ================================================================================
-E:/GitHub/ASPA/tests\MR_file_structure\MR1_element_order_wrong5.py
+E:\GitHub\ASPA\tests\MR_file_structure\MR1_element_order_wrong5.py
 MR1_element_order_wrong5.py
 
 Basic commands: No violations detected.
@@ -324,7 +324,7 @@ Library usage: No violations detected.
 
 Exception handling: No violations detected.
 ================================================================================
-E:/GitHub/ASPA/tests\MR_file_structure\MR1_element_order_wrong6.py
+E:\GitHub\ASPA\tests\MR_file_structure\MR1_element_order_wrong6.py
 MR1_element_order_wrong6.py
 
 Basic commands: No violations detected.
@@ -351,7 +351,7 @@ Library usage: No violations detected.
 
 Exception handling: No violations detected.
 ================================================================================
-E:/GitHub/ASPA/tests\MR_file_structure\MR2-3_global_scope_call.py
+E:\GitHub\ASPA\tests\MR_file_structure\MR2-3_global_scope_call.py
 MR2-3_global_scope_call.py
 
 Basic commands: No violations detected.
@@ -370,7 +370,7 @@ Line 14: Function call 'MR2_3()' is 3 function call at the global scope. There s
 
 Exception handling: No violations detected.
 ================================================================================
-E:/GitHub/ASPA/tests\MR_file_structure\MR2-4_not_main_function_call.py
+E:\GitHub\ASPA\tests\MR_file_structure\MR2-4_not_main_function_call.py
 MR2-4_not_main_function_call.py
 
 Basic commands: No violations detected.
@@ -389,7 +389,7 @@ Line 13: Function call 'datetime.datetime.strptime()' at the global scope does n
 
 Exception handling: No violations detected.
 ================================================================================
-E:/GitHub/ASPA/tests\MR_file_structure\MR3-1_MR4_from_module_imported_again.py
+E:\GitHub\ASPA\tests\MR_file_structure\MR3-1_MR4_from_module_imported_again.py
 MR3-1_MR4_from_module_imported_again.py
 
 Basic commands: No violations detected.
@@ -409,7 +409,7 @@ Line 9: From module 'random' function(s) or module(s) are imported again.
 
 Exception handling: No violations detected.
 ================================================================================
-E:/GitHub/ASPA/tests\MR_file_structure\MR3_MR4_module_imported_again.py
+E:\GitHub\ASPA\tests\MR_file_structure\MR3_MR4_module_imported_again.py
 MR3_MR4_module_imported_again.py
 
 Basic commands: No violations detected.
@@ -428,7 +428,7 @@ Line 10: Module 'datetime' is imported again.
 
 Exception handling: No violations detected.
 ================================================================================
-E:/GitHub/ASPA/tests\MR_file_structure\MR5_header_comments_correct.py
+E:\GitHub\ASPA\tests\MR_file_structure\MR5_header_comments_correct.py
 MR5_header_comments_correct.py
 
 Basic commands: No violations detected.
@@ -443,7 +443,7 @@ Library usage: No violations detected.
 
 Exception handling: No violations detected.
 ================================================================================
-E:/GitHub/ASPA/tests\MR_file_structure\MR5_header_comments_wrong1.py
+E:\GitHub\ASPA\tests\MR_file_structure\MR5_header_comments_wrong1.py
 MR5_header_comments_wrong1.py
 
 Basic commands: No violations detected.
@@ -458,7 +458,7 @@ Library usage: No violations detected.
 
 Exception handling: No violations detected.
 ================================================================================
-E:/GitHub/ASPA/tests\MR_file_structure\MR5_header_comments_wrong2.py
+E:\GitHub\ASPA\tests\MR_file_structure\MR5_header_comments_wrong2.py
 MR5_header_comments_wrong2.py
 
 Basic commands: No violations detected.
@@ -473,7 +473,7 @@ Library usage: No violations detected.
 
 Exception handling: No violations detected.
 ================================================================================
-E:/GitHub/ASPA/tests\MR_file_structure\MR5_header_comments_wrong3.py
+E:\GitHub\ASPA\tests\MR_file_structure\MR5_header_comments_wrong3.py
 MR5_header_comments_wrong3.py
 
 Basic commands: No violations detected.
@@ -488,7 +488,7 @@ Library usage: No violations detected.
 
 Exception handling: No violations detected.
 ================================================================================
-E:/GitHub/ASPA/tests\OK_files\empty.py
+E:\GitHub\ASPA\tests\OK_files\empty.py
 empty.py
 
 Basic commands: No violations detected.
@@ -503,7 +503,7 @@ Library usage: No violations detected.
 
 Exception handling: No violations detected.
 ================================================================================
-E:/GitHub/ASPA/tests\OK_files\paaohjelma.py
+E:\GitHub\ASPA\tests\OK_files\paaohjelma.py
 paaohjelma.py
 
 Basic commands: No violations detected.
@@ -518,7 +518,7 @@ Library usage: No violations detected.
 
 Exception handling: No violations detected.
 ================================================================================
-E:/GitHub/ASPA/tests\PK_exception_handling\PK1-1_missing_exception_type.py
+E:\GitHub\ASPA\tests\PK_exception_handling\PK1-1_missing_exception_type.py
 PK1-1_missing_exception_type.py
 
 Basic commands: No violations detected.
@@ -534,7 +534,7 @@ Library usage: No violations detected.
 Exception handling, violations detected please see Liite 5 'Poikkeukset':
 Line 10: Missing exception type.
 ================================================================================
-E:/GitHub/ASPA/tests\PK_exception_handling\PK1_only_one_except_branch.py
+E:\GitHub\ASPA\tests\PK_exception_handling\PK1_only_one_except_branch.py
 PK1_only_one_except_branch.py
 
 Basic commands: No violations detected.
@@ -549,7 +549,7 @@ Library usage: No violations detected.
 
 Exception handling: No violations detected.
 ================================================================================
-E:/GitHub/ASPA/tests\PK_exception_handling\PK3_file_open_miss_exception_handling.py
+E:\GitHub\ASPA\tests\PK_exception_handling\PK3_file_open_miss_exception_handling.py
 PK3_file_open_miss_exception_handling.py
 
 Basic commands: No violations detected.
@@ -569,7 +569,7 @@ Line 26: Missing exception handling from the file opening.
 Line 28: Missing exception handling from the file opening.
 Line 31: Missing exception handling from the file opening.
 ================================================================================
-E:/GitHub/ASPA/tests\PK_exception_handling\PK4_file_operation_miss_exception_handling.py
+E:\GitHub\ASPA\tests\PK_exception_handling\PK4_file_operation_miss_exception_handling.py
 PK4_file_operation_miss_exception_handling.py
 
 Basic commands: No violations detected.
@@ -590,7 +590,7 @@ Line 25: Missing exception handling from the file operation 'f.readlines'.
 Line 26: Missing exception handling from the file operation 'for _ in f'.
 Line 40: Missing exception handling from the file operation 'for this_is_a_bug in f'.
 ================================================================================
-E:/GitHub/ASPA/tests\PT_basic_command\PT1_print_call.py
+E:\GitHub\ASPA\tests\PT_basic_command\PT1_print_call.py
 PT1_print_call.py
 
 Basic commands: No violations detected.
@@ -605,7 +605,7 @@ Library usage: No violations detected.
 
 Exception handling: No violations detected.
 ================================================================================
-E:/GitHub/ASPA/tests\PT_basic_command\PT2_naming.py
+E:\GitHub\ASPA\tests\PT_basic_command\PT2_naming.py
 PT2_naming.py
 
 Basic commands, violations detected please see Liite 5 'Tiedon tulostaminen ruudulle' 'Tiedon lukeminen käyttäjältä' 'Valintarakenne' 'Toistorakenteet':
@@ -643,7 +643,7 @@ Library usage: No violations detected.
 
 Exception handling: No violations detected.
 ================================================================================
-E:/GitHub/ASPA/tests\PT_basic_command\PT4-1_infinite_loop.py
+E:\GitHub\ASPA\tests\PT_basic_command\PT4-1_infinite_loop.py
 PT4-1_infinite_loop.py
 
 Basic commands, violations detected please see Liite 5 'Tiedon tulostaminen ruudulle' 'Tiedon lukeminen käyttäjältä' 'Valintarakenne' 'Toistorakenteet':
@@ -659,7 +659,7 @@ Library usage: No violations detected.
 
 Exception handling: No violations detected.
 ================================================================================
-E:/GitHub/ASPA/tests\PT_basic_command\PT5_unreachable_code.py
+E:\GitHub\ASPA\tests\PT_basic_command\PT5_unreachable_code.py
 PT5_unreachable_code.py
 
 Basic commands, violations detected please see Liite 5 'Tiedon tulostaminen ruudulle' 'Tiedon lukeminen käyttäjältä' 'Valintarakenne' 'Toistorakenteet':
@@ -698,7 +698,7 @@ Library usage: No violations detected.
 
 Exception handling: No violations detected.
 ================================================================================
-E:/GitHub/ASPA/tests\TK_file_handling\TK1-1_with_open.py
+E:\GitHub\ASPA\tests\TK_file_handling\TK1-1_with_open.py
 TK1-1_with_open.py
 
 Basic commands: No violations detected.
@@ -714,7 +714,7 @@ Library usage: No violations detected.
 
 Exception handling: No violations detected.
 ================================================================================
-E:/GitHub/ASPA/tests\TK_file_handling\TK1-2_close_in_except.py
+E:\GitHub\ASPA\tests\TK_file_handling\TK1-2_close_in_except.py
 TK1-2_close_in_except.py
 
 Basic commands: No violations detected.
@@ -731,7 +731,7 @@ Library usage: No violations detected.
 
 Exception handling: No violations detected.
 ================================================================================
-E:/GitHub/ASPA/tests\TK_file_handling\TK1-3_close_missing_parenthesis.py
+E:\GitHub\ASPA\tests\TK_file_handling\TK1-3_close_missing_parenthesis.py
 TK1-3_close_missing_parenthesis.py
 
 Basic commands: No violations detected.
@@ -747,7 +747,7 @@ Library usage: No violations detected.
 
 Exception handling: No violations detected.
 ================================================================================
-E:/GitHub/ASPA/tests\TK_file_handling\TK1_file_left_open.py
+E:\GitHub\ASPA\tests\TK_file_handling\TK1_file_left_open.py
 TK1_file_left_open.py
 
 Basic commands: No violations detected.
@@ -764,7 +764,7 @@ Library usage: No violations detected.
 
 Exception handling: No violations detected.
 ================================================================================
-E:/GitHub/ASPA/tests\TK_file_handling\TK2_file_open_operation_close.py
+E:\GitHub\ASPA\tests\TK_file_handling\TK2_file_open_operation_close.py
 TK2_file_open_operation_close.py
 
 Basic commands: No violations detected.
@@ -781,7 +781,7 @@ Library usage: No violations detected.
 
 Exception handling: No violations detected.
 ================================================================================
-E:/GitHub/ASPA/tests\TR_data_structure\TR2-1_using_class_without_object.py
+E:\GitHub\ASPA\tests\TR_data_structure\TR2-1_using_class_without_object.py
 TR2-1_using_class_without_object.py
 
 Basic commands: No violations detected.
@@ -797,7 +797,7 @@ Library usage: No violations detected.
 
 Exception handling: No violations detected.
 ================================================================================
-E:/GitHub/ASPA/tests\TR_data_structure\TR2-2_object_creation_miss_parenthesis.py
+E:\GitHub\ASPA\tests\TR_data_structure\TR2-2_object_creation_miss_parenthesis.py
 TR2-2_object_creation_miss_parenthesis.py
 
 Basic commands: No violations detected.
@@ -814,7 +814,7 @@ Library usage: No violations detected.
 
 Exception handling: No violations detected.
 ================================================================================
-E:/GitHub/ASPA/tests\TR_data_structure\TR2-3_non_global_class.py
+E:\GitHub\ASPA\tests\TR_data_structure\TR2-3_non_global_class.py
 TR2-3_non_global_class.py
 
 Basic commands: No violations detected.
@@ -831,7 +831,7 @@ Library usage: No violations detected.
 
 Exception handling: No violations detected.
 ================================================================================
-E:/GitHub/ASPA/tests\TR_data_structure\TR2-4_lowercase_class.py
+E:\GitHub\ASPA\tests\TR_data_structure\TR2-4_lowercase_class.py
 TR2-4_lowercase_class.py
 
 Basic commands: No violations detected.
@@ -848,7 +848,7 @@ Library usage: No violations detected.
 
 Exception handling: No violations detected.
 ================================================================================
-E:/GitHub/ASPA/tests\TR_data_structure\TR3-1_attribute_to_list.py
+E:\GitHub\ASPA\tests\TR_data_structure\TR3-1_attribute_to_list.py
 TR3-1_attribute_to_list.py
 
 Basic commands: No violations detected.
@@ -892,7 +892,7 @@ Library usage: No violations detected.
 
 Exception handling: No violations detected.
 ================================================================================
-E:/GitHub/ASPA/tests\TR_data_structure\TR3-2_object_outside_loop.py
+E:\GitHub\ASPA\tests\TR_data_structure\TR3-2_object_outside_loop.py
 TR3-2_object_outside_loop.py
 
 Basic commands: No violations detected.
