@@ -30,61 +30,22 @@ class GUICLASS(tk.Tk):
         tk.Tk.title(self, TOOL_NAME)
 
         self.settings = settings
-        self.lang = settings["language"]
+        self.LANG = settings["language"]
         self.model = analysis.Model(self)
-        self.cli = view.CLI(self.lang)
+        self.cli = view.CLI(self.LANG)
 
-       # The main frame
-        main_frame = tk.Frame(self)
-        main_frame.pack(side="top", fill="both", expand=True)
-        main_frame.grid_columnconfigure(0, weight=1)
-        main_frame.grid_rowconfigure(0, weight=1)
+        self.main_frame = view.MainFrame(self, self.LANG)
 
-        # Menubar
-        menubar = tk.Menu(main_frame)
-
-        # File menu
-        filemenu = tk.Menu(menubar, tearoff=0)
-        filemenu.add_command(
-            label=cnf.GUI[self.lang]["results"],
-            command=lambda: self.show_page(view.ResultPage)
-        )
-        filemenu.add_command(
-            label=cnf.GUI[self.lang]["exit"],
-            command=quit
-        )
-        menubar.add_cascade(label=cnf.GUI[self.lang]["filemenu"], menu=filemenu)
-
-        # Help menu
-        helpmenu = tk.Menu(menubar, tearoff=1)
-        helpmenu.add_command(
-            label=cnf.GUI[self.lang]["help"],
-            command=lambda: self.show_page(view.HelpPage)
-        )
-        menubar.add_cascade(label=cnf.GUI[self.lang]["helpmenu"], menu=helpmenu)
-
-        # Display the menu
-        tk.Tk.config(self, menu=menubar)
-
-        # Content pages
-        self.pages = {}
-        for p in (view.AnalysePage, view.ResultPage, view.HelpPage):
-            page = p(main_frame, self, self.settings)
-            self.pages[p] = page
-            page.grid(row=0, column=0, sticky=tk.NSEW)
-        self.show_page(view.AnalysePage)
+        # Display the menu at the top
+        tk.Tk.config(self, menu=self.main_frame.menu)
 
     def get_lang(self):
-        return self.lang
+        return self.LANG
 
     def get_settings(self):
         # Settings are not changed when where asked so no need to send copy.
         return self.settings
 
-    def show_page(self, cont):
-        # TODO: Hide pages on background if possible
-        page = self.pages[cont]
-        page.tkraise()
 
     def check_selection_validity(self, selections, filepaths):
         valid = True
@@ -102,7 +63,7 @@ class GUICLASS(tk.Tk):
         return valid
 
     def tkvar_2_var(self, tk_vars, to_type):
-        selections = dict()
+        selections = {}
         if(isinstance(tk_vars, dict)):
             selections = dict(tk_vars)
             for key in selections.keys():
@@ -110,25 +71,19 @@ class GUICLASS(tk.Tk):
                     selections[key] = int(selections[key].get())
         return selections
 
-    def analyse(self, selected_analysis, filepaths):
+    def analyse(self, selected_analysis, filepaths, *args, **kwargs):
         selections = self.tkvar_2_var(selected_analysis, "int")
         if not self.check_selection_validity(selections, filepaths):
             return None
 
         filelist = utils.crawl_dirs(filepaths, self.settings["only_leaf_files"])
         timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-
-        # # Timestamp to filename  (temporal solution!!)
-        # self.settings["result_path"] = os.path.join(self.settings["root"],
-        #     f"tarkistukset_{os.path.basename(filelist[0])}_{timestamp}.txt")  # Give error if file list is empty. Not yet fixed because temporal solution
-        # # temporal ends
-
         utils.write_file(self.settings["result_path"], timestamp + "\n")
 
-        result_page = self.pages[view.ResultPage]
+        result_page = self.main_frame.get_page(view.ResultPage)
         result_page.clear_result()  # Clears previous results
         result_page.show_info()  # Init new results with default info
-        self.show_page(view.ResultPage)
+        self.main_frame.show_page(view.ResultPage)
 
         for filepath in filelist:
             content = utils.read_file(filepath)

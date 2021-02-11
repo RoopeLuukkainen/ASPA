@@ -27,7 +27,78 @@ BD_STYLE = cnf.BD_STYLE # tk.RIDGE # Border style
 BD = cnf.BD # 2              # Border width
 HIGHLIGHT = cnf.HIGHLIGHT
 
+################################################################################
+class MainFrame(tk.Frame):
+    def __init__(self, parent, lang):
+       # -------------------------------------------------------------------- #
+       # Variable and grid initialisations
+        controller = parent
+        tk.Frame.__init__(self, controller)
 
+        self.LANG = lang
+        self.pack(side="top", fill="both", expand=True)
+        self.grid_columnconfigure(0, weight=1)
+        self.grid_rowconfigure(0, weight=1)
+
+        settings = controller.get_settings()
+
+       # --------------------------------------------------------------------- #
+       # Content pages
+        self.pages = {}
+
+         # CLASS names are keys.
+        for page_class in (AnalysePage, ResultPage, HelpPage):
+            page = page_class(self, controller, settings)
+            self.pages[page_class] = page
+            page.grid(row=0, column=0, sticky=tk.NSEW)
+        self.show_page(AnalysePage)
+
+       # --------------------------------------------------------------------- #
+       # Menubar
+        menubar = tk.Menu(self)
+
+        # File menu
+        filemenu = tk.Menu(menubar, tearoff=0)
+        filemenu.add_command(
+            label=cnf.GUI[self.LANG]["results"],
+            command=lambda: self.show_page(ResultPage)
+        )
+        filemenu.add_command(
+            label=cnf.GUI[self.LANG]["BKTA"],
+            command=lambda: self.pages[AnalysePage].analyse(controller.BKT_analyse)
+        )
+        filemenu.add_command(
+            label=cnf.GUI[self.LANG]["exit"],
+            command=quit
+        )
+        menubar.add_cascade(label=cnf.GUI[self.LANG]["filemenu"], menu=filemenu)
+
+        # Help menu
+        helpmenu = tk.Menu(menubar, tearoff=1)
+        helpmenu.add_command(
+            label=cnf.GUI[self.LANG]["help"],
+            command=lambda: self.show_page(HelpPage)
+        )
+        menubar.add_cascade(label=cnf.GUI[self.LANG]["helpmenu"], menu=helpmenu)
+
+        self._menu = menubar
+
+    @property
+    def menu(self):
+        return self._menu
+
+    def get_page(self, page_class):
+        """Method to return object of asked page class."""
+        return self.pages[page_class]
+
+    def show_page(self, page_class):
+        """Method to show asked page based on given page_class."""
+        # TODO: Hide pages on background if possible
+        page = self.pages[page_class]
+        page.tkraise()
+
+
+################################################################################
 class CheckboxPanel(tk.Frame):
     """Class to view checkbox panel. Usage clarification:
     in __init__ the self (i.e. inherited tk.Frame)
@@ -79,6 +150,7 @@ class CheckboxPanel(tk.Frame):
         return self.selected_analysis
 
 
+################################################################################
 class FiledialogPanel(tk.Frame):
     def __init__(self, parent, root):
         tk.Frame.__init__(self, parent, bd=BD, relief=BD_STYLE)
@@ -186,7 +258,7 @@ class FiledialogPanel(tk.Frame):
         return self.parse_filepaths(clear)
 
 class ControlPanel(tk.Frame):
-    def __init__(self, parent):
+    def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent, bd=BD, relief=BD_STYLE)
         button_group = tk.Frame(master=self, bg=FRAME_COLOR)
         button_group.pack(side=tk.TOP)
@@ -194,7 +266,7 @@ class ControlPanel(tk.Frame):
         run_button = ttk.Button(
             button_group,
             text=cnf.GUI[parent.LANG]["execute_analysis"],
-            command=parent.analyse
+            command=lambda: parent.analyse(controller.analyse)
         )
         run_button.grid(row=0, column=0, padx=PAD, pady=PAD, sticky=tk.E)
 
@@ -202,7 +274,7 @@ class ControlPanel(tk.Frame):
         # exit_button.grid(row=0, column=1, padx=PAD, pady=PAD, sticky=tk.W)
 
 
-
+################################################################################
 class AnalysePage(tk.Frame):
     """Class to view analyse page. Usage clarification:
     in __init__ the self (i.e. inherited tk.Frame)
@@ -215,7 +287,7 @@ class AnalysePage(tk.Frame):
         self.CLEAR_FILEPATHS = settings["clear_filepaths"]
         # self.model = model
 
-        self.ctrl_panel = ControlPanel(self)
+        self.ctrl_panel = ControlPanel(self, controller)
         self.check_panel = CheckboxPanel(self, settings["checkbox_options"])
         self.file_panel = FiledialogPanel(self, settings["root"])
 
@@ -234,13 +306,17 @@ class AnalysePage(tk.Frame):
         #                     command=lambda: controller.show_page(ResultPage))
         # button_all.pack()
 
-    def analyse(self):
-        self.controller.analyse(
+    def analyse(self, analysis_func, *func_args, **func_kwargs):
+        # self.controller.analyse(
+        analysis_func(
             self.check_panel.get_selections(),
-            self.file_panel.get_filepath_list(clear=self.CLEAR_FILEPATHS)
+            self.file_panel.get_filepath_list(clear=self.CLEAR_FILEPATHS),
+            func_args,
+            func_kwargs
         )
 
 
+################################################################################
 class ResultPage(tk.Frame):
     """Class to view result page. Usage clarification:
     in __init__ the self (i.e. tk.Frame typed class)
@@ -289,7 +365,7 @@ class ResultPage(tk.Frame):
         back_button = ttk.Button(
             button_group,
             text=cnf.GUI[self.LANG]["back"],
-            command=lambda: controller.show_page(AnalysePage)
+            command=lambda: parent.show_page(AnalysePage)
         )
         back_button.grid(row=0, column=0, padx=PAD, pady=PAD, sticky=tk.E)
         # exit_button = ttk.Button(button_group, text="Sulje ohjelma", command=quit)
@@ -374,6 +450,7 @@ class ResultPage(tk.Frame):
         print()
 
 
+################################################################################
 class HelpPage(tk.Frame):
     """Class to view help page. Usage clarification:
     in __init__ the self (i.e. tk.Frame typed class)
@@ -402,13 +479,14 @@ class HelpPage(tk.Frame):
         back_button = ttk.Button(
             button_group,
             text=cnf.GUI[self.LANG]["back"],
-            command=lambda: controller.show_page(AnalysePage)
+            command=lambda: parent.show_page(AnalysePage)
         )
         back_button.grid(row=0, column=0, padx=PAD, pady=PAD, sticky=tk.E)
         # exit_button = ttk.Button(button_group, text="Sulje ohjelma", command=quit)
         # exit_button.grid(row=0, column=1, padx=PAD, pady=PAD, sticky=tk.W)
 
 
+################################################################################
 class SettingsPage(tk.Frame):
     """Class to view settings page. Usage clarification:
     in __init__ the self (i.e. tk.Frame typed class)
@@ -437,13 +515,14 @@ class SettingsPage(tk.Frame):
         back_button = ttk.Button(
             button_group,
             text=cnf.GUI[self.LANG]["back"],
-            command=lambda: controller.show_page(AnalysePage)
+            command=lambda: parent.show_page(AnalysePage)
         )
         back_button.grid(row=0, column=0, padx=PAD, pady=PAD, sticky=tk.E)
         # exit_button = ttk.Button(button_group, text="Sulje ohjelma", command=quit)
         # exit_button.grid(row=0, column=1, padx=PAD, pady=PAD, sticky=tk.W)
 
 
+################################################################################
 class CLI():
     """
     Upcoming class for command line views.
