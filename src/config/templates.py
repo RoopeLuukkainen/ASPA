@@ -1,4 +1,7 @@
-"""File for any template class used in ASPA."""
+"""File for any template class used in ASPA. Templates are used to store
+multivalue information about stored elements, i.e. they are often struc
+like objects.
+"""
 
 class NodeTemplate():
     """General template class for any ast node."""
@@ -8,6 +11,11 @@ class NodeTemplate():
         self.astree = astree # AST of the node
         self.lineno = lineno
 
+    # @property
+    # def name(self):
+
+# TODO add property for each variable, now they are referred directly by
+# name.
 
 class FunctionTemplate(NodeTemplate):
     """Template class for functions found during preanalysis."""
@@ -76,3 +84,34 @@ class ViolationTemplate():
 
             msg = "msg"          # Violation message
             return msg
+
+
+class FilepathTemplate():
+    """Template class for filepaths found during directory crawling."""
+
+    def __init__(self, path, student=None, week=None, exercise=None, course=None):
+        self._path = path
+        self._student = student
+        self._exercise = exercise
+        self._week = week
+        self._course = course
+
+    @property
+    def path(self):
+        return self._path
+
+    @property
+    def student(self):
+        return self._student
+
+    @property
+    def exercise(self):
+        return self._exercise
+
+    @property
+    def week(self):
+        return self._week
+
+    @property
+    def course(self):
+        return self._course

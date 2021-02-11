@@ -15,6 +15,8 @@ DEFAULT_SETTINGS = {
     "show_statistics": False,
     "settings_file": "settings.json",
     "BKT_analysis": False,
+    "excluded_directories": ["__pycache__", ".git"],
+    "excluded_files": ["__init__.py"],
     "clear_filepaths": False
 }
 
