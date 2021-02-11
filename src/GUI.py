@@ -76,7 +76,14 @@ class GUICLASS(tk.Tk):
         if not self.check_selection_validity(selections, filepaths):
             return None
 
-        filelist = utils.crawl_dirs(filepaths, self.settings["only_leaf_files"])
+        # filelist = utils.crawl_dirs(filepaths, self.settings["only_leaf_files"])
+        filelist = utils.directory_crawler(
+            filepaths,
+            only_leaf_files=self.settings["only_leaf_files"],
+            excluded_dirs=self.settings["excluded_directories"],
+            excluded_files=self.settings["excluded_files"],
+            output_format="list"
+        )
         timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
         utils.write_file(self.settings["result_path"], timestamp + "\n")
 
