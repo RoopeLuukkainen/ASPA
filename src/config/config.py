@@ -4,17 +4,19 @@ import ast
 import pathlib
 
 DEFAULT_SETTINGS = {
-    "root": str(pathlib.Path(__file__).parent.absolute()),
+    "root": str(pathlib.Path(__file__).parents[2].resolve()),
     "language": "FIN",
     "dump_tree": False,
     "console_print": False,
     "file_write": True,
     "GUI_print": True,
-    "result_path": str(pathlib.Path(__file__).parent.absolute().joinpath("tarkistukset.txt")),
     "only_leaf_files": False,
     "show_statistics": False,
+    "result_dir": str(pathlib.Path(__file__).parents[2].resolve().joinpath("results")),
+    "result_file": "results.txt",
     "settings_file": "settings.json",
     "BKT_analysis": False,
+    "BKT_file": "BKT.csv",
     "excluded_directories": ["__pycache__", ".git"],
     "excluded_files": ["__init__.py"],
     "clear_filepaths": False

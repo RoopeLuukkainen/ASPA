@@ -230,8 +230,13 @@ def create_dash(character="-", dash_count=80, get_dash=False):
 
 # INIT FUNCTIONS
 def add_fixed_settings(settings):
+    # Checkbox options
     settings["checkbox_options"] = cnf.CHECKBOX_OPTIONS
 
+    # Result file paths
+    result_dir = pathlib.Path(settings["result_dir"])
+    settings["result_path"] = result_dir.joinpath(settings["result_file"])
+    settings["BKT_path"] = result_dir.joinpath(settings["BKT_file"])
 
 def init_settings():
     settings = cnf.DEFAULT_SETTINGS # Currently reference not copy
