@@ -532,7 +532,9 @@ Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
 Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
 
 Poikkeustenkäsittely, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Poikkeukset':
-Rivi 10: Exceptistä puuttuu virhetyyppi.
+Rivi 8: Exceptistä puuttuu virhetyyppi.
+Rivi 15: Exceptistä puuttuu virhetyyppi.
+Rivi 22: Exceptistä puuttuu virhetyyppi.
 ================================================================================
 E:\GitHub\ASPA\tests\PK_exception_handling\PK1_only_one_except_branch.py
 PK1_only_one_except_branch.py
