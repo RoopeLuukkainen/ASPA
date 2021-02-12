@@ -1,19 +1,23 @@
 """Class file. Contains ErrorHandlingAnalyser class."""
+
 import ast
 
 import src.analysers.analysis_utils as a_utils
-# import src.analysers.ast_checks as ac
 import src.config.config as cnf
 
 class ErrorHandlingAnalyser(ast.NodeVisitor):
-    # Initialisation
+   # ------------------------------------------------------------------------- #
+   # Initialisation
     def __init__(self, model):
         self.model = model
         self.file_operations = {"read", "readline", "readlines", "write", "writelines"}
+   # ------------------------------------------------------------------------- #
    # Getters
 
+   # ------------------------------------------------------------------------- #
    # Setters
 
+   # ------------------------------------------------------------------------- #
    # General methods
     def _has_exception_handling(self, node, denied=cnf.FUNC):
         """ Check to determine if node is inside exception handling."""
@@ -23,6 +27,10 @@ class ErrorHandlingAnalyser(ast.NodeVisitor):
         return True
 
     def _check_exception_handling(self, node):
+        """Method to check if node has:
+        1. Missing try - except around file opening.
+        """
+
         try:
             if node.func.id == "open":
                 self.model.add_msg(
@@ -33,11 +41,9 @@ class ErrorHandlingAnalyser(ast.NodeVisitor):
         except AttributeError:
             pass
 
-
-   # Visits
-    def visit_Try(self, node, *args, **kwargs):
+    def _check_exception_handlers(self, node):
         """Method to check if node is:
-        1. Try with only one exception branch
+        1. Try with no exception branches
         2. Exception branch missing an error type. Excluding the last
             exception IF there are more than one exception branches.
 
@@ -50,27 +56,34 @@ class ErrorHandlingAnalyser(ast.NodeVisitor):
         """
 
         try:
-            if(not node.handlers):
-                pass
-            elif(len(node.handlers) < 2):
-                self.model.add_msg("PK1", lineno=node.lineno)
-                # TODO: THIS IS SAME check as "i.type == None" below, improve somehow
-                if(node.handlers[0].type == None):
-                    self.model.add_msg("PK1-1", lineno=node.handlers[0].lineno)
-            else:
-                for i in node.handlers[:-1]:
-                    if(i.type == None):
-                        self.model.add_msg("PK1-1", lineno=i.lineno)
-        except Exception:
-        #     print(f"Error at line: {node.lineno}, node: {node}") # Debug
+            self.model.add_msg(
+                code="PK1",
+                status=(len(node.handlers) >= 1),
+                lineno=node.lineno
+            )
+
+            for handler in node.handlers:
+                self.model.add_msg(
+                    code="PK1-1",
+                    status=(handler.type != None),
+                    lineno=handler.lineno
+                )
+
+        except AttributeError:
+            print(f"Error at line: {node.lineno}, node: {node}, e: {e}") # Debug
             pass
 
+   # ------------------------------------------------------------------------- #
+   # Visits
+    def visit_Try(self, node, *args, **kwargs):
+        """Method to visit Try nodes."""
+
+        self._check_exception_handlers(node)
         self.generic_visit(node)
 
     def visit_Call(self, node, *args, **kwargs):
-        """Method to check if node is:
-        1. Missing try - except around file opening.
-        """
+        """Method to visit (function) Call nodes."""
+
         self._check_exception_handling(node)
         self.generic_visit(node)
 
@@ -96,9 +109,13 @@ class ErrorHandlingAnalyser(ast.NodeVisitor):
         self.generic_visit(node)
 
     def visit_For(self, node, *args, **kwargs):
+        """Method to check if node is:
+        1. For loop reading a file AND missing exception handling.
+        """
+
         try:
             names = [a_utils.get_attribute_name(i) for i in self.model.get_files_opened()]
-            # FIXME: add check that file is opened in same function
+            # TODO: add check that file is opened in same function
 
             iter_name = ""
             if isinstance(node.iter, (ast.Name, ast.Attribute)):

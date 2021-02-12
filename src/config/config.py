@@ -38,7 +38,7 @@ MISSING_RETURN_ALLOWED = {"__init__"}
 SEARCHED_COMMANDS = {"round", "print", "range", "int", "len", "float", "str"} # Examples
 
 # Add keys of ignored error messages
-IGNORE = {"PT1", "PK1", "MR5", "AR6-2"}
+IGNORE = {"PT1", "MR5", "AR6-2"}
 # IGNORE = {"PT1", "PK1", "MR5", "AR6-1", "AR6-2"}
 GENERAL = 0
 ERROR = 1
@@ -272,7 +272,7 @@ MSG = {
         "MR3-1": ("From module '{}' function(s) or module(s) are imported again.", WARNING),
         "MR4": ("Import of the module '{}' is not at the global scope.", ERROR),
         "MR5": ("Missing some or all header comments at {} first lines of the file.", WARNING),
-        "PK1": ("Error handling has only one (1) except.", NOTE),
+        "PK1": ("Exception handling has no excepts.", ERROR),
         "PK1-1": ("Missing exception type.", WARNING),
         "PK3": ("Missing exception handling from the file opening.", ERROR),
         "PK4": ("Missing exception handling from the file operation '{}'.", ERROR),
@@ -338,7 +338,7 @@ MSG = {
         "MR4": ("Kirjaston '{}' sisällytys (eng. import) ei ole päätasolla.", ERROR),
         "MR5": ("Tiedostossa ei ole kaikkia alkukommentteja tiedoston {}"
                 + " ensimmäisellä rivillä.", WARNING),
-        "PK1": ("Virheenkäsittelyssä vain yksi (1) except.", NOTE),
+        "PK1": ("Poikkeustenkäsittelyssä ei ole lainkaan exceptiä.", ERROR),
         "PK1-1": ("Exceptistä puuttuu virhetyyppi.", WARNING),
         "PK3": ("Tiedoston avaamisesta puuttuu poikkeustenkäsittely.", ERROR),
         "PK4": ("Tiedosto-operaatiosta '{}' puuttuu poikkeustenkäsittely.", ERROR),
