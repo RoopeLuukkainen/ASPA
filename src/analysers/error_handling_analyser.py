@@ -70,7 +70,7 @@ class ErrorHandlingAnalyser(ast.NodeVisitor):
                 )
 
         except AttributeError:
-            print(f"Error at line: {node.lineno}, node: {node}, e: {e}") # Debug
+            # print(f"Error at line: {node.lineno}, node: {node}, e: {e}") # Debug
             pass
 
    # ------------------------------------------------------------------------- #

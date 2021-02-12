@@ -1,22 +1,30 @@
 """Test file for PK1 check.
-PK1 check detects exception handling structures with only one (1) except
-branch. By default this is violation ignored.
+PK1 check detects exception handling structures without any except
+branches.
 """
 
 def PK1():
     try: # Error 1
         1/1
-    except Exception:
-        pass
+    finally:
+        try: # Error 2
+            a = 1
+        finally:
+            pass
 
-    try: # Error 2
+    try:
         1/0
     except ZeroDivisionError:
         pass
     else:
         pass
 
-    try: # Error 3
+    # try:
+    #     1/1
+    # else: # Syntax error
+    #     pass
+
+    try:
         a = []
         a[1] = 2
     except IndexError:
@@ -30,7 +38,7 @@ def PK1():
         1/0
     except ZeroDivisionError:
         pass
-    except Exception:
+    finally:
         pass
 
 

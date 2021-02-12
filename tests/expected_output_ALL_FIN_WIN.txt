@@ -536,8 +536,8 @@ Rivi 8: Exceptistä puuttuu virhetyyppi.
 Rivi 15: Exceptistä puuttuu virhetyyppi.
 Rivi 22: Exceptistä puuttuu virhetyyppi.
 ================================================================================
-E:\GitHub\ASPA\tests\PK_exception_handling\PK1_only_one_except_branch.py
-PK1_only_one_except_branch.py
+E:\GitHub\ASPA\tests\PK_exception_handling\PK1_try_without_except_branch.py
+PK1_try_without_except_branch.py
 
 Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
 
@@ -549,7 +549,9 @@ Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
 
 Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
 
-Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
+Poikkeustenkäsittely, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Poikkeukset':
+Rivi 7: Poikkeustenkäsittelyssä ei ole lainkaan exceptiä.
+Rivi 10: Poikkeustenkäsittelyssä ei ole lainkaan exceptiä.
 ================================================================================
 E:\GitHub\ASPA\tests\PK_exception_handling\PK3_file_open_miss_exception_handling.py
 PK3_file_open_miss_exception_handling.py
