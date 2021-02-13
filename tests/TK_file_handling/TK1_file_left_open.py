@@ -1,10 +1,10 @@
 """Test file for TK1 check.
 TK1 check detects file handles which are left open.
 
-Include TK2, which is file open, operation and close are not different 
+Include TK2, which is file open, operation and close are not different
 same function.
 
-Include TK1-1 check which notes that using with open is not desired 
+Include TK1-1 check which notes that using with open is not desired
 method in THIS course.
 """
 
@@ -41,6 +41,7 @@ def TK1():
         f2.write("qwerty\n")
     except OSError:
         pass
+    f2.close()
     f2.close()
 
     return None
