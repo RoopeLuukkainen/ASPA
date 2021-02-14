@@ -7,32 +7,48 @@ class NodeTemplate():
     """General template class for any ast node."""
 
     def __init__(self, name, lineno, astree):
-        self.name = name
-        self.astree = astree # AST of the node
-        self.lineno = lineno
+        self._name = name
+        self._astree = astree # AST of the node
+        self._lineno = lineno
 
-    # @property
-    # def name(self):
+    @property
+    def name(self):
+        return self._name
 
-# TODO add property for each variable, now they are referred directly by
-# name.
+    @property
+    def astree(self):
+        return self._astree
+
+    @property
+    def lineno(self):
+        return self._lineno
 
 class FunctionTemplate(NodeTemplate):
     """Template class for functions found during preanalysis."""
 
     def __init__(self, name, lineno, astree, pos_args, kw_args):
         NodeTemplate.__init__(self, name, lineno, astree)
-        self.pos_args = pos_args    # Positional arguments before *args
-        self.kw_args = kw_args      # Keyword arguments before **kwargs
+        self._pos_args = pos_args    # Positional arguments before *args
+        self._kw_args = kw_args      # Keyword arguments before **kwargs
 
+    @property
+    def pos_args(self):
+        return self._pos_args
+
+    @property
+    def kw_args(self):
+        return self._kw_args
 
 class ImportTemplate(NodeTemplate):
     """Template class for imports found during preanalysis."""
 
     def __init__(self, name, lineno, astree, import_from=False):
         NodeTemplate.__init__(self, name, lineno, astree)
-        self.import_from = import_from
+        self._import_from = import_from
 
+    @property
+    def import_from(self):
+        return self._import_from
 
 class ClassTemplate(NodeTemplate):
     """Template class for classes found during preanalysis."""
@@ -69,21 +85,36 @@ class ViolationTemplate():
 
     def __init__(self, vid, args, lineno, status):
 
-        self.vid = vid          # Violation identifier
+        self._vid = vid          # Violation identifier
         # self.vtype = vtype      # Violation type
-        self.args = args
-        self.lineno = lineno
-        self.status = status    # Violation status True/False
+        self._args = args
+        self._lineno = lineno
+        self._status = status    # Violation status True/False
 
+    @property
+    def vid(self):
+        return self._vid
 
-        def get_msg(self):
-            """Return a violation message as a string. Violation message
-            is constructed based on self.vid, self.lineno and
-            self.vtype.
-            """
+    @property
+    def args(self):
+        return self._args
 
-            msg = "msg"          # Violation message
-            return msg
+    @property
+    def status(self):
+        return self._status
+
+    @property
+    def lineno(self):
+        return self._lineno
+
+    def get_msg(self):
+        """Return a violation message as a string. Violation message
+        is constructed based on self.vid, self.lineno and
+        self.vtype.
+        """
+
+        msg = "msg"          # Violation message
+        return msg
 
 
 class FilepathTemplate():
@@ -120,3 +151,18 @@ class FilepathTemplate():
     @property
     def course(self):
         return self._course
+
+
+class FilehandleTemplate():
+    """Template class for filehandles found during file analysis."""
+
+    def __init__(self, name, lineno, astree, closed=0):
+        NodeTemplate.__init__(self, name, lineno, astree)
+        self._closed = closed
+
+    @property
+    def closed(self):
+        return self._closed
+
+    def set_closed(self, closing_line):
+        self._closed = closing_line
