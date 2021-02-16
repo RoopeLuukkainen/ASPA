@@ -178,7 +178,7 @@ class FiledialogPanel(tk.Frame):
         ttk.Button(
             self,
             text=cnf.GUI[parent.LANG]["select_folder"],
-            command=lambda: self.get_filedialog(dir=True)
+            command=lambda: self.get_filedialog(directory=True)
         ).grid(row=0, column=2, padx=PAD, pady=PAD, sticky=tk.E)
 
         ttk.Button(
@@ -206,10 +206,10 @@ class FiledialogPanel(tk.Frame):
             pady=PAD
         )
 
-    def get_filedialog(self, dir=False):
+    def get_filedialog(self, directory=False):
         initdir = self.root
         # File dialog
-        if dir:
+        if directory:
             path = filedialog.askdirectory(
                 initialdir=initdir,
                 title=cnf.GUI[self.parent.LANG]["select_folder"]
