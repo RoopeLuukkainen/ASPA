@@ -153,7 +153,7 @@ class FilepathTemplate():
         return self._course
 
 
-class FilehandleTemplate():
+class FilehandleTemplate(NodeTemplate):
     """Template class for filehandles found during file analysis."""
 
     def __init__(self, name, lineno, astree, closed=0):
@@ -164,5 +164,16 @@ class FilehandleTemplate():
     def closed(self):
         return self._closed
 
+    @property
+    def opened(self):
+        return self._lineno
+
+    @property
+    def filehandle(self):
+        return self._name
+
     def set_closed(self, closing_line):
-        self._closed = closing_line
+        # If _closed is != 0 it is already closed. The first closing is
+        # interesting and therefore only that is stored.
+        if self._closed == 0:
+            self._closed = closing_line

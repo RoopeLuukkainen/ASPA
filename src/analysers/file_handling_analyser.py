@@ -1,70 +1,78 @@
 """Class file. Contains FileHandlingAnalyser class."""
 import ast
 
-import src.analysers.analysis_utils as au
+import src.analysers.analysis_utils as a_utils
 import src.config.config as cnf
+import src.config.templates as templates
 
 class FileHandlingAnalyser(ast.NodeVisitor):
+   # ------------------------------------------------------------------------- #
+   # Initialisation
     # Initally opened and closed were SETs of names, that was super easy and efficient but not complete solution
     def __init__(self, model):
         self.model = model
         self.file_operations = {"read", "readline", "readlines", "write", "writelines"}
 
+   # ------------------------------------------------------------------------- #
    # General methods
     def check_left_open_files(self, opened_files, closed_files):
         """Method to detect left open filehandles."""
-        temp = None
-        left_open = list(opened_files)
+
         for closed in closed_files:
-            for opened in opened_files:
-                try:
-                    closed_name = au.get_attribute_name(closed)
-                    opened_name = au.get_attribute_name(opened)
-
-                except AttributeError:
-                    continue
-                if(closed_name == opened_name
-                        and closed.lineno >= opened.lineno
-                        and au.get_parent(opened, cnf.FUNC)
-                        is au.get_parent(closed, cnf.FUNC)):
-                    temp = opened
-            if(temp):  # After for loop to find last file handle
-                try:
-                    left_open.remove(temp)
-                    temp = None
-                except ValueError:
-                    pass  # In this case same file is closed again
-
-        for file in left_open:
             try:
-                name = au.get_attribute_name(file)
+                closed_name = a_utils.get_attribute_name(closed)
             except AttributeError:
                 continue
 
-            self.model.add_msg("TK1", name, lineno=file.lineno)
+            temp = None
+            for opened_obj in opened_files:
+                if (closed_name == opened_obj.filehandle
+                        and closed.lineno >= opened_obj.lineno
+                        and a_utils.get_parent(opened_obj.astree, cnf.FUNC)
+                        is a_utils.get_parent(closed, cnf.FUNC)):
+                    # Lineno check is used to detect correct order when multiple
+                    # filehandles have same name in same function. However, this
+                    # can fail if opening and closing are e.g. in different
+                    # conditional statement branches (and closing branch is
+                    # before in line numbers), but then students structure is
+                    # already questionable.
+                    temp = opened_obj
+
+            # After loop to find the last opened pair for closed filehandle.
+            if temp:
+                temp.set_closed(closed.lineno)
+
+        for file_obj in opened_files:
+            self.model.add_msg(
+                "TK1",
+                file_obj.name,
+                lineno=file_obj.lineno,
+                status=(file_obj.closed != 0)
+            )
+
         return None
 
     def check_same_parent(self, node, attr, parent=tuple()):
         try:
-            func = au.get_parent(node, parent)
+            func = a_utils.get_parent(node, parent)
             name = node.value.id
             line = node.lineno
             has_close = False
             has_open = False
-            if(not (func and name)):
+            if not (func and name):
                 return None
 
             for i in ast.walk(func):
-                if(isinstance(i, ast.With)
+                if (isinstance(i, ast.With)
                         and i.lineno <= line):
                     has_close = has_open = True
                     break
-                elif(isinstance(i, ast.Attribute)
+                elif (isinstance(i, ast.Attribute)
                         and i.value.id == name
                         and i.attr == "close"):
                         # and i.lineno >= line):
                     has_close = True
-                elif(isinstance(i, ast.Assign)
+                elif (isinstance(i, ast.Assign)
                         and i.targets[0].id == name
                         and i.value.func.id == "open"):
                         # and i.lineno <= line):
@@ -76,6 +84,7 @@ class FileHandlingAnalyser(ast.NodeVisitor):
             pass
         return None
 
+   # ------------------------------------------------------------------------- #
    # Visits
     def visit_Attribute(self, node, *args, **kwargs):
         """Method to check if node is:
@@ -83,10 +92,10 @@ class FileHandlingAnalyser(ast.NodeVisitor):
         2. Closing a file in except branch.
         """
         try:
-            if(node.attr == "close"):
-                if(au.get_parent(node, ast.ExceptHandler) is not None):
+            if node.attr == "close":
+                if(a_utils.get_parent(node, ast.ExceptHandler) is not None):
                     self.model.add_msg("TK1-2", node.value.id, lineno=node.lineno)
-                if(au.get_parent(node, ast.Call) is None):
+                if(a_utils.get_parent(node, ast.Call) is None):
                     self.model.add_msg("TK1-3", node.value.id, "close", lineno=node.lineno)
 
                 self.model.set_files_closed(node.value, append=True)
@@ -94,7 +103,7 @@ class FileHandlingAnalyser(ast.NodeVisitor):
             pass
 
         try:
-            if(node.attr in self.file_operations):
+            if node.attr in self.file_operations:
                 self.check_same_parent(node, node.attr, cnf.FUNC)
         except AttributeError:
             pass
@@ -116,7 +125,7 @@ class FileHandlingAnalyser(ast.NodeVisitor):
     def visit_With(self, node, *args, **kwargs):
         try:
             for i in node.items:
-                if(i.context_expr.func.id == "open"):
+                if i.context_expr.func.id == "open":
                     self.model.add_msg("TK1-1", "with open", lineno=node.lineno)
         except AttributeError:
             pass

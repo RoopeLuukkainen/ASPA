@@ -114,7 +114,7 @@ class ErrorHandlingAnalyser(ast.NodeVisitor):
         """
 
         try:
-            names = [a_utils.get_attribute_name(i) for i in self.model.get_files_opened()]
+            names = [i.filehandle for i in self.model.get_files_opened()]
             # TODO: add check that file is opened in same function
 
             iter_name = ""

@@ -191,6 +191,7 @@ class Model:
         self.lib_list.clear()
         self.import_dict.clear()
         self.call_dict.clear()
+        self.constant_variables.clear() # Not yet used but cleared anyway
 
     def add_msg(self, code, *args, lineno=-1, status=False):
         if not utils.ignore_check(code):
@@ -277,6 +278,7 @@ class Model:
          # This need setter, getter and initialisation if used
         self.constant_variables = self.pre_analyser.get_constant_dict()
         self.call_dict = self.pre_analyser.get_call_dict()
+        self.files_opened = self.pre_analyser.get_file_list()
         self.pre_analyser.clear_all()
 
         imported = self.import_dict.keys()
@@ -305,7 +307,7 @@ class Model:
         Return: List of violation messages.
         """
 
-        self.file_list = file_list
+        # self.file_list = file_list
 
         for opt in self.checkbox_options:
             if(selections[opt]):
@@ -351,7 +353,7 @@ class Model:
                 )
                 continue
 
-            # There are violations in this topic/title
+            # There are one or more violations in this topic/title
             line_list.append(
                 utils.create_title('NOTE', title_key, lang=self.language)
             )
