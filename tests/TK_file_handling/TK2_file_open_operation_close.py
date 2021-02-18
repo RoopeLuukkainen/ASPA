@@ -5,6 +5,17 @@ file opening and closing.
 Include TK1, which is file handle left open.
 """
 
+def PK4(t): # Example from PK4
+    try:
+        # t.fhandle = open("test.txt", "w")
+        t.fhandle.write("123\n")
+        _ = t.fhandle.readline()
+        print(t.fhandle.readline())
+    except OSError:
+        pass
+    # t.fhandle.close()
+    return None
+
 def another_way():
     try:
         f2 = open("test.txt", "r")

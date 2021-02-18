@@ -1,4 +1,4 @@
-2021-02-11_16-11-10
+2021-02-18_11-42-39
 ================================================================================
 E:\GitHub\ASPA\tests\AR_functions\AR1_no_paaohjelma.py
 AR1_no_paaohjelma.py
@@ -532,10 +532,12 @@ Data structures: No violations detected.
 Library usage: No violations detected.
 
 Exception handling, violations detected please see Liite 5 'Poikkeukset':
-Line 10: Missing exception type.
+Line 8: Missing exception type.
+Line 15: Missing exception type.
+Line 22: Missing exception type.
 ================================================================================
-E:\GitHub\ASPA\tests\PK_exception_handling\PK1_only_one_except_branch.py
-PK1_only_one_except_branch.py
+E:\GitHub\ASPA\tests\PK_exception_handling\PK1_try_without_except_branch.py
+PK1_try_without_except_branch.py
 
 Basic commands: No violations detected.
 
@@ -547,7 +549,9 @@ Data structures: No violations detected.
 
 Library usage: No violations detected.
 
-Exception handling: No violations detected.
+Exception handling, violations detected please see Liite 5 'Poikkeukset':
+Line 7: Exception handling has no excepts.
+Line 10: Exception handling has no excepts.
 ================================================================================
 E:\GitHub\ASPA\tests\PK_exception_handling\PK3_file_open_miss_exception_handling.py
 PK3_file_open_miss_exception_handling.py
@@ -588,7 +592,7 @@ Line 23: Missing exception handling from the file operation 'f.readline'.
 Line 24: Missing exception handling from the file operation 'f.read'.
 Line 25: Missing exception handling from the file operation 'f.readlines'.
 Line 26: Missing exception handling from the file operation 'for _ in f'.
-Line 40: Missing exception handling from the file operation 'for this_is_a_bug in f'.
+Line 42: Missing exception handling from the file operation 'for this_is_a_bug in f'.
 ================================================================================
 E:\GitHub\ASPA\tests\PT_basic_command\PT1_print_call.py
 PT1_print_call.py
@@ -772,8 +776,11 @@ Basic commands: No violations detected.
 Functions: No violations detected.
 
 File handling, violations detected please see Liite 5 'Tiedostoon kirjoittaminen' 'Tiedostosta lukeminen':
-Line 28: File operation 'f.readline' is in different function than file open and close.
-Line 20: File handle 'f' is left open.
+Line 11: File operation 't.fhandle.write' is in different function than file open and close.
+Line 12: File operation 't.fhandle.readline' is in different function than file open and close.
+Line 13: File operation 't.fhandle.readline' is in different function than file open and close.
+Line 39: File operation 'f.readline' is in different function than file open and close.
+Line 31: File handle 'f' is left open.
 
 Data structures: No violations detected.
 

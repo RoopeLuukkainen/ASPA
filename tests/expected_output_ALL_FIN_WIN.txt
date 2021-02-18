@@ -1,4 +1,4 @@
-2021-01-29_14-14-22
+2021-02-18_11-39-35
 ================================================================================
 E:\GitHub\ASPA\tests\AR_functions\AR1_no_paaohjelma.py
 AR1_no_paaohjelma.py
@@ -592,7 +592,7 @@ Rivi 23: Tiedosto-operaatiosta 'f.readline' puuttuu poikkeustenkäsittely.
 Rivi 24: Tiedosto-operaatiosta 'f.read' puuttuu poikkeustenkäsittely.
 Rivi 25: Tiedosto-operaatiosta 'f.readlines' puuttuu poikkeustenkäsittely.
 Rivi 26: Tiedosto-operaatiosta 'for _ in f' puuttuu poikkeustenkäsittely.
-Rivi 40: Tiedosto-operaatiosta 'for this_is_a_bug in f' puuttuu poikkeustenkäsittely.
+Rivi 42: Tiedosto-operaatiosta 'for this_is_a_bug in f' puuttuu poikkeustenkäsittely.
 ================================================================================
 E:\GitHub\ASPA\tests\PT_basic_command\PT1_print_call.py
 PT1_print_call.py
@@ -776,8 +776,11 @@ Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
 Aliohjelmat: Ei tunnistettu tyylirikkomuksia.
 
 Tiedostonkäsittely, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Tiedostoon kirjoittaminen' 'Tiedostosta lukeminen':
-Rivi 28: Tiedosto-operaatio 'f.readline' eri aliohjelmassa kuin avaus ja sulkeminen.
-Rivi 20: Tiedostokahva 'f' on sulkematta.
+Rivi 11: Tiedosto-operaatio 't.fhandle.write' eri aliohjelmassa kuin avaus ja sulkeminen.
+Rivi 12: Tiedosto-operaatio 't.fhandle.readline' eri aliohjelmassa kuin avaus ja sulkeminen.
+Rivi 13: Tiedosto-operaatio 't.fhandle.readline' eri aliohjelmassa kuin avaus ja sulkeminen.
+Rivi 39: Tiedosto-operaatio 'f.readline' eri aliohjelmassa kuin avaus ja sulkeminen.
+Rivi 31: Tiedostokahva 'f' on sulkematta.
 
 Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
 
