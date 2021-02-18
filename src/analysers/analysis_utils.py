@@ -167,20 +167,37 @@ def is_added_to_data_structure(node, data_stuct_node, data_stuct_name, add_attrs
     return is_added
 
 
-def get_attribute_name(node, splitted=False):
+def get_attribute_name(node, splitted=False, omit_n_last=0):
+    """
+    Function to parse name from attributes. If the is only single Name
+    node then node.id is enough. Otherwise add all attrs in front of
+    the id.
+
+    Optional parameters:
+    1. "splitted" is used get result as list instead of joined string,
+        i.e. "[like, this]" instead of "like.this".
+    2. "omit_n_last" is used to leave n last attrs out.
+    """
+
     try:
         name = node.id
     except AttributeError:
+        # If omit_n_last != 0 then it is changed to negative
+        # otherwise it will be None
+        # This is used in substring [:-n] where [:None] is same as [:]
+        omit_n_last = -omit_n_last or None
+
         try:
             name_parts = []
             temp = node
             while hasattr(temp, "attr"):
                 name_parts.insert(0, temp.attr)
                 temp = temp.value
-            if(splitted):
-                name = [temp.id] + name_parts
-            else:
-                name = ".".join([temp.id] + name_parts)
+
+            name = [temp.id] + name_parts[:omit_n_last]
+            if not splitted:
+                name = ".".join(name)
+
         except AttributeError:
             raise
         finally:
@@ -190,4 +207,7 @@ def get_attribute_name(node, splitted=False):
 ####################################################################
 #  Debug functions
 def dump_node(node):
-    print(f"{node.lineno}: {ast.dump(node)}")
+    try:
+        print(f"{node.lineno}: {ast.dump(node)}")
+    except AttributeError:
+        print(f"No line: {ast.dump(node)}")
