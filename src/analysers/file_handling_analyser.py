@@ -8,7 +8,6 @@ import src.config.templates as templates
 class FileHandlingAnalyser(ast.NodeVisitor):
    # ------------------------------------------------------------------------- #
    # Initialisation
-    # Initally opened and closed were SETs of names, that was super easy and efficient but not complete solution
     def __init__(self, model):
         self.model = model
         self.file_operations = {"read", "readline", "readlines", "write", "writelines"}
@@ -52,37 +51,100 @@ class FileHandlingAnalyser(ast.NodeVisitor):
 
         return None
 
-    def check_same_parent(self, node, attr, parent=tuple()):
+    def _has_open_and_close(self, node, func_handle, parent=cnf.FUNC):
+        """Method to detect both, open() and close(), inside function
+        and used for same filehandle as defined in "func_handle".
+
+        Check has three return points:
+        1. True if parent is with.
+        2. True if same function contains open() and close() for same
+           file handle as the "func_handle" parameter.
+        3. False otherwise.
+        """
         try:
-            func = a_utils.get_parent(node, parent)
-            name = node.value.id
-            line = node.lineno
-            has_close = False
-            has_open = False
-            if not (func and name):
-                return None
+            # Check usage of "with" keyword
+            if a_utils.get_parent(node, ast.With) is not None:
+                return True
 
-            for i in ast.walk(func):
-                if (isinstance(i, ast.With)
-                        and i.lineno <= line):
-                    has_close = has_open = True
-                    break
-                elif (isinstance(i, ast.Attribute)
-                        and i.value.id == name
-                        and i.attr == "close"):
-                        # and i.lineno >= line):
-                    has_close = True
-                elif (isinstance(i, ast.Assign)
-                        and i.targets[0].id == name
-                        and i.value.func.id == "open"):
-                        # and i.lineno <= line):
-                    has_open = True
+            # Otherwise check function body
+            func_node = a_utils.get_parent(node, parent)
+            has_close = has_open = False
 
-            if(not (has_close and has_open)):
-                self.model.add_msg("TK2", name, attr, lineno=node.lineno)
+            # while (not has_open or not has_close) and (subnode := ast.walk(func_node)):
+            for subnode in ast.walk(func_node):
+                try:
+                    if (not has_close
+                        and isinstance(subnode, ast.Attribute)
+                        and (subnode.attr == "close")
+                        and (a_utils.get_attribute_name(
+                                subnode,
+                                omit_n_last=1
+                            ) == func_handle)):
+                        # When attribute is close and functionhandles have same name
+                        # e.g. file_h.close()
+                        has_close = True
+
+                    elif (not has_open
+                        and isinstance(subnode, ast.Assign)
+                        and (subnode.value.func.id == "open")
+                        and (a_utils.get_attribute_name(
+                                subnode.targets[0]
+                            ) == func_handle)):
+                        # When filehandle is assigned for open()-call value.
+                        has_open = True
+
+                except AttributeError:
+                    continue
+
+                else:
+                    if has_open and has_close:
+                        return True
+
         except AttributeError:
             pass
+        return False
+
+    def _check_same_parent(self, node, attr, parent):
+        """
+        Method to detect that if filehandle is read/write inside
+        function it is also opened and closed in same function.
+        """
+
+        func_handle = a_utils.get_attribute_name(node.value)
+        self.model.add_msg(
+            "TK2",
+            func_handle,
+            attr,
+            lineno=node.lineno,
+            status=self._has_open_and_close(node, func_handle, parent)
+        )
+
+    def _check_file_closing(self, node):
+        self.model.set_files_closed(node.value, append=True)
+        attr_name = a_utils.get_attribute_name(node.value)
+
+        # TK1-2 closing file in except branch.
+        self.model.add_msg(
+            "TK1-2",
+            attr_name,
+            lineno=node.lineno,
+            status=(a_utils.get_parent(node, ast.ExceptHandler) is None)
+        )
+
+        # TK1-3 close has not parenthesis i.e. close not close().
+        self.model.add_msg(
+            "TK1-3",
+            attr_name,
+            "close",
+            lineno=node.lineno,
+            status=(a_utils.get_parent(
+                node,
+                ast.Call,
+                denied=(ast.Expr,)) is not None
+            )
+        )
         return None
+
 
    # ------------------------------------------------------------------------- #
    # Visits
@@ -91,38 +153,25 @@ class FileHandlingAnalyser(ast.NodeVisitor):
         1. Closing a file.
         2. Closing a file in except branch.
         """
+
         try:
             if node.attr == "close":
-                if(a_utils.get_parent(node, ast.ExceptHandler) is not None):
-                    self.model.add_msg("TK1-2", node.value.id, lineno=node.lineno)
-                if(a_utils.get_parent(node, ast.Call) is None):
-                    self.model.add_msg("TK1-3", node.value.id, "close", lineno=node.lineno)
-
-                self.model.set_files_closed(node.value, append=True)
+                self._check_file_closing(node)
         except AttributeError:
             pass
 
         try:
+            # node.attr should work even for changed a.b.c.read() attributes.
             if node.attr in self.file_operations:
-                self.check_same_parent(node, node.attr, cnf.FUNC)
+                self._check_same_parent(node, node.attr, cnf.FUNC)
         except AttributeError:
             pass
+
         self.generic_visit(node)
 
-    def visit_Call(self, node, *args, **kwargs):
-        """Method to check if node is:
-        1. Opening a file.
-        """
-        if(hasattr(node.func, "id") and node.func.id == "open"
-                and hasattr(node, "parent_node")):
-            parent = node.parent_node
-
-            if(isinstance(parent, ast.Assign)):
-                for name_obj in parent.targets:
-                    self.model.set_files_opened(name_obj, append=True)
-        self.generic_visit(node)
 
     def visit_With(self, node, *args, **kwargs):
+        # TODO Make BKT compatible by changing check in the normal open.
         try:
             for i in node.items:
                 if i.context_expr.func.id == "open":
