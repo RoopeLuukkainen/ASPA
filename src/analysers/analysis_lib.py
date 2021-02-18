@@ -58,6 +58,7 @@ class Model:
             pass
         # Pre analyser
         self.pre_analyser = pre_analyser.PreAnalyser()
+        self.constant_variables = {}
 
         # Variable data structures (used by function_analyser)
         self.global_variables = {}
