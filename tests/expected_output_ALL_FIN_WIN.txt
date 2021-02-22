@@ -1,4 +1,4 @@
-2021-02-18_11-39-35
+2021-02-22_16-04-56
 ================================================================================
 E:\GitHub\ASPA\tests\AR_functions\AR1_no_paaohjelma.py
 AR1_no_paaohjelma.py
@@ -788,6 +788,21 @@ Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
 
 Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
 ================================================================================
+E:\GitHub\ASPA\tests\TR_data_structure\example_lib_TR.py
+example_lib_TR.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat: Ei tunnistettu tyylirikkomuksia.
+
+Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
+
+Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
+
+Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
+
+Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
+================================================================================
 E:\GitHub\ASPA\tests\TR_data_structure\TR2-1_using_class_without_object.py
 TR2-1_using_class_without_object.py
 
@@ -798,7 +813,7 @@ Aliohjelmat: Ei tunnistettu tyylirikkomuksia.
 Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
 
 Tietorakenteet, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Aliohjelmat' 'Listan käsittely' 'Monimutkaisempi tietorakenne':
-Rivi 10: Luokan käyttö suoraan ilman oliota 'FOO.attr'.
+Rivi 12: Luokan käyttö suoraan ilman oliota 'FOO.attr'.
 
 Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
 
@@ -814,8 +829,8 @@ Aliohjelmat: Ei tunnistettu tyylirikkomuksia.
 Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
 
 Tietorakenteet, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Aliohjelmat' 'Listan käsittely' 'Monimutkaisempi tietorakenne':
-Rivi 11: Olion luonnista puuttuvat sulkeet. Pitäisi olla 'FOO()'.
-Rivi 15: Olion luonnista puuttuvat sulkeet. Pitäisi olla 'FOO()'.
+Rivi 13: Olion luonnista puuttuvat sulkeet. Pitäisi olla 'FOO()'.
+Rivi 17: Olion luonnista puuttuvat sulkeet. Pitäisi olla 'FOO()'.
 
 Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
 
