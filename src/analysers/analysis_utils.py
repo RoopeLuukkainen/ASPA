@@ -84,20 +84,33 @@ def get_parent(node, allowed, denied=tuple()):
     parent = None
     while(hasattr(temp, "parent_node") and not isinstance(temp, denied)):
         temp = temp.parent_node
-        if(isinstance(temp, allowed)):
+        if isinstance(temp, allowed):
             parent = temp
             break
     return parent
 
 
-def has_same_parent(node, others, allowed, denied=tuple()):
+def get_outer_parent(node, allowed, **kwargs):
+    """
+    Function to get outermost parent instance with allowed type. Uses
+    get_parent function until denied is found or no more allowed type is
+    found.
+    """
+
+    outer_parent = node
+    while (temp := get_parent(outer_parent, allowed, **kwargs)):
+        outer_parent = temp
+    return outer_parent
+
+
+def has_same_parent(node, others, allowed, **kwargs): #denied=tuple()):
     # NOT YET TESTED
-    parent = get_parent(node, allowed, denied)
-    if(isinstance(others, (list, tuple, set))):
+    parent = get_parent(node, allowed, **kwargs)
+    if isinstance(others, (list, tuple, set)):
         for i in others:
-            if(not parent or (parent != get_parent(i, allowed, denied))):
+            if not parent or (parent != get_parent(i, allowed, **kwargs)):
                 return False
-    elif(not parent or (parent != get_parent(others, allowed, denied))):
+    elif not parent or (parent != get_parent(others, allowed, **kwargs)):
         return False
     return True
 
@@ -122,7 +135,7 @@ def get_child_instance(node, allowed, denied=tuple()):
             break
     return child
 
-# AST tests and gets
+# AST tests and value gets
 def is_always_true(test):
     """
     Function to define cases where conditional test is always true.
@@ -202,6 +215,39 @@ def get_attribute_name(node, splitted=False, omit_n_last=0):
             raise
         finally:
             name_parts.clear()
+    return name
+
+
+def get_class_name(node, **kwargs):
+    """
+    Function to get name of a class. The class can be 'called' with or
+    without parenthesis. When parenthesis are not used creates
+    ast.Attribute node and when they are used creates ast.Call node.
+    Uses get_attribute_name function but with different node parameter
+    depending on the case.
+
+    Arguments:
+    kwargs can be "splitted" or "omit_n_last".
+
+    Return values:
+    On success: name of the class (and trailing attributes depending on
+                **kwargs.)
+    On failure: empty str ''.
+    """
+
+    try:
+        name = get_attribute_name(
+            node,
+            **kwargs
+        )
+    except AttributeError:
+        try:
+            name = get_attribute_name(
+                node.func,
+                **kwargs
+            )
+        except AttributeError:
+            name = ""
     return name
 
 ####################################################################
