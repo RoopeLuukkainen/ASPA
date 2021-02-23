@@ -188,51 +188,46 @@ class DataStructureAnalyser(ast.NodeVisitor):
                 if(not loop):
                     break
 
-                func = a_utils.get_parent(node, cnf.FUNC)
-                name_list = a_utils.get_attribute_name(i, splitted=True)
-                obj = self._get_object_by_name(".".join(name_list[:-1]), func)
-                loop2 = a_utils.get_parent(obj.astree, cnf.LOOP)
+    def _check_class(self, node):
+        """
+        Method to check
+        1. Class is created in global scope
+        2. Class name is written with UPPERCASE letters.
+        """
 
-                # Check if the object is created in same function as
-                # value is assigned to its attribute but creation is not
-                # in the same loop.
-                if(not obj or (loop2 == loop)):
-                    continue
+        name = node.name
 
-                # TODO: This is now done everytime object attribute is
-                # assigned inside loop. Optimize this such that objects
-                # are first gathered and then only one walk to check all
-                # of them.
-                for elem in ast.walk(loop):
-                    try:
-                        if((obj.name == a_utils.get_attribute_name(elem))
-                            and a_utils.is_added_to_data_structure(
-                                elem,
-                                ast.List,
-                                "list",
-                                self._list_addition_attributes
-                            )
-                        ):
-                            self.model.add_msg("TR3-2", lineno=obj.lineno)
-                    except AttributeError:
-                        pass
-            except AttributeError:
-                pass
+       # Class is at global scope check
+        # Col offset should detect every class definition which is indended
+        # but status is verified with parent check.
+        self.model.add_msg(
+            "TR2-3",
+            name,
+            lineno=node.lineno,
+            status=(
+                node.col_offset == 0
+                or a_utils.get_parent(node, cnf.CLS_FUNC) is None
+            )
+        )
 
-        self.generic_visit(node)
+       # Class name is UPPERCASE check
+        self.model.add_msg(
+            "TR2-4",
+            name,
+            lineno=node.lineno,
+            status=(name.isupper())
+        )
 
     def visit_ClassDef(self, node, *args, **kwargs):
-        """Method to check
-        1. Class is created in global scope
-        """
+        """Method to call class checks of ClassDef nodes."""
         # Col offset should detect every class definition which is indended
-        if(node.col_offset > 0
-                or a_utils.get_parent(node, cnf.CLS_FUNC) is not None):
-            self.model.add_msg("TR2-3", node.name, lineno=node.lineno)
+        # if(node.col_offset > 0
+        #         or a_utils.get_parent(node, cnf.CLS_FUNC) is not None):
+        #     self.model.add_msg("TR2-3", node.name, lineno=node.lineno)
 
-        if(not node.name.isupper()):
-            self.model.add_msg("TR2-4", node.name, lineno=node.lineno)
-
+        # if(not node.name.isupper()):
+        #     self.model.add_msg("TR2-4", node.name, lineno=node.lineno)
+        self._check_class(node)
         self.generic_visit(node)
 
     def visit_FunctionDef(self, node, *args, **kwargs):
