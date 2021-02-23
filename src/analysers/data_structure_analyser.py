@@ -28,9 +28,9 @@ class DataStructureAnalyser(ast.NodeVisitor):
 
             # Used to skip nested functions and classes
             try:
-                if(skip_end >= node.lineno):
+                if skip_end >= node.lineno:
                     continue
-                elif(isinstance(node, cnf.CLS_FUNC) and node is not tree):
+                elif isinstance(node, cnf.CLS_FUNC) and node is not tree:
                     skip_end = node.end_lineno
                     continue
             except AttributeError:
@@ -39,10 +39,10 @@ class DataStructureAnalyser(ast.NodeVisitor):
             # Object detection
             try:
                 name = node.value.func.id
-                if(isinstance(node, ast.Assign)
+                if (isinstance(node, ast.Assign)
                     and ((name in classes)
-                        or (f"{parent}.{name}" in classes))):
-
+                        or (f"{parent}.{name}" in classes))
+                ):
                     for i in node.targets:
                         _objects.append(
                             templates.ObjectTemplate(
@@ -64,6 +64,7 @@ class DataStructureAnalyser(ast.NodeVisitor):
 
         Names are returned as a list of strings.
         """
+
         names = []
         if(func):
             for i in self._local_objects[func]:
@@ -79,19 +80,75 @@ class DataStructureAnalyser(ast.NodeVisitor):
         Method to return the first object with given name obj_name. If
         func-argument is given search objects only from that function.
         """
+
         obj = None
-        if(func):
+        if func:
             for i in self._local_objects[func]:
-                if(i.name == obj_name):
+                if i.name == obj_name:
                     obj = i
                     break
         else:
             for value in self._local_objects.values():
                 for i in value:
-                    if(i.name == obj_name):
+                    if i.name == obj_name:
                         obj = i
-                        break
+                        # NOTE: using break instead of return would allow same
+                        # object from different function to be returned,
+                        # therefore it would not be the first object.
+                        return obj
         return obj
+
+    def _check_object_outside_loop(self, node, assing_loop):
+        """
+        Method to check if object creation is outside a loop and object
+        (attribute) values are assigned inside the loop and then object
+        is put into a list.
+        """
+
+        # Get the function where object is created, if there is no parent
+        # function, func is None and all the objects are searched in later step.
+        func = a_utils.get_parent(node, cnf.FUNC)
+
+        for var in node.targets:
+            try:
+                # Check that value is assigned to an object (or other attribute)
+                # If not, it is irrelevant var for this check and we continue.
+                if not isinstance(var, ast.Attribute):
+                    continue
+
+                # Get an object and a loop where values are assigned to object's
+                # attributes.
+                name = a_utils.get_attribute_name(var, omit_n_last=1)
+                if not (obj := self._get_object_by_name(name, func)):
+                    continue
+                creation_loop = a_utils.get_parent(obj.astree, cnf.LOOP)
+
+                # TODO: This is now done everytime object attribute is assigned
+                # inside a loop. Optimize this such that objects are first
+                # gathered and then only one walk to check all of them.
+                for elem in ast.walk(assing_loop):
+                    try:
+                        if ((obj.name == a_utils.get_attribute_name(elem))
+                            and a_utils.is_added_to_data_structure(
+                                elem,
+                                ast.List,
+                                "list",
+                                self._list_addition_attributes
+                            )
+                        ):
+                        # 'status' tells if creation of object is in the same
+                        # loop as value is assigned to the attribute. If yes no
+                        # violation.
+                            self.model.add_msg(
+                                "TR3-2",
+                                lineno=obj.lineno,
+                                status=(creation_loop == assing_loop)
+                            )
+                    except AttributeError:
+                        continue
+            except AttributeError:
+                pass
+        return None
 
     def _is_class_call(self, node, parent, classes):
         """
@@ -106,8 +163,8 @@ class DataStructureAnalyser(ast.NodeVisitor):
                 it is included into a name 'parent.class_name'.
 
         Three different return values:
-        0: No class name and not a call, i.e. something not relevant.
-        1: Class name and call, e.g. obj = CLASS()
+         0: No class name and not a call, i.e. something not relevant.
+         1: Class name and call, e.g. obj = CLASS()
         -1: Class name but not a call, e.g. obj = CLASS
         """
 
@@ -157,6 +214,7 @@ class DataStructureAnalyser(ast.NodeVisitor):
            are assigned inside the loop and then object is put into a
            list.
         """
+
         classes = self.model.get_class_dict().keys()
 
         # Using class directly without an object
@@ -172,21 +230,12 @@ class DataStructureAnalyser(ast.NodeVisitor):
         except AttributeError:
             pass
 
-        # Object creation outside a loop and object (attribute) values
-        # are assigned inside the loop and then object is put into a
-        # list.
-        for i in node.targets:
-            try:
-                # Check if value is assigned to an object (or other attribute)
-                if(not isinstance(i, ast.Attribute)):
-                    continue
+        # Check if assigning value to object attribute is inside a loop,
+        # if not, no other target can be inside a loop either.
+        if (loop := a_utils.get_parent(node, cnf.LOOP)):
+            self._check_object_outside_loop(node, loop)
 
-                loop = a_utils.get_parent(node, cnf.LOOP)
-
-                # Check if assign is inside a loop, if not no other
-                # target can be inside a loop either.
-                if(not loop):
-                    break
+        self.generic_visit(node)
 
     def _check_class(self, node):
         """
@@ -220,23 +269,19 @@ class DataStructureAnalyser(ast.NodeVisitor):
 
     def visit_ClassDef(self, node, *args, **kwargs):
         """Method to call class checks of ClassDef nodes."""
-        # Col offset should detect every class definition which is indended
-        # if(node.col_offset > 0
-        #         or a_utils.get_parent(node, cnf.CLS_FUNC) is not None):
-        #     self.model.add_msg("TR2-3", node.name, lineno=node.lineno)
 
-        # if(not node.name.isupper()):
-        #     self.model.add_msg("TR2-4", node.name, lineno=node.lineno)
         self._check_class(node)
         self.generic_visit(node)
 
     def visit_FunctionDef(self, node, *args, **kwargs):
         """Method to call detect objects for current namespace."""
+
         self._detect_objects(node)
         self.generic_visit(node)
 
     def visit_AsyncFunctionDef(self, node, *args, **kwargs):
         """Method to call detect objects for current namespace."""
+
         self._detect_objects(node)
         self.generic_visit(node)
 
@@ -247,12 +292,12 @@ class DataStructureAnalyser(ast.NodeVisitor):
 
         # The check of adding object's attribute to the list is only done when
         # it is done inside a loop
-        if(a_utils.get_parent(node, cnf.LOOP)):
+        if a_utils.get_parent(node, cnf.LOOP):
             func = a_utils.get_parent(node, cnf.FUNC)
             try:
                 name = a_utils.get_attribute_name(node.value)
 
-                if(name in self._get_local_object_names(func)
+                if (name in self._get_local_object_names(func)
                     and a_utils.is_added_to_data_structure(
                         node,
                         ast.List,
