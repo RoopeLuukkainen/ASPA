@@ -10,7 +10,8 @@ class DataStructureAnalyser(ast.NodeVisitor):
    # Initialisations
     def __init__(self, model):
         self.model = model
-        self._local_objects = {}
+        self._local_objects = {}    # store objects created in analysed functions
+        self._analysed_TR3_2 = {}   # store analysed (function, object) tuples
         self._list_addition_attributes = {"append", "extend", "insert"}
 
 
@@ -98,6 +99,34 @@ class DataStructureAnalyser(ast.NodeVisitor):
                         return obj
         return obj
 
+    def _check_attribute_addition_to_list(self, node):
+        """
+        Method to check if object's attributes are added to a list is
+        done inside a loop.
+        """
+
+        try:
+            # Get parent function and name of the object
+            func = a_utils.get_parent(node, cnf.FUNC)
+            obj = a_utils.get_attribute_name(node.value)
+
+            if (obj in self._get_local_object_names(func)
+                and a_utils.is_added_to_data_structure(
+                    node,
+                    ast.List,
+                    "list",
+                    self._list_addition_attributes
+                )
+            ):
+                self.model.add_msg(
+                    "TR3-1",
+                    lineno=node.lineno,
+                    status=(a_utils.get_parent(node, cnf.LOOP) is None)
+                )
+        except (AttributeError, KeyError):
+            pass
+        return None
+
     def _check_object_outside_loop(self, node, assing_loop):
         """
         Method to check if object creation is outside a loop and object
@@ -121,14 +150,21 @@ class DataStructureAnalyser(ast.NodeVisitor):
                 name = a_utils.get_attribute_name(var, omit_n_last=1)
                 if not (obj := self._get_object_by_name(name, func)):
                     continue
+
                 creation_loop = a_utils.get_parent(obj.astree, cnf.LOOP)
 
                 # TODO: This is now done everytime object attribute is assigned
                 # inside a loop. Optimize this such that objects are first
                 # gathered and then only one walk to check all of them.
+
                 for elem in ast.walk(assing_loop):
                     try:
+                        # NOTE: condition "not (func, obj.name) in self._analysed_TR3_2.keys()"
+                        # would limits analysis of each object to single case
+                        # because otherwise each list.append(obj) and obj.attr
+                        # triggers new BTKA result
                         if ((obj.name == a_utils.get_attribute_name(elem))
+                            # and not (func, obj.name) in self._analysed_TR3_2.keys()
                             and a_utils.is_added_to_data_structure(
                                 elem,
                                 ast.List,
@@ -144,6 +180,11 @@ class DataStructureAnalyser(ast.NodeVisitor):
                                 lineno=obj.lineno,
                                 status=(creation_loop == assing_loop)
                             )
+
+                            self._analysed_TR3_2.setdefault(
+                                (func, obj.name),
+                                []
+                            ).append(elem.lineno)
                     except AttributeError:
                         continue
             except AttributeError:
@@ -203,6 +244,35 @@ class DataStructureAnalyser(ast.NodeVisitor):
 
         return _IRRELEVANT
 
+    def _check_class(self, node):
+        """
+        Method to check
+        1. Class is created in global scope
+        2. Class name is written with UPPERCASE letters.
+        """
+
+        name = node.name
+
+       # Class is at global scope check
+        # Col offset should detect every class definition which is indended
+        # but status is verified with parent check.
+        self.model.add_msg(
+            "TR2-3",
+            name,
+            lineno=node.lineno,
+            status=(
+                node.col_offset == 0
+                or a_utils.get_parent(node, cnf.CLS_FUNC) is None
+            )
+        )
+
+       # Class name is UPPERCASE check
+        self.model.add_msg(
+            "TR2-4",
+            name,
+            lineno=node.lineno,
+            status=(name.isupper())
+        )
 
    # ------------------------------------------------------------------------- #
    # Visits
@@ -237,35 +307,24 @@ class DataStructureAnalyser(ast.NodeVisitor):
 
         self.generic_visit(node)
 
-    def _check_class(self, node):
-        """
-        Method to check
-        1. Class is created in global scope
-        2. Class name is written with UPPERCASE letters.
-        """
+    def visit_Name(self, node, *args, **kwargs):
+        # Object creation without parenthesis, work when assigned value
+        # i.e. node.id is class name.
+        classes = self.model.get_class_dict().keys()
 
-        name = node.name
+        try:
+            parent = a_utils.get_parent(node, cnf.CLS_FUNC)
 
-       # Class is at global scope check
-        # Col offset should detect every class definition which is indended
-        # but status is verified with parent check.
-        self.model.add_msg(
-            "TR2-3",
-            name,
-            lineno=node.lineno,
-            status=(
-                node.col_offset == 0
-                or a_utils.get_parent(node, cnf.CLS_FUNC) is None
-            )
-        )
-
-       # Class name is UPPERCASE check
-        self.model.add_msg(
-            "TR2-4",
-            name,
-            lineno=node.lineno,
-            status=(name.isupper())
-        )
+            if (temp := self._is_class_call(node, parent, classes)):
+                self.model.add_msg(
+                    "TR2-2",
+                    node.id,
+                    lineno=node.lineno,
+                    status=(temp > 0) # -1 means class call without parenthesis
+                )
+        except AttributeError:
+            pass
+        self.generic_visit(node)
 
     def visit_ClassDef(self, node, *args, **kwargs):
         """Method to call class checks of ClassDef nodes."""
@@ -286,47 +345,10 @@ class DataStructureAnalyser(ast.NodeVisitor):
         self.generic_visit(node)
 
     def visit_Attribute(self, node, *args, **kwargs):
-        """Method to check
+        """
+        Method to check
         1. Object attributes are added into a list inside a loop.
         """
 
-        # The check of adding object's attribute to the list is only done when
-        # it is done inside a loop
-        if a_utils.get_parent(node, cnf.LOOP):
-            func = a_utils.get_parent(node, cnf.FUNC)
-            try:
-                name = a_utils.get_attribute_name(node.value)
-
-                if (name in self._get_local_object_names(func)
-                    and a_utils.is_added_to_data_structure(
-                        node,
-                        ast.List,
-                        "list",
-                        self._list_addition_attributes
-                    )
-                ):
-                    self.model.add_msg("TR3-1", lineno=node.lineno)
-            except (AttributeError, KeyError):
-                pass
-
-        self.generic_visit(node)
-
-
-    def visit_Name(self, node, *args, **kwargs):
-        # Object creation without parenthesis, work when assigned value
-        # i.e. node.id is class name.
-        classes = self.model.get_class_dict().keys()
-
-        try:
-            parent = a_utils.get_parent(node, cnf.CLS_FUNC)
-
-            if (temp := self._is_class_call(node, parent, classes)):
-                self.model.add_msg(
-                    "TR2-2",
-                    node.id,
-                    lineno=node.lineno,
-                    status=(temp > 0) # -1 means class call without parenthesis
-                )
-        except AttributeError:
-            pass
+        self._check_attribute_addition_to_list(node)
         self.generic_visit(node)
