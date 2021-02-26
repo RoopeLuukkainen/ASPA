@@ -61,43 +61,66 @@ class FileStructureAnalyser(ast.NodeVisitor):
         # TODO: Parse nested function names, which are in format parent.functionName
         fun_list = self.model.get_function_dict().keys()
         for node in tree.body:
-            if(hasattr(node, "value") and isinstance(node.value, ast.Call)):
+            if hasattr(node, "value") and isinstance(node.value, ast.Call):
                 call_count += 1
                 try:
                     name = a_utils.get_attribute_name(node.value.func)
-                    if(name in fun_list and call_count > 1):
+                    # TODO Call count could be replaced by model's call_dict()
+                    # if call_dict would contain every call not just every
+                    # unique call name.
+                    if name in fun_list:
                         self.model.add_msg(
                             "MR2-3",
                             name,
                             call_count,
-                            lineno=node.lineno
+                            lineno=node.lineno,
+                            status=(call_count <= 1)
                         )
                 except AttributeError:
                     pass
 
-                try:  # TODO: Check that node is not class which has the main function in it
-                    if(isinstance(node.value.func, ast.Attribute)):
-                            # node.value.func.value.id,
-                            # node.value.func.attr,
-                        self.model.add_msg(
-                            "MR2-4",
-                            a_utils.get_attribute_name(node.value.func),
-                            lineno=node.lineno
-                        )
+                try:
+                    # TODO: Check that node is not class which has the main
+                    # function in it
+                    func = node.value.func
+                    self.model.add_msg(
+                        "MR2-4",
+                        a_utils.get_attribute_name(func),
+                        lineno=node.lineno,
+                        status=(not isinstance(func, ast.Attribute))
+                    )
                 except AttributeError:
                     pass
 
     def check_duplicate_imports(self, import_dict):
         for value in import_dict.values():
-            if(len(value) > 1):
+            if len(value) <= 1: # Correctly done only 1 import per module
+                self.model.add_msg(
+                    "MR3-1" if value[0].import_from else "MR3",
+                    value[0].name,
+                    lineno=value[0].lineno,
+                    status=True
+                )
+            else: # Too many imports i.e. incorrectly done (in course's context)
                 for i in sorted(value, key=lambda elem: elem.lineno)[1:]:
-                    ID = "MR3-1" if(i.import_from) else "MR3"
-                    self.model.add_msg(ID, i.name, lineno=i.lineno)
+                    ID = "MR3-1" if i.import_from else "MR3"
+                    self.model.add_msg(
+                        ID,
+                        i.name,
+                        lineno=i.lineno,
+                        status=False
+                    )
+        return None
 
     def _check_import(self, node, lib_name, importFrom=False):
-        # Check if import is not at global namespace
-        if(a_utils.get_parent(node, cnf.CLS_FUNC) is not None):
-            self.model.add_msg("MR4", lib_name, lineno=node.lineno)
+        """Method to check if import is not at global namespace."""
+
+        self.model.add_msg(
+            "MR4",
+            lib_name,
+            lineno=node.lineno,
+            status=(a_utils.get_parent(node, cnf.CLS_FUNC) is None)
+        )
 
    # ------------------------------------------------------------------------- #
    # Visits
