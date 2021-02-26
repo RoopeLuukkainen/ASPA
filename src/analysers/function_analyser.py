@@ -12,9 +12,10 @@ class FunctionAnalyser(ast.NodeVisitor):
         self.ALLOWED_FUNC = cnf.ALLOWED_FUNCTIONS
         self.DENIED_FUNC = cnf.DENIED_FUNCTIONS
         self.MISSING_RETURN_ALLOWED = cnf.MISSING_RETURN_ALLOWED
+        self.ALLOWED_CONSTANTS = cnf.ALLOWED_CONSTANTS
 
     # General methods
-    def _check_return(self, node, *args, **kwargs):
+    def _check_return(self, node):
         """Method to check
         1. if function is missing a return
 
@@ -24,32 +25,51 @@ class FunctionAnalyser(ast.NodeVisitor):
         works e.g. when yield is the last command AR6 is ignored.
         However, yield is rarely the last command of function body.
         """
+        # TODO change such that checks if there is at least one return or yield
+        # in the function.
 
         try:
             last = node.body[-1]
-            if(not (isinstance(last, ast.Return)
-                        or (isinstance(last, ast.Expr)
-                        and isinstance(last.value, cnf.YIELD)))
-                    and not "*" in self.MISSING_RETURN_ALLOWED
-                    and not node.name in self.MISSING_RETURN_ALLOWED):
-                self.model.add_msg("AR6", node.name, lineno=node.lineno)
-        except AttributeError:
-            pass
+            # if(not (isinstance(last, ast.Return)
+            #             or (isinstance(last, ast.Expr)
+            #             and isinstance(last.value, cnf.YIELD)))
+            #         and not "*" in self.MISSING_RETURN_ALLOWED
+            #         and not node.name in self.MISSING_RETURN_ALLOWED):
+            status = (
+                isinstance(last, ast.Return)
+                or (isinstance(last, ast.Expr) and isinstance(last.value, cnf.YIELD))
+                or "*" in self.MISSING_RETURN_ALLOWED
+                or node.name in self.MISSING_RETURN_ALLOWED
+            )
 
-    def _check_return_location(self, node, *args, **kwargs):
+        except AttributeError:
+            status=False
+
+        finally:
+            self.model.add_msg(
+                "AR6",
+                node.name,
+                lineno=node.lineno,
+                status=status
+            )
+
+    def _check_return_location(self, node):
         """Method to check if node is:
         1. return-statement at the middle of the function.
         """
 
-        if(not isinstance(node.parent_node, cnf.FUNC)):
-            self.model.add_msg("AR6-2", lineno=node.lineno)
+        self.model.add_msg(
+            "AR6-2",
+            lineno=node.lineno,
+            status=(isinstance(node.parent_node, cnf.FUNC))
+        )
 
     def _check_return_value(self, node, *args, **kwargs):
         """Method to check if node is:
         1. Return with missing return value
         2. Returning a constant such as 1 or "abc"
-        3. Also detect (but pass) if return value is
-            1. constant keyword None, True, False etc.
+        3. Also detect if return value is
+            1. name constant i.e. keyword None, True, False
             2. variable, set, tuple, list, dictionary.
             3. object or other value with attributes
             4. function call, recursive call is detected in visit_Call
@@ -67,45 +87,69 @@ class FunctionAnalyser(ast.NodeVisitor):
         # and visit_Ellipsis() are deprecated now and will not be called in
         # future Python versions. Add the visit_Constant() method to handle all
         # constant nodes.
+        # Above this section:
+        # https://docs.python.org/3.8/library/ast.html#abstract-grammar
 
         return_value = node.value
-        if(return_value is None):  # i.e. Match return <without anything>, but not return None
+        valid_return = False
+        # Match return <without anything>, not return None
+        if return_value is None:
             self.model.add_msg("AR6-3", lineno=node.lineno)
 
-        # This match keyword constants None, True, False etc.
-        elif((isinstance(return_value, ast.NameConstant)
-                or isinstance(return_value, ast.Name))
-                and hasattr(return_value, "value")):
-            pass
+        # This match name constants None, True, False
+        elif isinstance(return_value, ast.NameConstant):
+            # NOTE: since Python 3.8 NameConstants create Constant node but this
+            # check seem to work anyway.
+            valid_return = True
 
-        # This match tuples include also multiple retun values case.
-        elif(isinstance(return_value, ast.Tuple)):
-            self.model.add_msg("AR6-5", lineno=node.lineno)
-            pass
-
-        # This match variables, sets, lists, dictionaries.
-        elif(isinstance(return_value, (ast.Name, ast.List, ast.Dict, ast.Set))):
-            pass
-
-        # This match objects and other values with attributes.
-        elif(isinstance(return_value, ast.Attribute)
-                or (hasattr(return_value, "func")
-                and isinstance(return_value.func, ast.Attribute))):
-            pass
-
-        # This match constant strings and numbers.
-        elif(isinstance(return_value, (ast.Num, ast.Str))):
-            self.model.add_msg("AR6-4", lineno=node.lineno)
+        # This match variables
+        elif isinstance(return_value, ast.Name):
+            valid_return = True
 
         # This match function calls.
-        elif(isinstance(return_value, ast.Call)):
-            pass
+        elif isinstance(return_value, ast.Call):
+            valid_return = True
+
+        # This match objects and other values with attributes.
+        elif (isinstance(return_value, ast.Attribute)
+                or (hasattr(return_value, "func")
+                and isinstance(return_value.func, ast.Attribute))
+        ):
+            valid_return = True
+        # This match sets, lists, dictionaries.
+        elif isinstance(return_value, (ast.List, ast.Dict, ast.Set)):
+            valid_return = True
+
+        # This match tuples include also multiple return values case.
+        elif isinstance(return_value, ast.Tuple):
+            # NOTE: Idea of this check is to detect if student returns e.g.
+            # 'return a, b'  which creates a Tuple node, unfortunately then
+            # 'return (a, b)' creates an error too. Idea is that in the first
+            # one student is not aware what (s)he is doing.
+            #
+            # if-statement makes 'return (a,)' allowed, however never seen a
+            # student doing like that. 'return (a)' will assumet it's an
+            # aritmetic operation and will not create a Tuple node.
+            if len(return_value.elts) > 1:
+                self.model.add_msg("AR6-5", lineno=node.lineno)
+            else:
+                valid_return = True
+
+        # This match constant strings and numbers.
+        elif (isinstance(return_value, (ast.Num, ast.Str, ast.Constant))
+                and return_value.value not in self.ALLOWED_CONSTANTS
+        ):
+            # NOTE: since Python 3.8 ast.Num and ast.Str create ast.Constant
+            # node but this check seem to work anyway.
+            self.model.add_msg("AR6-4", lineno=node.lineno)
 
         # This match e.g. aritmetic operations and boolean operations such as
         # return 1 + 2
         # return a or b
         else:
             self.model.add_msg("AR6-6", lineno=node.lineno)
+
+        return valid_return
 
     def _check_nested_function(self, node, *args, **kwargs):
         """Method to check
@@ -290,7 +334,14 @@ class FunctionAnalyser(ast.NodeVisitor):
         """Method to detect usage of 'return'."""
 
         self._check_return_location(node)
-        self._check_return_value(node)
+        is_valid_return = self._check_return_value(node)
+
+        # BKTA
+        # self.model.add_msg(
+        #     "AR6-00",
+        #     lineno=node.lineno,
+        #     status=is_valid_return
+        # )
         self.generic_visit(node)
 
     def visit_Call(self, node, *args, **kwargs):
