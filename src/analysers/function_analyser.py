@@ -1,7 +1,7 @@
 """Class file. Contains FunctionAnalyser class."""
 import ast
 
-import src.analysers.analysis_utils as au
+import src.analysers.analysis_utils as a_utils
 import src.config.config as cnf
 
 class FunctionAnalyser(ast.NodeVisitor):
@@ -41,7 +41,6 @@ class FunctionAnalyser(ast.NodeVisitor):
                 or "*" in self.MISSING_RETURN_ALLOWED
                 or node.name in self.MISSING_RETURN_ALLOWED
             )
-
         except AttributeError:
             status=False
 
@@ -159,17 +158,28 @@ class FunctionAnalyser(ast.NodeVisitor):
             name = node.name
         except AttributeError:
             return None
+
+        status = True
         # Col offset should detect every function definition which is indended
-        if(node.col_offset > 0
-                or au.get_parent(node, cnf.CLS_FUNC) is not None):
+        if (node.col_offset > 0
+            or a_utils.get_parent(node, cnf.CLS_FUNC) is not None
+        ):
 
             # This if check if there are allowed names for methods given.
-            if(((not "*" in self.ALLOWED_FUNC and not name in self.ALLOWED_FUNC)
-                 and (name in self.DENIED_FUNC or "*" in self.DENIED_FUNC))
-                    or (au.get_parent(node, ast.ClassDef) is None)):
+            if (((not "*" in self.ALLOWED_FUNC and not name in self.ALLOWED_FUNC)
+                    and (name in self.DENIED_FUNC or "*" in self.DENIED_FUNC))
+                or (a_utils.get_parent(node, ast.ClassDef) is None)
+            ):
                 # If function name is not in denied and not in allowed
                 # AND there is class as parent, then no error.
-                self.model.add_msg("AR2-1", name, lineno=node.lineno)
+                status = False
+
+        self.model.add_msg(
+            "AR2-1",
+            name,
+            lineno=node.lineno,
+            status=status
+        )
         return None
 
     def _check_function_attributes(self, node, *args, **kwargs):
@@ -182,8 +192,8 @@ class FunctionAnalyser(ast.NodeVisitor):
 
         try:
             for var in node.targets[:]:
-                name = au.get_attribute_name(var, splitted=True)
-                if(isinstance(var, ast.Attribute) and name[0] in functions):
+                name = a_utils.get_attribute_name(var, splitted=True)
+                if isinstance(var, ast.Attribute) and name[0] in functions:
                     self.model.add_msg("AR7", ".".join(name), lineno=var.lineno)
         except AttributeError:
             pass
@@ -191,7 +201,7 @@ class FunctionAnalyser(ast.NodeVisitor):
     def _check_recursion(self, node, func, *args, **kwargs):
         # Recursive function calls.
         try:
-            if(func == au.get_parent(node, cnf.FUNC).name):
+            if func == a_utils.get_parent(node, cnf.FUNC).name:
                 self.model.add_msg("AR4", lineno=node.lineno)
         except AttributeError:  # AttributeError occus e.g. when function name is searched from global scope
             pass
@@ -208,8 +218,8 @@ class FunctionAnalyser(ast.NodeVisitor):
         # keyword, i.e. import library as lib
 
         def count_args(func, funs, *args, **kwargs):
-            has_args = True if(funs[func].astree.args.vararg) else False
-            has_kwargs = True if(funs[func].astree.args.kwarg) else False
+            has_args = True if funs[func].astree.args.vararg else False
+            has_kwargs = True if funs[func].astree.args.kwarg else False
             default_count = len(funs[func].astree.args.defaults)
             args_count = len(funs[func].pos_args)  # This is directly from FunctionTemplate class
             # kw_default_count = len(funs[fun].astree.args.kw_defaults) # Currently not used
@@ -219,14 +229,14 @@ class FunctionAnalyser(ast.NodeVisitor):
             call_arg_count = len(node.args)
             # call_kw_count = len(node.keywords) # Currently not used
 
-            if(call_arg_count < (args_count - default_count)):
+            if call_arg_count < (args_count - default_count):
                 self.model.add_msg("AR5-1", func, args_count, call_arg_count, lineno=node.lineno)
-            elif(not has_args and (call_arg_count > args_count)):
+            elif not has_args and (call_arg_count > args_count):
                 self.model.add_msg("AR5-2", func, args_count, call_arg_count, lineno=node.lineno)
 
-            if(not has_kwargs):
+            if not has_kwargs:
                 for i in node.keywords:
-                    if(i.arg not in funs[func].kw_args):
+                    if i.arg not in funs[func].kw_args:
                         self.model.add_msg("AR5-3", func, i.arg, lineno=node.lineno)
             return None
 
@@ -234,7 +244,7 @@ class FunctionAnalyser(ast.NodeVisitor):
         try:
             funs = self.model.get_function_dict()
             function_names = funs.keys()
-            if(func in function_names):
+            if func in function_names:
                 count_args(func, funs)
         except (AttributeError, KeyError):
             # print(f"Error at {node.lineno}, with {node}") # Debug
@@ -246,7 +256,7 @@ class FunctionAnalyser(ast.NodeVisitor):
         self.model.add_msg(
             "AR6-1",
             yield_type,
-            au.get_parent(node, cnf.FUNC).name,
+            a_utils.get_parent(node, cnf.FUNC).name,
             lineno=node.lineno
         )
 
@@ -258,50 +268,57 @@ class FunctionAnalyser(ast.NodeVisitor):
             pass
 
     def check_main_function(self, *args, **kwargs):
-        if(len(self.model.get_call_dict().keys()) > 0
-                and not self.MAIN_FUNC_NAME in self.model.get_function_dict().keys()):
-            self.model.add_msg("AR1")
-
-        # if(not self.MAIN_FUNC_NAME in self.model.get_call_dict().keys()):
-        #     pass # No paaohjelma called
+        if len(self.model.get_call_dict().keys()) > 0:
+            self.model.add_msg(
+                "AR1",
+                status=(
+                    self.MAIN_FUNC_NAME in self.model.get_function_dict().keys()
+                )
+            )
         return None
 
     def check_element_order(self, body, element_order, *args, **kwargs):
         """Method to check if ast.nodes in 'body' are in desired order.
         Order is defined in element_order with following format:
         ((ast nodes), (must have names/id), (not allowed names/id), "msg ID")
+
+        BKTA get correctly done ONLY when not a single item is wrong,
+        but each incorrect one gives one wrong.
+        TODO: BKTA could be done true or false per file.
         """
         def check_name(tree, required, denied):
             valid = True
             name = ""
-            if(required or denied):
+            if required or denied:
                 for node in ast.walk(tree):
                     n = getattr(node, "name", None)
                     i = getattr(node, "id", None)
-                    if(n):
+                    if n:
                         name = n
                         break
-                    elif(i):
+                    elif i:
                         name = i
                         break
-                if(required and not name in required):
+                if required and not name in required:
                     valid = False
-                elif(denied and name in denied):
+                elif denied and name in denied:
                     valid = False
             return valid
 
         cur = 0
+        all_correct = True
         for item in body:  # Check items from top to bottom
             temp = cur
             for elem in element_order[cur:]:
-                if(isinstance(item, elem[0])):
+                if isinstance(item, elem[0]):
                     try:
-                        if(check_name(item, elem[1], elem[2])):
+                        if check_name(item, elem[1], elem[2]):
                             cur = temp
                             break
-                        elif("Docstring" in elem[1]
+                        elif ("Docstring" in elem[1]
                                 and isinstance(item.value, ast.Constant)
-                                and isinstance(item.value.value, str)):
+                                and isinstance(item.value.value, str)
+                        ):
                             # Only one docstring is allowed therefore moves to
                             # next element
                             cur = temp = temp + 1
@@ -311,6 +328,11 @@ class FunctionAnalyser(ast.NodeVisitor):
                 temp += 1
             else:
                 self.model.add_msg("MR1", lineno=item.lineno)
+                all_correct = False
+
+        if all_correct:
+            self.model.add_msg("MR1", status=True)
+        return None
 
     def check_global_variables(self):
         for i in sorted(self.model.get_global_variables().values(),
@@ -324,9 +346,8 @@ class FunctionAnalyser(ast.NodeVisitor):
         self.generic_visit(node)
 
     def visit_Global(self, node, *args, **kwargs):
-        """
-        Method to detect usage of global keyword.
-        """
+        """Method to detect usage of global keyword."""
+
         self._found_global(node)
         self.generic_visit(node)
 
@@ -336,7 +357,7 @@ class FunctionAnalyser(ast.NodeVisitor):
         self._check_return_location(node)
         is_valid_return = self._check_return_value(node)
 
-        # BKTA
+        # TODO BKTA
         # self.model.add_msg(
         #     "AR6-00",
         #     lineno=node.lineno,
@@ -349,8 +370,9 @@ class FunctionAnalyser(ast.NodeVisitor):
         1. Recursive function call.
         2. Check that arguments and parameters match
         """
+
         try:
-            if(hasattr(node.func, "id")):
+            if hasattr(node.func, "id"):
                 fun = node.func.id
             else:
                 fun = f"{node.func.value.id}.{node.func.attr}"
