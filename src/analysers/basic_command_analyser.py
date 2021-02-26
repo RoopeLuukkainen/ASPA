@@ -4,7 +4,7 @@ import ast
 import re
 
 import src.config.config as cnf
-import src.analysers.analysis_utils as au
+import src.analysers.analysis_utils as a_utils
 
 class BasicsAnalyser(ast.NodeVisitor):
     """Class to do static analysis by visiting nodes of Abstract Syntax
@@ -24,21 +24,24 @@ class BasicsAnalyser(ast.NodeVisitor):
         """
 
         try:
-            if(not self.valid_naming.match(name)):  # Must be re.match, not re.search
-                self.model.add_msg("PT2", name, lineno=node.lineno)
-            # else:
-            #     print("valid", node.lineno, name)
+            self.model.add_msg(
+                "PT2",
+                name,
+                lineno=node.lineno,
+                # Must be re.match, not re.search
+                status=(self.valid_naming.match(name) is not None)
+            )
 
         # TypeError Can oocur when name is not string or bytes-like object,
         # e.g. when importing module without as-keyword (as)name will be None.
         except TypeError:
             pass
 
-        # using keyword actually creates syntax error to ast.parse therefore
-        # this test is no in use
-        # if(keyword.iskeyword(name)):
+        # NOTE: using keyword actually creates syntax error to ast.parse
+        # therefore this test is no in use
+        # if keyword.iskeyword(name):
         #     self.model.add_msg("PT2-1", name, lineno=node.lineno)
-
+        return None
 
     def iterate_arg_names(self, node, *args, **kwargs):
         """Method to collect all argument names from a given function node.
@@ -46,6 +49,7 @@ class BasicsAnalyser(ast.NodeVisitor):
         **kwargs).
         Return list of tuples in format [(node, name), (node, name)]
         """
+        # TODO move this to preanalyser?
 
         arg_names = list()
         # Positional and keyword arguments, i.e. all but *args and **kwargs
@@ -60,15 +64,16 @@ class BasicsAnalyser(ast.NodeVisitor):
 
         # Prefix arguments, i.e. *args and **kwargs
         try:
-            for prefix_arg in [node.args.vararg,
-                               node.args.kwarg]:
-                if(prefix_arg):
+            for prefix_arg in [node.args.vararg, node.args.kwarg]:
+                if prefix_arg:
                     arg_names.append((node, prefix_arg.arg))
         except AttributeError:
             pass
         return arg_names
 
     def _check_function_naming(self, node, *args, **kwargs):
+        """Wrapper to check function names."""
+
         names = self.iterate_arg_names(node)
         try:
             names.append((node, node.name)) # add function name among parameter names
@@ -83,6 +88,8 @@ class BasicsAnalyser(ast.NodeVisitor):
         return None
 
     def _check_import_naming(self, node, *args, **kwargs):
+        """Wrapper to check import names."""
+
         try:
             for i in node.names:
                 self.check_valid_name(node, i.asname)
@@ -95,9 +102,14 @@ class BasicsAnalyser(ast.NodeVisitor):
         is currently used to check unreachable code after commands:
         return, break, continue, raise, sys.exit, exit, quit
         """
+
         try:
-            if(node.next_sibling):
-                self.model.add_msg("PT5", command_name, lineno=node.lineno)
+            self.model.add_msg(
+                "PT5",
+                command_name,
+                lineno=node.lineno,
+                status=(node.next_sibling is None)
+            )
         except AttributeError:
             pass
 
@@ -122,19 +134,20 @@ class BasicsAnalyser(ast.NodeVisitor):
             attribute_name = None  # Library, class or object name which is referred
 
             # Command called check
-            if(isinstance(node.func, ast.Name)
-                    and call_name in self.searched_commands):
+            if (isinstance(node.func, ast.Name)
+                    and call_name in self.searched_commands
+            ):
                 self.model.add_msg("PT1", call_name, lineno=node.lineno)
 
             # Unreachable code check
-            if(call_name == "exit"):
+            if call_name == "exit":
                 self._check_unreachable_code(
-                    au.get_parent(node, ast.Expr),
+                    a_utils.get_parent(node, ast.Expr),
                     "exit"
                 )
-            elif(call_name == "quit"):
+            elif call_name == "quit":
                 self._check_unreachable_code(
-                    au.get_parent(node, ast.Expr),
+                    a_utils.get_parent(node, ast.Expr),
                     "quit"
                 )
         except AttributeError:
@@ -143,9 +156,9 @@ class BasicsAnalyser(ast.NodeVisitor):
                 attribute_name = node.func.value.id  # Library, class or object name which is referred
 
                 # Unreachable code check
-                if(attribute_name == "sys" and call_name == "exit"):
+                if attribute_name == "sys" and call_name == "exit":
                     self._check_unreachable_code(
-                        au.get_parent(node, ast.Expr),
+                        a_utils.get_parent(node, ast.Expr),
                         "sys.exit"
                     )
 
@@ -157,12 +170,19 @@ class BasicsAnalyser(ast.NodeVisitor):
         # Found a while loop
         try:
             # Check if there is no break in infinite loop
-            if(au.is_always_true(node.test)
-                    and not au.get_child_instance(
-                        node,
-                        (ast.Break, ast.Return, ast.Raise)
-                    )):
-                self.model.add_msg("PT4-1", lineno=node.lineno)
+            # if(
+            status = (not a_utils.is_always_true(node.test)
+                or (a_utils.get_child_instance(
+                    node,
+                    (ast.Break, ast.Return, ast.Raise)
+                ) is not None) # TODO: Add quit(), exit(), sys.exit()
+            )
+
+            self.model.add_msg(
+                "PT4-1",
+                lineno=node.lineno,
+                status=status
+            )
         except AttributeError:
             pass
         self.generic_visit(node)
