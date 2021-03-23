@@ -81,9 +81,11 @@ def AR5_3():
     example_lib.func4(1, 2, 3, c=123, d=123)
     example_lib.func4(1, 2, 3, d=123, c=123)
 
-    # FIXME: check case where function is called with keyword like
-    # def func(a, b): pass
-    # func1(1, b=2)
+    # Fixed - check case where function is called with keywords when positional
+    # arguments would be enough.
+    func1(1, b=2)
+    example_lib.func1(1, b=2)
+
     return None
 
 

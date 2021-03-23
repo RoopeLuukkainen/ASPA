@@ -206,46 +206,77 @@ class FunctionAnalyser(ast.NodeVisitor):
         except AttributeError:  # AttributeError occus e.g. when function name is searched from global scope
             pass
 
-    def _check_paramenters(self, node, func, *args, **kwargs):
-        # FIXME: check case where function is called with keyword like
-        # def func(a, b): pass
-        # func(a, b=1)
-        #
+    def _check_paramenters(self, node, function_name, *args, **kwargs):
         # FIXME doesn't detect directly imported functions, i.e. from import ...
         # with function name or with *
         #
         # FIXME: doesn't test functions from libraries which are named with as-
         # keyword, i.e. import library as lib
 
-        def count_args(func, funs, *args, **kwargs):
-            has_args = True if funs[func].astree.args.vararg else False
-            has_kwargs = True if funs[func].astree.args.kwarg else False
-            default_count = len(funs[func].astree.args.defaults)
-            args_count = len(funs[func].pos_args)  # This is directly from FunctionTemplate class
-            # kw_default_count = len(funs[fun].astree.args.kw_defaults) # Currently not used
-            # kw_only_count = len(funs[fun].kw_args) # Currently not used # This is directly from
-                                                    # FunctionTemplate class
+        def count_args(func_name, funcs, *args, **kwargs):
+            func = funcs[func_name] # Shorthand variable for current function.
+
+            has_args = True if func.astree.args.vararg else False
+            has_kwargs = True if func.astree.args.kwarg else False
+            default_count = len(func.astree.args.defaults)
+            args_count = len(func.pos_args)  # This is directly from FunctionTemplate class
+            # kw_default_count = len(func.astree.args.kw_defaults) # Currently not used
+            # kw_only_count = len(func.kw_args) # Currently not used # This is directly from FunctionTemplate class
 
             call_arg_count = len(node.args)
             # call_kw_count = len(node.keywords) # Currently not used
 
-            if call_arg_count < (args_count - default_count):
-                self.model.add_msg("AR5-1", func, args_count, call_arg_count, lineno=node.lineno)
-            elif not has_args and (call_arg_count > args_count):
-                self.model.add_msg("AR5-2", func, args_count, call_arg_count, lineno=node.lineno)
+            # call_pos_args_with_value is used to count how many positional
+            # arguments have value given in function call, e.g.
+            # 'def addition(a, b):'
+            # is called like
+            # 'addition(a=10, b=10)'
+            call_pos_args_with_value = 0
+            for i in node.keywords:
+                if i.arg in func.pos_args:
+                    call_pos_args_with_value += 1
+
+            # Checking if there are TOO FEW parameters given
+            self.model.add_msg(
+                "AR5-1",
+                func_name,
+                args_count - default_count,
+                call_arg_count,
+                lineno=node.lineno,
+                status=(
+                    (call_arg_count + call_pos_args_with_value) >= (args_count - default_count)
+                )
+            )
+
+            # Checking if there are TOO MANY parameters given
+            self.model.add_msg(
+                "AR5-2",
+                func_name,
+                args_count,
+                call_arg_count,
+                lineno=node.lineno,
+                status=(has_args or (call_arg_count <= args_count))
+            )
 
             if not has_kwargs:
+                # NOTE Same loop as above, check if possible to combine
+                # (note that this is inside if)
                 for i in node.keywords:
-                    if i.arg not in funs[func].kw_args:
-                        self.model.add_msg("AR5-3", func, i.arg, lineno=node.lineno)
+                    self.model.add_msg(
+                        "AR5-3",
+                        func_name,
+                        i.arg,
+                        lineno=node.lineno,
+                        status=(i.arg in func.kw_args or i.arg in func.pos_args)
+                    )
             return None
 
         # Parameter and argument check tested with Python 3.8.5
         try:
             funs = self.model.get_function_dict()
             function_names = funs.keys()
-            if func in function_names:
-                count_args(func, funs)
+            if function_name in function_names:
+                count_args(function_name, funs)
         except (AttributeError, KeyError):
             # print(f"Error at {node.lineno}, with {node}") # Debug
             pass
