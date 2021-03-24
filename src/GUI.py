@@ -6,7 +6,6 @@ except ModuleNotFoundError:
     import tkinter as tk  # Python 3, tested with this
     from tkinter import ttk
 
-import datetime  # for timestamp
 import os
 
 import src.analysers.analysis_lib as analysis  # Model
@@ -39,13 +38,13 @@ class GUICLASS(tk.Tk):
         # Display the menu at the top
         tk.Tk.config(self, menu=self.main_frame.menu)
 
+    # @property # TODO make this property?
     def get_lang(self):
         return self.LANG
 
     def get_settings(self):
         # Settings are not changed when where asked so no need to send copy.
         return self.settings
-
 
     def check_selection_validity(self, selections, filepaths):
         valid = True
@@ -71,7 +70,6 @@ class GUICLASS(tk.Tk):
                     selections[key] = int(selections[key].get())
         return selections
 
-
     def analyse_wrapper(self, selected_analysis, filepaths, analysis_type):
         """
         Method to call when starting analysis. Calls correct functions
@@ -84,10 +82,9 @@ class GUICLASS(tk.Tk):
 
         if analysis_type == "BKTA":
             output_format = "dict"
-        else: # default
+        else:  # default
             output_format = "list"
 
-        # filelist = utils.crawl_dirs(filepaths, self.settings["only_leaf_files"])
         file_structure = utils.directory_crawler(
             filepaths,
             only_leaf_files=self.settings["only_leaf_files"],
@@ -100,45 +97,21 @@ class GUICLASS(tk.Tk):
         result_page.clear_result()  # Clears previous results
 
         if analysis_type == "BKTA":
-            self.main_frame.show_page(view.AnalysePage) # Show "front page"
-            self.BKT_analyse(
+            self.main_frame.show_page(view.AnalysePage)  # Show "front page"
+
+            self.model.BKT_analyse(
                 selections,
                 file_structure
             )
         else:
             result_page.show_info()  # Init new results with default info
-            self.main_frame.show_page(view.ResultPage) # Show "result page"
+            self.main_frame.show_page(view.ResultPage)  # Show "result page"
 
-            self.default_analyse(
+            self.model.default_analyse(
                 selections,
                 file_structure,
                 result_page=result_page
             )
             result_page.set_line_counter(0)
 
-
-        return None
-
-            # Call analyser
-            results = self.model.analyse(
-                tree,
-                content,
-                dir_path,
-                filename,
-                selections
-            )
-
-            # Format results
-            formated_results = self.model.format_results(
-                filename,
-                str(filepath),
-                results
-            )
-
-            # Show results and clear results
-            result_page.show_results(formated_results)
-            self.model.clear_analysis_data()
-            formated_results.clear()
-
-        result_page.set_line_counter(0)
         return None

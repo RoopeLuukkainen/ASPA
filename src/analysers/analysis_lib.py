@@ -1,13 +1,14 @@
 """File to handle ASPA static analysers."""
 
 import ast
+import datetime  # for timestamp
 import os
 
 # Utility libraries
 from ..config import config as cnf
 from ..config import templates
 import src.utils_lib as utils
-import src.analysers.analysis_utils as au
+import src.analysers.analysis_utils as a_utils
 
 # AST analysers
 import src.analysers.pre_analyser as pre_analyser
@@ -18,6 +19,8 @@ import src.analysers.file_handling_analyser as file_handling_analyser
 import src.analysers.file_structure_analyser as file_structure_analyser
 import src.analysers.function_analyser as function_analyser
 
+# BKT analyser
+import src.BKT.BKT_analyser as BKT_A
 
 class Model:
     def __init__(self, controller):
@@ -213,10 +216,121 @@ class Model:
         self.all_messages.append((title, tuple(self.messages)))
         self.messages.clear()
 
+    def default_analyse(self, selections, file_list, result_page, *args, **kwargs):
+        """
+        Method to handle default analysis steps where coding convention
+        violations are detected. This includes:
+        1. Initialising result file.
+        2. Iterating analysed files.
+        3. Formating each file's results
+        4. Showing results.
+        5. Clearing results.
+        """
+
+        timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+        utils.write_file(self.settings["result_path"], timestamp + "\n")
+
+        for filepath in file_list:
+            results = self.execute_analysis(filepath, selections)
+
+            # Format results
+            formated_results = self.format_results(
+                filepath.filename,
+                str(filepath.path),
+                results
+            )
+
+            # Show results and clear results
+            result_page.show_results(formated_results)
+            self.clear_analysis_data()
+            formated_results.clear()
+        return None
+
+    def BKT_analyse(self, selections, file_dict, *args, **kwargs):
+        """
+        Method to control Bayesian Knowledge Tracing analysis steps.
+        This includes:
+        1. Initialising result file.
+        2. Iterating analysed files.
+        3. Showing results.
+        4. Clearing results.
+        """
+
+        for k, v in file_dict.items(): # TEMP
+            for i in v:
+                print(f"{k}: {i.path} - {i.student} - {i.week} - {i.exercise} - {i.course}")
+
+        # TODO HERE lisää otsikkorivi ja muuta tulos formaatti
+        BKT_result_path = self.settings["BKT_path"]
+        utils.write_file(BKT_result_path, "", mode="w")
+
+        for student_name, filepaths in file_dict.items():
+            student = BKT_A.Student(student_name)
+            content_lines = [f"{student_name};ID;pLn;success list"]
+
+            for filepath in filepaths:
+                results = self.execute_analysis(filepath, selections)
+
+                for i in self.BKT_temp:
+                    # print(i.lineno, i.vid, i.status)
+                    student.add_result(i.vid, int(i.status))
+                self.BKT_temp.clear()
+                self.clear_analysis_data()
+
+            print(f"\n{student.student_id}:")
+            result_sorted = list(student.get_results().items())
+            result_sorted.sort(key=lambda x: x[0])
+            for key, result in result_sorted:
+                print(f"{key:s}: {result.Ln:.3f}, {result.success_list}")
+                content_lines.append(f";{key:s};{result.Ln:.3f};{','.join(map(str, result.success_list))}")
+
+            utils.write_file(
+                BKT_result_path,
+                "\n".join(content_lines) + "\n",
+                mode="a"
+            )
+
+        return None
+
+    def execute_analysis(self, filepath, selections):
+        """
+        Method to handle analysis execution steps:
+        1. Reading file.
+        2. Parsing AST from file.
+        3. Calling AST analyser.
+        4. Returning results.
+
+        Return: List of tuples, where tuples include result messages.
+        """
+
+        content = utils.read_file(filepath.path)
+        filename = filepath.filename
+        dir_path = filepath.path.parent
+
+        # No check for tree being None etc. before analysis because analyses
+        # will create violation if tree is not valid. Only in dumping checks
+        # if tree exist.
+        tree = self.parse_ast(content, filename)
+
+        # Dump tree
+        if(tree and self.settings["dump_tree"]):
+            self.dump_tree(tree)
+
+        # Call analyser
+        results = self.analyse(
+            tree,
+            content,
+            dir_path,
+            filename,
+            selections
+        )
+        return results
+
     def parse_ast(self, content, filename, create_msg=True):
         """
         Creates an abstract syntax tree and adds both parent and sibling
         nodes.
+
         Return: Python ast typed tree or None if parse fails.
         """
         tree = None
@@ -236,8 +350,8 @@ class Model:
                 self.save_messages("file_error")
 
         else:
-            au.add_parents(tree)
-            au.add_siblings(tree)
+            a_utils.add_parents(tree)
+            a_utils.add_siblings(tree)
 
         finally:
             return tree
