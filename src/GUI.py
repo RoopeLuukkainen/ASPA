@@ -71,40 +71,53 @@ class GUICLASS(tk.Tk):
                     selections[key] = int(selections[key].get())
         return selections
 
-    def analyse(self, selected_analysis, filepaths, *args, **kwargs):
+
+    def analyse_wrapper(self, selected_analysis, filepaths, analysis_type):
+        """
+        Method to call when starting analysis. Calls correct functions
+        to execute selected analysis type.
+        """
+
         selections = self.tkvar_2_var(selected_analysis, "int")
         if not self.check_selection_validity(selections, filepaths):
             return None
 
+        if analysis_type == "BKTA":
+            output_format = "dict"
+        else: # default
+            output_format = "list"
+
         # filelist = utils.crawl_dirs(filepaths, self.settings["only_leaf_files"])
-        filelist = utils.directory_crawler(
+        file_structure = utils.directory_crawler(
             filepaths,
             only_leaf_files=self.settings["only_leaf_files"],
             excluded_dirs=self.settings["excluded_directories"],
             excluded_files=self.settings["excluded_files"],
-            output_format="list"
+            output_format=output_format
         )
-        timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-        utils.write_file(self.settings["result_path"], timestamp + "\n")
 
         result_page = self.main_frame.get_page(view.ResultPage)
         result_page.clear_result()  # Clears previous results
-        result_page.show_info()  # Init new results with default info
-        self.main_frame.show_page(view.ResultPage)
 
-        for filepath in filelist:
-            content = utils.read_file(filepath)
-            filename = filepath.name
-            dir_path = filepath.parent
+        if analysis_type == "BKTA":
+            self.main_frame.show_page(view.AnalysePage) # Show "front page"
+            self.BKT_analyse(
+                selections,
+                file_structure
+            )
+        else:
+            result_page.show_info()  # Init new results with default info
+            self.main_frame.show_page(view.ResultPage) # Show "result page"
 
-            # No check for tree being None etc. before analysis because
-            # analyses will create violation if tree is not valid. Only
-            # in dumping checks if tree is not True.
-            tree = self.model.parse_ast(content, filename)
+            self.default_analyse(
+                selections,
+                file_structure,
+                result_page=result_page
+            )
+            result_page.set_line_counter(0)
 
-            # Dump tree
-            if(tree and self.settings["dump_tree"]):
-                self.model.dump_tree(tree)
+
+        return None
 
             # Call analyser
             results = self.model.analyse(

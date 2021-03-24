@@ -57,23 +57,28 @@ class MainFrame(tk.Frame):
        # Menubar
         menubar = tk.Menu(self)
 
-        # File menu
+        ## Create file menu
         filemenu = tk.Menu(menubar, tearoff=0)
         filemenu.add_command(
             label=cnf.GUI[self.LANG]["results"],
             command=lambda: self.show_page(ResultPage)
         )
+        # Add BKT analysis option
         filemenu.add_command(
             label=cnf.GUI[self.LANG]["BKTA"],
-            command=lambda: self.pages[AnalysePage].analyse(controller.BKT_analyse)
+            command=lambda: self.pages[AnalysePage].analyse(
+                controller.analyse_wrapper,
+                analysis_type="BKTA"
+            )
         )
+        # Add guit option
         filemenu.add_command(
             label=cnf.GUI[self.LANG]["exit"],
             command=quit
         )
         menubar.add_cascade(label=cnf.GUI[self.LANG]["filemenu"], menu=filemenu)
 
-        # Help menu
+        ## Create help menu
         helpmenu = tk.Menu(menubar, tearoff=1)
         helpmenu.add_command(
             label=cnf.GUI[self.LANG]["help"],
@@ -104,6 +109,7 @@ class CheckboxPanel(tk.Frame):
     in __init__ the self (i.e. inherited tk.Frame)
     is a master to all elements in this frame.
     """
+
     def __init__(self, parent, checkbox_options):
         tk.Frame.__init__(self, parent, bd=BD, relief=BD_STYLE)
         tk.Label(
@@ -266,7 +272,10 @@ class ControlPanel(tk.Frame):
         run_button = ttk.Button(
             button_group,
             text=cnf.GUI[parent.LANG]["execute_analysis"],
-            command=lambda: parent.analyse(controller.analyse)
+            command=lambda: parent.analyse(
+                controller.analyse_wrapper,
+                analysis_type="default"
+            )
         )
         run_button.grid(row=0, column=0, padx=PAD, pady=PAD, sticky=tk.E)
 
@@ -280,6 +289,7 @@ class AnalysePage(tk.Frame):
     in __init__ the self (i.e. inherited tk.Frame)
     is a master to all elements in this frame.
     """
+
     def __init__(self, parent, controller, settings):
         tk.Frame.__init__(self, parent)
         self.controller = controller
@@ -306,13 +316,19 @@ class AnalysePage(tk.Frame):
         #                     command=lambda: controller.show_page(ResultPage))
         # button_all.pack()
 
-    def analyse(self, analysis_func, *func_args, **func_kwargs):
-        # self.controller.analyse(
+    def analyse(self, analysis_func, analysis_type="default"):
+        """
+        Analysis wrapper function to redirect analysis call from GUI
+        element to controller (and model) for actual analysis.
+        """
+
+        # NOTE this could be changed such that analysis_func (or analysis_wrapper)
+        # would be decorator or similar wrapper but currently it is still
+        # normal class method.
         analysis_func(
             self.check_panel.get_selections(),
             self.file_panel.get_filepath_list(clear=self.CLEAR_FILEPATHS),
-            func_args,
-            func_kwargs
+            analysis_type
         )
 
 
@@ -322,6 +338,7 @@ class ResultPage(tk.Frame):
     in __init__ the self (i.e. tk.Frame typed class)
     is a master to all elements in this frame.
     """
+
     def __init__(self, parent, controller, settings):
         tk.Frame.__init__(self, parent)
         self.LANG = controller.get_lang()
@@ -456,6 +473,7 @@ class HelpPage(tk.Frame):
     in __init__ the self (i.e. tk.Frame typed class)
     is a master to all elements in this frame.
     """
+
     def __init__(self, parent, controller, settings):
         tk.Frame.__init__(self, parent)
         self.LANG = controller.get_lang()
@@ -492,6 +510,7 @@ class SettingsPage(tk.Frame):
     in __init__ the self (i.e. tk.Frame typed class)
     is a master to all elements in this frame.
     """
+
     def __init__(self, parent, controller, settings):
         tk.Frame.__init__(self, parent)
         self.LANG = controller.get_lang()
