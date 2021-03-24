@@ -140,12 +140,14 @@ def directory_crawler(
         week_str = filepath.parents[week].name
         exercise_str = filepath.parents[exercise].name
 
-        file_struct.setdefault(student_str, []).append(templates.FilepathTemplate(
-            path=filepath,
-            student=student_str,
-            week=week_str,
-            exercise=exercise_str
-        ))
+        file_struct.setdefault(student_str, []).append(
+            templates.FilepathTemplate(
+                path=filepath,
+                student=student_str,
+                week=week_str,
+                exercise=exercise_str
+            )
+        )
 
 
     # List which will include every filepath as pathlib.Path object
@@ -174,19 +176,22 @@ def directory_crawler(
 
     # Transform file_list into requested file structure.
     if output_format == "list":
-        file_structure = file_list
+        file_structure = []
+
+        for path_obj in file_list:
+            file_structure.append(templates.FilepathTemplate(path=path_obj))
 
     elif output_format == "dict":
         file_structure = {}
 
         for path_obj in file_list:
             add_file(file_structure, path_obj)
-        file_list.clear()
 
     # Else there is invalid output_format then empty list is returned.
     else:
-        file_list.clear()
         file_structure = []
+
+    file_list.clear()
 
     return file_structure
 

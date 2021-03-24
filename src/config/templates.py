@@ -121,7 +121,7 @@ class FilepathTemplate():
     """Template class for filepaths found during directory crawling."""
 
     def __init__(self, path, student=None, week=None, exercise=None, course=None):
-        self._path = path
+        self._path = path # Pathlib object
         self._filename = path.name
         self._student = student
         self._exercise = exercise
