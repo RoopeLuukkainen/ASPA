@@ -27,6 +27,7 @@ class Model:
         self.controller = controller
         self.settings = self.controller.get_settings()
         self.violation_occurances = {}
+        self.BKT_temp = [] # TEMP
 
         try:
             self.language = self.settings["language"]
@@ -196,11 +197,15 @@ class Model:
         self.import_dict.clear()
         self.call_dict.clear()
         self.constant_variables.clear() # Not yet used but cleared anyway
+        self.BKT_temp.clear() # TEMP
 
     def add_msg(self, code, *args, lineno=-1, status=False):
         if not utils.ignore_check(code):
 
             obj = templates.ViolationTemplate(code, args, lineno, status)
+            self.BKT_temp.append(obj) # TEMP
+
+            # TODO utilise obj in messages list, similarly as with BKT_temp
             if status == False:
                 self.messages.append((lineno, code, args))
 
@@ -256,39 +261,70 @@ class Model:
         4. Clearing results.
         """
 
-        for k, v in file_dict.items(): # TEMP
-            for i in v:
-                print(f"{k}: {i.path} - {i.student} - {i.week} - {i.exercise} - {i.course}")
+        # Create indexes for titles and sort them from A to Z (ascending order).
+        # TODO add setting which allow sorting by selected value
+        BKT_title_sorted = sorted(cnf.BKT_TITLES[self.language].keys())
+        BKT_index = {}
+        for i, title in enumerate(BKT_title_sorted):
+            BKT_index[title] = i
 
-        # TODO HERE lisää otsikkorivi ja muuta tulos formaatti
+        # Initialise result file with title line
+        # TODO add setting for cell separator
         BKT_result_path = self.settings["BKT_path"]
-        utils.write_file(BKT_result_path, "", mode="w")
+        title_line = "{0:s};{1:s}\n".format(
+                cnf.BKT_TEXT[self.language]["student_name"],
+                ";".join(BKT_title_sorted)
+            )
+        utils.write_file(BKT_result_path, title_line, mode="w")
 
+        # Initialise content lines
+        content_lines = []
+        initial_line = [0] * len(BKT_title_sorted)
+
+        # BKT analyse all files in given paths
         for student_name, filepaths in file_dict.items():
             student = BKT_A.Student(student_name)
-            content_lines = [f"{student_name};ID;pLn;success list"]
 
             for filepath in filepaths:
                 results = self.execute_analysis(filepath, selections)
 
-                for i in self.BKT_temp:
+                for i in self.BKT_temp: # FIX change BKT_temp to results
                     # print(i.lineno, i.vid, i.status)
                     student.add_result(i.vid, int(i.status))
                 self.BKT_temp.clear()
                 self.clear_analysis_data()
 
-            print(f"\n{student.student_id}:")
-            result_sorted = list(student.get_results().items())
-            result_sorted.sort(key=lambda x: x[0])
-            for key, result in result_sorted:
-                print(f"{key:s}: {result.Ln:.3f}, {result.success_list}")
-                content_lines.append(f";{key:s};{result.Ln:.3f};{','.join(map(str, result.success_list))}")
 
+            result_line = initial_line[:] # copy
+            for key, result in student.get_results().items():
+                try:
+                    # TODO add setting for decimal places
+                    # TODO add setting for decimal separator (default is now .)
+                    result_line[BKT_index[key]] = round(result.Ln, 3)
+                except KeyError:
+                    pass
+                except IndexError:
+                    pass
+            # Add student results to (file) content_lines -list
+            content_lines.append(
+                f"{student.student_id};{';'.join(map(str, result_line))}"
+            )
+
+            # Write results to BKT result file
             utils.write_file(
                 BKT_result_path,
                 "\n".join(content_lines) + "\n",
                 mode="a"
             )
+
+            # Clear written results
+            result_line.clear()
+            content_lines.clear()
+
+        # Clear created data structures
+        initial_line.clear()
+        BKT_index.clear()
+        BKT_title_sorted.clear()
 
         return None
 
