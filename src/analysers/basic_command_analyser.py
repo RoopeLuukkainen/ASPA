@@ -168,9 +168,10 @@ class BasicsAnalyser(ast.NodeVisitor):
 
     def visit_While(self, node, *args, **kwargs):
         # Found a while loop
+        self.model.add_msg("D00001", lineno=node.lineno, status=1)
+
         try:
             # Check if there is no break in infinite loop
-            # if(
             status = (not a_utils.is_always_true(node.test)
                 or (a_utils.get_child_instance(
                     node,

@@ -95,13 +95,14 @@ YIELD = (ast.Yield, ast.YieldFrom)
 
 # -----------------------------------------------------------------------------#
 # Analysis category names
-CHECKBOX_OPTIONS = ["basic",
-                    "function",
-                    "file_handling",
-                    "data_structure",
-                    "library",
-                    "exception_handling"
-                   ]
+CHECKBOX_OPTIONS = [
+    "basic",
+    "function",
+    "file_handling",
+    "data_structure",
+    "library",
+    "exception_handling"
+]
 
 TEXT = {
     "FIN": {
@@ -301,7 +302,8 @@ MSG = {
                  + "all others are errors.", GENERAL),
         "NOTE_INFO": ("All messages with this colour are notes.", NOTE),
         "WARNING_INFO": ("All messages with this colour are warnings.", WARNING),
-        "ERROR_INFO": ("All messages with this colour are errors.", ERROR)
+        "ERROR_INFO": ("All messages with this colour are errors.", ERROR),
+        "D00001": ("While loop", GENERAL)
     },
     "FIN": {
         "default": ("Tapahtui virhe!", ERROR),
@@ -367,7 +369,86 @@ MSG = {
                  + "muut ovat virheitä.", GENERAL),
         "NOTE_INFO": ("Tällä värillä merkityt viestit ovat huomioita.", NOTE),
         "WARNING_INFO": ("Tällä värillä merkityt viestit ovat varoituksia.", WARNING),
-        "ERROR_INFO": ("Tällä värillä merkityt viestit ovat virheitä.", ERROR)
+        "ERROR_INFO": ("Tällä värillä merkityt viestit ovat virheitä.", ERROR),
+        "D00001": ("While silmukka", GENERAL)
+    }
+}
+
+# -----------------------------------------------------------------------------#
+# BKT related titles and text
+BKT_TEXT = {
+    "ENG": {
+        "student_name": "Student"
+    },
+    "FIN": {
+        "student_name": "Opiskelija"
+    }
+}
+
+BKT_TITLES = {
+    "ENG": {
+        "D00001": "WHILE",
+        "AR1": "AR1",
+        "AR2-1": "AR2-1",
+        "AR4": "AR4",
+        "AR5-1": "AR5-1",
+        "AR5-2": "AR5-2",
+        "AR5-3": "AR5-3",
+        "AR6": "AR6",
+        "MR1": "MR1",
+        "MR2-3": "MR2-3",
+        "MR2-4": "MR2-4",
+        "MR3": "MR3",
+        "MR3-1": "MR3-1",
+        "MR4": "MR4",
+        "PK1": "PK1",
+        "PK1-1": "PK1-1",
+        "PK3": "PK3",
+        "PK4": "PK4",
+        "PT2": "PT2",
+        "PT4-1": "PT4-1",
+        "PT5": "PT5",
+        "TK1": "TK1",
+        "TK1-2": "TK1-2",
+        "TK1-3": "TK1-3",
+        "TK2": "TK2",
+        "TR2-2": "TR2-2",
+        "TR2-3": "TR2-3",
+        "TR2-4": "TR2-4",
+        "TR3-1": "TR3-1",
+        "TR3-2": "TR3-2"
+    },
+    "FIN": {
+        "D00001": "WHILE",
+        "AR1": "AR1",
+        "AR2-1": "AR2-1",
+        "AR4": "AR4",
+        "AR5-1": "AR5-1",
+        "AR5-2": "AR5-2",
+        "AR5-3": "AR5-3",
+        "AR6": "AR6",
+        "MR1": "MR1",
+        "MR2-3": "MR2-3",
+        "MR2-4": "MR2-4",
+        "MR3": "MR3",
+        "MR3-1": "MR3-1",
+        "MR4": "MR4",
+        "PK1": "PK1",
+        "PK1-1": "PK1-1",
+        "PK3": "PK3",
+        "PK4": "PK4",
+        "PT2": "PT2",
+        "PT4-1": "PT4-1",
+        "PT5": "PT5",
+        "TK1": "TK1",
+        "TK1-2": "TK1-2",
+        "TK1-3": "TK1-3",
+        "TK2": "TK2",
+        "TR2-2": "TR2-2",
+        "TR2-3": "TR2-3",
+        "TR2-4": "TR2-4",
+        "TR3-1": "TR3-1",
+        "TR3-2": "TR3-2"
     }
 }
 
