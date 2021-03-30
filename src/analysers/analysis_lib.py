@@ -32,8 +32,8 @@ class Model:
         try:
             self.language = self.settings["language"]
         except KeyError:  # This should not be possible if defaults settings are not changed
-            print("Language is not defined in settings.")
             self.language = "FIN"
+            self.controller.propagate_error_message("NO_LANGUAGE")
 
         try:
             self.checkbox_options = self.settings["checkbox_options"]

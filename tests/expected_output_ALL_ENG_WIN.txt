@@ -1,4 +1,4 @@
-2021-02-18_11-42-39
+2021-03-30_09-03-07
 ================================================================================
 E:\GitHub\ASPA\tests\AR_functions\AR1_no_paaohjelma.py
 AR1_no_paaohjelma.py
@@ -726,8 +726,8 @@ Basic commands: No violations detected.
 Functions: No violations detected.
 
 File handling, violations detected please see Liite 5 'Tiedostoon kirjoittaminen' 'Tiedostosta lukeminen':
-Line 10: File handle 'f1' is closed in except-branch.
-Line 13: File handle 'f2' is closed in except-branch.
+Line 10: File handle 'f1' is closed in except branch.
+Line 13: File handle 'f2' is closed in except branch.
 
 Data structures: No violations detected.
 
@@ -788,6 +788,21 @@ Library usage: No violations detected.
 
 Exception handling: No violations detected.
 ================================================================================
+E:\GitHub\ASPA\tests\TR_data_structure\example_lib_TR.py
+example_lib_TR.py
+
+Basic commands: No violations detected.
+
+Functions: No violations detected.
+
+File handling: No violations detected.
+
+Data structures: No violations detected.
+
+Library usage: No violations detected.
+
+Exception handling: No violations detected.
+================================================================================
 E:\GitHub\ASPA\tests\TR_data_structure\TR2-1_using_class_without_object.py
 TR2-1_using_class_without_object.py
 
@@ -798,7 +813,7 @@ Functions: No violations detected.
 File handling: No violations detected.
 
 Data structures, violations detected please see Liite 5 'Aliohjelmat' 'Listan käsittely' 'Monimutkaisempi tietorakenne':
-Line 10: Class is being used directly without an object 'FOO.attr'.
+Line 12: Class is being used directly without an object 'FOO.attr'.
 
 Library usage: No violations detected.
 
@@ -814,8 +829,8 @@ Functions: No violations detected.
 File handling: No violations detected.
 
 Data structures, violations detected please see Liite 5 'Aliohjelmat' 'Listan käsittely' 'Monimutkaisempi tietorakenne':
-Line 11: Missing parenthesis from object creation. Should be 'FOO()'.
-Line 15: Missing parenthesis from object creation. Should be 'FOO()'.
+Line 13: Missing parenthesis from object creation. Should be 'FOO()'.
+Line 17: Missing parenthesis from object creation. Should be 'FOO()'.
 
 Library usage: No violations detected.
 
@@ -831,8 +846,8 @@ Functions: No violations detected.
 File handling: No violations detected.
 
 Data structures, violations detected please see Liite 5 'Aliohjelmat' 'Listan käsittely' 'Monimutkaisempi tietorakenne':
-Line 6: Class 'BARBAR' is not defined in global scope.
-Line 10: Class 'FOO' is not defined in global scope.
+Line 6: Class 'BARBAR' is not defined at the global scope.
+Line 10: Class 'FOO' is not defined at the global scope.
 
 Library usage: No violations detected.
 
@@ -892,7 +907,7 @@ Line 51: Object's attribute is added to a list in every loop iteration.
 Line 52: Object's attribute is added to a list in every loop iteration.
 Line 52: Object's attribute is added to a list in every loop iteration.
 Line 82: Object's attribute is added to a list in every loop iteration.
-Line 91: Class 'FAKE' is not defined in global scope.
+Line 91: Class 'FAKE' is not defined at the global scope.
 Line 103: Object's attribute is added to a list in every loop iteration.
 
 Library usage: No violations detected.
@@ -909,24 +924,24 @@ Functions: No violations detected.
 File handling: No violations detected.
 
 Data structures, violations detected please see Liite 5 'Aliohjelmat' 'Listan käsittely' 'Monimutkaisempi tietorakenne':
-Line 12: Object is created outside a loop but usage and addition toa list is inside the loop.
-Line 12: Object is created outside a loop but usage and addition toa list is inside the loop.
-Line 12: Object is created outside a loop but usage and addition toa list is inside the loop.
-Line 12: Object is created outside a loop but usage and addition toa list is inside the loop.
-Line 12: Object is created outside a loop but usage and addition toa list is inside the loop.
-Line 12: Object is created outside a loop but usage and addition toa list is inside the loop.
-Line 12: Object is created outside a loop but usage and addition toa list is inside the loop.
-Line 12: Object is created outside a loop but usage and addition toa list is inside the loop.
-Line 12: Object is created outside a loop but usage and addition toa list is inside the loop.
-Line 13: Object is created outside a loop but usage and addition toa list is inside the loop.
-Line 13: Object is created outside a loop but usage and addition toa list is inside the loop.
-Line 13: Object is created outside a loop but usage and addition toa list is inside the loop.
-Line 13: Object is created outside a loop but usage and addition toa list is inside the loop.
-Line 13: Object is created outside a loop but usage and addition toa list is inside the loop.
-Line 13: Object is created outside a loop but usage and addition toa list is inside the loop.
-Line 13: Object is created outside a loop but usage and addition toa list is inside the loop.
-Line 13: Object is created outside a loop but usage and addition toa list is inside the loop.
-Line 13: Object is created outside a loop but usage and addition toa list is inside the loop.
+Line 12: Object is created outside a loop but usage and addition to a list is inside the loop.
+Line 12: Object is created outside a loop but usage and addition to a list is inside the loop.
+Line 12: Object is created outside a loop but usage and addition to a list is inside the loop.
+Line 12: Object is created outside a loop but usage and addition to a list is inside the loop.
+Line 12: Object is created outside a loop but usage and addition to a list is inside the loop.
+Line 12: Object is created outside a loop but usage and addition to a list is inside the loop.
+Line 12: Object is created outside a loop but usage and addition to a list is inside the loop.
+Line 12: Object is created outside a loop but usage and addition to a list is inside the loop.
+Line 12: Object is created outside a loop but usage and addition to a list is inside the loop.
+Line 13: Object is created outside a loop but usage and addition to a list is inside the loop.
+Line 13: Object is created outside a loop but usage and addition to a list is inside the loop.
+Line 13: Object is created outside a loop but usage and addition to a list is inside the loop.
+Line 13: Object is created outside a loop but usage and addition to a list is inside the loop.
+Line 13: Object is created outside a loop but usage and addition to a list is inside the loop.
+Line 13: Object is created outside a loop but usage and addition to a list is inside the loop.
+Line 13: Object is created outside a loop but usage and addition to a list is inside the loop.
+Line 13: Object is created outside a loop but usage and addition to a list is inside the loop.
+Line 13: Object is created outside a loop but usage and addition to a list is inside the loop.
 
 Library usage: No violations detected.
 

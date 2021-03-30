@@ -29,7 +29,7 @@ class GUICLASS(tk.Tk):
         tk.Tk.title(self, TOOL_NAME)
 
         self.settings = settings
-        self.LANG = settings["language"]
+        self.LANG = settings.setdefault("language", "FIN")
         self.model = analysis.Model(self)
         self.cli = view.CLI(self.LANG)
 
@@ -45,6 +45,9 @@ class GUICLASS(tk.Tk):
     def get_settings(self):
         # Settings are not changed when where asked so no need to send copy.
         return self.settings
+
+    def propagate_error_message(self, error_code, *args):
+        self.cli.print_error(error_code, args)
 
     def check_selection_validity(self, selections, filepaths):
         valid = True

@@ -284,17 +284,17 @@ MSG = {
         # "PK4b": ("Missing exception handling from the file operation '{}'.", ERROR),
         "TK1": ("File handle '{}' is left open.", ERROR),
         "TK1-1": ("In this course usage of '{}' is not recommended.", NOTE),
-        "TK1-2": ("File handle '{}' is closed in except-branch.", WARNING),
+        "TK1-2": ("File handle '{}' is closed in except branch.", WARNING),
         "TK1-3": ("Missing parenthesis from file closing '{}.{}'.", ERROR),
         "TK2": ("File operation '{}.{}' is in different function than file open and close.", ERROR),
         "TR2-1": ("Class is being used directly without an object '{}'.", ERROR),
         "TR2-2": ("Missing parenthesis from object creation. Should be '{}()'.", ERROR),
-        "TR2-3": ("Class '{}' is not defined in global scope.", ERROR),
+        "TR2-3": ("Class '{}' is not defined at the global scope.", ERROR),
         "TR2-4": ("Name of the class '{}' is not in UPPERCASE.", NOTE),
         # "TR3": ("Object created.", NOTE),
         "TR3-1": ("Object's attribute is added to a list in every loop iteration.", WARNING),
         "TR3-2": ("Object is created outside a loop but usage and addition to"
-                + "a list is inside the loop.", WARNING),
+                + " a list is inside the loop.", WARNING),
         "OK": (": No violations detected.", GOOD),
         "NOTE": (", violations detected please see", GENERAL),
         "LINE": ("Line", GENERAL),
@@ -303,7 +303,8 @@ MSG = {
         "NOTE_INFO": ("All messages with this colour are notes.", NOTE),
         "WARNING_INFO": ("All messages with this colour are warnings.", WARNING),
         "ERROR_INFO": ("All messages with this colour are errors.", ERROR),
-        "D00001": ("While loop", GENERAL)
+        "D00001": ("While loop", GENERAL),
+        "D00002": ("FOR loop", GENERAL)
     },
     "FIN": {
         "default": ("Tapahtui virhe!", ERROR),
@@ -370,7 +371,8 @@ MSG = {
         "NOTE_INFO": ("Tällä värillä merkityt viestit ovat huomioita.", NOTE),
         "WARNING_INFO": ("Tällä värillä merkityt viestit ovat varoituksia.", WARNING),
         "ERROR_INFO": ("Tällä värillä merkityt viestit ovat virheitä.", ERROR),
-        "D00001": ("While silmukka", GENERAL)
+        "D00001": ("While silmukka", GENERAL),
+        "D00002": ("FOR silmukka", GENERAL)
     }
 }
 
@@ -388,6 +390,7 @@ BKT_TEXT = {
 BKT_TITLES = {
     "ENG": {
         "D00001": "WHILE",
+        "D00002": "FOR",
         "AR1": "AR1",
         "AR2-1": "AR2-1",
         "AR4": "AR4",
@@ -420,6 +423,7 @@ BKT_TITLES = {
     },
     "FIN": {
         "D00001": "WHILE",
+        "D00002": "FOR",
         "AR1": "AR1",
         "AR2-1": "AR2-1",
         "AR4": "AR4",
@@ -457,10 +461,12 @@ BKT_TITLES = {
 CLI_ERROR = {
     "ENG": {
         "NO_FILES": "Please select files to be analysed.",
-        "NO_SELECTIONS": "Please select analysis to be executed."
+        "NO_SELECTIONS": "Please select analysis to be executed.",
+        "NO_LANGUAGE": "Please define language in settings. By default FIN is used." # Technically this will never occur if FIN is default
     },
     "FIN": {
         "NO_FILES": "Ole hyvä ja valitse ensin analysoitavat tiedostot.",
-        "NO_SELECTIONS": "Ole hyvä ja valitse ensin suoritettavat analyysit."
+        "NO_SELECTIONS": "Ole hyvä ja valitse ensin suoritettavat analyysit.",
+        "NO_LANGUAGE": "Ole hyvä ja määrittele käytettävä kieli asetukista. Oletusasetus on FIN."
     }
 }
