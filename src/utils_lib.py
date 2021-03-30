@@ -1,4 +1,5 @@
 """Module containing utility functions general use."""
+
 # import ast
 import json
 import os       # os.walk is used for convenient directory exclusion possibility
@@ -11,6 +12,7 @@ import src.config.templates as templates
 MSG = cnf.MSG
 EXAMPLES = cnf.EXAMPLES
 TITLE_TO_EXAMPLES = cnf.TITLE_TO_EXAMPLES
+TEXT = cnf.TEXT
 
 IGNORE = cnf.IGNORE
 GENERAL = cnf.GENERAL
@@ -24,10 +26,26 @@ DEBUG = cnf.DEBUG
 # General utilities
 
 def ignore_check(code):
+    """
+    Function to test if check will be ignored. Test is based on
+    violation ID.
+
+    Return:
+     - True if check will be ignored.
+     - False if check won't be ignored.
+    """
+
     if code in IGNORE:
         return True
-    else:
-        return False
+    return False
+
+
+def get_all_ignored_checks():
+    """
+    Getter function for set which included ID's of all ignored checks.
+    """
+
+    return IGNORE
 
 
 def create_msg(code, *args, lineno=-1, lang="FIN"):
@@ -44,6 +62,7 @@ def create_msg(code, *args, lineno=-1, lang="FIN"):
     4. end - character index of violation message's end position
         - integer number
     """
+
     msg = ""
     start = 0
     end = 0
@@ -71,13 +90,36 @@ def create_msg(code, *args, lineno=-1, lang="FIN"):
 
 
 def get_title(title_key, lang):
+    """
+    Return: title of if ast analyser based on title_key (analyser ID)
+    and lang (language). If there is KeyError return None.
+    """
+
     try:
-        return cnf.TEXT[lang][title_key]
+        return TEXT[lang][title_key]
     except KeyError:
         return None
 
 
 def create_title(code, title_key, lang="FIN"):
+    """
+    Function to create title string message based on given title code,
+    title_key and language.
+
+    Arguments:
+    1. code - ID of title - str
+    2. title_key - ID of ast analyser - str
+    3. lang - language of title, default is FIN - str
+
+    Return:
+    1. msg - title - string
+    2. severity - severity level of title - integer number
+        (numbers are predefined global constants)
+    3. start - character index of title's start position - integer
+       number
+    4. end - character index of title's end position - integer number
+    """
+
     title = get_title(title_key, lang)
     msg = ""
     start = 0
@@ -119,6 +161,22 @@ def directory_crawler(
     """
     Function to crawl all (sub)directories and return filepaths based on
     given rules.
+
+    Arguments:
+    1. paths is list of crawled filepaths. Paths should be in string
+       format.
+    2. excluded_dirs is iterable of (sub)directories which are excluded
+       from the crawling.
+    3. excluded_files is iterable of files which are excluded from the
+       crawling result.
+    4. only_leaf_files if True/False. If True include only files from
+       directories which do not have subdirectories, after excluded_dirs
+       are excluded.
+    5. output_format defines format in which filepaths are returned.
+       Supported formats are currently dictionary and list. List is
+       default.
+
+    Return: Filepaths in format speficied in output_format argument.
     """
 
     def remove_excluded(dirs, excluded):
@@ -197,6 +255,13 @@ def directory_crawler(
 
 
 def read_file(filepath, encoding="UTF-8", settings_file=False):
+    """
+    Function to read given filepath. If encoding is given use it
+    otherwise expect UTF-8 encoding.
+
+    Return: Read content as string.
+    """
+
     content = None
     try:
         with open(filepath, "r", encoding=encoding) as f_handle:
@@ -204,31 +269,38 @@ def read_file(filepath, encoding="UTF-8", settings_file=False):
     except OSError:
         if not settings_file:
             print("OSError while reading a file", filepath)
-    except:
+    except Exception:
         pass
     return content
 
 
 def write_file(filepath, content, mode="w", encoding="UTF-8", repeat=True):
-    try:
-        with open(filepath, mode=mode, encoding=encoding) as f_handle:
-            f_handle.write(content)
+    """
+    Function to write given content to given filepath. If filepath has
+    subdirectories which do not exists, these subdirectories are created
+    and single recursive call is created to try again.
 
-    except FileNotFoundError: # When subdirectory is not found
+    Return: None
+    """
+
+    try:
         try:
-            path = pathlib.Path(filepath)
-            path.parent.absolute().mkdir(parents=True, exist_ok=True)
-            if repeat:
-                # This call is first level recursion
-                write_file(
-                    filepath,
-                    content,
-                    mode=mode,
-                    encoding=encoding,
-                    repeat=False # To prevent infinite repeat loop
-                )
-        except OSError:
-            print("OSError while writing a file", filepath)
+            with open(filepath, mode=mode, encoding=encoding) as f_handle:
+                f_handle.write(content)
+
+        except FileNotFoundError: # When subdirectory is not found
+                path = pathlib.Path(filepath)
+                path.parent.absolute().mkdir(parents=True, exist_ok=True)
+                if repeat:
+                    # This call is first level recursion
+                    write_file(
+                        filepath,
+                        content,
+                        mode=mode,
+                        encoding=encoding,
+                        repeat=False # To prevent infinite repeat loop
+                    )
+
     except OSError:
         print("OSError while writing a file", filepath)
     except Exception:
@@ -241,14 +313,30 @@ def print_title(title):
 
 
 def create_dash(character="-", dash_count=80, get_dash=False):
+    """
+    Creates a "line" which is given character repeated dash_count times.
+
+    Return: If get_dash is True, return created "line of dashes"
+            else prints it and return None.
+    """
+
     if get_dash:
         return character * dash_count
     else:
         print(character * dash_count)
 
+########################################################################
+# Init functions
 
-# INIT FUNCTIONS
 def add_fixed_settings(settings):
+    """
+    Function to add fixed settings which are not modifieable by user and
+    derived settings e.g. result paths which are concatenated result
+    directory path and filename.
+
+    Return: None
+    """
+
     # Checkbox options
     settings["checkbox_options"] = cnf.CHECKBOX_OPTIONS
 
@@ -256,8 +344,19 @@ def add_fixed_settings(settings):
     result_dir = pathlib.Path(settings["result_dir"])
     settings["result_path"] = result_dir.joinpath(settings["result_file"])
     settings["BKT_path"] = result_dir.joinpath(settings["BKT_file"])
+    return None
+
 
 def init_settings():
+    """
+    Function to initialise settings dictionary. Settings are based on
+    default settings which are then updated by values from settings.json
+    file. If there is no settings file, new settings.json file is
+    created.
+
+    Return: settings dictionary.
+    """
+
     settings = cnf.DEFAULT_SETTINGS # Currently reference not copy
     settings_file = settings["settings_file"]
 
