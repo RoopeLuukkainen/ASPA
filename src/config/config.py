@@ -478,7 +478,7 @@ CLI_ERROR = {
     "FIN": {
         "NO_FILES": "Ole hyvä ja valitse ensin analysoitavat tiedostot.",
         "NO_SELECTIONS": "Ole hyvä ja valitse ensin suoritettavat analyysit.",
-        "NO_LANGUAGE": "Ole hyvä ja määrittele käytettävä kieli asetukista. Oletusasetus on FIN."
+        "NO_LANGUAGE": "Ole hyvä ja määrittele käytettävä kieli asetuksista. Oletusasetus on FIN."
     }
 }
 
