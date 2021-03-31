@@ -190,6 +190,7 @@ class BasicsAnalyser(ast.NodeVisitor):
 
     def visit_For(self, node, *args, **kwargs):
         # Found a for loop
+        self.model.add_msg("D00002", lineno=node.lineno, status=1)
         # iter name check
         try:
             if(isinstance(node.target, ast.Tuple)):
