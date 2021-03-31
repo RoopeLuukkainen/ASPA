@@ -1,5 +1,7 @@
 """BKT analyser file."""
 
+from typing import Iterable
+
 class BayesianKnowledgeTracingAnalyser():
     """
     Class to handle Bayesian Knowledge Tracing (BKT) Analysis of student
@@ -22,6 +24,13 @@ class BayesianKnowledgeTracingAnalyser():
     def Ln(self):
         """Getter for read only Ln value."""
         return self._Ln
+
+    def next_correct(self):
+        """
+        Function to return the probability that next action is correct.
+        """
+        pass
+        # return (self._Ln * (1 - self.pS)) + ((1 - self._Ln) * self.pG)
 
     def update_Ln(self, success: int):
         self._success_list.append(success)
@@ -63,19 +72,41 @@ class Student():
                 return None
         return self.results
 
+    def add_results(
+        self,
+        results: Iterable[object],
+        key: str,
+        success: str
+    ) -> None:
+        """
+        Method to iterate throught results and update Ln values based on
+        each result.
+
+        Arguments:
+        1. results - Contains result objects - Itrable[object]
+        2. key - Name of an attribute which define analysis key/ID - str
+        3. success - Name of an attribute which define if result was
+           successful or not - str
+
+        Return: None
+        """
+
+        for result in results:
+            self.add_result(getattr(result, key), int(getattr(result, success)))
+        return None
+
     def add_result(self, key: str, success: int) -> None:
         """Method to update students BKT analysis results."""
 
-        try:
-            self.results[key].update_Ln(success)
-        except KeyError:
-            self.results[key] = BayesianKnowledgeTracingAnalyser(
+        self.results.setdefault(
+            key,
+            BayesianKnowledgeTracingAnalyser(
                 p_Guess=0.3,
                 p_Slip=0.1,
                 p_T=0.7,
                 p_L0=0
             )
-            self.results[key].update_Ln(success)
+        ).update_Ln(success)
 
         return None
 

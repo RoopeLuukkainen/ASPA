@@ -27,7 +27,6 @@ class Model:
         self.controller = controller
         self.settings = self.controller.get_settings()
         self.violation_occurances = {}
-        self.BKT_temp = [] # TEMP
 
         try:
             self.language = self.settings["language"]
@@ -83,9 +82,10 @@ class Model:
         self.lib_list = []
         self.import_dict = {}
 
-        # Messages
-        self.messages = []
-        self.all_messages = []
+        # Result list for checks from each category and list for storing
+        # category_result lists
+        self._category_results = []
+        self.all_results = []
 
    # Datastructure getters
     def get_call_dict(self):
@@ -105,9 +105,6 @@ class Model:
 
     def get_files_closed(self):
         return list(self.files_closed)
-
-    def get_messages(self):
-        return list(self.messages)
 
     def get_file_list(self):
         return list(self.file_list)
@@ -185,7 +182,7 @@ class Model:
 
    # General methods
     def clear_analysis_data(self):
-        self.all_messages.clear()
+        self.all_results.clear()
         self.global_variables.clear()
         self.local_variables.clear()
         self.files_opened.clear()
@@ -197,29 +194,39 @@ class Model:
         self.import_dict.clear()
         self.call_dict.clear()
         self.constant_variables.clear() # Not yet used but cleared anyway
-        self.BKT_temp.clear() # TEMP
 
+# TODO rename this method to something better, e.g. add_result
     def add_msg(self, code, *args, lineno=-1, status=False):
+        """
+        Method which creates a violation object based on arguments and
+        add the object to result list.
+
+        Arguments:
+        1. code is ID for detected violation (or correctly done action).
+        2. *args are possible arguments for message formating.
+        3. lineno is linenumber where violation was detected.
+        4. status is True or False, where True means something is done
+           right, i.e. no violation, while False means it is done
+           incorrectly, i.e. it is a violation.
+
+        Return: None
+        """
+
         if not utils.ignore_check(code):
+            self._category_results.append(
+                templates.ViolationTemplate(code, args, lineno, status)
+            )
 
-            obj = templates.ViolationTemplate(code, args, lineno, status)
-            self.BKT_temp.append(obj) # TEMP
-
-            # TODO utilise obj in messages list, similarly as with BKT_temp
-            if status == False:
-                self.messages.append((lineno, code, args))
-
+            # Vey primitive statistic calculation
             try:
                 self.violation_occurances[code] += 1
             except KeyError:
                 self.violation_occurances[code] = 1
-        # print("m", self.messages)
+        return None
 
-    def save_messages(self, title):
-        # if(len(self.messages) == 0):
-        #     self.add_msg("OK")
-        self.all_messages.append((title, tuple(self.messages)))
-        self.messages.clear()
+    def save_category(self, title):
+        self.all_results.append((title, tuple(self._category_results)))
+        self._category_results.clear()
 
     def default_analyse(self, selections, file_list, result_page, *args, **kwargs):
         """
@@ -268,6 +275,7 @@ class Model:
         3. Showing results.
         4. Clearing results.
         """
+
         # round handles also negative accuracy so no need to check that. However
         # user might get undesired results with that (in BKT case basically 0.0)
         # 0 is also allowed setting therefore using default value intead of
@@ -284,8 +292,8 @@ class Model:
         for i, title in enumerate(BKT_title_sorted):
             BKT_index[title] = i
 
-        # Initialise result file with title line
-        BKT_result_path = self.settings["BKT_path"]
+        # --- 1. Initialise result file with title line and content lines -list ---
+        BKT_result_path = self.settings.get("BKT_path")
         title_line = "{0:s}{1:s}{2:s}\n".format(
                 cnf.BKT_TEXT[self.language]["student_name"],
                 _CELL_SEP,
@@ -293,33 +301,29 @@ class Model:
             )
         utils.write_file(BKT_result_path, title_line, mode="w")
 
-        # Initialise content lines
         content_lines = []
         initial_line = [0] * len(BKT_title_sorted)
 
-        # BKT analyse all files in given paths
+        # --- 2. BKT analyse all files in given paths ---
         for student_name, filepaths in file_dict.items():
             student = BKT_A.Student(student_name)
-
             for filepath in filepaths:
-                results = self.execute_analysis(filepath, selections)
+                results_per_title = self.execute_analysis(filepath, selections)
 
-                for i in self.BKT_temp: # FIX change BKT_temp to results
-                    # print(i.lineno, i.vid, i.status)
-                    student.add_result(i.vid, int(i.status))
-                self.BKT_temp.clear()
+                # --- Add results to student object to update BKTA values ---
+                for title, results in results_per_title:
+                    student.add_results(results, key="vid", success="status")
+
                 self.clear_analysis_data()
 
-
-            result_line = initial_line[:] # copy
+            # --- Format results into writable list ---
+            result_line = initial_line[:] # copy to allow separate changes
             for key, result in student.get_results().items():
                 try:
                     result_line[BKT_index[key]] = round(result.Ln, _ACC)
                 except (KeyError, IndexError):
                     pass
-                except IndexError:
-                    pass
-            # Add student results to (file) content_lines -list
+
             content_lines.append(
                 "{0}{1}{2}".format(  # Basically 'studentID;float;...;float' as str
                     student.student_id,
@@ -328,18 +332,18 @@ class Model:
                 )
             )
 
-            # Write results to BKT result file
+            # --- 3. Write results to BKT result file ---
             utils.write_file(
                 BKT_result_path,
                 "\n".join(content_lines) + "\n",
                 mode="a"
             )
 
-            # Clear written results
+            # --- 4. Clear written results before next iteration ---
             result_line.clear()
             content_lines.clear()
 
-        # Clear created data structures
+        # At the end clear created data structures
         initial_line.clear()
         BKT_index.clear()
         BKT_title_sorted.clear()
@@ -387,6 +391,7 @@ class Model:
 
         Return: Python ast typed tree or None if parse fails.
         """
+
         tree = None
         try:
             tree = ast.parse(content, filename)
@@ -394,14 +399,14 @@ class Model:
         except SyntaxError:
             if create_msg:
                 self.add_msg("syntax_error")
-                self.save_messages("file_error")
+                self.save_category("file_error")
 
         # When content is not str or AST (e.g. None), usually due failed
         # file reading.
         except TypeError:
             if create_msg:
                 self.add_msg("type_error")
-                self.save_messages("file_error")
+                self.save_category("file_error")
 
         else:
             a_utils.add_parents(tree)
@@ -427,11 +432,11 @@ class Model:
 
         except Exception:
             self.clear_analysis_data()
-            self.messages.clear()
+            self._category_results.clear()
             self.add_msg("tool_error", filename)
-            self.save_messages("analysis_error")
+            self.save_category("analysis_error")
 
-        return self.all_messages
+        return self.all_results
 
     def pre_analyse_tree(self, tree, files, dir_path):
         """
@@ -508,6 +513,7 @@ class Model:
                     else: # Else means library file.
                         pass
 
+                self.save_category(opt)
 
     def format_violations(self, all_results):
         """

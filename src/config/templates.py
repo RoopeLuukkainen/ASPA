@@ -3,6 +3,10 @@ multivalue information about stored elements, i.e. they are often struc
 like objects.
 """
 
+ # TODO Move ViolationTemplate somewhere else because it is not a Template
+ # anymore but rather a real class. Same time utils are not needed anymore.
+from .. import utils_lib as utils
+
 class NodeTemplate():
     """General template class for any ast node."""
 
@@ -90,6 +94,8 @@ class ViolationTemplate():
         self._args = args
         self._lineno = lineno
         self._status = status    # Violation status True/False
+        self._msg_tuple = None
+        self._lang = None
 
     @property
     def vid(self):
@@ -107,14 +113,22 @@ class ViolationTemplate():
     def lineno(self):
         return self._lineno
 
-    def get_msg(self):
-        """Return a violation message as a string. Violation message
-        is constructed based on self.vid, self.lineno and
-        self.vtype.
+    def get_msg(self, lang):
+        """
+        Return a violation message as a string. Violation message
+        is currently constructed in utils lib.
         """
 
-        msg = "msg"          # Violation message
-        return msg
+        if self._msg_tuple is None or lang != self._lang:
+            self._lang = lang
+            self._msg_tuple = utils.create_msg(
+                self._vid,
+                *self._args,
+                lineno=self._lineno,
+                lang=self._lang
+            )
+
+        return self._msg_tuple
 
 
 class FilepathTemplate():
