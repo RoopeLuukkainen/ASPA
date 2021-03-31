@@ -21,7 +21,10 @@ DEFAULT_SETTINGS = {
     "excluded_files": ["__init__.py"],
     "subdirectory_order": ["course", "week", "exercise", "student"], # NOT YET USED
     "clear_filepaths": False,
-    "shown_filepath_format": "both" # Options are defined in "Formatting configurations tuples"
+    "shown_filepath_format": "both", # Options are defined in "Formatting configurations tuples"
+    "BKT_decimal_places": 3,
+    "BKT_decimal_separator": ",",
+    "BKT_cell_separator": ";",
 }
 
 # -----------------------------------------------------------------------------#

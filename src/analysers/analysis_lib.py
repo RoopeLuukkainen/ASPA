@@ -268,6 +268,14 @@ class Model:
         3. Showing results.
         4. Clearing results.
         """
+        # round handles also negative accuracy so no need to check that. However
+        # user might get undesired results with that (in BKT case basically 0.0)
+        # 0 is also allowed setting therefore using default value intead of
+        # "or"-operator to give value 3 as default.
+        _ACC = self.settings.get("BKT_decimal_places", 3)
+        _DESIM_SEP = self.settings.get("BKT_decimal_separator") or ","
+        _CELL_SEP = self.settings.get("BKT_cell_separator") or ";"
+
 
         # Create indexes for titles and sort them from A to Z (ascending order).
         # TODO add setting which allow sorting by selected value
@@ -277,11 +285,11 @@ class Model:
             BKT_index[title] = i
 
         # Initialise result file with title line
-        # TODO add setting for cell separator
         BKT_result_path = self.settings["BKT_path"]
-        title_line = "{0:s};{1:s}\n".format(
+        title_line = "{0:s}{1:s}{2:s}\n".format(
                 cnf.BKT_TEXT[self.language]["student_name"],
-                ";".join(BKT_title_sorted)
+                _CELL_SEP,
+                _CELL_SEP.join(BKT_title_sorted)
             )
         utils.write_file(BKT_result_path, title_line, mode="w")
 
@@ -306,16 +314,18 @@ class Model:
             result_line = initial_line[:] # copy
             for key, result in student.get_results().items():
                 try:
-                    # TODO add setting for decimal places
-                    # TODO add setting for decimal separator (default is now .)
-                    result_line[BKT_index[key]] = round(result.Ln, 3)
-                except KeyError:
+                    result_line[BKT_index[key]] = round(result.Ln, _ACC)
+                except (KeyError, IndexError):
                     pass
                 except IndexError:
                     pass
             # Add student results to (file) content_lines -list
             content_lines.append(
-                f"{student.student_id};{';'.join(map(str, result_line))}"
+                "{0}{1}{2}".format(  # Basically 'studentID;float;...;float' as str
+                    student.student_id,
+                    _CELL_SEP,
+                    _CELL_SEP.join(map(str, result_line)).replace(".", _DESIM_SEP)
+                )
             )
 
             # Write results to BKT result file
