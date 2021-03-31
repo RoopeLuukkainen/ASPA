@@ -239,11 +239,19 @@ class Model:
             results = self.execute_analysis(filepath, selections)
 
             # Format results
-            formated_results = self.format_results(
-                filepath.filename,
-                str(filepath.path),
-                results
+            formated_results = self.format_violations(results)
+
+            # Add filename and filepath at the beginning of the result list
+            formated_results.insert(
+                0, (utils.create_dash(character="=", get_dash=True), cnf.GENERAL)
             )
+            if (self.settings["shown_filepath_format"]
+                    in cnf.OPTIONS_FOR_ALL + cnf.FILENAME_OPTIONS):
+                formated_results.insert(1, (filepath.filename, cnf.GENERAL))
+
+            if (self.settings["shown_filepath_format"]
+                    in cnf.OPTIONS_FOR_ALL + cnf.FILEPATH_OPTIONS):
+                formated_results.insert(1, (str(filepath.path), cnf.GENERAL))
 
             # Show results and clear results
             result_page.show_results(formated_results)
@@ -490,34 +498,46 @@ class Model:
                     else: # Else means library file.
                         pass
 
-                self.save_messages(opt)
 
-    def format_results(self, filename, path, all_messages):
+    def format_violations(self, all_results):
+        """
+        Method to format results to violations. Category titles are
+        included between results. Includes only results which are
+        violations.
+
+        Return: List of violation tuples.
+        """
+
         line_list = []
-        for title_key, msgs in all_messages:
-            # Every second line is empty to make view less crowded.
+        violations = []
+        for title_key, results in all_results:
+            violations.clear()
+
+            # Every line after each topics is empty to make view less crowded.
             line_list.append(("", cnf.GENERAL))
 
-            if(len(msgs) == 0): # No violations in this topic/title
+            # Include only violations
+            for violation in results:
+                if violation.status == False:  # False means there is a violation
+                    violations.append(violation)
+
+            # Check if there are violations in this topic/title, if not go to
+            # next title/analysis category.
+            if len(violations) == 0:
                 line_list.append(
                     utils.create_title('OK', title_key, lang=self.language)
                 )
                 continue
 
-            # There are one or more violations in this topic/title
+            # There is one or more violations in this topic/title so need to add
+            # a note.
             line_list.append(
                 utils.create_title('NOTE', title_key, lang=self.language)
             )
 
-            for lineno, code, args in msgs:
-                line_list.append(
-                    utils.create_msg(code, *args, lineno=lineno, lang=self.language)
-                )
-
-        # File and filepath info at the beginning of each file.
-        line_list.insert(0, (utils.create_dash(character="=", get_dash=True), cnf.GENERAL))
-        line_list.insert(1, (path, cnf.GENERAL))
-        line_list.insert(2, (filename, cnf.GENERAL))
+            for violation in violations: # TODO sort by lineno?
+                line_list.append(violation.get_msg(self.language))
+        violations.clear()
 
         return line_list
 

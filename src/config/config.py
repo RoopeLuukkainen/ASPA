@@ -20,7 +20,8 @@ DEFAULT_SETTINGS = {
     "excluded_directories": ["__pycache__", ".git"],
     "excluded_files": ["__init__.py"],
     "subdirectory_order": ["course", "week", "exercise", "student"], # NOT YET USED
-    "clear_filepaths": False
+    "clear_filepaths": False,
+    "shown_filepath_format": "both" # Options are defined in "Formatting configurations tuples"
 }
 
 # -----------------------------------------------------------------------------#
@@ -35,9 +36,10 @@ DENIED_FUNCTIONS = {"*"}
 # Add function names which are allowed to miss return command.
 MISSING_RETURN_ALLOWED = {"__init__"}
 
-SEARCHED_COMMANDS = {"round", "print", "range", "int", "len", "float", "str"} # Examples
+# Examples of commands which could be searched in check PT1.
+SEARCHED_COMMANDS = {"round", "print", "range", "int", "len", "float", "str"}
 
-# Allowed constants values for return values (not but NameConstants True, False, None).
+# Allowed constants values for return values (but not NameConstants True, False, None).
 ALLOWED_CONSTANTS = {}
 
 # Add keys of ignored error messages
@@ -87,11 +89,17 @@ ALLOWED_ELEMENTS = {ast.Import, ast.ImportFrom, ast.Assign, ast.ClassDef,
 #     }
 # }
 
-# AST class type sets
+# --- AST class type sets ---
 FUNC = (ast.FunctionDef, ast.AsyncFunctionDef)
 CLS_FUNC = (ast.ClassDef, ast.FunctionDef, ast.AsyncFunctionDef)
 LOOP = (ast.For, ast.While)
 YIELD = (ast.Yield, ast.YieldFrom)
+
+
+# --- Formatting configurations tuples ---
+FILENAME_OPTIONS = ("name", "filename")  # Strings which mean (show) filename in settings.
+FILEPATH_OPTIONS = ("path", "filepath")  # Strings which mean (show) filepath in settings.
+OPTIONS_FOR_ALL = ("both", "all", "everything", "*")  # Strings which mean everthing/all/both.
 
 # -----------------------------------------------------------------------------#
 # Analysis category names
