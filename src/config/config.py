@@ -481,3 +481,17 @@ CLI_ERROR = {
         "NO_LANGUAGE": "Ole hyvä ja määrittele käytettävä kieli asetukista. Oletusasetus on FIN."
     }
 }
+
+SETTINGS_CONFLICTS = {
+    "ENG": {
+        "C0001": "Decimal and cell separators can't be the same character." +
+                 " Default values comma (,) and semicolon (;) are used" +
+                 " for decimal separator and cell separator, respectively."
+
+    },
+    "FIN": {
+        "C0001": "Desimaali- ja soluerottimet eivät voi olla sama merkki." +
+                 " Käytetään oletusarvoja pilkku (,) desimaalierottimena ja" +
+                 " puolipiste (;) soluerottimena."
+    }
+}

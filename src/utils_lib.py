@@ -4,6 +4,7 @@
 import json
 import os       # os.walk is used for convenient directory exclusion possibility
 import pathlib  # Used for all the other path operations
+from typing import List
 
 import src.config.config as cnf
 import src.config.templates as templates
@@ -347,7 +348,7 @@ def add_fixed_settings(settings):
     return None
 
 
-def init_settings():
+def init_settings() -> dict:
     """
     Function to initialise settings dictionary. Settings are based on
     default settings which are then updated by values from settings.json
@@ -358,7 +359,7 @@ def init_settings():
     """
 
     settings = cnf.DEFAULT_SETTINGS # Currently reference not copy
-    settings_file = settings["settings_file"]
+    settings_file = settings.get("settings_file", "settings.json")
 
     content = read_file(settings_file, settings_file=True)
     if content:
@@ -369,3 +370,45 @@ def init_settings():
         write_file(settings_file, content, mode="w")
     add_fixed_settings(settings)
     return settings
+
+
+def detect_settings_conflicts(settings: dict) -> List[str]:
+    """
+    Function to check throught predefined set of possible conflict cases
+    in settings.
+
+    Arguments:
+    1. settings - Settings dictionary, key is setting name and value is
+       setting value - dict
+
+    Return: conflicts - list of conflict message IDs (str) - List[str]
+    """
+
+    # Initialise
+    conflicts = []
+
+    # Check defined conflict cases
+    if settings.get("BKT_decimal_separator") == settings.get("BKT_cell_separator"):
+        conflicts.append("C0001")
+
+    return conflicts
+
+
+def solve_settings_conflicts(conflicts: List[str], settings: dict) -> None:
+    """
+    Function to solve detected settings conflicts.
+
+    Arguments:
+    1. conflicts - List of conflict message keys as string - List[str]
+    2. settings - Settings dictionary, key is setting name and value is
+       setting value - dict
+
+    Return: None
+    """
+
+    for key in conflicts:
+        if key == "C0001":
+            settings["BKT_decimal_separator"] = ","
+            settings["BKT_cell_separator"] = ";"
+
+    return None

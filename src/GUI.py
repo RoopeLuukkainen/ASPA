@@ -30,9 +30,17 @@ class GUICLASS(tk.Tk):
 
         self.settings = settings
         self.LANG = settings.setdefault("language", "FIN")
-        self.model = analysis.Model(self)
         self.cli = view.CLI(self.LANG)
 
+        # Detect and solve possible settings conflicts
+        conflicts = utils.detect_settings_conflicts(settings)
+        if conflicts:
+            utils.solve_settings_conflicts(conflicts, settings)
+            for c in conflicts:
+                self.propagate_error_message(c, error_type="conflict")
+
+
+        self.model = analysis.Model(self)
         self.main_frame = view.MainFrame(self, self.LANG)
 
         # Display the menu at the top
@@ -46,22 +54,22 @@ class GUICLASS(tk.Tk):
         # Settings are not changed when where asked so no need to send copy.
         return self.settings
 
-    def propagate_error_message(self, error_code, *args):
-        self.cli.print_error(error_code, args)
+    def propagate_error_message(self, error_code, *args, error_type="error"):
+        self.cli.print_error(error_code, *args, error_type=error_type)
 
     def check_selection_validity(self, selections, filepaths):
         valid = True
         if sum(selections.values()) == 0:
             valid = False
             # TODO: Show GUI message of missing analysis selections
-            if self.settings["console_print"]:
-                self.cli.print_error("NO_SELECTIONS")
+            if self.settings.get("console_print"):
+                self.propagate_error_message("NO_SELECTIONS")
 
         if not filepaths:
             valid = False
             # TODO: Show GUI message of missing files
-            if self.settings["console_print"]:
-                self.cli.print_error("NO_FILES")
+            if self.settings.get("console_print"):
+                self.propagate_error_message("NO_FILES")
         return valid
 
     def tkvar_2_var(self, tk_vars, to_type):

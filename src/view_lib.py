@@ -550,5 +550,9 @@ class CLI():
     def __init__(self, lang):
         self.LANG = lang
 
-    def print_error(self, error_code, *args):
-        print(cnf.CLI_ERROR[self.LANG][error_code])
+    def print_error(self, error_code, *args, error_type="error"):
+        if error_type == "error":
+            print(cnf.CLI_ERROR[self.LANG][error_code])
+
+        elif error_type == "conflict":
+            print(cnf.SETTINGS_CONFLICTS[self.LANG][error_code])
