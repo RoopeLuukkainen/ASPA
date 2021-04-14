@@ -24,6 +24,7 @@ HT_tavoite/
 # ignore new test files
 test_files/
 testing*.py
+*sandbox.py
 
 # ignore parser file
 viope_json_parser.py
