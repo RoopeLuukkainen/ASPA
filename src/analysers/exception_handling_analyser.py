@@ -1,16 +1,18 @@
-"""Class file. Contains ErrorHandlingAnalyser class."""
+"""Class file. Contains ExceptionHandlingAnalyser class."""
 
 import ast
 
 import src.analysers.analysis_utils as a_utils
 import src.config.config as cnf
 
-class ErrorHandlingAnalyser(ast.NodeVisitor):
+class ExceptionHandlingAnalyser(ast.NodeVisitor):
    # ------------------------------------------------------------------------- #
    # Initialisation
     def __init__(self, model):
         self.model = model
-        self.file_operations = {"read", "readline", "readlines", "write", "writelines"}
+        self.file_operations = {
+            "read", "readline", "readlines", "write", "writelines"
+        }
    # ------------------------------------------------------------------------- #
    # Getters
 
@@ -20,14 +22,15 @@ class ErrorHandlingAnalyser(ast.NodeVisitor):
    # ------------------------------------------------------------------------- #
    # General methods
     def _has_exception_handling(self, node, denied=cnf.FUNC):
-        """ Check to determine if node is inside exception handling."""
+        """Check to determine if node is inside exception handling."""
 
         if a_utils.get_parent(node, ast.Try, denied=denied) is None:
             return False
         return True
 
     def _check_exception_handling(self, node):
-        """Method to check if node has:
+        """
+        Method to check if node has:
         1. Missing try - except around file opening.
         """
 
@@ -42,13 +45,15 @@ class ErrorHandlingAnalyser(ast.NodeVisitor):
             pass
 
     def _check_exception_handlers(self, node):
-        """Method to check if node is:
+        """
+        Method to check if node is:
         1. Try with no exception branches
         2. Exception branch missing an error type. Excluding the last
             exception IF there are more than one exception branches.
 
-        ast.Try has lists for each branchtype: handlers=[], orelse=[], finalbody=[],
-        which are for excepts, else and finally, respectively
+        ast.Try has lists for each branchtype: handlers=[], orelse=[],
+        finalbody=[], which are for excepts, else and finally,
+        respectively
 
         Does not analyse
         1. finally branches
@@ -62,7 +67,7 @@ class ErrorHandlingAnalyser(ast.NodeVisitor):
                 lineno=node.lineno
             )
 
-            for handler in node.handlers:
+            for handler in node.handlers:  # handler is ast.ExceptHandler object
                 self.model.add_msg(
                     code="PK1-1",
                     status=(handler.type != None),
@@ -88,7 +93,8 @@ class ErrorHandlingAnalyser(ast.NodeVisitor):
         self.generic_visit(node)
 
     def visit_Attribute(self, node, *args, **kwargs):
-        """Method to check if node is:
+        """
+        Method to check if node is:
         1. Missing try - except around file.read().
         2. Missing try - except around file.readline().
         3. Missing try - except around file.readlines().
@@ -109,7 +115,8 @@ class ErrorHandlingAnalyser(ast.NodeVisitor):
         self.generic_visit(node)
 
     def visit_For(self, node, *args, **kwargs):
-        """Method to check if node is:
+        """
+        Method to check if node is:
         1. For loop reading a file AND missing exception handling.
         """
 

@@ -13,7 +13,7 @@ import src.analysers.analysis_utils as a_utils
 # AST analysers
 import src.analysers.pre_analyser as pre_analyser
 import src.analysers.data_structure_analyser as data_structure_analyser
-import src.analysers.error_handling_analyser as error_handling_analyser
+import src.analysers.exception_handling_analyser as exception_handling_analyser
 import src.analysers.basic_command_analyser as basic_command_analyser
 import src.analysers.file_handling_analyser as file_handling_analyser
 import src.analysers.file_structure_analyser as file_structure_analyser
@@ -55,7 +55,7 @@ class Model:
                 self.checkbox_options[2]: file_handling_analyser.FileHandlingAnalyser(self),
                 self.checkbox_options[3]: data_structure_analyser.DataStructureAnalyser(self),
                 self.checkbox_options[4]: file_structure_analyser.FileStructureAnalyser(self),
-                self.checkbox_options[5]: error_handling_analyser.ErrorHandlingAnalyser(self)
+                self.checkbox_options[5]: exception_handling_analyser.ExceptionHandlingAnalyser(self)
             }
         except IndexError:
             pass
@@ -217,7 +217,7 @@ class Model:
                 templates.ViolationTemplate(code, args, lineno, status)
             )
 
-            # Vey primitive statistic calculation
+            # Very primitive statistic calculation
             try:
                 self.violation_occurances[code] += 1
             except KeyError:
