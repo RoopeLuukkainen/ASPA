@@ -1,4 +1,5 @@
-"""Class file. Contains ExamAnalyser class."""
+"""Class file. Contains BasicsAnalyser class."""
+
 import ast
 # import keyword
 import re
@@ -7,20 +8,24 @@ import src.config.config as cnf
 import src.analysers.analysis_utils as a_utils
 
 class BasicsAnalyser(ast.NodeVisitor):
-    """Class to do static analysis by visiting nodes of Abstract Syntax
+    """
+    Class to do static analysis by visiting nodes of Abstract Syntax
     Tree. Uses 'ast' module and local 'utils_lib'.
     """
 
     def __init__(self, model):
         self.model = model
         self.searched_commands = cnf.SEARCHED_COMMANDS
+        # TODO allow configuration of regex pattern?
         self.valid_naming = re.compile(r"^[a-zA-Z_][a-zA-Z0-9_]*$")
 
     def check_valid_name(self, node, name, *args, **kwargs):
-        """Method to validate given name, e.g. variable name or function name.
-        Valid names must match following regex pattern ^[a-zA-Z_][a-zA-Z0-9_]*$
-        i.e. they can have only letters from a to z (both upper and lowercase),
-        underscore or numbers, and may not start with a number.
+        """
+        Method to validate given name, e.g. variable name or function
+        name. Valid names must match following regex pattern
+        ^[a-zA-Z_][a-zA-Z0-9_]*$ i.e. they can have only letters from
+        a to z (both upper and lowercase), underscore or numbers, and
+        may not start with a number.
         """
 
         try:
@@ -167,9 +172,6 @@ class BasicsAnalyser(ast.NodeVisitor):
         self.generic_visit(node)
 
     def visit_While(self, node, *args, **kwargs):
-        # Found a while loop
-        self.model.add_msg("D00001", lineno=node.lineno, status=1)
-
         try:
             # Check if there is no break in infinite loop
             status = (not a_utils.is_always_true(node.test)
@@ -189,8 +191,6 @@ class BasicsAnalyser(ast.NodeVisitor):
         self.generic_visit(node)
 
     def visit_For(self, node, *args, **kwargs):
-        # Found a for loop
-        self.model.add_msg("D00002", lineno=node.lineno, status=1)
         # iter name check
         try:
             if(isinstance(node.target, ast.Tuple)):
@@ -267,9 +267,9 @@ class BasicsAnalyser(ast.NodeVisitor):
         self._check_import_naming(node)
         self.generic_visit(node)
 
-    # # Possibly checking Name node could check all the variable etc. names
-    # # It may give also other names, therefore not yet in use
-    # # At least function parameters and import aliases are not Name objects
+    # NOTE: Possibly checking Name node could check all the variable etc. names
+    # It may give also other names, therefore not yet in use
+    # At least function parameters and import aliases are not Name objects
     # def visit_Name(self, node, *args, **kwargs):
     #     try:
     #         self.check_valid_name(node.id)
@@ -290,25 +290,3 @@ class BasicsAnalyser(ast.NodeVisitor):
         self._check_unreachable_code(node, "raise")
 
     # NOTE: yield or yield from can be followed by another code.
-
-    # Rest are placeholders
-    def visit_If(self, node, *args, **kwargs):
-        # Found an if statement
-        self.generic_visit(node)
-
-    def visit_Subscript(self, node, *args, **kwargs):
-        # Found a string slice, string[]
-        # Subscript can be:
-        #          | Subscript(expr value, slice slice, expr_context ctx)
-        # Slice can be:
-        #     slice = Slice(expr? lower, expr? upper, expr? step)
-        #             | ExtSlice(slice* dims)
-        #             | Index(expr value)a
-
-        self.generic_visit(node)
-
-    def visit_Slice(self, node, *args, **kwargs):
-        self.generic_visit(node)
-
-    def visit_Index(self, node, *args, **kwargs):
-        self.generic_visit(node)
