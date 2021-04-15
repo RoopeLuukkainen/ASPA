@@ -15,8 +15,8 @@ DEFAULT_SETTINGS = {
     "result_dir": str(pathlib.Path(__file__).parents[2].resolve().joinpath("results")),
     "result_file": "results.txt",
     "settings_file": "settings.json",
-    "BKT_analysis": False,
     "BKT_file": "BKTA.csv",
+    "structure_file": "structures.csv",
     "excluded_directories": ["__pycache__", ".git"],
     "excluded_files": ["__init__.py"],
     "subdirectory_order": ["course", "week", "exercise", "student"], # NOT YET USED
@@ -25,6 +25,7 @@ DEFAULT_SETTINGS = {
     "BKT_decimal_places": 3,
     "BKT_decimal_separator": ",",
     "BKT_cell_separator": ";",
+    "structure_cell_separator": ";",
 }
 
 # -----------------------------------------------------------------------------#
@@ -44,6 +45,9 @@ SEARCHED_COMMANDS = {"round", "print", "range", "int", "len", "float", "str"}
 
 # Allowed constants values for return values (but not NameConstants True, False, None).
 ALLOWED_CONSTANTS = {}
+
+# Add keys of ignored structure messages (work with single or multiple regex patterns)
+IGNORE_STRUCT = {}
 
 # Add keys of ignored error messages
 # IGNORE = {"PT1", "MR5"}
@@ -314,8 +318,6 @@ MSG = {
         "NOTE_INFO": ("All messages with this colour are notes.", NOTE),
         "WARNING_INFO": ("All messages with this colour are warnings.", WARNING),
         "ERROR_INFO": ("All messages with this colour are errors.", ERROR),
-        "D00001": ("While loop", GENERAL),
-        "D00002": ("FOR loop", GENERAL)
     },
     "FIN": {
         "default": ("Tapahtui virhe!", ERROR),
@@ -382,13 +384,133 @@ MSG = {
         "NOTE_INFO": ("Tällä värillä merkityt viestit ovat huomioita.", NOTE),
         "WARNING_INFO": ("Tällä värillä merkityt viestit ovat varoituksia.", WARNING),
         "ERROR_INFO": ("Tällä värillä merkityt viestit ovat virheitä.", ERROR),
-        "D00001": ("While silmukka", GENERAL),
-        "D00002": ("FOR silmukka", GENERAL)
     }
 }
 
 # -----------------------------------------------------------------------------#
 # BKT related titles and text
+
+STRUCTURE = {
+    "ENG": {
+        "D01A001": "IF",
+        "D01A002": "ELIF",
+        "D01A003": "ELSE",
+        "D01B001": "Ternary IF",
+        "D02A001": "WHILE",
+        "D02A002": "WHILE-ELSE",
+        "D02B001": "FOR",
+        "D02B002": "FOR-ELSE",
+        "D02C001": "List Comp",
+        "D02C002": "Set Comp",
+        "D02C003": "Generator Comp",
+        "D02C004": "Dict Comp",
+        "D03A001": "Func",
+        "D03A002": "AsyncFunc",
+        "D03A003": "LAMBDA",
+        "D03B001": "Parameters",
+        "D03C001": "RETURN",
+        "D03C004": "return None",
+        "D03C005": "Return with value",
+        "D03C002": "YIELD",
+        "D03C003": "YIELD FROM",
+        "D05A001": "OPEN",
+        "D05A002": "WITH OPEN",
+        "D05B001": "READ",
+        "D05B002": "READLINE",
+        "D05B003": "READLINES",
+        "D05C001": "WRITE",
+        "D05C002": "WRITELINES",
+        "D05D001": "CLOSE",
+        "D06A001": "List",
+        "D06B001": "Dict",
+        "D06C001": "Tuple",
+        "D06D001": "Set",
+        "D07A001": "Class",
+        "D07C001": "Object",
+        "D08B001": "IMPORT",
+        "D08B002": "FROM IMPORT",
+        "D08B003": "FROM IMPORT *",
+        "D09A001": "TRY",
+        "D09A002": "EXCEPT",
+        "D09A003": "ELSE",
+        "D09A004": "FINALLY",
+        "D09B001": "Except value",
+        "D10B001": "Index",
+        "D10B002": "Slice",
+        "D11A001": "OR",
+        "D11A002": "AND",
+        "D11B001": "==",
+        "D11B002": "!=",
+        "D11B003": "<",
+        "D11B004": ">",
+        "D11B005": "<=",
+        "D11B006": ">=",
+        "D11B007": "IS",
+        "D11B008": "IS NOT",
+        "D11B009": "IN",
+        "D11B010": "NOT IN"
+    },
+    "FIN": {
+        "D01A001": "IF",
+        "D01A002": "ELIF",
+        "D01A003": "ELSE",
+        "D01B001": "Ternary IF",
+        "D02A001": "WHILE",
+        "D02A002": "WHILE-ELSE",
+        "D02B001": "FOR",
+        "D02B002": "FOR-ELSE",
+        "D02C001": "List Comp",
+        "D02C002": "Set Comp",
+        "D02C003": "Generator Comp",
+        "D02C004": "Dict Comp",
+        "D03A001": "Func",
+        "D03A002": "AsyncFunc",
+        "D03A003": "LAMBDA",
+        "D03B001": "Parameters",
+        "D03C001": "RETURN",
+        "D03C004": "return None",
+        "D03C005": "Return with value",
+        "D03C002": "YIELD",
+        "D03C003": "YIELD FROM",
+        "D05A001": "OPEN",
+        "D05A002": "WITH OPEN",
+        "D05B001": "READ",
+        "D05B002": "READLINE",
+        "D05B003": "READLINES",
+        "D05C001": "WRITE",
+        "D05C002": "WRITELINES",
+        "D05D001": "CLOSE",
+        "D06A001": "List",
+        "D06B001": "Dict",
+        "D06C001": "Tuple",
+        "D06D001": "Set",
+        "D07A001": "Class",
+        "D07C001": "Object",
+        "D08B001": "IMPORT",
+        "D08B002": "FROM IMPORT",
+        "D08B003": "FROM IMPORT *",
+        "D09A001": "TRY",
+        "D09A002": "EXCEPT",
+        "D09A003": "ELSE",
+        "D09A004": "FINALLY",
+        "D09B001": "Except value",
+        "D10B001": "Index",
+        "D10B002": "Slice",
+        "D11A001": "OR",
+        "D11A002": "AND",
+        "D11B001": "==",
+        "D11B002": "!=",
+        "D11B003": "<",
+        "D11B004": ">",
+        "D11B005": "<=",
+        "D11B006": ">=",
+        "D11B007": "IS",
+        "D11B008": "IS NOT",
+        "D11B009": "IN",
+        "D11B010": "NOT IN"
+    }
+}
+
 BKT_TEXT = {
     "ENG": {
         "student_name": "Student"
@@ -400,8 +522,6 @@ BKT_TEXT = {
 
 BKT_TITLES = {
     "ENG": {
-        "D00001": "WHILE",
-        "D00002": "FOR",
         "AR1": "AR1",
         "AR2-1": "AR2-1",
         "AR4": "AR4",
@@ -433,8 +553,6 @@ BKT_TITLES = {
         "TR3-2": "TR3-2"
     },
     "FIN": {
-        "D00001": "WHILE",
-        "D00002": "FOR",
         "AR1": "AR1",
         "AR2-1": "AR2-1",
         "AR4": "AR4",
