@@ -3,6 +3,8 @@
 import ast
 import datetime  # for timestamp
 import os
+import pathlib
+import re
 
 # Utility libraries
 from ..config import config as cnf
@@ -21,6 +23,7 @@ import src.analysers.function_analyser as function_analyser
 
 # BKT analyser
 import src.BKT.BKT_analyser as BKT_A
+import src.analysers.structure_detector as structure_detector
 
 class Model:
     def __init__(self, controller):
@@ -62,6 +65,10 @@ class Model:
         # Pre analyser
         self.pre_analyser = pre_analyser.PreAnalyser()
         self.constant_variables = {}
+
+        # Structure/command detector
+        self.structure_detector = structure_detector.StructureDetector()
+        self.structures = {}
 
         # Variable data structures (used by function_analyser)
         self.global_variables = {}
@@ -426,7 +433,10 @@ class Model:
 
         try:
             # TODO: optimise such that os.listdir is done only once per directory
+            # TODO make paths Pathlib compatible such that os is not neede
             files_in_dir = os.listdir(dir_path)
+            # files_in_dir = list(dir_path.iterdir())
+            self.detect_structures(tree, pathlib.Path.joinpath(dir_path, filename))
             self.pre_analyse_tree(tree, files_in_dir, dir_path)
             self.analyse_tree(tree, files_in_dir, content, selections)
 
@@ -437,6 +447,19 @@ class Model:
             self.save_category("analysis_error")
 
         return self.all_results
+
+    def detect_structures(self, tree, filepath):
+        """
+        Execute structure detection for abstract syntax tree.
+        """
+
+        try:
+            self.structure_detector.visit(tree)
+        except Exception:
+            pass
+        else:
+            self.structures[pathlib.Path(filepath)] = self.structure_detector.get_structures()
+        self.structure_detector.clear_all()
 
     def pre_analyse_tree(self, tree, files, dir_path):
         """
@@ -460,7 +483,7 @@ class Model:
             filename = f"{i}.py"
             if(filename in files):
                 self.lib_list.append(i)
-                content = utils.read_file(os.path.join(dir_path, filename))
+                content = utils.read_file(pathlib.Path.joinpath(dir_path, filename))
 
                 if not (tree := self.parse_ast(content, filename, create_msg=False)):
                     continue
@@ -556,6 +579,76 @@ class Model:
         violations.clear()
 
         return line_list
+
+    def count_structures(self, file_dict):
+        """
+        Method to write detected structures into a result file.
+        NOTE: This is currently pretty identical to the BKT analysis.
+        """
+
+        _CELL_SEP = self.settings.get("structure_cell_separator") or ";"
+        STRUCTURES = utils.get_structures(self.language)
+        ignore_formats = re.compile("|".join(cnf.IGNORE_STRUCT))
+
+        # Create indexes for titles and sort them from A to Z (ascending order).
+        structure_index = {}
+        for i, key in enumerate(sorted(STRUCTURES.keys())):
+            if not ignore_formats.pattern or (ignore_formats.match(key)) is None:
+                structure_index[key] = i
+
+        # --- 1. Initialise result file with title line and content lines -list ---
+        result_path = self.settings.get("structure_path")
+        title_line = "{cell_sep:s}{titles:s}\n".format(
+                cell_sep=_CELL_SEP,
+                titles=_CELL_SEP.join(
+                    map(lambda x: STRUCTURES.get(x), structure_index.keys())
+                )
+            )
+        utils.write_file(result_path, title_line, mode="w")
+
+        content_lines = []
+        initial_line = [0] * len(structure_index.keys())
+        # --- 2. Count all structures ---
+        for student_name, filepaths in file_dict.items():
+            result_line = initial_line[:] # copy to allow separate changes
+
+            for filepath in filepaths:
+                structs = self.structures.get(filepath.path)
+
+                for s in structs:
+                    try:
+                        result_line[structure_index[s.identifier]] += 1
+                    except KeyError:
+                        # Basically ignored structures goes here
+                        pass
+
+            # --- Format results into writable list ---
+            content_lines.append(
+                "{student:s}{cell_sep:s}{results:s}".format(  # Basically 'name;int;...;int' as str
+                    student=student_name,
+                    cell_sep=_CELL_SEP,
+                    results=_CELL_SEP.join(map(str, result_line))
+                )
+            )
+
+            # --- 3. Write results to BKT result file ---
+            content_lines.append("") # Last empty line
+            utils.write_file(
+                result_path,
+                "\n".join(content_lines),
+                mode="a"
+            )
+
+            # --- 4. Clear written results before next iteration ---
+            result_line.clear()
+            content_lines.clear()
+
+        # At the end clear created data structures
+        initial_line.clear()
+        structure_index.clear()
+        self.structures.clear()
+
+        return None
 
    ####################################################################
    #  Debug functions

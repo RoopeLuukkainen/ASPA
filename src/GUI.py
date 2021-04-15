@@ -114,6 +114,8 @@ class GUICLASS(tk.Tk):
                 selections,
                 file_structure
             )
+
+            self.model.count_structures(file_structure)
         else:
             result_page.show_info()  # Init new results with default info
             self.main_frame.show_page(view.ResultPage)  # Show "result page"

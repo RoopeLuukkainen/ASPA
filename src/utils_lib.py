@@ -11,6 +11,7 @@ import src.config.templates as templates
 
 
 MSG = cnf.MSG
+STRUCTURE = cnf.STRUCTURE
 EXAMPLES = cnf.EXAMPLES
 TITLE_TO_EXAMPLES = cnf.TITLE_TO_EXAMPLES
 TEXT = cnf.TEXT
@@ -326,6 +327,11 @@ def create_dash(character="-", dash_count=80, get_dash=False):
     else:
         print(character * dash_count)
 
+
+def get_structures(lang="FIN"):
+    return STRUCTURE.get(lang, {})
+
+
 ########################################################################
 # Init functions
 
@@ -345,6 +351,7 @@ def add_fixed_settings(settings):
     result_dir = pathlib.Path(settings["result_dir"])
     settings["result_path"] = result_dir.joinpath(settings["result_file"])
     settings["BKT_path"] = result_dir.joinpath(settings["BKT_file"])
+    settings["structure_path"] = result_dir.joinpath(settings["structure_file"])
     return None
 
 
