@@ -1,4 +1,5 @@
-"""File for any template class used in ASPA. Templates are used to store
+"""
+File for any template class used in ASPA. Templates are used to store
 multivalue information about stored elements, i.e. they are often struc
 like objects.
 """
@@ -69,7 +70,8 @@ class GlobalTemplate(NodeTemplate):
 
 
 class CallTemplate(NodeTemplate):
-    """Template class for (function or class) calls found during
+    """
+    Template class for (function or class) calls found during
     preanalysis.
     """
 
@@ -191,3 +193,28 @@ class FilehandleTemplate(NodeTemplate):
         # interesting and therefore only that is stored.
         if self._closed == 0:
             self._closed = closing_line
+
+class StructureTemplate():
+    """
+    Template class for detected code structures found during structure
+    detection (before preanalysis).
+    """
+    # Basically identical to NodeTemplate but for now this is still separate
+    # TemplateClass
+
+    def __init__(self, identifier, lineno, astree):
+        self._id = identifier
+        self._lineno = lineno
+        self._astree = astree
+
+    @property
+    def identifier(self):
+        return self._id
+
+    @property
+    def astree(self):
+        return self._astree
+
+    @property
+    def lineno(self):
+        return self._lineno
