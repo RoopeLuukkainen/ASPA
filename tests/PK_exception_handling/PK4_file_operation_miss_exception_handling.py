@@ -32,10 +32,12 @@ def PK4():
     return None
 
 def foo():
-    """This is a bug, because creates error of for loop considered as a 
+    """
+    This is a bug, because creates error of for loop considered as a
     file operation. This is because the check does not confirm that file
     is opened in same function. Only check the filehandle name.
     """
+
     f = [1, 2, 3]
     for this_is_a_bug in f:
         print(this_is_a_bug)

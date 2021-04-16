@@ -69,7 +69,7 @@ def add_siblings(tree):
     #         print("---", node)
 
 # AST search utilities
-def get_parent_instance(node, allowed, denied=tuple()):
+def get_parent(node, allowed, denied=tuple()):
     """
     Function to get parent instance of a node.
     'allowed' argument defines type of the desired parent, it should be
@@ -84,20 +84,33 @@ def get_parent_instance(node, allowed, denied=tuple()):
     parent = None
     while(hasattr(temp, "parent_node") and not isinstance(temp, denied)):
         temp = temp.parent_node
-        if(isinstance(temp, allowed)):
+        if isinstance(temp, allowed):
             parent = temp
             break
     return parent
 
 
-def has_same_parent(node, others, allowed, denied=tuple()):
+def get_outer_parent(node, allowed, **kwargs):
+    """
+    Function to get outermost parent instance with allowed type. Uses
+    get_parent function until denied is found or no more allowed type is
+    found.
+    """
+
+    outer_parent = node
+    while (temp := get_parent(outer_parent, allowed, **kwargs)):
+        outer_parent = temp
+    return outer_parent
+
+
+def has_same_parent(node, others, allowed, **kwargs): #denied=tuple()):
     # NOT YET TESTED
-    parent = get_parent_instance(node, allowed, denied)
-    if(isinstance(others, (list, tuple, set))):
+    parent = get_parent(node, allowed, **kwargs)
+    if isinstance(others, (list, tuple, set)):
         for i in others:
-            if(not parent or (parent != get_parent_instance(i, allowed, denied))):
+            if not parent or (parent != get_parent(i, allowed, **kwargs)):
                 return False
-    elif(not parent or (parent != get_parent_instance(others, allowed, denied))):
+    elif not parent or (parent != get_parent(others, allowed, **kwargs)):
         return False
     return True
 
@@ -122,7 +135,7 @@ def get_child_instance(node, allowed, denied=tuple()):
             break
     return child
 
-# AST tests and gets
+# AST tests and value gets
 def is_always_true(test):
     """
     Function to define cases where conditional test is always true.
@@ -146,7 +159,7 @@ def is_added_to_data_structure(node, data_stuct_node, data_stuct_name, add_attrs
     """
 
     is_added = False
-    parent = get_parent_instance(node, (data_stuct_node, ast.Call))
+    parent = get_parent(node, (data_stuct_node, ast.Call))
 
     # This detect list_name += [...] and list_name = list_name + [...]
     # and cases with extend where list_name.extend([...])
@@ -167,22 +180,80 @@ def is_added_to_data_structure(node, data_stuct_node, data_stuct_name, add_attrs
     return is_added
 
 
-def get_attribute_name(node, splitted=False):
+def get_attribute_name(node, splitted=False, omit_n_last=0):
+    """
+    Function to parse name from attributes. If the is only single Name
+    node then node.id is enough. Otherwise add all attrs in front of
+    the id.
+
+    Optional parameters:
+    1. "splitted" is used get result as list instead of joined string,
+        i.e. "[like, this]" instead of "like.this".
+    2. "omit_n_last" is used to leave n last attrs out.
+    """
+
     try:
         name = node.id
     except AttributeError:
+        # If omit_n_last != 0 then it is changed to negative
+        # otherwise it will be None
+        # This is used in substring [:-n] where [:None] is same as [:]
+        omit_n_last = -omit_n_last or None
+
         try:
             name_parts = []
             temp = node
             while hasattr(temp, "attr"):
                 name_parts.insert(0, temp.attr)
                 temp = temp.value
-            if(splitted):
-                name = [temp.id] + name_parts
-            else:
-                name = ".".join([temp.id] + name_parts)
+
+            name = [temp.id] + name_parts[:omit_n_last]
+            if not splitted:
+                name = ".".join(name)
+
         except AttributeError:
             raise
         finally:
             name_parts.clear()
     return name
+
+
+def get_class_name(node, **kwargs):
+    """
+    Function to get name of a class. The class can be 'called' with or
+    without parenthesis. When parenthesis are not used creates
+    ast.Attribute node and when they are used creates ast.Call node.
+    Uses get_attribute_name function but with different node parameter
+    depending on the case.
+
+    Arguments:
+    kwargs can be "splitted" or "omit_n_last".
+
+    Return values:
+    On success: name of the class (and trailing attributes depending on
+                **kwargs.)
+    On failure: empty str ''.
+    """
+
+    try:
+        name = get_attribute_name(
+            node,
+            **kwargs
+        )
+    except AttributeError:
+        try:
+            name = get_attribute_name(
+                node.func,
+                **kwargs
+            )
+        except AttributeError:
+            name = ""
+    return name
+
+####################################################################
+#  Debug functions
+def dump_node(node):
+    try:
+        print(f"{node.lineno}: {ast.dump(node)}")
+    except AttributeError:
+        print(f"No line: {ast.dump(node)}")

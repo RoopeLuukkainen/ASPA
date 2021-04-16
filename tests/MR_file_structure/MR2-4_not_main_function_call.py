@@ -1,5 +1,5 @@
 """Test file for MR2-4 check.
-MR2-4 check detects global scope function calls which are calling 
+MR2-4 check detects global scope function calls which are calling
 functions from library or class.
 """
 

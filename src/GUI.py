@@ -5,74 +5,75 @@ try:
 except ModuleNotFoundError:
     import tkinter as tk  # Python 3, tested with this
     from tkinter import ttk
-import datetime # for timestamp
+
 import os
 
-import src.analysers.analysis_lib as analysis # Model
-import src.view_lib as view # View
-import src.utils_lib as utils
+import src.analysers.analysis_lib as analysis  # Model
 import src.config.config as cnf
+import src.utils_lib as utils
+import src.view_lib as view  # View
 
 # Constants
 TOOL_NAME = cnf.TOOL_NAME
 
 
 class GUICLASS(tk.Tk):
-    """Main class for GUI. Master for every used GUI element. The main frame and
-    menubar are inlcuded in the here other GUI elements are in view.
-    Works as a MVP model presenter/ MVC model controller."""
+    """Main class for GUI. Master for every used GUI element. The main
+    frame and menubar are inlcuded in the here other GUI elements are
+    in view. Works as a MVP model presenter/ MVC model controller.
+    """
+
     def __init__(self, *args, settings={}, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
         # tk.Tk.iconbitmap(self, default="icon.ico")  # To change logo icon
         tk.Tk.title(self, TOOL_NAME)
 
         self.settings = settings
-        self.lang = settings["language"]
+        self.LANG = settings.setdefault("language", "FIN")
+        self.cli = view.CLI(self.LANG)
+
+        # Detect and solve possible settings conflicts
+        conflicts = utils.detect_settings_conflicts(settings)
+        if conflicts:
+            utils.solve_settings_conflicts(conflicts, settings)
+            for c in conflicts:
+                self.propagate_error_message(c, error_type="conflict")
+
+
         self.model = analysis.Model(self)
-        self.line_count = 0
+        self.main_frame = view.MainFrame(self, self.LANG)
 
-       # The main frame
-        main_frame = tk.Frame(self)
-        main_frame.pack(side="top", fill="both", expand=True)
-        main_frame.grid_columnconfigure(0, weight=1)
-        main_frame.grid_rowconfigure(0, weight=1)
+        # Display the menu at the top
+        tk.Tk.config(self, menu=self.main_frame.menu)
 
-        # Menubar
-        menubar = tk.Menu(main_frame)
-
-        # File menu
-        filemenu = tk.Menu(menubar, tearoff=0)
-        filemenu.add_command(label=cnf.GUI[self.lang]["results"], command=lambda: self.show_page(view.ResultPage))
-        filemenu.add_command(label=cnf.GUI[self.lang]["exit"], command=quit)
-        menubar.add_cascade(label=cnf.GUI[self.lang]["filemenu"], menu=filemenu)
-
-        # Help menu
-        helpmenu = tk.Menu(menubar, tearoff=1)
-        helpmenu.add_command(label=cnf.GUI[self.lang]["help"], command=lambda: self.show_page(view.HelpPage))
-        menubar.add_cascade(label=cnf.GUI[self.lang]["helpmenu"], menu=helpmenu)
-
-        # Display the menu
-        tk.Tk.config(self, menu=menubar)
-
-        self.pages = {}
-        for p in (view.AnalysePage, view.ResultPage, view.HelpPage):
-            page = p(main_frame, self, self.settings)
-            self.pages[p] = page
-            page.grid(row=0, column=0, sticky="nesw")
-        self.show_page(view.AnalysePage)
-
+    # @property # TODO make this property?
     def get_lang(self):
-        return self.lang
+        return self.LANG
 
     def get_settings(self):
-        return self.settings  # Settings are not changed when where asked so no need to send copy.
+        # Settings are not changed when where asked so no need to send copy.
+        return self.settings
 
-    def show_page(self, cont):
-        page = self.pages[cont]
-        page.tkraise()
+    def propagate_error_message(self, error_code, *args, error_type="error"):
+        self.cli.print_error(error_code, *args, error_type=error_type)
+
+    def check_selection_validity(self, selections, filepaths):
+        valid = True
+        if sum(selections.values()) == 0:
+            valid = False
+            # TODO: Show GUI message of missing analysis selections
+            if self.settings.get("console_print"):
+                self.propagate_error_message("NO_SELECTIONS")
+
+        if not filepaths:
+            valid = False
+            # TODO: Show GUI message of missing files
+            if self.settings.get("console_print"):
+                self.propagate_error_message("NO_FILES")
+        return valid
 
     def tkvar_2_var(self, tk_vars, to_type):
-        selections = dict()
+        selections = {}
         if(isinstance(tk_vars, dict)):
             selections = dict(tk_vars)
             for key in selections.keys():
@@ -80,32 +81,50 @@ class GUICLASS(tk.Tk):
                     selections[key] = int(selections[key].get())
         return selections
 
-    def analyse(self, selected_analysis, filepaths):
+    def analyse_wrapper(self, selected_analysis, filepaths, analysis_type):
+        """
+        Method to call when starting analysis. Calls correct functions
+        to execute selected analysis type.
+        """
+
         selections = self.tkvar_2_var(selected_analysis, "int")
-        if(sum(selections.values()) == 0):
-            # TODO: Show message of missing analysis selections
-            return None
-        if(not filepaths):
-            # TODO: Show message of missing files
+        if not self.check_selection_validity(selections, filepaths):
             return None
 
-        filelist = utils.crawl_dirs(filepaths, self.settings["only_leaf_files"])
-        timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+        if analysis_type == "BKTA":
+            output_format = "dict"
+        else:  # default
+            output_format = "list"
 
-        # # Timestamp to filename  (temporal solution!!)
-        # self.settings["result_path"] = os.path.join(self.settings["root"], 
-        #     f"tarkistukset_{os.path.basename(filelist[0])}_{timestamp}.txt")  # Give error if file list is empty. Not yet fixed because temporal solution
-        # # temporal ends
+        file_structure = utils.directory_crawler(
+            filepaths,
+            only_leaf_files=self.settings["only_leaf_files"],
+            excluded_dirs=self.settings["excluded_directories"],
+            excluded_files=self.settings["excluded_files"],
+            output_format=output_format
+        )
 
-        utils.write_file(self.settings["result_path"], timestamp + "\n")
-        self.pages[view.ResultPage].clear_result()  # Clears previous results
-        self.line_count = self.pages[view.ResultPage].show_info()  # Init new results with default info
-        self.show_page(view.ResultPage)
-        self.model.analyse(filelist, selections)
-        return None
+        result_page = self.main_frame.get_page(view.ResultPage)
+        result_page.clear_result()  # Clears previous results
 
-    def update_result(self, messages):
-        self.line_count = self.pages[view.ResultPage].add_result(
-                                              messages, counter=self.line_count)
-        # self.pages[view.ResultPage].add_result(result)
+        if analysis_type == "BKTA":
+            self.main_frame.show_page(view.AnalysePage)  # Show "front page"
+
+            self.model.BKT_analyse(
+                selections,
+                file_structure
+            )
+
+            self.model.count_structures(file_structure)
+        else:
+            result_page.show_info()  # Init new results with default info
+            self.main_frame.show_page(view.ResultPage)  # Show "result page"
+
+            self.model.default_analyse(
+                selections,
+                file_structure,
+                result_page=result_page
+            )
+            result_page.set_line_counter(0)
+
         return None

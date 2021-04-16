@@ -4,18 +4,31 @@ import ast
 import pathlib
 
 DEFAULT_SETTINGS = {
-    "root": str(pathlib.Path(__file__).parent.absolute()),
+    "root": str(pathlib.Path(__file__).parents[2].resolve()),
     "language": "FIN",
     "dump_tree": False,
     "console_print": False,
     "file_write": True,
     "GUI_print": True,
-    "result_path": str(pathlib.Path(__file__).parent.absolute().joinpath("tarkistukset.txt")),
     "only_leaf_files": False,
     "show_statistics": False,
-    "settings_file": "settings.json"
+    "result_dir": str(pathlib.Path(__file__).parents[2].resolve().joinpath("results")),
+    "result_file": "results.txt",
+    "settings_file": "settings.json",
+    "BKT_file": "BKTA.csv",
+    "structure_file": "structures.csv",
+    "excluded_directories": ["__pycache__", ".git"],
+    "excluded_files": ["__init__.py"],
+    "subdirectory_order": ["course", "week", "exercise", "student"], # NOT YET USED
+    "clear_filepaths": False,
+    "shown_filepath_format": "both", # Options are defined in "Formatting configurations tuples"
+    "BKT_decimal_places": 3,
+    "BKT_decimal_separator": ",",
+    "BKT_cell_separator": ";",
+    "structure_cell_separator": ";",
 }
 
+# -----------------------------------------------------------------------------#
 # Analysis constants
 MAIN_FUNC_NAME = "paaohjelma"
 
@@ -27,10 +40,19 @@ DENIED_FUNCTIONS = {"*"}
 # Add function names which are allowed to miss return command.
 MISSING_RETURN_ALLOWED = {"__init__"}
 
-SEARCHED_COMMANDS = {"round", "print", "range", "int", "len", "float", "str"} # Examples
+# Examples of commands which could be searched in check PT1.
+SEARCHED_COMMANDS = {"round", "print", "range", "int", "len", "float", "str"}
+
+# Allowed constants values for return values (but not NameConstants True, False, None).
+ALLOWED_CONSTANTS = {}
+
+# Add keys of ignored structure messages (work with single or multiple regex patterns)
+IGNORE_STRUCT = {}
 
 # Add keys of ignored error messages
-IGNORE = {"PT1", "PK1", "MR5", "AR6-1", "AR6-2"}
+# IGNORE = {"PT1", "MR5"}
+IGNORE = {"PT1", "MR5", "AR6-2"}
+# IGNORE = {"PT1", "PK1", "MR5", "AR6-1", "AR6-2"}
 GENERAL = 0
 ERROR = 1
 WARNING = 2
@@ -74,14 +96,28 @@ ALLOWED_ELEMENTS = {ast.Import, ast.ImportFrom, ast.Assign, ast.ClassDef,
 #     }
 # }
 
+# --- AST class type sets ---
+FUNC = (ast.FunctionDef, ast.AsyncFunctionDef)
+CLS_FUNC = (ast.ClassDef, ast.FunctionDef, ast.AsyncFunctionDef)
+LOOP = (ast.For, ast.While)
+YIELD = (ast.Yield, ast.YieldFrom)
+
+
+# --- Formatting configurations tuples ---
+FILENAME_OPTIONS = ("name", "filename")  # Strings which mean (show) filename in settings.
+FILEPATH_OPTIONS = ("path", "filepath")  # Strings which mean (show) filepath in settings.
+OPTIONS_FOR_ALL = ("both", "all", "everything", "*")  # Strings which mean everthing/all/both.
+
+# -----------------------------------------------------------------------------#
 # Analysis category names
-CHECKBOX_OPTIONS = ["basic",
-                    "function",
-                    "file_handling",
-                    "data_structure",
-                    "library",
-                    "exception_handling"
-                   ]
+CHECKBOX_OPTIONS = [
+    "basic",
+    "function",
+    "file_handling",
+    "data_structure",
+    "library",
+    "exception_handling"
+]
 
 TEXT = {
     "FIN": {
@@ -106,12 +142,14 @@ TEXT = {
     }
 }
 
+# -----------------------------------------------------------------------------#
 # GUI constants
 GUI = {
     "FIN": {
-        "results": "Tulokset",
         "exit": "Sulje",
         "filemenu": "Toiminnot",
+        "results": "Näytä tulokset",
+        "BKTA": "Tee BKT-analyysi",
         "help": "Käyttöohje",
         "helpmenu": "Ohjeet",
         "select_analysis_title": "Valitse tarkistukset",
@@ -130,9 +168,10 @@ GUI = {
         "not_ready_note": "Työn alla"
     },
     "ENG": {
-        "results": "Results",
         "exit": "Exit",
         "filemenu": "File",
+        "results": "Show results",
+        "BKTA": "Execute BKT analysis",
         "help": "User guide",
         "helpmenu": "Help",
         "select_analysis_title": "Select analyses",
@@ -210,6 +249,7 @@ TITLE_TO_EXAMPLES = {
     "file_error": ("EX12",)
 }
 
+# -----------------------------------------------------------------------------#
 # Violation messages
 MSG = {
     "ENG": {
@@ -252,24 +292,24 @@ MSG = {
         "MR3-1": ("From module '{}' function(s) or module(s) are imported again.", WARNING),
         "MR4": ("Import of the module '{}' is not at the global scope.", ERROR),
         "MR5": ("Missing some or all header comments at {} first lines of the file.", WARNING),
-        "PK1": ("Error handling has only one (1) except.", NOTE),
+        "PK1": ("Exception handling has no excepts.", ERROR),
         "PK1-1": ("Missing exception type.", WARNING),
         "PK3": ("Missing exception handling from the file opening.", ERROR),
         "PK4": ("Missing exception handling from the file operation '{}'.", ERROR),
         # "PK4b": ("Missing exception handling from the file operation '{}'.", ERROR),
         "TK1": ("File handle '{}' is left open.", ERROR),
         "TK1-1": ("In this course usage of '{}' is not recommended.", NOTE),
-        "TK1-2": ("File handle '{}' is closed in except-branch.", WARNING),
+        "TK1-2": ("File handle '{}' is closed in except branch.", WARNING),
         "TK1-3": ("Missing parenthesis from file closing '{}.{}'.", ERROR),
         "TK2": ("File operation '{}.{}' is in different function than file open and close.", ERROR),
         "TR2-1": ("Class is being used directly without an object '{}'.", ERROR),
         "TR2-2": ("Missing parenthesis from object creation. Should be '{}()'.", ERROR),
-        "TR2-3": ("Class '{}' is not defined in global scope.", ERROR),
+        "TR2-3": ("Class '{}' is not defined at the global scope.", ERROR),
         "TR2-4": ("Name of the class '{}' is not in UPPERCASE.", NOTE),
         # "TR3": ("Object created.", NOTE),
         "TR3-1": ("Object's attribute is added to a list in every loop iteration.", WARNING),
         "TR3-2": ("Object is created outside a loop but usage and addition to"
-                + "a list is inside the loop.", WARNING),
+                + " a list is inside the loop.", WARNING),
         "OK": (": No violations detected.", GOOD),
         "NOTE": (", violations detected please see", GENERAL),
         "LINE": ("Line", GENERAL),
@@ -277,7 +317,7 @@ MSG = {
                  + "all others are errors.", GENERAL),
         "NOTE_INFO": ("All messages with this colour are notes.", NOTE),
         "WARNING_INFO": ("All messages with this colour are warnings.", WARNING),
-        "ERROR_INFO": ("All messages with this colour are errors.", ERROR)
+        "ERROR_INFO": ("All messages with this colour are errors.", ERROR),
     },
     "FIN": {
         "default": ("Tapahtui virhe!", ERROR),
@@ -318,7 +358,7 @@ MSG = {
         "MR4": ("Kirjaston '{}' sisällytys (eng. import) ei ole päätasolla.", ERROR),
         "MR5": ("Tiedostossa ei ole kaikkia alkukommentteja tiedoston {}"
                 + " ensimmäisellä rivillä.", WARNING),
-        "PK1": ("Virheenkäsittelyssä vain yksi (1) except.", NOTE),
+        "PK1": ("Poikkeustenkäsittelyssä ei ole lainkaan exceptiä.", ERROR),
         "PK1-1": ("Exceptistä puuttuu virhetyyppi.", WARNING),
         "PK3": ("Tiedoston avaamisesta puuttuu poikkeustenkäsittely.", ERROR),
         "PK4": ("Tiedosto-operaatiosta '{}' puuttuu poikkeustenkäsittely.", ERROR),
@@ -343,6 +383,233 @@ MSG = {
                  + "muut ovat virheitä.", GENERAL),
         "NOTE_INFO": ("Tällä värillä merkityt viestit ovat huomioita.", NOTE),
         "WARNING_INFO": ("Tällä värillä merkityt viestit ovat varoituksia.", WARNING),
-        "ERROR_INFO": ("Tällä värillä merkityt viestit ovat virheitä.", ERROR)
+        "ERROR_INFO": ("Tällä värillä merkityt viestit ovat virheitä.", ERROR),
+    }
+}
+
+# -----------------------------------------------------------------------------#
+# BKT related titles and text
+
+STRUCTURE = {
+    "ENG": {
+        "D01A001": "IF",
+        "D01A002": "ELIF",
+        "D01A003": "ELSE",
+        "D01B001": "Ternary IF",
+        "D02A001": "WHILE",
+        "D02A002": "WHILE-ELSE",
+        "D02B001": "FOR",
+        "D02B002": "FOR-ELSE",
+        "D02C001": "List Comp",
+        "D02C002": "Set Comp",
+        "D02C003": "Generator Comp",
+        "D02C004": "Dict Comp",
+        "D03A001": "Func",
+        "D03A002": "AsyncFunc",
+        "D03A003": "LAMBDA",
+        "D03B001": "Parameters",
+        "D03C001": "RETURN",
+        "D03C004": "return None",
+        "D03C005": "Return with value",
+        "D03C002": "YIELD",
+        "D03C003": "YIELD FROM",
+        "D05A001": "OPEN",
+        "D05A002": "WITH OPEN",
+        "D05B001": "READ",
+        "D05B002": "READLINE",
+        "D05B003": "READLINES",
+        "D05C001": "WRITE",
+        "D05C002": "WRITELINES",
+        "D05D001": "CLOSE",
+        "D06A001": "List",
+        "D06B001": "Dict",
+        "D06C001": "Tuple",
+        "D06D001": "Set",
+        "D07A001": "Class",
+        "D07C001": "Object",
+        "D08B001": "IMPORT",
+        "D08B002": "FROM IMPORT",
+        "D08B003": "FROM IMPORT *",
+        "D09A001": "TRY",
+        "D09A002": "EXCEPT",
+        "D09A003": "ELSE",
+        "D09A004": "FINALLY",
+        "D09B001": "Except value",
+        "D10B001": "Index",
+        "D10B002": "Slice",
+        "D11A001": "OR",
+        "D11A002": "AND",
+        "D11B001": "==",
+        "D11B002": "!=",
+        "D11B003": "<",
+        "D11B004": ">",
+        "D11B005": "<=",
+        "D11B006": ">=",
+        "D11B007": "IS",
+        "D11B008": "IS NOT",
+        "D11B009": "IN",
+        "D11B010": "NOT IN"
+    },
+    "FIN": {
+        "D01A001": "IF",
+        "D01A002": "ELIF",
+        "D01A003": "ELSE",
+        "D01B001": "Ternary IF",
+        "D02A001": "WHILE",
+        "D02A002": "WHILE-ELSE",
+        "D02B001": "FOR",
+        "D02B002": "FOR-ELSE",
+        "D02C001": "List Comp",
+        "D02C002": "Set Comp",
+        "D02C003": "Generator Comp",
+        "D02C004": "Dict Comp",
+        "D03A001": "Func",
+        "D03A002": "AsyncFunc",
+        "D03A003": "LAMBDA",
+        "D03B001": "Parameters",
+        "D03C001": "RETURN",
+        "D03C004": "return None",
+        "D03C005": "Return with value",
+        "D03C002": "YIELD",
+        "D03C003": "YIELD FROM",
+        "D05A001": "OPEN",
+        "D05A002": "WITH OPEN",
+        "D05B001": "READ",
+        "D05B002": "READLINE",
+        "D05B003": "READLINES",
+        "D05C001": "WRITE",
+        "D05C002": "WRITELINES",
+        "D05D001": "CLOSE",
+        "D06A001": "List",
+        "D06B001": "Dict",
+        "D06C001": "Tuple",
+        "D06D001": "Set",
+        "D07A001": "Class",
+        "D07C001": "Object",
+        "D08B001": "IMPORT",
+        "D08B002": "FROM IMPORT",
+        "D08B003": "FROM IMPORT *",
+        "D09A001": "TRY",
+        "D09A002": "EXCEPT",
+        "D09A003": "ELSE",
+        "D09A004": "FINALLY",
+        "D09B001": "Except value",
+        "D10B001": "Index",
+        "D10B002": "Slice",
+        "D11A001": "OR",
+        "D11A002": "AND",
+        "D11B001": "==",
+        "D11B002": "!=",
+        "D11B003": "<",
+        "D11B004": ">",
+        "D11B005": "<=",
+        "D11B006": ">=",
+        "D11B007": "IS",
+        "D11B008": "IS NOT",
+        "D11B009": "IN",
+        "D11B010": "NOT IN"
+    }
+}
+
+BKT_TEXT = {
+    "ENG": {
+        "student_name": "Student"
+    },
+    "FIN": {
+        "student_name": "Opiskelija"
+    }
+}
+
+BKT_TITLES = {
+    "ENG": {
+        "AR1": "AR1",
+        "AR2-1": "AR2-1",
+        "AR4": "AR4",
+        "AR5-1": "AR5-1",
+        "AR5-2": "AR5-2",
+        "AR5-3": "AR5-3",
+        "AR6": "AR6",
+        "MR1": "MR1",
+        "MR2-3": "MR2-3",
+        "MR2-4": "MR2-4",
+        "MR3": "MR3",
+        "MR3-1": "MR3-1",
+        "MR4": "MR4",
+        "PK1": "PK1",
+        "PK1-1": "PK1-1",
+        "PK3": "PK3",
+        "PK4": "PK4",
+        "PT2": "PT2",
+        "PT4-1": "PT4-1",
+        "PT5": "PT5",
+        "TK1": "TK1",
+        "TK1-2": "TK1-2",
+        "TK1-3": "TK1-3",
+        "TK2": "TK2",
+        "TR2-2": "TR2-2",
+        "TR2-3": "TR2-3",
+        "TR2-4": "TR2-4",
+        "TR3-1": "TR3-1",
+        "TR3-2": "TR3-2"
+    },
+    "FIN": {
+        "AR1": "AR1",
+        "AR2-1": "AR2-1",
+        "AR4": "AR4",
+        "AR5-1": "AR5-1",
+        "AR5-2": "AR5-2",
+        "AR5-3": "AR5-3",
+        "AR6": "AR6",
+        "MR1": "MR1",
+        "MR2-3": "MR2-3",
+        "MR2-4": "MR2-4",
+        "MR3": "MR3",
+        "MR3-1": "MR3-1",
+        "MR4": "MR4",
+        "PK1": "PK1",
+        "PK1-1": "PK1-1",
+        "PK3": "PK3",
+        "PK4": "PK4",
+        "PT2": "PT2",
+        "PT4-1": "PT4-1",
+        "PT5": "PT5",
+        "TK1": "TK1",
+        "TK1-2": "TK1-2",
+        "TK1-3": "TK1-3",
+        "TK2": "TK2",
+        "TR2-2": "TR2-2",
+        "TR2-3": "TR2-3",
+        "TR2-4": "TR2-4",
+        "TR3-1": "TR3-1",
+        "TR3-2": "TR3-2"
+    }
+}
+
+# -----------------------------------------------------------------------------#
+# CLI error messages
+CLI_ERROR = {
+    "ENG": {
+        "NO_FILES": "Please select files to be analysed.",
+        "NO_SELECTIONS": "Please select analysis to be executed.",
+        "NO_LANGUAGE": "Please define language in settings. By default FIN is used." # Technically this will never occur if FIN is default
+    },
+    "FIN": {
+        "NO_FILES": "Ole hyvä ja valitse ensin analysoitavat tiedostot.",
+        "NO_SELECTIONS": "Ole hyvä ja valitse ensin suoritettavat analyysit.",
+        "NO_LANGUAGE": "Ole hyvä ja määrittele käytettävä kieli asetuksista. Oletusasetus on FIN."
+    }
+}
+
+SETTINGS_CONFLICTS = {
+    "ENG": {
+        "C0001": "Decimal and cell separators can't be the same character." +
+                 " Default values comma (,) and semicolon (;) are used" +
+                 " for decimal separator and cell separator, respectively."
+
+    },
+    "FIN": {
+        "C0001": "Desimaali- ja soluerottimet eivät voi olla sama merkki." +
+                 " Käytetään oletusarvoja pilkku (,) desimaalierottimena ja" +
+                 " puolipiste (;) soluerottimena."
     }
 }
