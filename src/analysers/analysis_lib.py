@@ -611,9 +611,14 @@ class Model:
         # --- 2. Count all structures ---
         for student_name, filepaths in file_dict.items():
             result_line = initial_line[:] # copy to allow separate changes
+            if not filepaths:
+                continue
 
             for filepath in filepaths:
-                structs = self.structures.get(filepath.path)
+                # In some filepaths there is no detected structures,
+                # therefore default is needed to be iterable, i.e. empty
+                # list instead of None.
+                structs = self.structures.get(filepath.path, [])
 
                 for s in structs:
                     try:
