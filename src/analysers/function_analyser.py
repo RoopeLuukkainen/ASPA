@@ -199,11 +199,42 @@ class FunctionAnalyser(ast.NodeVisitor):
             pass
 
     def _check_recursion(self, node, func, *args, **kwargs):
-        # Recursive function calls.
+        """
+        Private method to detect if function call is directly recursive,
+        i.e. if function call inside a function is calling the function
+        itself, e.g.:
+
+        def func():
+            ...
+            func()
+            ...
+
+        Results violation, not violation, or ignore:
+        1. IF recursion occurs violation is detected.
+        2. ELIF call is for local function (in same file or imported
+           local library file) then it is done correctly.
+        3. ELSE ignores because call is for e.g. standard library
+           functions print(), input(), etc.
+        """
+
         try:
+            # Recursive function calls.
             if func == a_utils.get_parent(node, cnf.FUNC).name:
-                self.model.add_msg("AR4", lineno=node.lineno)
-        except AttributeError:  # AttributeError occus e.g. when function name is searched from global scope
+                self.model.add_msg("AR4", lineno=node.lineno, status=False)
+                # print("rec", func, node.lineno)
+
+            # Not (directly) recursive function call so it is okay
+            elif func in self.model.get_function_dict().keys():
+                self.model.add_msg("AR4", lineno=node.lineno, status=True)
+                # print("norm", func, node.lineno)
+
+            # ELSE means standard library function calls e.g. print(), input()
+            # FIXME: currently also cases with local library imports with * or
+            # renaming with "as"-keyword might lead to else.
+            # else: pass
+        except AttributeError:
+            # AttributeError occurs e.g. when function name is searched from
+            # the global scope
             pass
 
     def _check_paramenters(self, node, function_name, *args, **kwargs):
