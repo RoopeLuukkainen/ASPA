@@ -27,7 +27,8 @@ DEFAULT_SETTINGS = {
     # TODO add also setting for selecting the sorting key, i.e. student or week etc.
     "subdirectory_order": ["course", "week", "exercise", "student"], # NOT YET USED
     "clear_filepaths": False,
-    # TODO default file to be analysed (i.e. prefilled analysis list)
+    "default_paths": [],
+    # TODO Font size
     "shown_filepath_format": "both", # Options are defined in "Formatting configurations tuples"
     "BKT_decimal_places": 3,
     "BKT_decimal_separator": ",",
