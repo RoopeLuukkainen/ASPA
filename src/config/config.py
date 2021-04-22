@@ -19,13 +19,20 @@ DEFAULT_SETTINGS = {
     "structure_file": "structures.csv",
     "excluded_directories": ["__pycache__", ".git"],
     "excluded_files": ["__init__.py"],
+    "excluded_staff": [
+        "ojale044", "aalto98", "lackman",
+        "Roni.Juntunen", "Simo.Viljakainen", "uolevi.nikula", "Miisa.Lopperi",
+        "Markus.Strandman", "Roope.Luukkainen", "Pavel.Silke", "Niku.Gronberg"
+    ],
+    # TODO add also setting for selecting the sorting key, i.e. student or week etc.
     "subdirectory_order": ["course", "week", "exercise", "student"], # NOT YET USED
     "clear_filepaths": False,
+    # TODO default file to be analysed (i.e. prefilled analysis list)
     "shown_filepath_format": "both", # Options are defined in "Formatting configurations tuples"
     "BKT_decimal_places": 3,
     "BKT_decimal_separator": ",",
     "BKT_cell_separator": ";",
-    "structure_cell_separator": ";",
+    "structure_cell_separator": ";"
 }
 
 # -----------------------------------------------------------------------------#
