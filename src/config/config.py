@@ -38,15 +38,18 @@ DEFAULT_SETTINGS = {
 
 # -----------------------------------------------------------------------------#
 # Constants which are not meant to be changes by user/admin
-_LOCAL_ELEM = "^[\w]+$"  # \w inlcudes alfanumeric characters and underscore
 
+# NOTE \w inlcudes alfanumeric characters and underscore
+# This is used to exclude elements like class.function or imported.function or
+# function.function from analysis dictionaries.
+_GLOBAL_ELEM = r"^[\w]+$"
 
 # -----------------------------------------------------------------------------#
 # Analysis constants
 MAIN_FUNC_NAME = "paaohjelma"
 
 # Allowed naming schema for variables, in Regex
-VALID_NAME_SCHEMA = "^[a-zA-Z_][a-zA-Z0-9_]*$"
+VALID_NAME_SCHEMA = r"^[a-zA-Z_][a-zA-Z0-9_]*$"
 
 # Add names of special functions which are allowed/denied inside class.
 # Use * to match any function names. Allowed overrides denied.

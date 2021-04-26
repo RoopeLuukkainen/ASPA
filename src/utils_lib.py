@@ -30,7 +30,7 @@ DEBUG = cnf.DEBUG
 REGEX = {}  # This will store compiled regex patterns
 PATTERN = { # This include all configurated patterns as a string
     "valid_naming": cnf.VALID_NAME_SCHEMA,
-    "_local_element": cnf._LOCAL_ELEM
+    "_global_element": cnf._GLOBAL_ELEM
 }
 
 ########################################################################
