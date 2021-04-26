@@ -31,10 +31,12 @@ class NodeTemplate():
 class FunctionTemplate(NodeTemplate):
     """Template class for functions found during preanalysis."""
 
-    def __init__(self, name, lineno, astree, pos_args, kw_args):
+    def __init__(self, name, lineno, astree, pos_args, kw_args, imported=False):
         NodeTemplate.__init__(self, name, lineno, astree)
         self._pos_args = pos_args    # Positional arguments before *args
         self._kw_args = kw_args      # Keyword arguments before **kwargs
+        self._imported = imported
+        self.recursive_calls = []
 
     @property
     def pos_args(self):
@@ -43,6 +45,16 @@ class FunctionTemplate(NodeTemplate):
     @property
     def kw_args(self):
         return self._kw_args
+
+    @property
+    def imported(self):
+        return self._imported
+
+    def add_recursive_call(self, node):
+        self.recursive_calls.append(node)
+
+    def get_recursive_calls(self):
+        return self.recursive_calls
 
 class ImportTemplate(NodeTemplate):
     """Template class for imports found during preanalysis."""
@@ -58,9 +70,13 @@ class ImportTemplate(NodeTemplate):
 class ClassTemplate(NodeTemplate):
     """Template class for classes found during preanalysis."""
 
-    def __init__(self, name, lineno, astree):
+    def __init__(self, name, lineno, astree, imported=False):
         NodeTemplate.__init__(self, name, lineno, astree)
+        self._imported = imported
 
+    @property
+    def imported(self):
+        return self._imported
 
 class GlobalTemplate(NodeTemplate):
     """Template class for global variables found during preanalysis."""

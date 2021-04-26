@@ -522,6 +522,8 @@ class Model:
                     analyser.check_main_function()
                     analyser.check_element_order(tree.body, cnf.ELEMENT_ORDER)
                     analyser.check_global_variables()
+                    analyser.check_recursive_functions(self.function_dict)
+                    analyser.clear_all()
 
                 elif(opt == "library"):
                     # Info comments check, i.e. author, date etc.
