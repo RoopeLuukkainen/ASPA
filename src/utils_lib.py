@@ -4,6 +4,7 @@
 import json
 import os       # os.walk is used for convenient directory exclusion possibility
 import pathlib  # Used for all the other path operations
+import re
 from typing import List
 
 import src.config.config as cnf
@@ -24,7 +25,15 @@ NOTE = cnf.NOTE
 GOOD = cnf.GOOD
 DEBUG = cnf.DEBUG
 
+########################################################################
+# Regex
+REGEX = {}
+PATTERN = {
+    "valid_naming": cnf.VALID_NAME_SCHEMA,
+    "_local_element": cnf._LOCAL_ELEM
+}
 
+########################################################################
 # General utilities
 
 def ignore_check(code):
@@ -328,8 +337,15 @@ def create_dash(character="-", dash_count=80, get_dash=False):
         print(character * dash_count)
 
 
+########################################################################
+# Getter functions for static values
+
 def get_structures(lang="FIN"):
     return STRUCTURE.get(lang, {})
+
+
+def get_compiled_regex(key):
+    return REGEX.setdefault(key, re.compile(PATTERN[key]))
 
 
 ########################################################################
