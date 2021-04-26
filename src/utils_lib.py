@@ -27,8 +27,8 @@ DEBUG = cnf.DEBUG
 
 ########################################################################
 # Regex
-REGEX = {}
-PATTERN = {
+REGEX = {}  # This will store compiled regex patterns
+PATTERN = { # This include all configurated patterns as a string
     "valid_naming": cnf.VALID_NAME_SCHEMA,
     "_local_element": cnf._LOCAL_ELEM
 }
@@ -345,6 +345,16 @@ def get_structures(lang="FIN"):
 
 
 def get_compiled_regex(key):
+    """
+    Function to get compiled regex pattern. On the first call pattern
+    will be compiled in concecutive calls same compiled pattern will be
+    returned.
+    """
+
+    # NOTE this will raise a KeyError if key is not found from the
+    # PATTERN but that should be possible only in development phase when
+    # patterns are added to config file and to the PATTERN dictionary.
+    # PATTERN is not configurable by an end user.
     return REGEX.setdefault(key, re.compile(PATTERN[key]))
 
 
