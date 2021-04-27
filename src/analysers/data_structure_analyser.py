@@ -67,8 +67,8 @@ class DataStructureAnalyser(ast.NodeVisitor):
         """
 
         names = []
-        if(func):
-            for i in self._local_objects[func]:
+        if func:
+            for i in self._local_objects.get(func, []):
                 names.append(i.name)
         else:
             for value in self._local_objects.values():
@@ -84,7 +84,7 @@ class DataStructureAnalyser(ast.NodeVisitor):
 
         obj = None
         if func:
-            for i in self._local_objects[func]:
+            for i in self._local_objects.get(func, []):
                 if i.name == obj_name:
                     obj = i
                     break
@@ -99,29 +99,73 @@ class DataStructureAnalyser(ast.NodeVisitor):
                         return obj
         return obj
 
+    def _check_creation_without_parenthesis(self, node):
+        """
+        Private method to check if object is created (tried to create)
+        without parenthesis. Check works when assigned value i.e.
+        node.id is class name.
+        """
+
+        classes = self.model.get_class_dict().keys()
+
+        try:
+            parent = a_utils.get_parent(node, cnf.CLS_FUNC)
+
+            if (temp := self._is_class_call(node, parent, classes)):
+                self.model.add_msg(
+                    "TR2-2",
+                    node.id,
+                    lineno=node.lineno,
+                    status=(temp > 0) # -1 means class call without parenthesis
+                )
+        except AttributeError:
+            pass
+        return None
+
     def _check_attribute_addition_to_list(self, node):
         """
-        Method to check if object's attributes are added to a list is
-        done inside a loop.
+        Method to detect violation if object's attributes are added to
+        a list inside a loop. The expected way is to add the object
+        itself, not the attribute.
         """
+        status = False
 
         try:
             # Get parent function and name of the object
-            func = a_utils.get_parent(node, cnf.FUNC)
-            obj = a_utils.get_attribute_name(node.value)
 
+            # NOTE: name is take from outermost attribute e.g. in case of
+            # example_list = [param.object.value]
+            # the param creates the outermost Attribute node. In this case the
+            # last attribute is ommitted because it is ATTRIBUTE's name not name
+            # of the OBJECT.
+            func = a_utils.get_parent(node, cnf.FUNC)
+            outermost_attr = a_utils.get_outer_parent(
+                node,
+                ast.Attribute,
+                denied=(ast.List, ast.Call)
+            )
+
+            if outermost_attr == node:
+                obj = a_utils.get_attribute_name(node)
+                status = True
+            else:
+                obj = a_utils.get_attribute_name(outermost_attr, omit_n_last=1)
+
+            # Test if object (or its attribute) is added to the list inside a
+            # loop
             if (obj in self._get_local_object_names(func)
+                and a_utils.get_parent(node, cnf.LOOP)
                 and a_utils.is_added_to_data_structure(
-                    node,
-                    ast.List,
-                    "list",
-                    self._list_addition_attributes
-                )
+                        node,
+                        ast.List,
+                        "list",
+                        self._list_addition_attributes
+                    )
             ):
                 self.model.add_msg(
                     "TR3-1",
                     lineno=node.lineno,
-                    status=(a_utils.get_parent(node, cnf.LOOP) is None)
+                    status=status
                 )
         except (AttributeError, KeyError):
             pass
@@ -153,42 +197,42 @@ class DataStructureAnalyser(ast.NodeVisitor):
 
                 creation_loop = a_utils.get_parent(obj.astree, cnf.LOOP)
 
-                # TODO: This is now done everytime object attribute is assigned
-                # inside a loop. Optimize this such that objects are first
-                # gathered and then only one walk to check all of them.
-
-                for elem in ast.walk(assing_loop):
-                    try:
-                        # NOTE: condition "not (func, obj.name) in self._analysed_TR3_2.keys()"
-                        # would limits analysis of each object to single case
-                        # because otherwise each list.append(obj) and obj.attr
-                        # triggers new BTKA result
-                        if ((obj.name == a_utils.get_attribute_name(elem))
-                            # and not (func, obj.name) in self._analysed_TR3_2.keys()
-                            and a_utils.is_added_to_data_structure(
-                                elem,
-                                ast.List,
-                                "list",
-                                self._list_addition_attributes
-                            )
-                        ):
-                        # 'status' tells if creation of object is in the same
-                        # loop as value is assigned to the attribute. If yes no
-                        # violation.
-                            self.model.add_msg(
-                                "TR3-2",
-                                lineno=obj.lineno,
-                                status=(creation_loop == assing_loop)
-                            )
-
-                            self._analysed_TR3_2.setdefault(
-                                (func, obj.name),
-                                []
-                            ).append(elem.lineno)
-                    except AttributeError:
-                        continue
             except AttributeError:
-                pass
+                continue
+
+            # TODO: This is now done everytime object attribute is assigned
+            # inside a loop. Optimize this such that objects are first gathered
+            # and then only one walk to check all of them.
+            for elem in ast.walk(assing_loop):
+                try:
+                    # NOTE: condition "not (func, obj.name) in self._analysed_TR3_2.keys()"
+                    # would limits analysis of each object to single case
+                    # because otherwise each list.append(obj) and obj.attr
+                    # triggers new BTKA result
+                    if ((obj.name == a_utils.get_attribute_name(elem))
+                        # and not (func, obj.name) in self._analysed_TR3_2.keys()
+                        and a_utils.is_added_to_data_structure(
+                            elem,
+                            ast.List,
+                            "list",
+                            self._list_addition_attributes
+                        )
+                    ):
+                    # 'status' tells if creation of object is in the same
+                    # loop as value is assigned to the attribute. If yes, no
+                    # violation.
+                        self.model.add_msg(
+                            "TR3-2",
+                            lineno=obj.lineno,
+                            status=(creation_loop == assing_loop)
+                        )
+
+                        self._analysed_TR3_2.setdefault(
+                            (func, obj.name),
+                            []
+                        ).append(elem.lineno)
+                except AttributeError:
+                    continue
         return None
 
     def _is_class_call(self, node, parent, classes):
@@ -308,22 +352,10 @@ class DataStructureAnalyser(ast.NodeVisitor):
         self.generic_visit(node)
 
     def visit_Name(self, node, *args, **kwargs):
-        # Object creation without parenthesis, work when assigned value
-        # i.e. node.id is class name.
-        classes = self.model.get_class_dict().keys()
+        """Method to do checks for ast.Name nodes."""
 
-        try:
-            parent = a_utils.get_parent(node, cnf.CLS_FUNC)
-
-            if (temp := self._is_class_call(node, parent, classes)):
-                self.model.add_msg(
-                    "TR2-2",
-                    node.id,
-                    lineno=node.lineno,
-                    status=(temp > 0) # -1 means class call without parenthesis
-                )
-        except AttributeError:
-            pass
+        self._check_creation_without_parenthesis(node)
+        self._check_attribute_addition_to_list(node)
         self.generic_visit(node)
 
     def visit_ClassDef(self, node, *args, **kwargs):
@@ -342,13 +374,4 @@ class DataStructureAnalyser(ast.NodeVisitor):
         """Method to call detect objects for current namespace."""
 
         self._detect_objects(node)
-        self.generic_visit(node)
-
-    def visit_Attribute(self, node, *args, **kwargs):
-        """
-        Method to check
-        1. Object attributes are added into a list inside a loop.
-        """
-
-        self._check_attribute_addition_to_list(node)
         self.generic_visit(node)
