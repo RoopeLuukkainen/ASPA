@@ -95,6 +95,11 @@ def get_outer_parent(node, allowed, **kwargs):
     Function to get outermost parent instance with allowed type. Uses
     get_parent function until denied is found or no more allowed type is
     found.
+
+    Return:
+    IF parent is found: outer_parent - ast Node - Outermost parent node
+                        of a reguested type.
+    ELSE: node - the parameter node itself.
     """
 
     outer_parent = node
@@ -154,7 +159,8 @@ def is_always_true(test):
 
 
 def is_added_to_data_structure(node, data_stuct_node, data_stuct_name, add_attrs):
-    """Helper function to detect if node is added to a datastucture.
+    """
+    Helper function to detect if node is added to a datastucture.
     So far tested and commented only with ast.List.
     """
 
