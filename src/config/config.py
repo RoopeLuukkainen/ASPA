@@ -19,18 +19,37 @@ DEFAULT_SETTINGS = {
     "structure_file": "structures.csv",
     "excluded_directories": ["__pycache__", ".git"],
     "excluded_files": ["__init__.py"],
+    "excluded_staff": [
+        "ojale044", "aalto98", "lackman",
+        "Roni.Juntunen", "Simo.Viljakainen", "uolevi.nikula", "Miisa.Lopperi",
+        "Markus.Strandman", "Roope.Luukkainen", "Pavel.Silke", "Niku.Gronberg"
+    ],
+    # TODO add also setting for selecting the sorting key, i.e. student or week etc.
     "subdirectory_order": ["course", "week", "exercise", "student"], # NOT YET USED
     "clear_filepaths": False,
+    "default_paths": [],
+    # TODO Font size
     "shown_filepath_format": "both", # Options are defined in "Formatting configurations tuples"
     "BKT_decimal_places": 3,
     "BKT_decimal_separator": ",",
     "BKT_cell_separator": ";",
-    "structure_cell_separator": ";",
+    "structure_cell_separator": ";"
 }
+
+# -----------------------------------------------------------------------------#
+# Constants which are not meant to be changes by user/admin
+
+# NOTE \w inlcudes alfanumeric characters and underscore
+# This is used to exclude elements like class.function or imported.function or
+# function.function from analysis dictionaries.
+_GLOBAL_ELEM = r"^[\w]+$"
 
 # -----------------------------------------------------------------------------#
 # Analysis constants
 MAIN_FUNC_NAME = "paaohjelma"
+
+# Allowed naming schema for variables, in Regex
+VALID_NAME_SCHEMA = r"^[a-zA-Z_][a-zA-Z0-9_]*$"
 
 # Add names of special functions which are allowed/denied inside class.
 # Use * to match any function names. Allowed overrides denied.

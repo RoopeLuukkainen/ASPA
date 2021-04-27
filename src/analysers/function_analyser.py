@@ -1,8 +1,9 @@
 """Class file. Contains FunctionAnalyser class."""
 import ast
 
-import src.analysers.analysis_utils as a_utils
 import src.config.config as cnf
+import src.analysers.analysis_utils as a_utils
+import src.utils_lib as utils
 
 class FunctionAnalyser(ast.NodeVisitor):
     # Initialisation
@@ -13,6 +14,12 @@ class FunctionAnalyser(ast.NodeVisitor):
         self.DENIED_FUNC = cnf.DENIED_FUNCTIONS
         self.MISSING_RETURN_ALLOWED = cnf.MISSING_RETURN_ALLOWED
         self.ALLOWED_CONSTANTS = cnf.ALLOWED_CONSTANTS
+
+        self.recursive_calls = {}
+
+    def clear_all(self):
+        self.recursive_calls.clear()
+        return None
 
     # General methods
     def _check_return(self, node):
@@ -199,11 +206,32 @@ class FunctionAnalyser(ast.NodeVisitor):
             pass
 
     def _check_recursion(self, node, func, *args, **kwargs):
-        # Recursive function calls.
+        """
+        Private method to detect if function call is directly recursive,
+        i.e. if function call inside a function is calling the function
+        itself, e.g.:
+
+        def func():
+            ...
+            func()
+            ...
+
+        If recursion is found, adds function to recursive_calls
+        dictonary and adds the function call node to FunctionTemplate
+        object in that dictionary.
+        """
+
         try:
+            # Recursive function calls
             if func == a_utils.get_parent(node, cnf.FUNC).name:
-                self.model.add_msg("AR4", lineno=node.lineno)
-        except AttributeError:  # AttributeError occus e.g. when function name is searched from global scope
+                self.recursive_calls.setdefault(
+                    func,
+                    self.model.get_function_dict().get(func)
+                ).add_recursive_call(node)
+        except AttributeError:
+            # AttributeError occurs e.g. when function name is searched from
+            # the global scope OR when get_parent no match and returns value
+            # None, which does not has a attribute name.
             pass
 
     def _check_paramenters(self, node, function_name, *args, **kwargs):
@@ -370,6 +398,55 @@ class FunctionAnalyser(ast.NodeVisitor):
                         key=lambda elem: elem.lineno):
             self.model.add_msg("AR3", i.name, lineno=i.lineno)
 
+    def _exclude_imported_functions(self, fun_dict_full):
+        """
+        Private method to exclude all the functions which are imported.
+        """
+
+        func_dict_local = dict(
+            filter(
+                lambda elem: not elem[1].imported,
+                fun_dict_full.items()
+            )
+        )
+        return func_dict_local
+
+    def check_recursive_functions(self, func_dict):
+        """
+        Method to detected which functions are done without a single
+        recursive call and which ones have one or more recursive call.
+
+        NOTE EACH recursive CALL creates a violation, but each FUNCTION
+        without a recursion creates ONE correctly done function.
+
+        Attributes:
+        1. func_dict - Dict[FunctionTemplate] - Dictionary containing
+           function template objects (defined in templates.py file).
+           Keys are str of function name in addition the format
+           "parent.name" is also accepted and they are used to get
+           values from recursive_calls dictionary.
+
+        Return: None
+        """
+
+        try:
+            local_functions = self._exclude_imported_functions(func_dict)
+            for func_name, func_obj in local_functions.items():
+                if (temp := self.recursive_calls.get(func_name)):
+                    for node in temp.get_recursive_calls():
+                        self.model.add_msg(
+                            "AR4",
+                            lineno=node.lineno,
+                            status=False
+                        )
+                else:
+                    self.model.add_msg(
+                        "AR4",
+                        lineno=func_obj.lineno,
+                        status=True
+                    )
+        except AttributeError:
+            pass
 
    # Visits
     def visit_Assign(self, node, *args, **kwargs):

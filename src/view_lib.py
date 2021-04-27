@@ -158,7 +158,7 @@ class CheckboxPanel(tk.Frame):
 
 ################################################################################
 class FiledialogPanel(tk.Frame):
-    def __init__(self, parent, root):
+    def __init__(self, parent, root, default_files):
         tk.Frame.__init__(self, parent, bd=BD, relief=BD_STYLE)
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(1, weight=1)
@@ -201,7 +201,7 @@ class FiledialogPanel(tk.Frame):
             height=10,
             bg=BG_COLOR,
             fg=FONT_COLOR,
-            font=NORMAL_FONT #font=SMALL_FONT
+            font=NORMAL_FONT, #font=SMALL_FONT
         )
         self.filebox.grid(
             row=1,
@@ -211,6 +211,9 @@ class FiledialogPanel(tk.Frame):
             padx=PAD,
             pady=PAD
         )
+
+        for filepath in default_files:
+            self.add_file(filepath)
 
     def get_filedialog(self, directory=False):
         initdir = self.root
@@ -294,12 +297,16 @@ class AnalysePage(tk.Frame):
         tk.Frame.__init__(self, parent)
         self.controller = controller
         self.LANG = self.controller.get_lang()
-        self.CLEAR_FILEPATHS = settings["clear_filepaths"]
+        self.CLEAR_FILEPATHS = settings.get("clear_filepaths", False)
         # self.model = model
 
         self.ctrl_panel = ControlPanel(self, controller)
         self.check_panel = CheckboxPanel(self, settings["checkbox_options"])
-        self.file_panel = FiledialogPanel(self, settings["root"])
+        self.file_panel = FiledialogPanel(
+            self,
+            settings["root"],
+            settings.get("default_paths", [])
+        )
 
         self.grid_columnconfigure((0, 1), weight=1)
         self.grid_rowconfigure(0, weight=1)

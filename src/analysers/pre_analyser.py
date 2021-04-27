@@ -120,16 +120,23 @@ class PreAnalyser(ast.NodeVisitor):
                         )
 
     def _store_class(self, node):
+        imported = False
         key = node.name
         parent = a_utils.get_parent(node, cnf.CLS_FUNC)
         if(parent):
             key = f"{parent.name}.{key}"
         if(self.library):
             key = f"{self.library}.{key}"
+            imported = True
         self.class_dict[key] = templates.ClassTemplate(
-            node.name, node.lineno, node)
+            node.name,
+            node.lineno,
+            node,
+            imported=imported
+        )
 
     def _store_function(self, node):
+        imported = False
         key = node.name
         pos_args = [i.arg for i in node.args.args]
         kw_args = [i.arg for i in node.args.kwonlyargs]
@@ -139,11 +146,18 @@ class PreAnalyser(ast.NodeVisitor):
             key = f"{parent.name}.{key}"
         if self.library:
             key = f"{self.library}.{key}"
+            imported = True
         #  TODO: If key exist then there are two identically named functions
         # in same scope
         # Could use similar list solution as with imports
         self.function_dict[key] = templates.FunctionTemplate(
-            node.name, node.lineno, node, pos_args, kw_args)
+            node.name,
+            node.lineno,
+            node,
+            pos_args,
+            kw_args,
+            imported=imported
+        )
 
     def _store_call(self, node):
         try:

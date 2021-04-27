@@ -4,6 +4,7 @@
 import json
 import os       # os.walk is used for convenient directory exclusion possibility
 import pathlib  # Used for all the other path operations
+import re
 from typing import List
 
 import src.config.config as cnf
@@ -24,7 +25,15 @@ NOTE = cnf.NOTE
 GOOD = cnf.GOOD
 DEBUG = cnf.DEBUG
 
+########################################################################
+# Regex
+REGEX = {}  # This will store compiled regex patterns
+PATTERN = { # This include all configurated patterns as a string
+    "valid_naming": cnf.VALID_NAME_SCHEMA,
+    "_global_element": cnf._GLOBAL_ELEM
+}
 
+########################################################################
 # General utilities
 
 def ignore_check(code):
@@ -328,9 +337,25 @@ def create_dash(character="-", dash_count=80, get_dash=False):
         print(character * dash_count)
 
 
+########################################################################
+# Getter functions for static values
+
 def get_structures(lang="FIN"):
     return STRUCTURE.get(lang, {})
 
+
+def get_compiled_regex(key):
+    """
+    Function to get compiled regex pattern. On the first call pattern
+    will be compiled in concecutive calls same compiled pattern will be
+    returned.
+    """
+
+    # NOTE this will raise a KeyError if key is not found from the
+    # PATTERN but that should be possible only in development phase when
+    # patterns are added to config file and to the PATTERN dictionary.
+    # PATTERN is not configurable by an end user.
+    return REGEX.setdefault(key, re.compile(PATTERN[key]))
 
 ########################################################################
 # Init functions
@@ -352,6 +377,10 @@ def add_fixed_settings(settings):
     settings["result_path"] = result_dir.joinpath(settings["result_file"])
     settings["BKT_path"] = result_dir.joinpath(settings["BKT_file"])
     settings["structure_path"] = result_dir.joinpath(settings["structure_file"])
+
+    # Combine BKT_ignored_staff and excluded_directories which are basically
+    # doing the same thing (in current directory structure).
+    settings["excluded_directories"].extend(settings["excluded_staff"])
     return None
 
 

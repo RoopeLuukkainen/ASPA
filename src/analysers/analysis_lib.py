@@ -522,6 +522,8 @@ class Model:
                     analyser.check_main_function()
                     analyser.check_element_order(tree.body, cnf.ELEMENT_ORDER)
                     analyser.check_global_variables()
+                    analyser.check_recursive_functions(self.function_dict)
+                    analyser.clear_all()
 
                 elif(opt == "library"):
                     # Info comments check, i.e. author, date etc.
@@ -611,9 +613,14 @@ class Model:
         # --- 2. Count all structures ---
         for student_name, filepaths in file_dict.items():
             result_line = initial_line[:] # copy to allow separate changes
+            if not filepaths:
+                continue
 
             for filepath in filepaths:
-                structs = self.structures.get(filepath.path)
+                # In some filepaths there is no detected structures,
+                # therefore default is needed to be iterable, i.e. empty
+                # list instead of None.
+                structs = self.structures.get(filepath.path, [])
 
                 for s in structs:
                     try:

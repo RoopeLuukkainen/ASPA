@@ -566,3 +566,182 @@ Compare(
 )
 
 # ******************************************************************** #
+# LIST and OBJECT
+# ******************************************************************** #
+example_list = [param.object.value]
+#
+Assign(
+    targets=[Name(id='example_list', ctx=Store())],
+    value=List(
+        elts=[
+            Attribute(
+                value=Attribute(
+                    value=Name(id='param', ctx=Load()),
+                    attr='object', ctx=Load()
+                ),
+                attr='value', ctx=Load()
+            )
+        ], ctx=Load()
+    ), type_comment=None
+)
+
+# ******************************************************************** #
+example_list.append(obj.value)
+#
+Expr(
+    value=Call(
+        func=Attribute(
+            value=Name(id='example_list', ctx=Load()),
+            attr='append', ctx=Load()
+        ),
+        args=[
+            Attribute(
+                value=Name(id='obj', ctx=Load()),
+                attr='value', ctx=Load()
+            )
+        ],
+        keywords=[]
+    )
+)
+
+# ******************************************************************** #
+example_list.extend([obj.value, obj.value])
+#
+Expr(
+    value=Call(
+        func=Attribute(
+            value=Name(id='example_list', ctx=Load()),
+            attr='extend', ctx=Load()
+        ),
+        args=[
+            List(
+                elts=[
+                    Attribute(
+                        value=Name(id='obj', ctx=Load()),
+                        attr='value', ctx=Load()
+                    ),
+                    Attribute(
+                        value=Name(id='obj', ctx=Load()),
+                        attr='value', ctx=Load()
+                    )
+                ], ctx=Load()
+            )
+        ],
+        keywords=[]
+    )
+)
+
+# ******************************************************************** #
+example_list.extend(list(obj.value, obj.value))
+#
+Expr(
+    value=Call(
+        func=Attribute(
+            value=Name(id='example_list', ctx=Load()),
+            attr='extend', ctx=Load()
+        ),
+        args=[
+            Call(
+                func=Name(id='list', ctx=Load()),
+                args=[
+                    Attribute(
+                        value=Name(id='obj', ctx=Load()),
+                        attr='value', ctx=Load()
+                    ),
+                    Attribute(
+                        value=Name(id='obj', ctx=Load()),
+                        attr='value', ctx=Load()
+                    )
+                ],
+                keywords=[]
+            )
+        ],
+        keywords=[]
+    )
+)
+
+# ******************************************************************** #
+example_list.insert(0, obj.value)
+#
+Expr(
+    value=Call(
+        func=Attribute(
+            value=Name(id='example_list', ctx=Load()),
+            attr='insert', ctx=Load()
+        ),
+        args=[
+            Constant(value=0, kind=None),
+            Attribute(
+                value=Name(id='obj', ctx=Load()),
+                attr='value', ctx=Load()
+            )
+        ],
+        keywords=[]
+    )
+)
+
+# ******************************************************************** #
+example_list += [obj.value]
+#
+AugAssign(
+    target=Name(id='example_list', ctx=Store()),
+    op=Add(),
+    value=List(
+        elts=[
+            Attribute(
+                value=Name(id='obj', ctx=Load()),
+                attr='value', ctx=Load()
+            )
+        ], ctx=Load()
+    )
+)
+
+# ******************************************************************** #
+example_list = example_list + [obj.value]
+#
+Assign(
+    targets=[Name(id='example_list', ctx=Store())],
+    value=BinOp(
+        left=Name(id='example_list', ctx=Load()),
+        op=Add(),
+        right=List(
+            elts=[
+                Attribute(
+                    value=Name(id='obj', ctx=Load()),
+                    attr='value', ctx=Load()
+                )
+            ], ctx=Load()
+        )
+    ), type_comment=None
+)
+
+# ******************************************************************** #
+example_list += list({obj.value, param.object.value})
+#
+AugAssign(
+    target=Name(id='example_list', ctx=Store()),
+    op=Add(),
+    value=Call(
+        func=Name(id='list', ctx=Load()),
+        args=[
+            Set(
+                elts=[
+                    Attribute(
+                        value=Name(id='obj', ctx=Load()),
+                        attr='value', ctx=Load()
+                    ),
+                    Attribute(
+                        value=Attribute(
+                            value=Name(id='param', ctx=Load()),
+                            attr='object', ctx=Load()
+                        ),
+                        attr='value', ctx=Load()
+                    )
+                ]
+            )
+        ],
+        keywords=[]
+    )
+)
+
+# ******************************************************************** #
