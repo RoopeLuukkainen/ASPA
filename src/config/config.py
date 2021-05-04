@@ -20,7 +20,7 @@ DEFAULT_SETTINGS = {
     "excluded_directories": ["__pycache__", ".git"],
     "excluded_files": ["__init__.py"],
     "excluded_staff": [
-        "ojale044", "aalto98", "lackman",
+        "ojale044", "aalto98", "lackman", # 2 first seem to be students
         "Roni.Juntunen", "Simo.Viljakainen", "uolevi.nikula", "Miisa.Lopperi",
         "Markus.Strandman", "Roope.Luukkainen", "Pavel.Silke", "Niku.Gronberg"
     ],
@@ -284,7 +284,7 @@ MSG = {
         "PT4-1": ("Loop never breaks.", ERROR),
         "PT5": ("Unreachable code after command '{}'.", ERROR),
         "AR1": (f"No function defition for '{MAIN_FUNC_NAME}'.", NOTE),
-        "AR2-1": ("Definition of the function '{}' is not at the global scope.", ERROR),
+        "AR2-1": ("Definition of the function '{}' is not in the global scope.", ERROR),
         "AR3": ("Global variable '{}'.", ERROR),
         # "AR3-2": ("Variable or object is used in global scope '{}.{}'.", ERROR), # Works only with objects
         "AR4": ("Recursive function call.", NOTE),
@@ -302,14 +302,14 @@ MSG = {
         # "AR8": ("<Statement which should not be in global scope.>", WARNING),
         # "MR1": ("Element '{}' should be before '{}'.", WARNING),
         "MR1": ("Statement seem to be in wrong location.", WARNING),
-        "MR2-3": ("Function call '{}()' is {} function call at the global scope."
+        "MR2-3": ("Function call '{}()' is {} function call in the global scope."
                 + f" There should be only one (1) function call '{MAIN_FUNC_NAME}()'.",
                 WARNING),
-        "MR2-4": ("Function call '{}()' at the global scope does not call the"
+        "MR2-4": ("Function call '{}()' in the global scope does not call the"
                 + "main function.", WARNING),
         "MR3": ("Module '{}' is imported again.", ERROR),
         "MR3-1": ("From module '{}' function(s) or module(s) are imported again.", WARNING),
-        "MR4": ("Import of the module '{}' is not at the global scope.", ERROR),
+        "MR4": ("Import of the module '{}' is not in the global scope.", ERROR),
         "MR5": ("Missing some or all header comments at {} first lines of the file.", WARNING),
         "PK1": ("Exception handling has no excepts.", ERROR),
         "PK1-1": ("Missing exception type.", WARNING),
@@ -321,9 +321,9 @@ MSG = {
         "TK1-2": ("File handle '{}' is closed in except branch.", WARNING),
         "TK1-3": ("Missing parenthesis from file closing '{}.{}'.", ERROR),
         "TK2": ("File operation '{}.{}' is in different function than file open and close.", ERROR),
-        "TR2-1": ("Class is being used directly without an object '{}'.", ERROR),
+        "TR2-1": ("Class is used directly without an object '{}'.", ERROR),
         "TR2-2": ("Missing parenthesis from object creation. Should be '{}()'.", ERROR),
-        "TR2-3": ("Class '{}' is not defined at the global scope.", ERROR),
+        "TR2-3": ("Class '{}' is not defined in the global scope.", ERROR),
         "TR2-4": ("Name of the class '{}' is not in UPPERCASE.", NOTE),
         # "TR3": ("Object created.", NOTE),
         "TR3-1": ("Object's attribute is added to a list in every loop iteration.", WARNING),
