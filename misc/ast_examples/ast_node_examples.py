@@ -745,3 +745,36 @@ AugAssign(
 )
 
 # ******************************************************************** #
+[x := 10, x**2, x**3]
+#
+Expr(
+    value=List(elts=[
+        NamedExpr(
+            target=Name(id='x', ctx=Store()),
+            value=Constant(value=10, kind=None)
+        ),
+        BinOp(left=Name(id='x', ctx=Load()), op=Pow(), right=Constant(value=2, kind=None)),
+        BinOp(left=Name(id='x', ctx=Load()), op=Pow(), right=Constant(value=3, kind=None))
+    ], ctx=Load())
+)
+
+# ******************************************************************** #
+while (a := a + 1) < 5: pass
+#
+While(
+    test=Compare(
+        left=NamedExpr(
+            target=Name(id='a', ctx=Store()),
+            value=BinOp(
+                left=Name(id='a', ctx=Load()),
+                op=Add(),
+                right=Constant(value=1, kind=None)
+            )
+        ),
+        ops=[Lt()],
+        comparators=[Constant(value=5, kind=None)]
+    ),
+    body=[Pass()]
+)
+
+# ******************************************************************** #
