@@ -28,6 +28,8 @@ DEFAULT_SETTINGS = {
     "subdirectory_order": ["course", "week", "exercise", "student"], # NOT YET USED
     "clear_filepaths": False,
     "default_paths": [],
+    "title_font_size": 12,
+    "normal_font_size": 10,
     # TODO Font size
     "shown_filepath_format": "both", # Options are defined in "Formatting configurations tuples"
     "BKT_decimal_places": 3,
@@ -451,7 +453,7 @@ STRUCTURE = {
         "D08B003": "FROM IMPORT *",
         "D09A001": "TRY",
         "D09A002": "EXCEPT",
-        "D09A003": "ELSE",
+        "D09A003": "TRY-ELSE",
         "D09A004": "FINALLY",
         "D09B001": "Except value",
         "D10B001": "Index",
@@ -510,7 +512,7 @@ STRUCTURE = {
         "D08B003": "FROM IMPORT *",
         "D09A001": "TRY",
         "D09A002": "EXCEPT",
-        "D09A003": "ELSE",
+        "D09A003": "TRY-ELSE",
         "D09A004": "FINALLY",
         "D09B001": "Except value",
         "D10B001": "Index",
