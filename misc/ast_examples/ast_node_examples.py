@@ -1,4 +1,5 @@
 # pylint: skip-file
+# type: ignore      # This ignore is for pylance
 # ******************************************************************** #
 # # Case 1
 if True:
