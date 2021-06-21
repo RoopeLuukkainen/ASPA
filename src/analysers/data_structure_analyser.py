@@ -191,8 +191,13 @@ class DataStructureAnalyser(ast.NodeVisitor):
 
                 # Get an object and a loop where values are assigned to object's
                 # attributes.
+                # Lineno condition is used to ignore cases where object is used
+                # again AFTER the loop (still outside therefore check gets this
+                # far).
                 name = a_utils.get_attribute_name(var, omit_n_last=1)
-                if not (obj := self._get_object_by_name(name, func)):
+                if (not (obj := self._get_object_by_name(name, func))
+                    or obj.lineno > node.lineno
+                ):
                     continue
 
                 creation_loop = a_utils.get_parent(obj.astree, cnf.LOOP)
@@ -206,7 +211,7 @@ class DataStructureAnalyser(ast.NodeVisitor):
             for elem in ast.walk(assing_loop):
                 try:
                     # NOTE: condition "not (func, obj.name) in self._analysed_TR3_2.keys()"
-                    # would limits analysis of each object to single case
+                    # would limit analysis of each object to single case
                     # because otherwise each list.append(obj) and obj.attr
                     # triggers new BTKA result
                     if ((obj.name == a_utils.get_attribute_name(elem))
