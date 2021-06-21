@@ -30,7 +30,6 @@ DEFAULT_SETTINGS = {
     "default_paths": [],
     "title_font_size": 12,
     "normal_font_size": 10,
-    # TODO Font size
     "shown_filepath_format": "both", # Options are defined in "Formatting configurations tuples"
     "BKT_decimal_places": 3,
     "BKT_decimal_separator": ",",
@@ -39,7 +38,7 @@ DEFAULT_SETTINGS = {
 }
 
 # -----------------------------------------------------------------------------#
-# Constants which are not meant to be changes by user/admin
+# Constants which are not meant to be changed by user/admin
 
 # NOTE \w inlcudes alfanumeric characters and underscore
 # This is used to exclude elements like class.function or imported.function or
