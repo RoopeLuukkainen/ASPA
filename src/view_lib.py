@@ -1,16 +1,14 @@
 """Module for TKinter GUI frames."""
 
 try:
-    import Tkinter as tk  # Python 2
-    from Tkinter import ttk         # Not tested
-    from Tkinter import filedialog  # Not tested
-except ModuleNotFoundError:
-    import tkinter as tk  # Python 3, tested with this
+    import tkinter as tk  # Python 3 tkinter module
     from tkinter import ttk
     from tkinter import filedialog
     from tkinter import font
-
-import pathlib
+    from tkinter.font import Font
+except ModuleNotFoundError:
+    import sys
+    sys.exit(0)
 
 import src.utils_lib as utils
 import src.config.config as cnf
@@ -27,7 +25,7 @@ def set_style_constants(settings):
         return font_style
 
     global BG_COLOR, FRAME_COLOR, PAD, LARGE_FONT, NORMAL_FONT, SMALL_FONT
-    global FONT_COLOR, BD_STYLE, BD, HIGHLIGHT
+    global FONT_COLOR, BD_STYLE, BD, HIGHLIGHT, TEXTBOX_FONT
 
     BG_COLOR = cnf.BG_COLOR # None #"#bababa" #None # "#383838"
     FRAME_COLOR = cnf.FRAME_COLOR # None #"#ffcfcf"
@@ -39,6 +37,11 @@ def set_style_constants(settings):
     BD_STYLE = cnf.BD_STYLE # tk.RIDGE # Border style
     BD = cnf.BD # 2              # Border width
     HIGHLIGHT = cnf.HIGHLIGHT
+
+    # TODO make everything to use these tkinter font types for easier configurations
+    # Tk Text (i.e. textboxs)
+    TEXTBOX_FONT = font.nametofont("TkFixedFont")
+    TEXTBOX_FONT.configure(size=settings.get("normal_font_size", 10))
 
     # Ttk buttons
     ttk.Style().configure("TButton", font=NORMAL_FONT)
@@ -224,7 +227,7 @@ class FiledialogPanel(tk.Frame):
             height=10,
             bg=BG_COLOR,
             fg=FONT_COLOR,
-            font=NORMAL_FONT, #font=SMALL_FONT
+            font=TEXTBOX_FONT, #font=SMALL_FONT
         )
         self.filebox.grid(
             row=1,
@@ -393,7 +396,8 @@ class ResultPage(tk.Frame):
 
         self.result_textbox = tk.Text(
             result_frame,
-            font=NORMAL_FONT,
+            font=TEXTBOX_FONT,
+            # font=NORMAL_FONT,
             state="disabled",
             height=15
         )
