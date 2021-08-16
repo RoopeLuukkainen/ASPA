@@ -379,6 +379,7 @@ def add_fixed_settings(settings):
     settings["result_path"] = result_dir.joinpath(settings["result_file"])
     settings["BKT_path"] = result_dir.joinpath(settings["BKT_file"])
     settings["structure_path"] = result_dir.joinpath(settings["structure_file"])
+    settings["statistics_path"] = result_dir.joinpath(settings["statistics_file"])
 
     # Combine BKT_ignored_staff and excluded_directories which are basically
     # doing the same thing (in current directory structure).

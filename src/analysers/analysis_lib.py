@@ -2,6 +2,7 @@
 
 import ast
 import datetime  # for timestamp
+import json      # for statistics
 import os
 import pathlib
 import re
@@ -29,7 +30,8 @@ class Model:
     def __init__(self, controller):
         self.controller = controller
         self.settings = self.controller.get_settings()
-        self.violation_occurances = {}
+        self.violation_occurances = {} # TEMP NOT USED?
+        self.statistics = {"ALL": {}}
 
         try:
             self.language = self.settings["language"]
@@ -248,9 +250,28 @@ class Model:
 
         timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
         utils.write_file(self.settings["result_path"], timestamp + "\n")
+        current_statistics = {}
 
         for filepath in file_list:
             results = self.execute_analysis(filepath, selections)
+
+            # Statistics
+            # FIX currently "student" only works for course project directory
+            # structure
+            if self.settings.get("show_statistics", False):
+                current_statistics = a_utils.calculate_statistics(results)
+                # TODO change to filepath.path.student when it is ready in template
+                # TODO add setting for this, i.e. is it file or directory/folder
+
+                student = f"{filepath.path.parents[1].name}/{filepath.path.parents[0].name}"
+                # student = f"{filepath.path.parents[0].name}/{filepath.filename}"
+                # student = filepath.path.parents[0].name
+                a_utils.sum_statistics(
+                    self.statistics,
+                    student,
+                    current_statistics
+                )
+                current_statistics.clear()
 
             # Format results
             formated_results = self.format_violations(results)
@@ -271,6 +292,22 @@ class Model:
             result_page.show_results(formated_results)
             self.clear_analysis_data()
             formated_results.clear()
+
+        if self.settings.get("show_statistics", False):
+            if self.settings.get("console_print", False):
+                a_utils.print_statistics(self.statistics)
+
+            if self.settings.get("file_write", False):
+                content = json.dumps(self.statistics, indent=4)
+                utils.write_file(
+                    self.settings["statistics_path"],
+                    content,
+                    mode="w"
+                )
+
+            self.statistics.clear()
+            self.statistics = {"ALL": {}}
+
         return None
 
     def BKT_analyse(self, selections, file_dict, *args, **kwargs):

@@ -14,6 +14,7 @@ DEFAULT_SETTINGS = {
     "show_statistics": False,
     "result_dir": str(pathlib.Path(__file__).parents[2].resolve().joinpath("results")),
     "result_file": "results.txt",
+    "statistics_file": "statistics.json",
     "settings_file": "settings.json",
     "BKT_file": "BKTA.csv",
     "structure_file": "structures.csv",
