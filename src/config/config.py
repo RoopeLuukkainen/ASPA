@@ -303,7 +303,7 @@ MSG = {
         "AR7": ("Assigning an attribute to the function '{}'.", ERROR),
         # "AR8": ("<Statement which should not be in global scope.>", WARNING),
         # "MR1": ("Element '{}' should be before '{}'.", WARNING),
-        "MR1": ("Statement seem to be in wrong location.", WARNING),
+        "MR1": ("Statement seems to be in wrong location.", WARNING),
         "MR2-3": ("Function call '{}()' is {} function call in the global scope."
                 + f" There should be only one (1) function call '{MAIN_FUNC_NAME}()'.",
                 WARNING),
@@ -394,7 +394,7 @@ MSG = {
         "TR2-3": ("Luokkaa '{}' ei ole määritelty päätasolla.", ERROR),
         "TR2-4": ("Luokan '{}' nimi ei ole kirjoitettu SUURAAKKOSIN.", NOTE),
         # "TR3": ("Olion luonti.", NOTE),
-        "TR3-1": ("Olion attribuutti lisätään listaan silmukan sisällä.", WARNING),
+        "TR3-1": ("Olion attribuutin arvo lisätään listaan silmukan sisällä.", WARNING),
         "TR3-2": ("Olion luonti silmukan ulkopuolella, mutta arvojen päivitys"
                 + " ja listaan lisääminen silmukassa.", WARNING),
         "NOTE": (", tyylirikkeitä havaittu, ole hyvä ja katso", GENERAL),
