@@ -612,7 +612,8 @@ CLI_ERROR = {
     "ENG": {
         "NO_FILES": "Please select files to be analysed.",
         "NO_SELECTIONS": "Please select analysis to be executed.",
-        "NO_LANGUAGE": "Please define language in settings. By default FIN is used." # Technically this will never occur if FIN is default
+        # Technically error below should never occur if FIN is default
+        "NO_LANGUAGE": "Please define language in settings. By default FIN is used."
     },
     "FIN": {
         "NO_FILES": "Ole hyvä ja valitse ensin analysoitavat tiedostot.",
