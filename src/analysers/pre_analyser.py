@@ -21,6 +21,7 @@ class PreAnalyser(ast.NodeVisitor):
         self.class_dict = {}
         self.function_dict = {}
         self.global_dict = {}
+        self._possible_global_dict = {}
         self.constant_dict = {}
         self.call_dict = {}     # Global scope calls
         self.file_list = []     # Opened filehandles
@@ -38,7 +39,8 @@ class PreAnalyser(ast.NodeVisitor):
         return dict(self.class_dict)
 
     def get_global_dict(self):
-        return dict(self.global_dict)
+        # return dict(self.global_dict)
+        return dict(self._possible_global_dict) # TEMP
 
     def get_constant_dict(self):
         return dict(self.constant_dict)
@@ -56,6 +58,7 @@ class PreAnalyser(ast.NodeVisitor):
         self.function_dict.clear()
         self.class_dict.clear()
         self.global_dict.clear()
+        self._possible_global_dict.clear()
         self.constant_dict.clear()
         self.call_dict.clear()
         self.file_list.clear()
@@ -95,25 +98,27 @@ class PreAnalyser(ast.NodeVisitor):
         names = []
         for var in node.targets[:]:
             for name in get_names(var, names): # name must be str or int
-                if name in self.global_dict.keys():
+                if name in self._possible_global_dict.keys():
                     continue
 
                 elif name in self.constant_dict.keys():
-                    self.global_dict[name] = self.constant_dict.pop(name, None)
+                    self._possible_global_dict[name] = self.constant_dict.pop(name, None)
 
                 elif (var.col_offset == 0
                         or a_utils.get_parent(node, cnf.CLS_FUNC) is None):
 
                     # TODO: imporove this to detect tuples created with
                     # tuple(), which is Call not Tuple
-                    if isinstance(node.value, (ast.Constant, ast.Tuple)):
+                    if (isinstance(node.value, (ast.Constant, ast.Tuple))
+                        or (isinstance(node.value, ast.Call)
+                            and node.value.func.id == "tuple")):
                         self.constant_dict[name] = templates.GlobalTemplate(
                             name,
                             var.lineno,
                             var
                         )
                     else:
-                        self.global_dict[name] = templates.GlobalTemplate(
+                        self._possible_global_dict[name] = templates.GlobalTemplate(
                             name,
                             var.lineno,
                             var
