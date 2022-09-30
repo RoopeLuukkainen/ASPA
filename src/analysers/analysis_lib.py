@@ -697,6 +697,8 @@ class Model:
    ####################################################################
    #  Debug functions
     def dump_tree(self, tree, indent=4):
+        if indent == 0:
+            indent = None
         utils.create_dash()
         print(ast.dump(tree, include_attributes=True, indent=indent))
         print()
