@@ -8,10 +8,11 @@ import src.GUI as GUI
 from src.utils_lib import init_settings
 
 def main():
+    """Main function. For now no command line arguments are used."""
     settings = init_settings()
     gui = GUI.GUICLASS(settings=settings)
     gui.mainloop()
 
 
-if(__name__ == "__main__"):
+if __name__ == "__main__":
     main()
