@@ -43,9 +43,11 @@ AR3_global_object.py
 Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
 
 Aliohjelmat, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Aliohjelmat':
-Ohjelmasta ei löytynyt määrittelyä 'paaohjelma':lle.
 Rivi 9: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+Rivi 10: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+Rivi 11: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
 Rivi 9: Globaalimuuttuja 'global_object'.
+Rivi 10: Globaalimuuttuja 'global_object2'.
 
 Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
 
@@ -61,11 +63,11 @@ AR3_global_variable.py
 Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
 
 Aliohjelmat, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Aliohjelmat':
-Rivi 22: Globaalimuuttuja 'with_global_keyword'.
-Rivi 22: Globaalimuuttuja 'another_global'.
-Rivi 5: Globaalimuuttuja 'variable'.
-Rivi 6: Globaalimuuttuja 'global_list'.
-Rivi 11: Globaalimuuttuja 'unless_assigned_again'.
+Rivi 24: Globaalimuuttuja 'with_global_keyword'.
+Rivi 24: Globaalimuuttuja 'another_global'.
+Rivi 8: Globaalimuuttuja 'global_list'.
+Rivi 13: Globaalimuuttuja 'unless_assigned_again'.
+Rivi 21: Muuttujalla ja kiintoarvolla on sama nimi 'variable'.
 
 Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
 
@@ -81,16 +83,19 @@ AR3_global_variable_2.py
 Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
 
 Aliohjelmat, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Aliohjelmat':
-Rivi 45: Globaalimuuttuja 'a'.
-Rivi 6: Globaalimuuttuja 'abc'.
-Rivi 8: Globaalimuuttuja 'a'.
-Rivi 9: Globaalimuuttuja 'd'.
-Rivi 10: Globaalimuuttuja 'e'.
-Rivi 11: Globaalimuuttuja 'g'.
-Rivi 12: Globaalimuuttuja 'd2'.
-Rivi 13: Globaalimuuttuja 'e2'.
-Rivi 16: Globaalimuuttuja 'g2'.
-Rivi 19: Globaalimuuttuja 'j'.
+Rivi 56: Globaalimuuttuja 'global_a'.
+Rivi 57: Globaalimuuttuja 'global_b'.
+Rivi 9: Globaalimuuttuja 'global_list'.
+Rivi 10: Globaalimuuttuja 'global_list2'.
+Rivi 11: Globaalimuuttuja 'global_list3'.
+Rivi 12: Globaalimuuttuja 'global_list4'.
+Rivi 13: Globaalimuuttuja 'global_list5'.
+Rivi 15: Globaalimuuttuja 'global_dict'.
+Rivi 16: Globaalimuuttuja 'global_dict2'.
+Rivi 17: Globaalimuuttuja 'global_dict3'.
+Rivi 18: Globaalimuuttuja 'global_dict4'.
+Rivi 19: Globaalimuuttuja 'global_dict5'.
+Rivi 59: Muuttujalla ja kiintoarvolla on sama nimi 'global_a'.
 
 Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
 
