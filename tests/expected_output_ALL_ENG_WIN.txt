@@ -1,4 +1,4 @@
-2021-05-04_13-52-20
+2022-09-30_14-35-42
 ================================================================================
 E:\GitHub\ASPA\tests\AR_functions\AR1_no_paaohjelma.py
 AR1_no_paaohjelma.py
@@ -7,7 +7,7 @@ Basic commands: No violations detected.
 
 Functions, violations detected please see Liite 5 'Aliohjelmat':
 No function defition for 'paaohjelma'.
-Line 13: Statement seem to be in wrong location.
+Line 13: Statement seems to be in wrong location.
 
 File handling: No violations detected.
 
@@ -44,7 +44,7 @@ Basic commands: No violations detected.
 
 Functions, violations detected please see Liite 5 'Aliohjelmat':
 No function defition for 'paaohjelma'.
-Line 9: Statement seem to be in wrong location.
+Line 9: Statement seems to be in wrong location.
 Line 9: Global variable 'global_object'.
 
 File handling: No violations detected.
@@ -242,11 +242,11 @@ MR1_element_order_wrong1.py
 Basic commands: No violations detected.
 
 Functions, violations detected please see Liite 5 'Aliohjelmat':
-Line 16: Statement seem to be in wrong location.
-Line 17: Statement seem to be in wrong location.
-Line 18: Statement seem to be in wrong location.
-Line 19: Statement seem to be in wrong location.
-Line 22: Statement seem to be in wrong location.
+Line 16: Statement seems to be in wrong location.
+Line 17: Statement seems to be in wrong location.
+Line 18: Statement seems to be in wrong location.
+Line 19: Statement seems to be in wrong location.
+Line 22: Statement seems to be in wrong location.
 
 File handling: No violations detected.
 
@@ -262,7 +262,7 @@ MR1_element_order_wrong2.py
 Basic commands: No violations detected.
 
 Functions, violations detected please see Liite 5 'Aliohjelmat':
-Line 20: Statement seem to be in wrong location.
+Line 20: Statement seems to be in wrong location.
 
 File handling: No violations detected.
 
@@ -278,9 +278,9 @@ MR1_element_order_wrong3.py
 Basic commands: No violations detected.
 
 Functions, violations detected please see Liite 5 'Aliohjelmat':
-Line 17: Statement seem to be in wrong location.
-Line 20: Statement seem to be in wrong location.
-Line 23: Statement seem to be in wrong location.
+Line 17: Statement seems to be in wrong location.
+Line 20: Statement seems to be in wrong location.
+Line 23: Statement seems to be in wrong location.
 
 File handling: No violations detected.
 
@@ -296,7 +296,7 @@ MR1_element_order_wrong4.py
 Basic commands: No violations detected.
 
 Functions, violations detected please see Liite 5 'Aliohjelmat':
-Line 39: Statement seem to be in wrong location.
+Line 39: Statement seems to be in wrong location.
 
 File handling: No violations detected.
 
@@ -312,9 +312,9 @@ MR1_element_order_wrong5.py
 Basic commands: No violations detected.
 
 Functions, violations detected please see Liite 5 'Aliohjelmat':
-Line 11: Statement seem to be in wrong location.
-Line 26: Statement seem to be in wrong location.
-Line 40: Statement seem to be in wrong location.
+Line 11: Statement seems to be in wrong location.
+Line 26: Statement seems to be in wrong location.
+Line 40: Statement seems to be in wrong location.
 
 File handling: No violations detected.
 
@@ -330,18 +330,18 @@ MR1_element_order_wrong6.py
 Basic commands: No violations detected.
 
 Functions, violations detected please see Liite 5 'Aliohjelmat':
-Line 9: Statement seem to be in wrong location.
-Line 16: Statement seem to be in wrong location.
-Line 20: Statement seem to be in wrong location.
-Line 23: Statement seem to be in wrong location.
-Line 27: Statement seem to be in wrong location.
-Line 30: Statement seem to be in wrong location.
-Line 33: Statement seem to be in wrong location.
-Line 37: Statement seem to be in wrong location.
-Line 40: Statement seem to be in wrong location.
-Line 41: Statement seem to be in wrong location.
-Line 42: Statement seem to be in wrong location.
-Line 43: Statement seem to be in wrong location.
+Line 9: Statement seems to be in wrong location.
+Line 16: Statement seems to be in wrong location.
+Line 20: Statement seems to be in wrong location.
+Line 23: Statement seems to be in wrong location.
+Line 27: Statement seems to be in wrong location.
+Line 30: Statement seems to be in wrong location.
+Line 33: Statement seems to be in wrong location.
+Line 37: Statement seems to be in wrong location.
+Line 40: Statement seems to be in wrong location.
+Line 41: Statement seems to be in wrong location.
+Line 42: Statement seems to be in wrong location.
+Line 43: Statement seems to be in wrong location.
 
 File handling: No violations detected.
 
@@ -357,8 +357,8 @@ MR2-3_global_scope_call.py
 Basic commands: No violations detected.
 
 Functions, violations detected please see Liite 5 'Aliohjelmat':
-Line 13: Statement seem to be in wrong location.
-Line 14: Statement seem to be in wrong location.
+Line 13: Statement seems to be in wrong location.
+Line 14: Statement seems to be in wrong location.
 
 File handling: No violations detected.
 
@@ -376,8 +376,8 @@ MR2-4_not_main_function_call.py
 Basic commands: No violations detected.
 
 Functions, violations detected please see Liite 5 'Aliohjelmat':
-Line 12: Statement seem to be in wrong location.
-Line 13: Statement seem to be in wrong location.
+Line 12: Statement seems to be in wrong location.
+Line 13: Statement seems to be in wrong location.
 
 File handling: No violations detected.
 
@@ -395,7 +395,7 @@ MR3-1_MR4_from_module_imported_again.py
 Basic commands: No violations detected.
 
 Functions, violations detected please see Liite 5 'Aliohjelmat':
-Line 14: Statement seem to be in wrong location.
+Line 14: Statement seems to be in wrong location.
 
 File handling: No violations detected.
 
@@ -415,7 +415,7 @@ MR3_MR4_module_imported_again.py
 Basic commands: No violations detected.
 
 Functions, violations detected please see Liite 5 'Aliohjelmat':
-Line 12: Statement seem to be in wrong location.
+Line 12: Statement seems to be in wrong location.
 
 File handling: No violations detected.
 
@@ -761,6 +761,23 @@ Functions: No violations detected.
 File handling, violations detected please see Liite 5 'Tiedostoon kirjoittaminen' 'Tiedostosta lukeminen':
 Line 34: In this course usage of 'with open' is not recommended.
 Line 28: File handle 'f2' is left open.
+
+Data structures: No violations detected.
+
+Library usage: No violations detected.
+
+Exception handling: No violations detected.
+================================================================================
+E:\GitHub\ASPA\tests\TK_file_handling\TK1_file_left_open_fix_me.py
+TK1_file_left_open_fix_me.py
+
+Basic commands: No violations detected.
+
+Functions: No violations detected.
+
+File handling, violations detected please see Liite 5 'Tiedostoon kirjoittaminen' 'Tiedostosta lukeminen':
+Line 12: File handle 'f' is left open.
+Line 21: File handle 'f2' is left open.
 
 Data structures: No violations detected.
 

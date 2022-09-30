@@ -1,4 +1,4 @@
-2021-02-22_16-04-56
+2022-09-30_14-25-01
 ================================================================================
 E:\GitHub\ASPA\tests\AR_functions\AR1_no_paaohjelma.py
 AR1_no_paaohjelma.py
@@ -768,6 +768,23 @@ Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
 
 Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
 ================================================================================
+E:\GitHub\ASPA\tests\TK_file_handling\TK1_file_left_open_fix_me.py
+TK1_file_left_open_fix_me.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat: Ei tunnistettu tyylirikkomuksia.
+
+Tiedostonkäsittely, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Tiedostoon kirjoittaminen' 'Tiedostosta lukeminen':
+Rivi 12: Tiedostokahva 'f' on sulkematta.
+Rivi 21: Tiedostokahva 'f2' on sulkematta.
+
+Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
+
+Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
+
+Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
+================================================================================
 E:\GitHub\ASPA\tests\TK_file_handling\TK2_file_open_operation_close.py
 TK2_file_open_operation_close.py
 
@@ -884,31 +901,31 @@ Rivi 88: Aliohjelman 'test3' määrittely ei ole päätasolla.
 Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
 
 Tietorakenteet, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Aliohjelmat' 'Listan käsittely' 'Monimutkaisempi tietorakenne':
-Rivi 18: Olion attribuutti lisätään listaan silmukan sisällä.
-Rivi 19: Olion attribuutti lisätään listaan silmukan sisällä.
-Rivi 20: Olion attribuutti lisätään listaan silmukan sisällä.
-Rivi 20: Olion attribuutti lisätään listaan silmukan sisällä.
-Rivi 21: Olion attribuutti lisätään listaan silmukan sisällä.
-Rivi 21: Olion attribuutti lisätään listaan silmukan sisällä.
-Rivi 22: Olion attribuutti lisätään listaan silmukan sisällä.
-Rivi 23: Olion attribuutti lisätään listaan silmukan sisällä.
-Rivi 24: Olion attribuutti lisätään listaan silmukan sisällä.
-Rivi 25: Olion attribuutti lisätään listaan silmukan sisällä.
-Rivi 25: Olion attribuutti lisätään listaan silmukan sisällä.
-Rivi 45: Olion attribuutti lisätään listaan silmukan sisällä.
-Rivi 46: Olion attribuutti lisätään listaan silmukan sisällä.
-Rivi 47: Olion attribuutti lisätään listaan silmukan sisällä.
-Rivi 47: Olion attribuutti lisätään listaan silmukan sisällä.
-Rivi 48: Olion attribuutti lisätään listaan silmukan sisällä.
-Rivi 48: Olion attribuutti lisätään listaan silmukan sisällä.
-Rivi 49: Olion attribuutti lisätään listaan silmukan sisällä.
-Rivi 50: Olion attribuutti lisätään listaan silmukan sisällä.
-Rivi 51: Olion attribuutti lisätään listaan silmukan sisällä.
-Rivi 52: Olion attribuutti lisätään listaan silmukan sisällä.
-Rivi 52: Olion attribuutti lisätään listaan silmukan sisällä.
-Rivi 82: Olion attribuutti lisätään listaan silmukan sisällä.
+Rivi 18: Olion attribuutin arvo lisätään listaan silmukan sisällä.
+Rivi 19: Olion attribuutin arvo lisätään listaan silmukan sisällä.
+Rivi 20: Olion attribuutin arvo lisätään listaan silmukan sisällä.
+Rivi 20: Olion attribuutin arvo lisätään listaan silmukan sisällä.
+Rivi 21: Olion attribuutin arvo lisätään listaan silmukan sisällä.
+Rivi 21: Olion attribuutin arvo lisätään listaan silmukan sisällä.
+Rivi 22: Olion attribuutin arvo lisätään listaan silmukan sisällä.
+Rivi 23: Olion attribuutin arvo lisätään listaan silmukan sisällä.
+Rivi 24: Olion attribuutin arvo lisätään listaan silmukan sisällä.
+Rivi 25: Olion attribuutin arvo lisätään listaan silmukan sisällä.
+Rivi 25: Olion attribuutin arvo lisätään listaan silmukan sisällä.
+Rivi 45: Olion attribuutin arvo lisätään listaan silmukan sisällä.
+Rivi 46: Olion attribuutin arvo lisätään listaan silmukan sisällä.
+Rivi 47: Olion attribuutin arvo lisätään listaan silmukan sisällä.
+Rivi 47: Olion attribuutin arvo lisätään listaan silmukan sisällä.
+Rivi 48: Olion attribuutin arvo lisätään listaan silmukan sisällä.
+Rivi 48: Olion attribuutin arvo lisätään listaan silmukan sisällä.
+Rivi 49: Olion attribuutin arvo lisätään listaan silmukan sisällä.
+Rivi 50: Olion attribuutin arvo lisätään listaan silmukan sisällä.
+Rivi 51: Olion attribuutin arvo lisätään listaan silmukan sisällä.
+Rivi 52: Olion attribuutin arvo lisätään listaan silmukan sisällä.
+Rivi 52: Olion attribuutin arvo lisätään listaan silmukan sisällä.
+Rivi 82: Olion attribuutin arvo lisätään listaan silmukan sisällä.
 Rivi 91: Luokkaa 'FAKE' ei ole määritelty päätasolla.
-Rivi 103: Olion attribuutti lisätään listaan silmukan sisällä.
+Rivi 103: Olion attribuutin arvo lisätään listaan silmukan sisällä.
 
 Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
 
