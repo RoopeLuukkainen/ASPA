@@ -7,6 +7,7 @@ DEFAULT_SETTINGS = {
     "root": str(pathlib.Path(__file__).parents[2].resolve()),
     "language": "FIN",
     "dump_tree": False,
+    "dump_indent": 0,
     "console_print": False,
     "file_write": True,
     "GUI_print": True,

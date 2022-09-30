@@ -416,7 +416,7 @@ class Model:
 
         # Dump tree
         if(tree and self.settings["dump_tree"]):
-            self.dump_tree(tree)
+            self.dump_tree(tree, self.settings.get("dump_indent", 0))
 
         # Call analyser
         results = self.analyse(
@@ -696,11 +696,12 @@ class Model:
 
    ####################################################################
    #  Debug functions
-    def dump_tree(self, tree):
+    def dump_tree(self, tree, indent=4):
         utils.create_dash()
-        print(ast.dump(tree, include_attributes=True))
+        print(ast.dump(tree, include_attributes=True, indent=indent))
         print()
-        print(ast.dump(tree, include_attributes=False))
+        print(ast.dump(tree, include_attributes=False, indent=indent))
         print()
-        print(ast.dump(tree, annotate_fields=False, include_attributes=False))
+        print(ast.dump(tree, annotate_fields=False,
+                       include_attributes=False, indent=indent))
         utils.create_dash()

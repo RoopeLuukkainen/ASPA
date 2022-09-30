@@ -321,6 +321,6 @@ def print_statistics(statistics):
 #  Debug functions
 def dump_node(node):
     try:
-        print(f"{node.lineno}: {ast.dump(node)}")
+        print(f"{node.lineno}: {ast.dump(node, indent=4)}")
     except AttributeError:
         print(f"No line: {ast.dump(node)}")
