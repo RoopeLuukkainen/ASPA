@@ -107,8 +107,6 @@ class PreAnalyser(ast.NodeVisitor):
                 elif (var.col_offset == 0
                         or a_utils.get_parent(node, cnf.CLS_FUNC) is None):
 
-                    # TODO: imporove this to detect tuples created with
-                    # tuple(), which is Call not Tuple
                     if (isinstance(node.value, (ast.Constant, ast.Tuple))
                         or (isinstance(node.value, ast.Call)
                             and node.value.func.id == "tuple")):
