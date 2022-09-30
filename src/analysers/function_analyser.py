@@ -448,6 +448,11 @@ class FunctionAnalyser(ast.NodeVisitor):
         except AttributeError:
             pass
 
+    def check_local_global_names(self, same_name_dict):
+        for i in sorted(same_name_dict.values(),
+                        key=lambda elem: elem.lineno):
+            self.model.add_msg("AR3-3", i.name, lineno=i.lineno)
+
    # Visits
     def visit_Assign(self, node, *args, **kwargs):
         self._check_function_attributes(node)

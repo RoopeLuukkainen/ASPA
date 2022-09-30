@@ -1,6 +1,12 @@
 """Library containing utility functions for static analysers."""
 
 import ast
+# Constants
+LIST_ADDITION_ATTRIBUTES = {"append", "extend", "insert"}
+LIST_MODIFICATION_ATTRIBUTES = LIST_ADDITION_ATTRIBUTES | { # Union of sets
+    "clear", "pop", "remove", "reverse", "sort"
+}
+DICT_MODIFICATION_ATTRIBUTES = {"clear", "pop", "popitem", "setdefault", "update"}
 
 # AST improvement utilities
 def add_parents(tree):
@@ -319,8 +325,8 @@ def print_statistics(statistics):
 
 ####################################################################
 #  Debug functions
-def dump_node(node):
+def dump_node(node, indent=None):
     try:
-        print(f"{node.lineno}: {ast.dump(node, indent=4)}")
+        print(f"{node.lineno}: {ast.dump(node, indent=indent)}")
     except AttributeError:
-        print(f"No line: {ast.dump(node)}")
+        print(f"No line: {ast.dump(node, indent=indent)}")

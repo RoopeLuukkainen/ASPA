@@ -76,6 +76,7 @@ class Model:
         self.global_variables = {}
         self.local_variables = set()
         self.call_dict = {}
+        self.same_names_dict = {}
 
         # File handling (used by file_handling_analyser)
         self.files_opened = []
@@ -505,14 +506,19 @@ class Model:
         """
 
         self.pre_analyser.visit(tree)
+        self.pre_analyser.lock_constants()
+        # print("CONSTS:", self.pre_analyser.get_constant_dict(), "GLOBS:", self.pre_analyser.get_global_dict()) # TEMP
+
         self.class_dict = self.pre_analyser.get_class_dict()
         self.function_dict = self.pre_analyser.get_function_dict()
         self.import_dict = self.pre_analyser.get_import_dict()
         self.global_variables = self.pre_analyser.get_global_dict()
-         # This need setter, getter and initialisation if used
+         # This needs setter, getter and initialisation if used
         self.constant_variables = self.pre_analyser.get_constant_dict()
         self.call_dict = self.pre_analyser.get_call_dict()
         self.files_opened = self.pre_analyser.get_file_list()
+        # This needs setter and getter
+        self.same_names_dict = self.pre_analyser.get_local_global_dict()
         self.pre_analyser.clear_all()
 
         imported = self.import_dict.keys()
@@ -559,6 +565,7 @@ class Model:
                     analyser.check_main_function()
                     analyser.check_element_order(tree.body, cnf.ELEMENT_ORDER)
                     analyser.check_global_variables()
+                    analyser.check_local_global_names(self.same_names_dict)
                     analyser.check_recursive_functions(self.function_dict)
                     analyser.clear_all()
 

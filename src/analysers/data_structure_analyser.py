@@ -12,7 +12,7 @@ class DataStructureAnalyser(ast.NodeVisitor):
         self.model = model
         self._local_objects = {}    # store objects created in analysed functions
         self._analysed_TR3_2 = {}   # store analysed (function, object) tuples
-        self._list_addition_attributes = {"append", "extend", "insert"}
+        self._list_addition_attributes = a_utils.LIST_ADDITION_ATTRIBUTES
 
 
    # ------------------------------------------------------------------------- #

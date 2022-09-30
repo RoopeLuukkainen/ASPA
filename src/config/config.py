@@ -290,6 +290,7 @@ MSG = {
         "AR2-1": ("Definition of the function '{}' is not in the global scope.", ERROR),
         "AR3": ("Global variable '{}'.", ERROR),
         # "AR3-2": ("Variable or object is used in global scope '{}.{}'.", ERROR), # Works only with objects
+        "AR3-3": ("Local variable and global constant have same name '{}'.", NOTE),
         "AR4": ("Recursive function call.", NOTE),
         "AR5-1": ("Function '{}' requires at least {} parameters, but {} given.", ERROR),
         "AR5-2": ("Function '{}' requires at most {} parameters, but {} given.", ERROR),
@@ -357,6 +358,7 @@ MSG = {
         "AR2-1": ("Aliohjelman '{}' määrittely ei ole päätasolla.", ERROR),
         "AR3": ("Globaalimuuttuja '{}'.", ERROR),
         # "AR3-2": ("Muuttujan tai olion globaali käyttö '{}.{}'.", ERROR),
+        "AR3-3": ("Muuttujalla ja kiintoarvolla on sama nimi '{}'.", NOTE),
         "AR4": ("Rekursiivinen aliohjelmakutsu.", NOTE),
         "AR5-1": ("Aliohjelma '{}' vaatii vähintään {} kpl parametreja, mutta {} lähetetty.", ERROR),
         "AR5-2": ("Aliohjelma '{}' vaatii enintään {} kpl parametreja, mutta {} lähetetty.", ERROR),
