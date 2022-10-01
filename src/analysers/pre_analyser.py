@@ -238,7 +238,9 @@ class PreAnalyser(ast.NodeVisitor):
         except AttributeError:
             pass
 
-        # Detect modifications to (global) list(s)
+        # Detect modifications to (global) list(s) and dict(s), however because
+        # type of variable is not checked sets (or anything calling methods
+        # with same name) are be detected too.
         try:
             if ((name := node.func.value.id) in self._possible_constant_dict
                 and (node.func.attr in self._list_mod_attrs

@@ -17,7 +17,7 @@ global_dict2 = dict()
 global_dict3 = {}
 global_dict4 = {"1": 2, "2": 3}
 global_dict5 = {"3": 4, "4": 5}
-global_dict5 = {"key"}
+global_dict6 = {"key": "value1"}
 
 # CONTANTS
 const_func_call = foo()
