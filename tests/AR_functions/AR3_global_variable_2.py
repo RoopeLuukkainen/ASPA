@@ -1,40 +1,54 @@
-"""2nd test file for AR3 check.
+"""2nd test file for AR3 check and AR3-3.
 AR3 check detects global variables. Global constants are allowed.
 """
 
+import datetime
+
 # GLOBAL VARIABLES
-abc = foo()
-# value to a is assigned again later, therefore it is global
-a = 1                   # Assign(targets=[Name(id='a', ctx=Store())], value=Constant(value=1, kind=None), type_comment=None)
-d = []                  # Assign(targets=[Name(id='d', ctx=Store())], value=List(elts=[], ctx=Load()), type_comment=None)
-e = {}                  # Assign(targets=[Name(id='e', ctx=Store())], value=Dict(keys=[], values=[]), type_comment=None)
-g = set()               # Assign(targets=[Name(id='g', ctx=Store())], value=Call(func=Name(id='set', ctx=Load()), args=[], keywords=[]), type_comment=None)
-d2 = list()             # Assign(targets=[Name(id='d2', ctx=Store())], value=Call(func=Name(id='list', ctx=Load()), args=[], keywords=[]), type_comment=None)
-e2 = dict()             # Assign(targets=[Name(id='e2', ctx=Store())], value=Call(func=Name(id='dict', ctx=Load()), args=[], keywords=[]), type_comment=None)
+# value to these are assigned again/modified later, therefore they are global
+global_a = 1
 
-# g2 is considered a global, because tuple() creates a Call node not Tuple.
-g2 = tuple()            # Assign(targets=[Name(id='g2', ctx=Store())], value=Call(func=Name(id='tuple', ctx=Load()), args=[], keywords=[]), type_comment=None)
+global_list = []
+global_list2 = []
+global_list3 = list()
+global_list4 = [1, 2, 3]
+global_list5 = [1, 2, 3]
 
-# j is considered a global, because it is not Constant nor Tuple node but BinOp.
-j = 1 + 2               # Assign(targets=[Name(id='j', ctx=Store())], value=BinOp(left=Constant(value=1, kind=None), op=Add(), right=Constant(value=2, kind=None)), type_comment=None)
+global_dict = {}
+global_dict2 = dict()
+global_dict3 = {}
+global_dict4 = {"1": 2, "2": 3}
+global_dict5 = {"3": 4, "4": 5}
+global_dict6 = {"key": "value1"}
 
 # CONTANTS
-a2 = 1j                 # Assign(targets=[Name(id='a2', ctx=Store())], value=Constant(value=1j, kind=None), type_comment=None)
-b = "2"                 # Assign(targets=[Name(id='b', ctx=Store())], value=Constant(value='2', kind=None), type_comment=None)"
-b2 = """b"""            # Assign(targets=[Name(id='b2', ctx=Store())], value=Constant(value='b', kind=None), type_comment=None)
-c = 3.0                 # Assign(targets=[Name(id='c', ctx=Store())], value=Constant(value=3.0, kind=None), type_comment=None)
-f = ()                  # Assign(targets=[Name(id='f', ctx=Store())], value=Tuple(elts=[], ctx=Load()), type_comment=None)
-h = True                # Assign(targets=[Name(id='h', ctx=Store())], value=Constant(value=True, kind=None), type_comment=None)
-i = None                # Assign(targets=[Name(id='i', ctx=Store())], value=Constant(value=None, kind=None), type_comment=None)
-k = l = 1                 # Assign(targets=[Name(id='a', ctx=Store()), Name(id='b', ctx=Store())], value=Constant(value=1, kind=None), type_comment=None)
-m, n = 2, 3               # Assign(targets=[Tuple(elts=[Name(id='c', ctx=Store()), Name(id='d', ctx=Store())], ctx=Store())],
+const_func_call = min(global_list4)
+const_a2 = 1j                 # Assign(targets=[Name(id='a2', ctx=Store())], value=Constant(value=1j, kind=None), type_comment=None)
+const_b = "2"                 # Assign(targets=[Name(id='b', ctx=Store())], value=Constant(value='2', kind=None), type_comment=None)"
+const_b2 = """b"""            # Assign(targets=[Name(id='b2', ctx=Store())], value=Constant(value='b', kind=None), type_comment=None)
+const_c = 3.0                 # Assign(targets=[Name(id='c', ctx=Store())], value=Constant(value=3.0, kind=None), type_comment=None)
+const_h = True                # Assign(targets=[Name(id='h', ctx=Store())], value=Constant(value=True, kind=None), type_comment=None)
+const_i = None                # Assign(targets=[Name(id='i', ctx=Store())], value=Constant(value=None, kind=None), type_comment=None)
+const_k = const_l = 1                 # Assign(targets=[Name(id='a', ctx=Store()), Name(id='b', ctx=Store())], value=Constant(value=1, kind=None), type_comment=None)
+const_m, const_n = 2, 3               # Assign(targets=[Tuple(elts=[Name(id='c', ctx=Store()), Name(id='d', ctx=Store())], ctx=Store())],
                                  # value=Tuple(elts=[Constant(value=2, kind=None), Constant(value=3, kind=None)], ctx=Load()), type_comment=None)
+const_binop = 1 + 2               # Assign(targets=[Name(id='j', ctx=Store())], value=BinOp(left=Constant(value=1, kind=None), op=Add(), right=Constant(value=2, kind=None)), type_comment=None)
+const_binop2 = const_a2 + const_c
+const_date = datetime.datetime.now()
+
+const_list = [1, 2, 3]                  # Assign(targets=[Name(id='d', ctx=Store())], value=List(elts=[], ctx=Load()), type_comment=None)
+const_dict = {"1": 2}                  # Assign(targets=[Name(id='e', ctx=Store())], value=Dict(keys=[], values=[]), type_comment=None)
+const_set = set()               # Assign(targets=[Name(id='g', ctx=Store())], value=Call(func=Name(id='set', ctx=Load()), args=[], keywords=[]), type_comment=None)
+const_list2 = list()             # Assign(targets=[Name(id='d2', ctx=Store())], value=Call(func=Name(id='list', ctx=Load()), args=[], keywords=[]), type_comment=None)
+const_dict2 = dict()             # Assign(targets=[Name(id='e2', ctx=Store())], value=Call(func=Name(id='dict', ctx=Load()), args=[], keywords=[]), type_comment=None)
+const_tuple = (4, 5, 6)                  # Assign(targets=[Name(id='f', ctx=Store())], value=Tuple(elts=[], ctx=Load()), type_comment=None)
+const_tuple2 = tuple()            # Assign(targets=[Name(id='g2', ctx=Store())], value=Call(func=Name(id='tuple', ctx=Load()), args=[], keywords=[]), type_comment=None)
+
 
 A = 1234
 class CLASS:
     var = A + 100
     attr = A + 200
-
 
 def foo():
     obj = CLASS()
@@ -42,11 +56,28 @@ def foo():
     print(CLASS.var)
     print(CLASS.attr)
     print(obj.var)
-    global a
-    print(a)
-    a = 7
-    print(a)
-    return a
+    # Global modifications
+    global global_a
+    global global_b
+    print(global_a)
+    global_a = 7
+    print(global_a)
+
+    global_list.append(1)
+    global_list2.insert(0, 1)
+    global_list3.extend([2, 3])
+    global_list4.pop()
+    global_list5.sort()
+
+    global_dict.update(const_dict)
+    global_dict2["key"] = "value"
+    global_dict3.clear()
+    global_dict4.pop()
+    global_dict5.popitem()
+    global_dict6.setdefault("key2", "value")
+
+    return global_a
+
 def paaohjelma():
     foo()
     print("AA")

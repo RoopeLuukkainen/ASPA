@@ -1,31 +1,51 @@
 """Module for TKinter GUI frames."""
 
 try:
-    import Tkinter as tk  # Python 2
-    from Tkinter import ttk         # Not tested
-    from Tkinter import filedialog  # Not tested
-except ModuleNotFoundError:
-    import tkinter as tk  # Python 3, tested with this
+    import tkinter as tk  # Python 3 tkinter module
     from tkinter import ttk
     from tkinter import filedialog
     from tkinter import font
-
-import pathlib
+    from tkinter.font import Font
+except ModuleNotFoundError:
+    import sys
+    sys.exit(0)
 
 import src.utils_lib as utils
 import src.config.config as cnf
 
 # Constants
-BG_COLOR = cnf.BG_COLOR # None #"#bababa" #None # "#383838"
-FRAME_COLOR = cnf.FRAME_COLOR # None #"#ffcfcf"
-PAD = cnf.PAD # 5
-LARGE_FONT = cnf.LARGE_FONT # "None 12 bold"
-NORMAL_FONT = cnf.NORMAL_FONT # "None 10"
-SMALL_FONT = cnf.SMALL_FONT # "None 8"
-FONT_COLOR = cnf.FONT_COLOR # "black"
-BD_STYLE = cnf.BD_STYLE # tk.RIDGE # Border style
-BD = cnf.BD # 2              # Border width
-HIGHLIGHT = cnf.HIGHLIGHT
+def set_style_constants(settings):
+    # TODO change this function more practical solution
+
+    def parse_font(font_style, value):
+        if value:
+            parts = font_style.split(" ")
+            parts[1] = str(value)
+            font_style = " ".join(parts)
+        return font_style
+
+    global BG_COLOR, FRAME_COLOR, PAD, LARGE_FONT, NORMAL_FONT, SMALL_FONT
+    global FONT_COLOR, BD_STYLE, BD, HIGHLIGHT, TEXTBOX_FONT
+
+    BG_COLOR = cnf.BG_COLOR # None #"#bababa" #None # "#383838"
+    FRAME_COLOR = cnf.FRAME_COLOR # None #"#ffcfcf"
+    PAD = cnf.PAD # 5
+    LARGE_FONT = parse_font(cnf.LARGE_FONT, settings.get("title_font_size")) # "None 12 bold"
+    NORMAL_FONT = parse_font(cnf.NORMAL_FONT, settings.get("normal_font_size")) # "None 10"
+    SMALL_FONT = parse_font(cnf.SMALL_FONT, settings.get("small_font_size")) # "None 8"
+    FONT_COLOR = cnf.FONT_COLOR # "black"
+    BD_STYLE = cnf.BD_STYLE # tk.RIDGE # Border style
+    BD = cnf.BD # 2              # Border width
+    HIGHLIGHT = cnf.HIGHLIGHT
+
+    # TODO make everything to use these tkinter font types for easier configurations
+    # Tk Text (i.e. textboxs)
+    TEXTBOX_FONT = font.nametofont("TkFixedFont")
+    TEXTBOX_FONT.configure(size=settings.get("normal_font_size", 10))
+
+    # Ttk buttons
+    ttk.Style().configure("TButton", font=NORMAL_FONT)
+    return None
 
 ################################################################################
 class MainFrame(tk.Frame):
@@ -41,6 +61,7 @@ class MainFrame(tk.Frame):
         self.grid_rowconfigure(0, weight=1)
 
         settings = controller.get_settings()
+        set_style_constants(settings)
 
        # --------------------------------------------------------------------- #
        # Content pages
@@ -61,11 +82,13 @@ class MainFrame(tk.Frame):
         filemenu = tk.Menu(menubar, tearoff=0)
         filemenu.add_command(
             label=cnf.GUI[self.LANG]["results"],
+            font=NORMAL_FONT,
             command=lambda: self.show_page(ResultPage)
         )
         # Add BKT analysis option
         filemenu.add_command(
             label=cnf.GUI[self.LANG]["BKTA"],
+            font=NORMAL_FONT,
             command=lambda: self.pages[AnalysePage].analyse(
                 controller.analyse_wrapper,
                 analysis_type="BKTA"
@@ -74,6 +97,7 @@ class MainFrame(tk.Frame):
         # Add guit option
         filemenu.add_command(
             label=cnf.GUI[self.LANG]["exit"],
+            font=NORMAL_FONT,
             command=quit
         )
         menubar.add_cascade(label=cnf.GUI[self.LANG]["filemenu"], menu=filemenu)
@@ -82,6 +106,7 @@ class MainFrame(tk.Frame):
         helpmenu = tk.Menu(menubar, tearoff=1)
         helpmenu.add_command(
             label=cnf.GUI[self.LANG]["help"],
+            font=NORMAL_FONT,
             command=lambda: self.show_page(HelpPage)
         )
         menubar.add_cascade(label=cnf.GUI[self.LANG]["helpmenu"], menu=helpmenu)
@@ -134,6 +159,7 @@ class CheckboxPanel(tk.Frame):
             cb = tk.Checkbutton(
                 master=self,
                 text=option,
+                font=NORMAL_FONT,
                 width=20,
                 anchor=tk.W,
                 variable=self.selected_analysis[i]
@@ -201,7 +227,7 @@ class FiledialogPanel(tk.Frame):
             height=10,
             bg=BG_COLOR,
             fg=FONT_COLOR,
-            font=NORMAL_FONT, #font=SMALL_FONT
+            font=TEXTBOX_FONT, #font=SMALL_FONT
         )
         self.filebox.grid(
             row=1,
@@ -370,6 +396,8 @@ class ResultPage(tk.Frame):
 
         self.result_textbox = tk.Text(
             result_frame,
+            font=TEXTBOX_FONT,
+            # font=NORMAL_FONT,
             state="disabled",
             height=15
         )
@@ -403,9 +431,9 @@ class ResultPage(tk.Frame):
 
     def show_info(self):
         infos = [
-            utils.create_msg("NOTE_INFO"),
-            utils.create_msg("WARNING_INFO"),
-            utils.create_msg("ERROR_INFO")
+            utils.create_msg("NOTE_INFO", lang=self.LANG),
+            utils.create_msg("WARNING_INFO", lang=self.LANG),
+            utils.create_msg("ERROR_INFO", lang=self.LANG)
         ]
         self.display_result(infos)
         infos.clear()

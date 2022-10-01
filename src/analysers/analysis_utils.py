@@ -1,6 +1,12 @@
 """Library containing utility functions for static analysers."""
 
 import ast
+# Constants
+LIST_ADDITION_ATTRIBUTES = {"append", "extend", "insert"}
+LIST_MODIFICATION_ATTRIBUTES = LIST_ADDITION_ATTRIBUTES | { # Union of sets
+    "clear", "pop", "remove", "reverse", "sort"
+}
+DICT_MODIFICATION_ATTRIBUTES = {"clear", "pop", "popitem", "setdefault", "update"}
 
 # AST improvement utilities
 def add_parents(tree):
@@ -257,9 +263,70 @@ def get_class_name(node, **kwargs):
     return name
 
 ####################################################################
-#  Debug functions
-def dump_node(node):
+# Statistic functions
+def calculate_statistics(results):
+    statistics = {}
+    found_violation = False
+
+    for result in results:
+        for violation in result[1]:
+            try:
+                if violation.status == False: # = violation
+                    try:
+                        statistics[violation.vid] += 1
+                    except KeyError:
+                        statistics[violation.vid] = 1
+                    found_violation = True
+            except AttributeError as e:
+                print("error....", e) # TODO remove this
+                pass
+
+    statistics["all_ok"] = not found_violation
+    statistics["file_count"] = 1
+    return statistics
+
+def sum_statistics(all_statistics, student, new):
+    """
+    """
+
+    # def add_to_dict(d, k, v):
+    #     try:
+    #         d[k] += v
+    #     except KeyError:
+    #         d[k] = v
+    #     return None
+
+    submission = all_statistics.setdefault(student, {})
+
+    # add_to_dict(all_statistics["ALL"], "file_count", 1)
+
+    for key, value in new.items():
+        # TODO setting absolute value / number of submissions where this occur
+        # v = value
+        v = 1 # With this and all_ok does not work because if it was False
+              # it is counted as 0 now it will be forced to be 1.
+        try:
+            all_statistics["ALL"][key] += v
+        except KeyError:
+            all_statistics["ALL"][key] = v
+
+        try:
+            submission[key] += value
+        except KeyError:
+            submission[key] = value
+
+def print_statistics(statistics):
     try:
-        print(f"{node.lineno}: {ast.dump(node)}")
+        import pprint
+        pprint.pprint(statistics)
+    except (ImportError, Exception):
+        print(statistics)
+    return None
+
+####################################################################
+#  Debug functions
+def dump_node(node, indent=None):
+    try:
+        print(f"{node.lineno}: {ast.dump(node, indent=indent)}")
     except AttributeError:
-        print(f"No line: {ast.dump(node)}")
+        print(f"No line: {ast.dump(node, indent=indent)}")

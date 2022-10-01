@@ -40,6 +40,10 @@ def TR3_2(param):
         obj_list = obj_list + [param.a.b.c.obj]
         break
 
+    # This should not create violation because creation is AFTER the
+    # loop.
+    obj3 = CLASS_NAME()
+
     obj.value = 1
     obj2.value = 2
     return None

@@ -1,12 +1,18 @@
 """GUI controller"""
 
 try:
-    import Tkinter as tk  # Python 2
-except ModuleNotFoundError:
     import tkinter as tk  # Python 3, tested with this
-    from tkinter import ttk
-
-import os
+except ModuleNotFoundError as e:
+    print(e)
+    import sys
+    print("Unable to import tkinter module. If you are using Linux system"
+          " try to install tkinter with command:\n"
+          "sudo apt-get install python3-tk\n"
+          "\nUnless you are using Fedora try this:\n"
+          "sudo dnf install python3-tkinter\n"
+          "\nIf these didn't fix the problem or you are using Windows or macOS,"
+          " please contact course's teaching staff.")
+    sys.exit(0)
 
 import src.analysers.analysis_lib as analysis  # Model
 import src.config.config as cnf

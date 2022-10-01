@@ -199,42 +199,49 @@ class StructureDetector(ast.NodeVisitor):
 
    # Conditional statement
     def visit_If(self, node, *args, **kwargs):
-        self.structures.append(
-            templates.StructureTemplate("D01A001", node.lineno, node)
-        )
+        # In case of elif the If is direct parent of elif so it is possible to
+        # just take the first parent_node. Similarly elif's if-part is the first
+        # element of parent-if's orelse list.
 
-        # NOTE before the ELIF detection also elif makes IF node, when
-        # elif detection is done then this detection for if's can be
-        # utilised
+        try:
+            _parent = node.parent_node
 
+            if _parent.orelse[0] is node and node.col_offset == _parent.col_offset:
+                # Found an elif branch
+                self.structures.append(
+                    templates.StructureTemplate("D01A002", node.lineno, node)
+                )
+            else:
+                # Found an if statement
+                self.structures.append(
+                    templates.StructureTemplate("D01A001", node.lineno, node)
+                )
 
-        # try:
-        #     parent = a_utils.get_parent(node, ast.If)
-        #     if not parent:
-        #         # Found an if statement # NOTE does not detect if's inside if's this way
-        #         self.structures.append(templates.StructureTemplate("D01A001", node.lineno))
+        except (AttributeError, IndexError):
+            # This happens when e.g.
+            # 1. if statement is in the global scope -> no parent_node
+            # 2. if's parent does not have orelse attribute, e.g. FunctionDef
+            # 3. parent's orelse is empty e.g. two if's inside each other
+            #    and parent does not have else-branch
+            self.structures.append(
+                templates.StructureTemplate("D01A001", node.lineno, node)
+            )
 
-        #     # IF has orelse, orelse has something else than IF OR IF is indended more than ELSE
-        # except AttributeError:
-        #     pass
-
-        # TODO ELIF detection
-        # elif creates both, else and if nodes in that order
-        # self.structures.append(templates.StructureTemplate("D01A002", node.lineno))
-
-        # ELSE detection
+        # ELSE detection, else's lineno is same as If's (or elif's) because
+        # else is not a node but orelse list in ast.If object.
         try:
             # This is a first nodes inside else/elif branch
             _elem = node.orelse[0]
+
             if _elem.col_offset > node.col_offset:
-                # what if _elem do not have col_offset, then check
-                # if not isinstance(_elem, ast.If)?
-                # FOUND ELSE
+                # Found and else branch
                 self.structures.append(
                     templates.StructureTemplate("D01A003", node.lineno, node.orelse)
                 )
+
         except (IndexError, AttributeError):
             pass
+
         self.generic_visit(node)
 
     # Oneline if == ternary operator

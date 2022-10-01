@@ -7,6 +7,7 @@ DEFAULT_SETTINGS = {
     "root": str(pathlib.Path(__file__).parents[2].resolve()),
     "language": "FIN",
     "dump_tree": False,
+    "dump_indent": 0,
     "console_print": False,
     "file_write": True,
     "GUI_print": True,
@@ -14,13 +15,14 @@ DEFAULT_SETTINGS = {
     "show_statistics": False,
     "result_dir": str(pathlib.Path(__file__).parents[2].resolve().joinpath("results")),
     "result_file": "results.txt",
+    "statistics_file": "statistics.json",
     "settings_file": "settings.json",
     "BKT_file": "BKTA.csv",
     "structure_file": "structures.csv",
     "excluded_directories": ["__pycache__", ".git"],
     "excluded_files": ["__init__.py"],
     "excluded_staff": [
-        "ojale044", "aalto98", "lackman",
+        "ojale044", "aalto98", "lackman", # 2 first seem to be students
         "Roni.Juntunen", "Simo.Viljakainen", "uolevi.nikula", "Miisa.Lopperi",
         "Markus.Strandman", "Roope.Luukkainen", "Pavel.Silke", "Niku.Gronberg"
     ],
@@ -28,7 +30,8 @@ DEFAULT_SETTINGS = {
     "subdirectory_order": ["course", "week", "exercise", "student"], # NOT YET USED
     "clear_filepaths": False,
     "default_paths": [],
-    # TODO Font size
+    "title_font_size": 12,
+    "normal_font_size": 10,
     "shown_filepath_format": "both", # Options are defined in "Formatting configurations tuples"
     "BKT_decimal_places": 3,
     "BKT_decimal_separator": ",",
@@ -37,7 +40,7 @@ DEFAULT_SETTINGS = {
 }
 
 # -----------------------------------------------------------------------------#
-# Constants which are not meant to be changes by user/admin
+# Constants which are not meant to be changed by user/admin
 
 # NOTE \w inlcudes alfanumeric characters and underscore
 # This is used to exclude elements like class.function or imported.function or
@@ -64,6 +67,12 @@ SEARCHED_COMMANDS = {"round", "print", "range", "int", "len", "float", "str"}
 
 # Allowed constants values for return values (but not NameConstants True, False, None).
 ALLOWED_CONSTANTS = {}
+
+# Allowed libraries to call on main level for constant values.
+ALLOWED_LIBRARIES_FOR_CONST = {
+    "math", "datetime", "random", "fractions", "urllib", "urllib2", "time",
+    "numpy", "matplotlib", "svgwrite", "pandas", "seaborn", "requests"
+}
 
 # Add keys of ignored structure messages (work with single or multiple regex patterns)
 IGNORE_STRUCT = {}
@@ -284,9 +293,10 @@ MSG = {
         "PT4-1": ("Loop never breaks.", ERROR),
         "PT5": ("Unreachable code after command '{}'.", ERROR),
         "AR1": (f"No function defition for '{MAIN_FUNC_NAME}'.", NOTE),
-        "AR2-1": ("Definition of the function '{}' is not at the global scope.", ERROR),
+        "AR2-1": ("Definition of the function '{}' is not in the global scope.", ERROR),
         "AR3": ("Global variable '{}'.", ERROR),
         # "AR3-2": ("Variable or object is used in global scope '{}.{}'.", ERROR), # Works only with objects
+        "AR3-3": ("Local variable and global constant have same name '{}'.", NOTE),
         "AR4": ("Recursive function call.", NOTE),
         "AR5-1": ("Function '{}' requires at least {} parameters, but {} given.", ERROR),
         "AR5-2": ("Function '{}' requires at most {} parameters, but {} given.", ERROR),
@@ -301,15 +311,15 @@ MSG = {
         "AR7": ("Assigning an attribute to the function '{}'.", ERROR),
         # "AR8": ("<Statement which should not be in global scope.>", WARNING),
         # "MR1": ("Element '{}' should be before '{}'.", WARNING),
-        "MR1": ("Statement seem to be in wrong location.", WARNING),
-        "MR2-3": ("Function call '{}()' is {} function call at the global scope."
+        "MR1": ("Statement seems to be in wrong location.", WARNING),
+        "MR2-3": ("Function call '{}()' is {} function call in the global scope."
                 + f" There should be only one (1) function call '{MAIN_FUNC_NAME}()'.",
                 WARNING),
-        "MR2-4": ("Function call '{}()' at the global scope does not call the"
+        "MR2-4": ("Function call '{}()' in the global scope does not call the"
                 + "main function.", WARNING),
         "MR3": ("Module '{}' is imported again.", ERROR),
         "MR3-1": ("From module '{}' function(s) or module(s) are imported again.", WARNING),
-        "MR4": ("Import of the module '{}' is not at the global scope.", ERROR),
+        "MR4": ("Import of the module '{}' is not in the global scope.", ERROR),
         "MR5": ("Missing some or all header comments at {} first lines of the file.", WARNING),
         "PK1": ("Exception handling has no excepts.", ERROR),
         "PK1-1": ("Missing exception type.", WARNING),
@@ -321,9 +331,9 @@ MSG = {
         "TK1-2": ("File handle '{}' is closed in except branch.", WARNING),
         "TK1-3": ("Missing parenthesis from file closing '{}.{}'.", ERROR),
         "TK2": ("File operation '{}.{}' is in different function than file open and close.", ERROR),
-        "TR2-1": ("Class is being used directly without an object '{}'.", ERROR),
+        "TR2-1": ("Class is used directly without an object '{}'.", ERROR),
         "TR2-2": ("Missing parenthesis from object creation. Should be '{}()'.", ERROR),
-        "TR2-3": ("Class '{}' is not defined at the global scope.", ERROR),
+        "TR2-3": ("Class '{}' is not defined in the global scope.", ERROR),
         "TR2-4": ("Name of the class '{}' is not in UPPERCASE.", NOTE),
         # "TR3": ("Object created.", NOTE),
         "TR3-1": ("Object's attribute is added to a list in every loop iteration.", WARNING),
@@ -354,6 +364,7 @@ MSG = {
         "AR2-1": ("Aliohjelman '{}' määrittely ei ole päätasolla.", ERROR),
         "AR3": ("Globaalimuuttuja '{}'.", ERROR),
         # "AR3-2": ("Muuttujan tai olion globaali käyttö '{}.{}'.", ERROR),
+        "AR3-3": ("Muuttujalla ja kiintoarvolla on sama nimi '{}'.", NOTE),
         "AR4": ("Rekursiivinen aliohjelmakutsu.", NOTE),
         "AR5-1": ("Aliohjelma '{}' vaatii vähintään {} kpl parametreja, mutta {} lähetetty.", ERROR),
         "AR5-2": ("Aliohjelma '{}' vaatii enintään {} kpl parametreja, mutta {} lähetetty.", ERROR),
@@ -392,7 +403,7 @@ MSG = {
         "TR2-3": ("Luokkaa '{}' ei ole määritelty päätasolla.", ERROR),
         "TR2-4": ("Luokan '{}' nimi ei ole kirjoitettu SUURAAKKOSIN.", NOTE),
         # "TR3": ("Olion luonti.", NOTE),
-        "TR3-1": ("Olion attribuutti lisätään listaan silmukan sisällä.", WARNING),
+        "TR3-1": ("Olion attribuutin arvo lisätään listaan silmukan sisällä.", WARNING),
         "TR3-2": ("Olion luonti silmukan ulkopuolella, mutta arvojen päivitys"
                 + " ja listaan lisääminen silmukassa.", WARNING),
         "NOTE": (", tyylirikkeitä havaittu, ole hyvä ja katso", GENERAL),
@@ -451,7 +462,7 @@ STRUCTURE = {
         "D08B003": "FROM IMPORT *",
         "D09A001": "TRY",
         "D09A002": "EXCEPT",
-        "D09A003": "ELSE",
+        "D09A003": "TRY-ELSE",
         "D09A004": "FINALLY",
         "D09B001": "Except value",
         "D10B001": "Index",
@@ -510,7 +521,7 @@ STRUCTURE = {
         "D08B003": "FROM IMPORT *",
         "D09A001": "TRY",
         "D09A002": "EXCEPT",
-        "D09A003": "ELSE",
+        "D09A003": "TRY-ELSE",
         "D09A004": "FINALLY",
         "D09B001": "Except value",
         "D10B001": "Index",
@@ -610,7 +621,8 @@ CLI_ERROR = {
     "ENG": {
         "NO_FILES": "Please select files to be analysed.",
         "NO_SELECTIONS": "Please select analysis to be executed.",
-        "NO_LANGUAGE": "Please define language in settings. By default FIN is used." # Technically this will never occur if FIN is default
+        # Technically error below should never occur if FIN is default
+        "NO_LANGUAGE": "Please define language in settings. By default FIN is used."
     },
     "FIN": {
         "NO_FILES": "Ole hyvä ja valitse ensin analysoitavat tiedostot.",

@@ -2,6 +2,7 @@
 
 import ast
 import datetime  # for timestamp
+import json      # for statistics
 import os
 import pathlib
 import re
@@ -29,7 +30,8 @@ class Model:
     def __init__(self, controller):
         self.controller = controller
         self.settings = self.controller.get_settings()
-        self.violation_occurances = {}
+        self.violation_occurances = {} # TEMP NOT USED?
+        self.statistics = {"ALL": {}}
 
         try:
             self.language = self.settings["language"]
@@ -74,6 +76,7 @@ class Model:
         self.global_variables = {}
         self.local_variables = set()
         self.call_dict = {}
+        self.same_names_dict = {}
 
         # File handling (used by file_handling_analyser)
         self.files_opened = []
@@ -248,9 +251,28 @@ class Model:
 
         timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
         utils.write_file(self.settings["result_path"], timestamp + "\n")
+        current_statistics = {}
 
         for filepath in file_list:
             results = self.execute_analysis(filepath, selections)
+
+            # Statistics
+            # FIX currently "student" only works for course project directory
+            # structure
+            if self.settings.get("show_statistics", False):
+                current_statistics = a_utils.calculate_statistics(results)
+                # TODO change to filepath.path.student when it is ready in template
+                # TODO add setting for this, i.e. is it file or directory/folder
+
+                student = f"{filepath.path.parents[1].name}/{filepath.path.parents[0].name}"
+                # student = f"{filepath.path.parents[0].name}/{filepath.filename}"
+                # student = filepath.path.parents[0].name
+                a_utils.sum_statistics(
+                    self.statistics,
+                    student,
+                    current_statistics
+                )
+                current_statistics.clear()
 
             # Format results
             formated_results = self.format_violations(results)
@@ -271,6 +293,22 @@ class Model:
             result_page.show_results(formated_results)
             self.clear_analysis_data()
             formated_results.clear()
+
+        if self.settings.get("show_statistics", False):
+            if self.settings.get("console_print", False):
+                a_utils.print_statistics(self.statistics)
+
+            if self.settings.get("file_write", False):
+                content = json.dumps(self.statistics, indent=4)
+                utils.write_file(
+                    self.settings["statistics_path"],
+                    content,
+                    mode="w"
+                )
+
+            self.statistics.clear()
+            self.statistics = {"ALL": {}}
+
         return None
 
     def BKT_analyse(self, selections, file_dict, *args, **kwargs):
@@ -379,7 +417,7 @@ class Model:
 
         # Dump tree
         if(tree and self.settings["dump_tree"]):
-            self.dump_tree(tree)
+            self.dump_tree(tree, self.settings.get("dump_indent", 0))
 
         # Call analyser
         results = self.analyse(
@@ -440,7 +478,8 @@ class Model:
             self.pre_analyse_tree(tree, files_in_dir, dir_path)
             self.analyse_tree(tree, files_in_dir, content, selections)
 
-        except Exception:
+        except Exception as e:
+            # print(e)
             self.clear_analysis_data()
             self._category_results.clear()
             self.add_msg("tool_error", filename)
@@ -468,14 +507,18 @@ class Model:
         """
 
         self.pre_analyser.visit(tree)
+        self.pre_analyser.lock_constants()
+
         self.class_dict = self.pre_analyser.get_class_dict()
         self.function_dict = self.pre_analyser.get_function_dict()
         self.import_dict = self.pre_analyser.get_import_dict()
         self.global_variables = self.pre_analyser.get_global_dict()
-         # This need setter, getter and initialisation if used
+         # This needs setter, getter and initialisation if used
         self.constant_variables = self.pre_analyser.get_constant_dict()
         self.call_dict = self.pre_analyser.get_call_dict()
         self.files_opened = self.pre_analyser.get_file_list()
+        # This needs setter and getter
+        self.same_names_dict = self.pre_analyser.get_local_global_dict()
         self.pre_analyser.clear_all()
 
         imported = self.import_dict.keys()
@@ -522,6 +565,7 @@ class Model:
                     analyser.check_main_function()
                     analyser.check_element_order(tree.body, cnf.ELEMENT_ORDER)
                     analyser.check_global_variables()
+                    analyser.check_local_global_names(self.same_names_dict)
                     analyser.check_recursive_functions(self.function_dict)
                     analyser.clear_all()
 
@@ -659,11 +703,14 @@ class Model:
 
    ####################################################################
    #  Debug functions
-    def dump_tree(self, tree):
+    def dump_tree(self, tree, indent=4):
+        if indent == 0:
+            indent = None
         utils.create_dash()
-        print(ast.dump(tree, include_attributes=True))
+        print(ast.dump(tree, include_attributes=True, indent=indent))
         print()
-        print(ast.dump(tree, include_attributes=False))
+        print(ast.dump(tree, include_attributes=False, indent=indent))
         print()
-        print(ast.dump(tree, annotate_fields=False, include_attributes=False))
+        print(ast.dump(tree, annotate_fields=False,
+                       include_attributes=False, indent=indent))
         utils.create_dash()

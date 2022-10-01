@@ -84,6 +84,7 @@ def create_msg(code, *args, lineno=-1, lang="FIN"):
         msg = f"{MSG[lang]['LINE'][0]} {lineno}: "
         start = len(msg)
 
+    # TODO change to list and join
     try:
         msg += MSG[lang][code][0]
         severity = MSG[lang][code][1]
@@ -140,6 +141,7 @@ def create_title(code, title_key, lang="FIN"):
         msg = title
         start = len(msg) + 1
 
+    # TODO change to list and join
     try:
         if title_key != "analysis_error":
             msg += MSG[lang][code][0]
@@ -276,7 +278,7 @@ def read_file(filepath, encoding="UTF-8", settings_file=False):
     content = None
     try:
         with open(filepath, "r", encoding=encoding) as f_handle:
-            content = f_handle.read() # Add pass / fail metadata extraction
+            content = f_handle.read() # TODO Add pass / fail metadata extraction
     except OSError:
         if not settings_file:
             print("OSError while reading a file", filepath)
@@ -377,6 +379,7 @@ def add_fixed_settings(settings):
     settings["result_path"] = result_dir.joinpath(settings["result_file"])
     settings["BKT_path"] = result_dir.joinpath(settings["BKT_file"])
     settings["structure_path"] = result_dir.joinpath(settings["structure_file"])
+    settings["statistics_path"] = result_dir.joinpath(settings["statistics_file"])
 
     # Combine BKT_ignored_staff and excluded_directories which are basically
     # doing the same thing (in current directory structure).
@@ -395,16 +398,19 @@ def init_settings() -> dict:
     """
 
     settings = cnf.DEFAULT_SETTINGS # Currently reference not copy
-    settings_file = settings.get("settings_file", "settings.json")
+    settings_path = pathlib.Path(
+        settings["root"] + "/" + settings["settings_file"]
+    )
 
-    content = read_file(settings_file, settings_file=True)
+    content = read_file(settings_path, settings_file=True)
     if content:
         for key, value in json.loads(content).items():
             settings[key] = value
     else:
         content = json.dumps(settings, indent=4)
-        write_file(settings_file, content, mode="w")
+        write_file(settings_path, content, mode="w")
     add_fixed_settings(settings)
+
     return settings
 
 
