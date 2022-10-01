@@ -81,13 +81,26 @@ class FileStructureAnalyser(ast.NodeVisitor):
 
                 try:
                     # TODO: Check that node is not class which has the main
-                    # function in it
+                    # function in it.
                     func = node.value.func
+                    imported_library_call = False
+
+                    try:
+                        attr_name = a_utils.get_attribute_name(func, splitted=True)
+                        if (attr_name[0] in cnf.ALLOWED_LIBRARIES_FOR_CONST
+                                and attr_name[0] in self.model.get_import_dict()):
+                            imported_library_call = True # E.g. random.random()
+                    except AttributeError:
+                        pass
+
                     self.model.add_msg(
                         "MR2-4",
                         a_utils.get_attribute_name(func),
                         lineno=node.lineno,
-                        status=(not isinstance(func, ast.Attribute))
+                        status=(
+                            imported_library_call
+                            or not isinstance(func, ast.Attribute)
+                        )
                     )
                 except AttributeError:
                     pass

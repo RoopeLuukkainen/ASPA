@@ -2,6 +2,8 @@
 AR3 check detects global variables. Global constants are allowed.
 """
 
+import datetime
+
 # GLOBAL VARIABLES
 # value to these are assigned again/modified later, therefore they are global
 global_a = 1
@@ -20,7 +22,7 @@ global_dict5 = {"3": 4, "4": 5}
 global_dict6 = {"key": "value1"}
 
 # CONTANTS
-const_func_call = foo()
+const_func_call = min(global_list4)
 const_a2 = 1j                 # Assign(targets=[Name(id='a2', ctx=Store())], value=Constant(value=1j, kind=None), type_comment=None)
 const_b = "2"                 # Assign(targets=[Name(id='b', ctx=Store())], value=Constant(value='2', kind=None), type_comment=None)"
 const_b2 = """b"""            # Assign(targets=[Name(id='b2', ctx=Store())], value=Constant(value='b', kind=None), type_comment=None)
@@ -31,6 +33,8 @@ const_k = const_l = 1                 # Assign(targets=[Name(id='a', ctx=Store()
 const_m, const_n = 2, 3               # Assign(targets=[Tuple(elts=[Name(id='c', ctx=Store()), Name(id='d', ctx=Store())], ctx=Store())],
                                  # value=Tuple(elts=[Constant(value=2, kind=None), Constant(value=3, kind=None)], ctx=Load()), type_comment=None)
 const_binop = 1 + 2               # Assign(targets=[Name(id='j', ctx=Store())], value=BinOp(left=Constant(value=1, kind=None), op=Add(), right=Constant(value=2, kind=None)), type_comment=None)
+const_binop2 = const_a2 + const_c
+const_date = datetime.datetime.now()
 
 const_list = [1, 2, 3]                  # Assign(targets=[Name(id='d', ctx=Store())], value=List(elts=[], ctx=Load()), type_comment=None)
 const_dict = {"1": 2}                  # Assign(targets=[Name(id='e', ctx=Store())], value=Dict(keys=[], values=[]), type_comment=None)

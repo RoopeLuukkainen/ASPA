@@ -128,18 +128,18 @@ class PreAnalyser(ast.NodeVisitor):
                     if name in self._possible_constant_dict:
                         self.global_dict[name] = self._possible_constant_dict.pop(name, None)
 
-                    elif (isinstance(node.value, (ast.Constant, ast.Tuple))
-                        or (isinstance(node.value, ast.Call)
-                            and node.value.func.id == "tuple")):
-                        # Also Constants e.g. int, str, float are marked as
-                        # constant because they cannot be used within function
-                        # without global or nonlocal keyword which are detected
-                        # separately.
-                        self._possible_constant_dict[name] = templates.GlobalTemplate(
-                            name,
-                            var.lineno,
-                            var
-                        )
+                    # elif (isinstance(node.value, (ast.Constant, ast.Tuple))
+                    #     or (isinstance(node.value, ast.Call)
+                    #         and node.value.func.id == "tuple")):
+                    #     # Also Constants e.g. int, str, float are marked as
+                    #     # constant because they cannot be used within function
+                    #     # without global or nonlocal keyword which are detected
+                    #     # separately.
+                    #     self._possible_constant_dict[name] = templates.GlobalTemplate(
+                    #         name,
+                    #         var.lineno,
+                    #         var
+                    #     )
 
                     else:
                         self._possible_constant_dict[name] = templates.GlobalTemplate(

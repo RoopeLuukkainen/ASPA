@@ -68,6 +68,12 @@ SEARCHED_COMMANDS = {"round", "print", "range", "int", "len", "float", "str"}
 # Allowed constants values for return values (but not NameConstants True, False, None).
 ALLOWED_CONSTANTS = {}
 
+# Allowed libraries to call on main level for constant values.
+ALLOWED_LIBRARIES_FOR_CONST = {
+    "math", "datetime", "random", "fractions", "urllib", "urllib2", "time",
+    "numpy", "matplotlib", "svgwrite", "pandas", "seaborn", "requests"
+}
+
 # Add keys of ignored structure messages (work with single or multiple regex patterns)
 IGNORE_STRUCT = {}
 

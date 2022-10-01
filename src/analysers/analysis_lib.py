@@ -478,7 +478,8 @@ class Model:
             self.pre_analyse_tree(tree, files_in_dir, dir_path)
             self.analyse_tree(tree, files_in_dir, content, selections)
 
-        except Exception:
+        except Exception as e:
+            # print(e)
             self.clear_analysis_data()
             self._category_results.clear()
             self.add_msg("tool_error", filename)
@@ -507,7 +508,6 @@ class Model:
 
         self.pre_analyser.visit(tree)
         self.pre_analyser.lock_constants()
-        # print("CONSTS:", self.pre_analyser.get_constant_dict(), "GLOBS:", self.pre_analyser.get_global_dict()) # TEMP
 
         self.class_dict = self.pre_analyser.get_class_dict()
         self.function_dict = self.pre_analyser.get_function_dict()

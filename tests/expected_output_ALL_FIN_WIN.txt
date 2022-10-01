@@ -83,19 +83,20 @@ AR3_global_variable_2.py
 Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
 
 Aliohjelmat, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Aliohjelmat':
-Rivi 56: Globaalimuuttuja 'global_a'.
-Rivi 57: Globaalimuuttuja 'global_b'.
-Rivi 9: Globaalimuuttuja 'global_list'.
-Rivi 10: Globaalimuuttuja 'global_list2'.
-Rivi 11: Globaalimuuttuja 'global_list3'.
-Rivi 12: Globaalimuuttuja 'global_list4'.
-Rivi 13: Globaalimuuttuja 'global_list5'.
-Rivi 15: Globaalimuuttuja 'global_dict'.
-Rivi 16: Globaalimuuttuja 'global_dict2'.
-Rivi 17: Globaalimuuttuja 'global_dict3'.
-Rivi 18: Globaalimuuttuja 'global_dict4'.
-Rivi 19: Globaalimuuttuja 'global_dict5'.
-Rivi 59: Muuttujalla ja kiintoarvolla on sama nimi 'global_a'.
+Rivi 60: Globaalimuuttuja 'global_a'.
+Rivi 61: Globaalimuuttuja 'global_b'.
+Rivi 11: Globaalimuuttuja 'global_list'.
+Rivi 12: Globaalimuuttuja 'global_list2'.
+Rivi 13: Globaalimuuttuja 'global_list3'.
+Rivi 14: Globaalimuuttuja 'global_list4'.
+Rivi 15: Globaalimuuttuja 'global_list5'.
+Rivi 17: Globaalimuuttuja 'global_dict'.
+Rivi 18: Globaalimuuttuja 'global_dict2'.
+Rivi 19: Globaalimuuttuja 'global_dict3'.
+Rivi 20: Globaalimuuttuja 'global_dict4'.
+Rivi 21: Globaalimuuttuja 'global_dict5'.
+Rivi 22: Globaalimuuttuja 'global_dict6'.
+Rivi 63: Muuttujalla ja kiintoarvolla on sama nimi 'global_a'.
 
 Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
 
@@ -381,16 +382,16 @@ MR2-4_not_main_function_call.py
 Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
 
 Aliohjelmat, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Aliohjelmat':
-Rivi 12: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
-Rivi 13: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+Rivi 23: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
+Rivi 24: Komento vaikuttaisi olevan väärässä kohdin tiedostoa.
 
 Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
 
 Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
 
 Kirjaston käyttö, tyylirikkeitä havaittu, ole hyvä ja katso 'Luku 8 asiat kokoava esimerkki':
-Rivi 12: Päätason aliohjelmakutsu 'math.sqrt()' ei viittaa tiedoston pääohjelmaan.
-Rivi 13: Päätason aliohjelmakutsu 'datetime.datetime.strptime()' ei viittaa tiedoston pääohjelmaan.
+Rivi 14: Päätason aliohjelmakutsu 'somelibrary.somefunction()' ei viittaa tiedoston pääohjelmaan.
+Rivi 15: Päätason aliohjelmakutsu 'random.random()' ei viittaa tiedoston pääohjelmaan.
 
 Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
 ================================================================================
