@@ -41,8 +41,12 @@ def TK1():
         f2.write("qwerty\n")
     except OSError:
         pass
-    f2.close()
-    f2.close()
+
+    try:
+        f2.close()
+        f2.close()
+    except Exception:
+        pass
 
     return None
 # TK1()

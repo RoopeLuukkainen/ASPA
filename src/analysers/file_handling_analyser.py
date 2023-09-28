@@ -10,7 +10,9 @@ class FileHandlingAnalyser(ast.NodeVisitor):
    # Initialisation
     def __init__(self, model):
         self.model = model
-        self.file_operations = {"read", "readline", "readlines", "write", "writelines"}
+        self.file_operations = {
+            "read", "readline", "readlines", "write", "writelines",
+        }
 
    # ------------------------------------------------------------------------- #
    # General methods

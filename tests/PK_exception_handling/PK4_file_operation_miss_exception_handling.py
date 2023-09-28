@@ -13,7 +13,11 @@ def PK4():
     except OSError:
         pass
     t.fhandle.write()
-    t.fhandle.close()
+
+    try:
+        t.fhandle.close()
+    except Exception:
+        pass
 
     try:
         f = open("test.txt", "r")
@@ -26,8 +30,11 @@ def PK4():
     for _ in f: pass
 
     print(line, everyting)
-    f.close()
 
+    try:
+        f.close()
+    except Exception:
+        pass
 
     return None
 

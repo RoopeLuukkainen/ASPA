@@ -11,7 +11,7 @@ class ExceptionHandlingAnalyser(ast.NodeVisitor):
     def __init__(self, model):
         self.model = model
         self.file_operations = {
-            "read", "readline", "readlines", "write", "writelines"
+            "read", "readline", "readlines", "write", "writelines",
         }
    # ------------------------------------------------------------------------- #
    # Getters
@@ -100,6 +100,7 @@ class ExceptionHandlingAnalyser(ast.NodeVisitor):
         3. Missing try - except around file.readlines().
         4. Missing try - except around file.write().
         5. Missing try - except around file.writelines().
+        6. Missing try - except around file.close().
         """
 
         try:
@@ -110,6 +111,14 @@ class ExceptionHandlingAnalyser(ast.NodeVisitor):
                     lineno=node.lineno,
                     status=self._has_exception_handling(node)
                 )
+            elif node.attr == "close":
+                self.model.add_msg(
+                    "PK5",
+                    a_utils.get_attribute_name(node),
+                    lineno=node.lineno,
+                    status=self._has_exception_handling(node)
+                )
+
         except AttributeError:
             pass
         self.generic_visit(node)
