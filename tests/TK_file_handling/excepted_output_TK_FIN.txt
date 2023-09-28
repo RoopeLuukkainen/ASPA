@@ -1,6 +1,6 @@
-2020-12-15_16-29-20
+2023-09-28_10-17-02
 ================================================================================
-E:/GitHub/ASPA/tests/TK_file_handling\TK1-1_with_open.py
+\\maa1.cc.lut.fi\home\h17373\Documents\ASPA\ASPA\tests\TK_file_handling\TK1-1_with_open.py
 TK1-1_with_open.py
 
 Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
@@ -16,7 +16,7 @@ Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
 
 Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
 ================================================================================
-E:/GitHub/ASPA/tests/TK_file_handling\TK1-2_close_in_except.py
+\\maa1.cc.lut.fi\home\h17373\Documents\ASPA\ASPA\tests\TK_file_handling\TK1-2_close_in_except.py
 TK1-2_close_in_except.py
 
 Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
@@ -33,7 +33,7 @@ Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
 
 Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
 ================================================================================
-E:/GitHub/ASPA/tests/TK_file_handling\TK1-3_close_missing_parenthesis.py
+\\maa1.cc.lut.fi\home\h17373\Documents\ASPA\ASPA\tests\TK_file_handling\TK1-3_close_missing_parenthesis.py
 TK1-3_close_missing_parenthesis.py
 
 Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
@@ -49,7 +49,7 @@ Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
 
 Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
 ================================================================================
-E:/GitHub/ASPA/tests/TK_file_handling\TK1_file_left_open.py
+\\maa1.cc.lut.fi\home\h17373\Documents\ASPA\ASPA\tests\TK_file_handling\TK1_file_left_open.py
 TK1_file_left_open.py
 
 Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
@@ -66,7 +66,25 @@ Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
 
 Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
 ================================================================================
-E:/GitHub/ASPA/tests/TK_file_handling\TK2_file_open_operation_close.py
+\\maa1.cc.lut.fi\home\h17373\Documents\ASPA\ASPA\tests\TK_file_handling\TK1_file_left_open_fix_me.py
+TK1_file_left_open_fix_me.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat: Ei tunnistettu tyylirikkomuksia.
+
+Tiedostonkäsittely, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Tiedostoon kirjoittaminen' 'Tiedostosta lukeminen':
+Rivi 15: Tiedostokahva 'f' on sulkematta.
+Rivi 24: Tiedostokahva 'f2' on sulkematta.
+
+Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
+
+Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
+
+Poikkeustenkäsittely, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Poikkeukset':
+Rivi 32: Tiedoston sulkemisesta puuttuu poikkeustenkäsittely.
+================================================================================
+\\maa1.cc.lut.fi\home\h17373\Documents\ASPA\ASPA\tests\TK_file_handling\TK2_file_open_operation_close.py
 TK2_file_open_operation_close.py
 
 Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
@@ -74,8 +92,11 @@ Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
 Aliohjelmat: Ei tunnistettu tyylirikkomuksia.
 
 Tiedostonkäsittely, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Tiedostoon kirjoittaminen' 'Tiedostosta lukeminen':
-Rivi 28: Tiedosto-operaatio 'f.readline' eri aliohjelmassa kuin avaus ja sulkeminen.
-Rivi 20: Tiedostokahva 'f' on sulkematta.
+Rivi 11: Tiedosto-operaatio 't.fhandle.write' eri aliohjelmassa kuin avaus ja sulkeminen.
+Rivi 12: Tiedosto-operaatio 't.fhandle.readline' eri aliohjelmassa kuin avaus ja sulkeminen.
+Rivi 13: Tiedosto-operaatio 't.fhandle.readline' eri aliohjelmassa kuin avaus ja sulkeminen.
+Rivi 39: Tiedosto-operaatio 'f.readline' eri aliohjelmassa kuin avaus ja sulkeminen.
+Rivi 31: Tiedostokahva 'f' on sulkematta.
 
 Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
 

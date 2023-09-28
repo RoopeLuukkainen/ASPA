@@ -1,6 +1,6 @@
-2020-12-15_13-49-12
+2023-09-28_10-17-41
 ================================================================================
-E:/GitHub/ASPA/tests/PK_exception_handling\PK1-1_missing_exception_type.py
+\\maa1.cc.lut.fi\home\h17373\Documents\ASPA\ASPA\tests\PK_exception_handling\PK1-1_missing_exception_type.py
 PK1-1_missing_exception_type.py
 
 Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
@@ -14,10 +14,12 @@ Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
 Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
 
 Poikkeustenkäsittely, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Poikkeukset':
-Rivi 10: Exceptistä puuttuu virhetyyppi.
+Rivi 8: Exceptistä puuttuu virhetyyppi.
+Rivi 15: Exceptistä puuttuu virhetyyppi.
+Rivi 22: Exceptistä puuttuu virhetyyppi.
 ================================================================================
-E:/GitHub/ASPA/tests/PK_exception_handling\PK1_only_one_except_branch.py
-PK1_only_one_except_branch.py
+\\maa1.cc.lut.fi\home\h17373\Documents\ASPA\ASPA\tests\PK_exception_handling\PK1_try_without_except_branch.py
+PK1_try_without_except_branch.py
 
 Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
 
@@ -29,9 +31,11 @@ Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
 
 Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
 
-Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
+Poikkeustenkäsittely, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Poikkeukset':
+Rivi 7: Poikkeustenkäsittelyssä ei ole lainkaan exceptiä.
+Rivi 10: Poikkeustenkäsittelyssä ei ole lainkaan exceptiä.
 ================================================================================
-E:/GitHub/ASPA/tests/PK_exception_handling\PK3_file_open_miss_exception_handling.py
+\\maa1.cc.lut.fi\home\h17373\Documents\ASPA\ASPA\tests\PK_exception_handling\PK3_file_open_miss_exception_handling.py
 PK3_file_open_miss_exception_handling.py
 
 Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
@@ -39,19 +43,21 @@ Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
 Aliohjelmat: Ei tunnistettu tyylirikkomuksia.
 
 Tiedostonkäsittely, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Tiedostoon kirjoittaminen' 'Tiedostosta lukeminen':
-Rivi 21: Tällä kurssilla 'with open':n käyttö ei ole suositeltu rakenne.
-Rivi 31: Tällä kurssilla 'with open':n käyttö ei ole suositeltu rakenne.
+Rivi 22: Tällä kurssilla 'with open':n käyttö ei ole suositeltu rakenne.
+Rivi 32: Tällä kurssilla 'with open':n käyttö ei ole suositeltu rakenne.
 
 Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
 
 Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
 
 Poikkeustenkäsittely, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Poikkeukset':
-Rivi 26: Tiedoston avaamisesta puuttuu poikkeustenkäsittely.
-Rivi 28: Tiedoston avaamisesta puuttuu poikkeustenkäsittely.
-Rivi 31: Tiedoston avaamisesta puuttuu poikkeustenkäsittely.
+Rivi 27: Tiedoston avaamisesta puuttuu poikkeustenkäsittely.
+Rivi 28: Tiedoston sulkemisesta puuttuu poikkeustenkäsittely.
+Rivi 29: Tiedoston avaamisesta puuttuu poikkeustenkäsittely.
+Rivi 30: Tiedoston sulkemisesta puuttuu poikkeustenkäsittely.
+Rivi 32: Tiedoston avaamisesta puuttuu poikkeustenkäsittely.
 ================================================================================
-E:/GitHub/ASPA/tests/PK_exception_handling\PK4_file_operation_miss_exception_handling.py
+\\maa1.cc.lut.fi\home\h17373\Documents\ASPA\ASPA\tests\PK_exception_handling\PK4_file_operation_miss_exception_handling.py
 PK4_file_operation_miss_exception_handling.py
 
 Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
@@ -66,7 +72,8 @@ Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
 
 Poikkeustenkäsittely, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Poikkeukset':
 Rivi 15: Tiedosto-operaatiosta 't.fhandle.write' puuttuu poikkeustenkäsittely.
-Rivi 23: Tiedosto-operaatiosta 'f.readline' puuttuu poikkeustenkäsittely.
-Rivi 24: Tiedosto-operaatiosta 'f.read' puuttuu poikkeustenkäsittely.
-Rivi 25: Tiedosto-operaatiosta 'f.readlines' puuttuu poikkeustenkäsittely.
-Rivi 26: Tiedosto-operaatiosta 'for _ in f' puuttuu poikkeustenkäsittely.
+Rivi 27: Tiedosto-operaatiosta 'f.readline' puuttuu poikkeustenkäsittely.
+Rivi 28: Tiedosto-operaatiosta 'f.read' puuttuu poikkeustenkäsittely.
+Rivi 29: Tiedosto-operaatiosta 'f.readlines' puuttuu poikkeustenkäsittely.
+Rivi 30: Tiedosto-operaatiosta 'for _ in f' puuttuu poikkeustenkäsittely.
+Rivi 49: Tiedosto-operaatiosta 'for this_is_a_bug in f' puuttuu poikkeustenkäsittely.
