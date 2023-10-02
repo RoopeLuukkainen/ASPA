@@ -149,7 +149,7 @@ class ExceptionHandlingAnalyser(ast.NodeVisitor):
                     msg_arg = f"for ... in ..."
                 finally:
                     self.model.add_msg(
-                        "PK4",
+                        "PK4-1",
                         msg_arg,
                         lineno=node.lineno,
                         status=self._has_exception_handling(node)

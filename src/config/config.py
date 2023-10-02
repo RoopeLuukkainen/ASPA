@@ -395,6 +395,7 @@ MSG = {
         "PK4": ("Tiedosto-operaatiosta '{}' puuttuu poikkeustenkäsittely.", ERROR),
         # "PK4b": ("Tiedosto-operaatiosta '{}' puuttuu poikkeustenkäsittely.", ERROR),
         "PK5": ("Tiedoston sulkemisesta puuttuu poikkeustenkäsittely.", ERROR),
+        "PK5": ("Tiedoston sulkemisesta puuttuu poikkeustenkäsittely.", ERROR),
         "TK1": ("Tiedostokahva '{}' on sulkematta.", ERROR),
         "TK1-1": ("Tällä kurssilla '{}':n käyttö ei ole suositeltu rakenne.", NOTE),
         "TK1-2": ("Tiedostokahva '{}' suljetaan except-osiossa.", WARNING),
