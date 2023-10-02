@@ -74,6 +74,9 @@ ALLOWED_LIBRARIES_FOR_CONST = {
     "numpy", "matplotlib", "svgwrite", "pandas", "seaborn", "requests"
 }
 
+# Allowed Exception types
+ALLOWED_EXCEPTION_TYPES = {"Exception"}
+
 # Add keys of ignored structure messages (work with single or multiple regex patterns)
 IGNORE_STRUCT = {}
 
