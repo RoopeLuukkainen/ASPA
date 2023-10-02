@@ -13,7 +13,8 @@ class ExceptionHandlingAnalyser(ast.NodeVisitor):
         self.file_operations = {
             "read", "readline", "readlines", "write", "writelines",
         }
-   # ------------------------------------------------------------------------- #
+        self.allowed_exception_types = cnf.ALLOWED_EXCEPTION_TYPES
+
    # Getters
 
    # ------------------------------------------------------------------------- #
@@ -78,12 +79,39 @@ class ExceptionHandlingAnalyser(ast.NodeVisitor):
             # print(f"Error at line: {node.lineno}, node: {node}, e: {e}") # Debug
             pass
 
+    def _check_exception_type(self, node):
+        """
+        Method to check if used exception type is Exception.
+        """
+
+        try:
+            temp = []
+            for handler in node.handlers:
+                if isinstance(handler.type, ast.Tuple):
+                    for i in handler.type.elts:
+                        temp.append(i)
+                else:
+                    temp.append(handler.type)
+
+            for i in temp:
+                self.model.add_msg(
+                    code="PK1-2",
+                    status=(a_utils.get_attribute_name(i) in self.allowed_exception_types),
+                    lineno=i.lineno
+                )
+            temp.clear()
+
+        except AttributeError:
+            pass
+        return None
+
    # ------------------------------------------------------------------------- #
    # Visits
     def visit_Try(self, node, *args, **kwargs):
         """Method to visit Try nodes."""
 
         self._check_exception_handlers(node)
+        self._check_exception_type(node)
         self.generic_visit(node)
 
     def visit_Call(self, node, *args, **kwargs):
