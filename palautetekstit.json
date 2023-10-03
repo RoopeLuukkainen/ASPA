@@ -1,234 +1,60 @@
 {
-    "default": [
-        "Tapahtui virhe!",
-        1
-    ],
-    "error_error": [
-        "Virhe tulostettaessa virhett\u00e4. Luultavasti liian v\u00e4h\u00e4n argumentteja (*args).",
-        5
-    ],
-    "type_error": [
-        "Syntaksipuun parametri on v\u00e4\u00e4r\u00e4\u00e4 tyyppi\u00e4, esim. None.",
-        5
-    ],
-    "syntax_error": [
-        "Tiedostossa on syntaksi virhe.",
-        1
-    ],
-    "tool_error": [
-        "ASPA:n virhe analysoitaessa tiedostoa '{}'.",
-        1
-    ],
-    "PT1": [
-        "Komentoa '{}' on k\u00e4ytetty.",
-        3
-    ],
-    "PT2": [
-        "Nimess\u00e4 '{}' on muita kuin A-Z, 0-9 ja alaviiva merkkej\u00e4.",
-        2
-    ],
-    "PT4-1": [
-        "Silmukkaa ei koskaan pys\u00e4ytet\u00e4.",
-        1
-    ],
-    "PT5": [
-        "Koodirivej\u00e4 komennon '{}' j\u00e4lkeen.",
-        1
-    ],
-    "PT6": [
-        "Per\u00e4kk\u00e4iset if-rakenteet tulisi korvata if-elif...elif -rakenteella.",
-        3
-    ],
-    "AR1": [
-        "Ohjelmasta ei l\u00f6ytynyt m\u00e4\u00e4rittely\u00e4 'paaohjelma':lle.",
-        3
-    ],
-    "AR2-1": [
-        "Aliohjelman '{}' m\u00e4\u00e4rittely ei ole p\u00e4\u00e4tasolla.",
-        1
-    ],
-    "AR3": [
-        "Globaalimuuttuja '{}'.",
-        1
-    ],
-    "AR3-3": [
-        "Muuttujalla ja kiintoarvolla on sama nimi '{}'.",
-        3
-    ],
-    "AR4": [
-        "Rekursiivinen aliohjelmakutsu.",
-        3
-    ],
-    "AR5-1": [
-        "Aliohjelma '{}' vaatii v\u00e4hint\u00e4\u00e4n {} kpl parametreja, mutta {} l\u00e4hetetty.",
-        1
-    ],
-    "AR5-2": [
-        "Aliohjelma '{}' vaatii enint\u00e4\u00e4n {} kpl parametreja, mutta {} l\u00e4hetetty.",
-        1
-    ],
-    "AR5-3": [
-        "Aliohjelmakutsussa '{}', '{}' on virheellinen parametrin nimi.",
-        1
-    ],
-    "AR6": [
-        "Aliohjelman '{}' lopusta puuttuu return-komento.",
-        2
-    ],
-    "AR6-1": [
-        "K\u00e4ytet\u00e4\u00e4n generaattoria '{}' aliohjelmassa '{}'.",
-        3
-    ],
-    "AR6-2": [
-        "Keskell\u00e4 aliohjelmaa on return.",
-        3
-    ],
-    "AR6-3": [
-        "return-komennosta puuttuu paluuarvo.",
-        2
-    ],
-    "AR6-4": [
-        "Paluuarvo on vakio.",
-        3
-    ],
-    "AR6-5": [
-        "Palautetaan useita paluuarvoja.",
-        3
-    ],
-    "AR6-6": [
-        "Palautetaan jotain muuta kuin muuttujia tai avainsana.",
-        3
-    ],
-    "AR7": [
-        "Aliohjelmalle m\u00e4\u00e4ritet\u00e4\u00e4n attribuuttia '{}'.",
-        1
-    ],
-    "MR1": [
-        "Komento vaikuttaisi olevan v\u00e4\u00e4r\u00e4ss\u00e4 kohdin tiedostoa.",
-        2
-    ],
-    "MR2-3": [
-        "Aliohjelmakutsu '{}()' on {}. aliohjelmakutsu. Pit\u00e4isi olla vain yksi (1) aliohjelmakutsu 'paaohjelma()'.",
-        2
-    ],
-    "MR2-4": [
-        "P\u00e4\u00e4tason aliohjelmakutsu '{}()' ei viittaa tiedoston p\u00e4\u00e4ohjelmaan.",
-        2
-    ],
-    "MR3": [
-        "Kirjasto '{}' sis\u00e4llytet\u00e4\u00e4n (eng. import) uudelleen.",
-        1
-    ],
-    "MR3-1": [
-        "Kirjastosta '{}' sis\u00e4llytet\u00e4\u00e4n sis\u00e4lt\u00f6\u00e4 uudelleen.",
-        2
-    ],
-    "MR4": [
-        "Kirjaston '{}' sis\u00e4llytys (eng. import) ei ole p\u00e4\u00e4tasolla.",
-        1
-    ],
-    "MR5": [
-        "Tiedostossa ei ole kaikkia alkukommentteja tiedoston {} ensimm\u00e4isell\u00e4 rivill\u00e4.",
-        2
-    ],
-    "PK1": [
-        "Poikkeustenk\u00e4sittelyss\u00e4 ei ole lainkaan excepti\u00e4.",
-        1
-    ],
-    "PK1-1": [
-        "Exceptist\u00e4 puuttuu virhetyyppi.",
-        2
-    ],
-    "PK1-2": [
-        "T\u00e4ll\u00e4 kurssilla virhetyypin tulisi olla Exception.",
-        2
-    ],
-    "PK3": [
-        "Tiedoston avaamisesta puuttuu poikkeustenk\u00e4sittely.",
-        1
-    ],
-    "PK4": [
-        "Tiedosto-operaatiosta '{}' puuttuu poikkeustenk\u00e4sittely.",
-        1
-    ],
-    "PK4-1": [
-        "Tiedosto-operaatiosta '{}' puuttuu poikkeustenk\u00e4sittely.",
-        1
-    ],
-    "PK5": [
-        "Tiedoston sulkemisesta puuttuu poikkeustenk\u00e4sittely.",
-        1
-    ],
-    "TK1": [
-        "Tiedostokahva '{}' on sulkematta.",
-        1
-    ],
-    "TK1-1": [
-        "T\u00e4ll\u00e4 kurssilla '{}':n k\u00e4ytt\u00f6 ei ole suositeltu rakenne.",
-        3
-    ],
-    "TK1-2": [
-        "Tiedostokahva '{}' suljetaan except-osiossa.",
-        2
-    ],
-    "TK1-3": [
-        "Tiedoston sulkukomenosta '{}.{}' puuttuvat sulut.",
-        1
-    ],
-    "TK2": [
-        "Tiedosto-operaatio '{}.{}' eri aliohjelmassa kuin avaus ja sulkeminen.",
-        1
-    ],
-    "TR2-1": [
-        "Luokan k\u00e4ytt\u00f6 suoraan ilman oliota '{}'.",
-        1
-    ],
-    "TR2-2": [
-        "Olion luonnista puuttuvat sulkeet. Pit\u00e4isi olla '{}()'.",
-        1
-    ],
-    "TR2-3": [
-        "Luokkaa '{}' ei ole m\u00e4\u00e4ritelty p\u00e4\u00e4tasolla.",
-        1
-    ],
-    "TR2-4": [
-        "Luokan '{}' nimi ei ole kirjoitettu SUURAAKKOSIN.",
-        3
-    ],
-    "TR3-1": [
-        "Olion attribuutin arvo lis\u00e4t\u00e4\u00e4n listaan silmukan sis\u00e4ll\u00e4.",
-        2
-    ],
-    "TR3-2": [
-        "Olion luonti silmukan ulkopuolella, mutta arvojen p\u00e4ivitys ja listaan lis\u00e4\u00e4minen silmukassa.",
-        2
-    ],
-    "NOTE": [
-        ", tyylirikkeit\u00e4 havaittu, ole hyv\u00e4 ja katso",
-        0
-    ],
-    "OK": [
-        ": Ei tunnistettu tyylirikkomuksia.",
-        4
-    ],
-    "LINE": [
-        "Rivi",
-        0
-    ],
-    "WELCOME": [
-        "Tulosteissa **-merkint\u00e4 tarkoittaa varoitusta ja ++-merkint\u00e4 ilmoitusta, muut ovat virheit\u00e4.",
-        0
-    ],
-    "NOTE_INFO": [
-        "T\u00e4ll\u00e4 v\u00e4rill\u00e4 merkityt viestit ovat huomioita.",
-        3
-    ],
-    "WARNING_INFO": [
-        "T\u00e4ll\u00e4 v\u00e4rill\u00e4 merkityt viestit ovat varoituksia.",
-        2
-    ],
-    "ERROR_INFO": [
-        "T\u00e4ll\u00e4 v\u00e4rill\u00e4 merkityt viestit ovat virheit\u00e4.",
-        1
-    ]
+    "default": "Tapahtui virhe!",
+    "error_error": "Virhe tulostettaessa virhett\u00e4. Luultavasti liian v\u00e4h\u00e4n argumentteja (*args).",
+    "type_error": "Syntaksipuun parametri on v\u00e4\u00e4r\u00e4\u00e4 tyyppi\u00e4, esim. None.",
+    "syntax_error": "Tiedostossa on syntaksi virhe.",
+    "tool_error": "ASPA:n virhe analysoitaessa tiedostoa '{}'.",
+    "PT1": "Komentoa '{}' on k\u00e4ytetty.",
+    "PT2": "Nimess\u00e4 '{}' on muita kuin A-Z, 0-9 ja alaviiva merkkej\u00e4.",
+    "PT4-1": "Silmukkaa ei koskaan pys\u00e4ytet\u00e4.",
+    "PT5": "Koodirivej\u00e4 komennon '{}' j\u00e4lkeen.",
+    "PT6": "Per\u00e4kk\u00e4iset if-rakenteet tulisi korvata if-elif...elif -rakenteella.",
+    "AR1": "Ohjelmasta ei l\u00f6ytynyt m\u00e4\u00e4rittely\u00e4 'paaohjelma':lle.",
+    "AR2-1": "Aliohjelman '{}' m\u00e4\u00e4rittely ei ole p\u00e4\u00e4tasolla.",
+    "AR3": "Globaalimuuttuja '{}'.",
+    "AR3-3": "Muuttujalla ja kiintoarvolla on sama nimi '{}'.",
+    "AR4": "Rekursiivinen aliohjelmakutsu.",
+    "AR5-1": "Aliohjelma '{}' vaatii v\u00e4hint\u00e4\u00e4n {} kpl parametreja, mutta {} l\u00e4hetetty.",
+    "AR5-2": "Aliohjelma '{}' vaatii enint\u00e4\u00e4n {} kpl parametreja, mutta {} l\u00e4hetetty.",
+    "AR5-3": "Aliohjelmakutsussa '{}', '{}' on virheellinen parametrin nimi.",
+    "AR6": "Aliohjelman '{}' lopusta puuttuu return-komento.",
+    "AR6-1": "K\u00e4ytet\u00e4\u00e4n generaattoria '{}' aliohjelmassa '{}'.",
+    "AR6-2": "Keskell\u00e4 aliohjelmaa on return.",
+    "AR6-3": "return-komennosta puuttuu paluuarvo.",
+    "AR6-4": "Paluuarvo on vakio.",
+    "AR6-5": "Palautetaan useita paluuarvoja.",
+    "AR6-6": "Palautetaan jotain muuta kuin muuttujia tai avainsana.",
+    "AR7": "Aliohjelmalle m\u00e4\u00e4ritet\u00e4\u00e4n attribuuttia '{}'.",
+    "MR1": "Komento vaikuttaisi olevan v\u00e4\u00e4r\u00e4ss\u00e4 kohdin tiedostoa.",
+    "MR2-3": "Aliohjelmakutsu '{}()' on {}. aliohjelmakutsu. Pit\u00e4isi olla vain yksi (1) aliohjelmakutsu 'paaohjelma()'.",
+    "MR2-4": "P\u00e4\u00e4tason aliohjelmakutsu '{}()' ei viittaa tiedoston p\u00e4\u00e4ohjelmaan.",
+    "MR3": "Kirjasto '{}' sis\u00e4llytet\u00e4\u00e4n (eng. import) uudelleen.",
+    "MR3-1": "Kirjastosta '{}' sis\u00e4llytet\u00e4\u00e4n sis\u00e4lt\u00f6\u00e4 uudelleen.",
+    "MR4": "Kirjaston '{}' sis\u00e4llytys (eng. import) ei ole p\u00e4\u00e4tasolla.",
+    "MR5": "Tiedostossa ei ole kaikkia alkukommentteja tiedoston {} ensimm\u00e4isell\u00e4 rivill\u00e4.",
+    "PK1": "Poikkeustenk\u00e4sittelyss\u00e4 ei ole lainkaan excepti\u00e4.",
+    "PK1-1": "Exceptist\u00e4 puuttuu virhetyyppi.",
+    "PK1-2": "T\u00e4ll\u00e4 kurssilla virhetyypin tulisi olla Exception.",
+    "PK3": "Tiedoston avaamisesta puuttuu poikkeustenk\u00e4sittely.",
+    "PK4": "Tiedosto-operaatiosta '{}' puuttuu poikkeustenk\u00e4sittely.",
+    "PK4-1": "Tiedosto-operaatiosta '{}' puuttuu poikkeustenk\u00e4sittely.",
+    "PK5": "Tiedoston sulkemisesta puuttuu poikkeustenk\u00e4sittely.",
+    "TK1": "Tiedostokahva '{}' on sulkematta.",
+    "TK1-1": "T\u00e4ll\u00e4 kurssilla '{}':n k\u00e4ytt\u00f6 ei ole suositeltu rakenne.",
+    "TK1-2": "Tiedostokahva '{}' suljetaan except-osiossa.",
+    "TK1-3": "Tiedoston sulkukomenosta '{}.{}' puuttuvat sulut.",
+    "TK2": "Tiedosto-operaatio '{}.{}' eri aliohjelmassa kuin avaus ja sulkeminen.",
+    "TR2-1": "Luokan k\u00e4ytt\u00f6 suoraan ilman oliota '{}'.",
+    "TR2-2": "Olion luonnista puuttuvat sulkeet. Pit\u00e4isi olla '{}()'.",
+    "TR2-3": "Luokkaa '{}' ei ole m\u00e4\u00e4ritelty p\u00e4\u00e4tasolla.",
+    "TR2-4": "Luokan '{}' nimi ei ole kirjoitettu SUURAAKKOSIN.",
+    "TR3-1": "Olion attribuutin arvo lis\u00e4t\u00e4\u00e4n listaan silmukan sis\u00e4ll\u00e4.",
+    "TR3-2": "Olion luonti silmukan ulkopuolella, mutta arvojen p\u00e4ivitys ja listaan lis\u00e4\u00e4minen silmukassa.",
+    "NOTE": ", tyylirikkeit\u00e4 havaittu, ole hyv\u00e4 ja katso",
+    "OK": ": Ei tunnistettu tyylirikkomuksia.",
+    "LINE": "Rivi",
+    "WELCOME": "Tulosteissa **-merkint\u00e4 tarkoittaa varoitusta ja ++-merkint\u00e4 ilmoitusta, muut ovat virheit\u00e4.",
+    "NOTE_INFO": "T\u00e4ll\u00e4 v\u00e4rill\u00e4 merkityt viestit ovat huomioita.",
+    "WARNING_INFO": "T\u00e4ll\u00e4 v\u00e4rill\u00e4 merkityt viestit ovat varoituksia.",
+    "ERROR_INFO": "T\u00e4ll\u00e4 v\u00e4rill\u00e4 merkityt viestit ovat virheit\u00e4."
 }

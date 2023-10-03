@@ -10,7 +10,6 @@ from typing import List
 import src.config.config as cnf
 import src.config.templates as templates
 
-
 MSG = cnf.MSG
 STRUCTURE = cnf.STRUCTURE
 EXAMPLES = cnf.EXAMPLES
@@ -453,4 +452,40 @@ def solve_settings_conflicts(conflicts: List[str], settings: dict) -> None:
             settings["BKT_decimal_separator"] = ","
             settings["BKT_cell_separator"] = ";"
 
+    return None
+
+
+def init_feedback_messages(settings) -> dict:
+    """
+    Function to initialise feedback message dictionary. Feedbacks are based
+    on default feedback messages which are then updated by values from
+    feeback_messages.json file. If there is no settings file, new
+    feeback_messages.json file is created.
+
+    Return: feedback dictionary.
+    """
+    # TODO: Currently work only for Finnish messages, change to be more general
+    # TODO: Currently update defaults in config file. Change so that defaults
+    # are unchanged and messages are passed as parameters.
+
+    msg_path = pathlib.Path(
+        settings["root"] + "/" + settings["feedback_file"]
+    )
+
+    # NOTE Change temporarily tuple to list, key: (text, type) -> key: [text, type]
+    messages_fin = {key:list(value) for key, value in cnf.MSG["FIN"].items()}
+
+    content = read_file(msg_path, settings_file=True)
+    if content:
+        for key, value in json.loads(content).items():
+            messages_fin[key][0] = value
+    else:
+        msg_only = {k:v[0] for k, v in messages_fin.items()}
+
+        content = json.dumps(msg_only, indent=4)
+        write_file(msg_path, content, mode="w")
+
+    # NOTE Change lsit back to tuple, key: [text, type] -> key: (text, type)
+    # Global constant after this change
+    cnf.MSG["FIN"] = {key:tuple(value) for key, value in messages_fin.items()}
     return None
