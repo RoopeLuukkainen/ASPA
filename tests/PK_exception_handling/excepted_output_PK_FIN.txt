@@ -1,6 +1,6 @@
 2023-09-28_10-17-41
 ================================================================================
-\\maa1.cc.lut.fi\home\h17373\Documents\ASPA\ASPA\tests\PK_exception_handling\PK1-1_missing_exception_type.py
+E:\GitHub\ASPA\tests\PK_exception_handling\PK1-1_missing_exception_type.py
 PK1-1_missing_exception_type.py
 
 Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
@@ -18,7 +18,7 @@ Rivi 8: Exceptistä puuttuu virhetyyppi.
 Rivi 15: Exceptistä puuttuu virhetyyppi.
 Rivi 22: Exceptistä puuttuu virhetyyppi.
 ================================================================================
-\\maa1.cc.lut.fi\home\h17373\Documents\ASPA\ASPA\tests\PK_exception_handling\PK1_try_without_except_branch.py
+E:\GitHub\ASPA\tests\PK_exception_handling\PK1_try_without_except_branch.py
 PK1_try_without_except_branch.py
 
 Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
@@ -35,7 +35,7 @@ Poikkeustenkäsittely, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Poik
 Rivi 7: Poikkeustenkäsittelyssä ei ole lainkaan exceptiä.
 Rivi 10: Poikkeustenkäsittelyssä ei ole lainkaan exceptiä.
 ================================================================================
-\\maa1.cc.lut.fi\home\h17373\Documents\ASPA\ASPA\tests\PK_exception_handling\PK3_file_open_miss_exception_handling.py
+E:\GitHub\ASPA\tests\PK_exception_handling\PK3_file_open_miss_exception_handling.py
 PK3_file_open_miss_exception_handling.py
 
 Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
@@ -57,7 +57,7 @@ Rivi 29: Tiedoston avaamisesta puuttuu poikkeustenkäsittely.
 Rivi 30: Tiedoston sulkemisesta puuttuu poikkeustenkäsittely.
 Rivi 32: Tiedoston avaamisesta puuttuu poikkeustenkäsittely.
 ================================================================================
-\\maa1.cc.lut.fi\home\h17373\Documents\ASPA\ASPA\tests\PK_exception_handling\PK4_file_operation_miss_exception_handling.py
+E:\GitHub\ASPA\tests\PK_exception_handling\PK4_file_operation_miss_exception_handling.py
 PK4_file_operation_miss_exception_handling.py
 
 Perustoiminnot: Ei tunnistettu tyylirikkomuksia.

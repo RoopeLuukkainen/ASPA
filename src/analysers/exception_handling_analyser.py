@@ -15,6 +15,7 @@ class ExceptionHandlingAnalyser(ast.NodeVisitor):
         }
         self.allowed_exception_types = cnf.ALLOWED_EXCEPTION_TYPES
 
+   # ------------------------------------------------------------------------- #
    # Getters
 
    # ------------------------------------------------------------------------- #

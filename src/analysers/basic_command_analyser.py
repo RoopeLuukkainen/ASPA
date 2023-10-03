@@ -17,6 +17,10 @@ class BasicsAnalyser(ast.NodeVisitor):
         self.model = model
         self.searched_commands = cnf.SEARCHED_COMMANDS
         self.valid_naming = utils.get_compiled_regex("valid_naming")
+        self._checked_if_pyramid_parents = []
+        # Minimumn amount of if statements with same variable which
+        # results to a notification, i.e., 6 or more and you get warning.
+        self._if_limit = 6
 
     def check_valid_name(self, node, name, *args, **kwargs):
         """
@@ -131,6 +135,176 @@ class BasicsAnalyser(ast.NodeVisitor):
     #                 JoinedStr, Bytes, NameConstant, Ellipsis, Constant,
     #                 Attribute, Subscript, Starred, Name, List, Tuple
 
+    def _check_if_pyramid(self, node):
+        # TODO check that ast.Ifs are in same section in parents tree, e.g.
+        # try-except (inside try only) because ast.iter_child_nodes go throught
+        # all the childs in all the sections.
+        # TODO update such that works with multiple variables in comparison
+
+        # def _check_pyramid_limit():
+        #     # NOTE Nested function has access to all variables in parent
+        #     # function so no need for parameters. List (reference variable) can
+        #     # be modified normally.
+        #     if if_count >= self._if_limit:
+        #         pyramid_linenos.append(min_lineno)
+
+        #     return min_lineno
+
+        variables = []
+        if_count = 0
+        if_pyramid = False
+        pyramid_linenos = []
+        # This variable is used to guarantee that line number of the
+        # first if in an if-pyramid is used in violation message.
+        min_lineno = node.lineno
+        parent = node.parent_node
+
+        # print(ast.dump(node, indent=4))
+        if parent in self._checked_if_pyramid_parents:
+            return None
+
+
+        for _child in ast.iter_child_nodes(parent):
+            # try:
+            #     print(_child.lineno, end=": ")
+            # except AttributeError:
+            #     pass
+            # print(_child)
+            if isinstance(_child, ast.If):
+                # lineno -1 ("given manually below") is possible when same
+                # parent already has a different pyramid inside itself.
+                if min_lineno < 0:
+                    min_lineno = node.lineno
+
+                elems = a_utils.get_comparator_elements(node.test)
+                print(_child.lineno, elems)
+
+
+                # if any([a_utils.is_same_name(variables[0], e) for e in elems]):
+                    # print("yey")
+
+                # # Check pyramids which have ended
+                # for var in variables.keys():
+                #     if var not in elems:
+                #         # TODO Check if pyramid is so large that violation occurs
+                #         _check_pyramid_limit()
+                #         del variables[var]
+
+                # for elem in elems:
+                #     if elem not in variables:
+                #         variables[elem] = 1
+
+
+                if_count += 1  # Check that variable is the same
+                if_pyramid = True
+                min_lineno = min(min_lineno, node.lineno)
+                continue
+
+
+            if if_count >= self._if_limit:
+                pyramid_linenos.append(min_lineno)
+
+                if_pyramid = False
+
+            # if (not if_pyramid) and (if_count >= self._if_limit):
+
+                # self.model.add_msg("PT6", lineno=min_lineno)
+                print(1)
+                # if_pyramid = False
+                min_lineno = -1
+                if_count = 0
+
+        else:
+            if if_count >= self._if_limit:
+                pyramid_linenos.append(min_lineno)
+                print(2)
+
+            if_pyramid = False
+            min_lineno = -1
+            if_count = 0
+
+        print()
+
+        for lineno in pyramid_linenos:
+            self.model.add_msg("PT6", lineno=lineno, status=False)
+        self._checked_if_pyramid_parents.append(parent)
+        # for i in ast.iter_fields(node):
+        #     print(i, "|...|")
+        # print()
+
+        # print("====")
+        # for i in ast.walk(node):
+        #     print(i, "|...|", ast.dump(i))
+        # print()
+
+
+
+        # a_utils.dump_node(node, 4, True)
+
+    def _check_if_pyramid(self, node):
+        # TODO check that ast.Ifs are in same section in parents tree, e.g.
+        # try-except (inside try only) because ast.iter_child_nodes go throught
+        # all the childs in all the sections.
+        # TODO update such that works with multiple variables in comparison
+
+        variable = None
+        if_count = 0
+        if_pyramid = False
+        pyramid_linenos = []
+        # This variable is used to guarantee that line number of the
+        # first if in an if-pyramid is used in violation message.
+        min_lineno = node.lineno
+        parent = node.parent_node
+
+        if parent in self._checked_if_pyramid_parents:
+            return None
+
+
+        for _child in ast.iter_child_nodes(parent):
+            if isinstance(_child, ast.If):
+                # lineno -1 ("given manually below") is possible when same
+                # parent already has a different pyramid inside itself.
+                if min_lineno < 0:
+                    min_lineno = node.lineno
+
+                elems = a_utils.get_comparator_elements(node.test, side="left")
+                if not elems:
+                    continue
+
+                if not variable or elems[0] == variable:
+                    variable = elems[0]
+                    if_count += 1  # Check that variable is the same
+                    if_pyramid = True
+                    min_lineno = min(min_lineno, node.lineno)
+                    continue
+                else:
+                    if_pyramid = False
+                    min_lineno = -1
+                    if_count = 0
+
+
+            if if_count >= self._if_limit:
+                pyramid_linenos.append(min_lineno)
+
+                if_pyramid = False
+                print(1)
+                min_lineno = -1
+                if_count = 0
+
+        else:
+            if if_count >= self._if_limit:
+                pyramid_linenos.append(min_lineno)
+                print(2)
+
+            if_pyramid = False
+            min_lineno = -1
+            if_count = 0
+
+        for lineno in pyramid_linenos:
+            self.model.add_msg("PT6", lineno=lineno, status=False)
+        self._checked_if_pyramid_parents.append(parent)
+
+
    # Visits
     def visit_Call(self, node, *args, **kwargs):
         try:
@@ -199,6 +373,10 @@ class BasicsAnalyser(ast.NodeVisitor):
                 self.check_valid_name(node, node.target.id)
         except AttributeError:
             pass
+        self.generic_visit(node)
+
+    def visit_If(self, node, *args, **kwargs):
+        self._check_if_pyramid(node)
         self.generic_visit(node)
 
     # Assigns

@@ -191,10 +191,44 @@ def is_added_to_data_structure(node, data_stuct_node, data_stuct_name, add_attrs
 
     return is_added
 
+def is_same_name(a, b):
+    try:
+        return get_attribute_name(a) == get_attribute_name(b)
+    except AttributeError:
+        return False
+
+def get_comparator_elements(node, side=None):
+    """
+    Function to parse elements of variables that are used in conditional
+    statements condition.
+    TODO: add support for all the elements when "and"/"or" are used.
+    TODO: add support for all the elements when constants True, False and None are used. "'BoolOp' object has no attribute 'comparators'"
+    TODO: add option to get only left or only right side of the comparison.
+    """
+
+    elements = []
+
+    # Left side
+    if (not side) or (side == "left"):
+        try:
+            elements.append(node.left)
+        except AttributeError:
+            pass
+
+    # Right side
+    if (not side) or (side == "right"):
+        for i in getattr(node, "comparators", []):
+            try:
+                elements.append(i)
+            except AttributeError:
+                pass
+
+    return elements
+
 
 def get_attribute_name(node, splitted=False, omit_n_last=0):
     """
-    Function to parse name from attributes. If the is only single Name
+    Function to parse name from attributes. If there is only single Name
     node then node.id is enough. Otherwise add all attrs in front of
     the id.
 
@@ -325,8 +359,8 @@ def print_statistics(statistics):
 
 ####################################################################
 #  Debug functions
-def dump_node(node, indent=None):
+def dump_node(node, indent=None, include_attributes=True):
     try:
-        print(f"{node.lineno}: {ast.dump(node, indent=indent)}")
+        print(f"{node.lineno}: {ast.dump(node, include_attributes=include_attributes, indent=indent)}")
     except AttributeError:
-        print(f"No line: {ast.dump(node, indent=indent)}")
+        print(f"No line: {ast.dump(node, include_attributes=include_attributes, indent=indent)}")

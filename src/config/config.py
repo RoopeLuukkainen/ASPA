@@ -21,11 +21,7 @@ DEFAULT_SETTINGS = {
     "structure_file": "structures.csv",
     "excluded_directories": ["__pycache__", ".git"],
     "excluded_files": ["__init__.py"],
-    "excluded_staff": [
-        "ojale044", "aalto98", "lackman", # 2 first seem to be students
-        "Roni.Juntunen", "Simo.Viljakainen", "uolevi.nikula", "Miisa.Lopperi",
-        "Markus.Strandman", "Roope.Luukkainen", "Pavel.Silke", "Niku.Gronberg"
-    ],
+    "excluded_staff": [],
     # TODO add also setting for selecting the sorting key, i.e. student or week etc.
     "subdirectory_order": ["course", "week", "exercise", "student"], # NOT YET USED
     "clear_filepaths": False,
@@ -281,7 +277,7 @@ TITLE_TO_EXAMPLES = {
 }
 
 # -----------------------------------------------------------------------------#
-# Violation messages
+# (Default) Violation messages
 MSG = {
     "ENG": {
         "default": ("Error occured!", ERROR),
@@ -295,6 +291,7 @@ MSG = {
         # "PT2-1": ("Name '{}' is Python keyword.", WARNING), # using keyword actually creates syntax error to ast.parse
         "PT4-1": ("Loop never breaks.", ERROR),
         "PT5": ("Unreachable code after command '{}'.", ERROR),
+        "PT6": ("Subsequent if-statements should be replaced with if-elif...elif -structure.", NOTE),
         "AR1": (f"No function defition for '{MAIN_FUNC_NAME}'.", NOTE),
         "AR2-1": ("Definition of the function '{}' is not in the global scope.", ERROR),
         "AR3": ("Global variable '{}'.", ERROR),
@@ -326,9 +323,10 @@ MSG = {
         "MR5": ("Missing some or all header comments at {} first lines of the file.", WARNING),
         "PK1": ("Exception handling has no excepts.", ERROR),
         "PK1-1": ("Missing exception type.", WARNING),
+        "PK1-2": ("In this course used exception type should be Exception.", WARNING),
         "PK3": ("Missing exception handling from the file opening.", ERROR),
         "PK4": ("Missing exception handling from the file operation '{}'.", ERROR),
-        # "PK4b": ("Missing exception handling from the file operation '{}'.", ERROR),
+        "PK4-1": ("Missing exception handling from the file operation '{}'.", ERROR),
         "PK5": ("Missing exception handling from the file closing.", ERROR),
         "TK1": ("File handle '{}' is left open.", ERROR),
         "TK1-1": ("In this course usage of '{}' is not recommended.", NOTE),
@@ -364,6 +362,7 @@ MSG = {
         # "PT2-1": ("Nimi '{}' on Pythonin avainsana.", WARNING), # using keyword actually creates syntax error to ast.parse
         "PT4-1": ("Silmukkaa ei koskaan pysäytetä.", ERROR),
         "PT5": ("Koodirivejä komennon '{}' jälkeen.", ERROR),
+        "PT6": ("Peräkkäiset if-rakenteet tulisi korvata if-elif...elif -rakenteella.", NOTE),
         "AR1": (f"Ohjelmasta ei löytynyt määrittelyä '{MAIN_FUNC_NAME}':lle.", NOTE),
         "AR2-1": ("Aliohjelman '{}' määrittely ei ole päätasolla.", ERROR),
         "AR3": ("Globaalimuuttuja '{}'.", ERROR),
@@ -397,9 +396,7 @@ MSG = {
         "PK1-2": ("Tällä kurssilla virhetyypin tulisi olla Exception.", WARNING),
         "PK3": ("Tiedoston avaamisesta puuttuu poikkeustenkäsittely.", ERROR),
         "PK4": ("Tiedosto-operaatiosta '{}' puuttuu poikkeustenkäsittely.", ERROR),
-        "PK3": ("Tiedoston avaamisesta puuttuu poikkeustenkäsittely.", ERROR),
-        # "PK4b": ("Tiedosto-operaatiosta '{}' puuttuu poikkeustenkäsittely.", ERROR),
-        "PK5": ("Tiedoston sulkemisesta puuttuu poikkeustenkäsittely.", ERROR),
+        "PK4-1": ("Tiedosto-operaatiosta '{}' puuttuu poikkeustenkäsittely.", ERROR),
         "PK5": ("Tiedoston sulkemisesta puuttuu poikkeustenkäsittely.", ERROR),
         "TK1": ("Tiedostokahva '{}' on sulkematta.", ERROR),
         "TK1-1": ("Tällä kurssilla '{}':n käyttö ei ole suositeltu rakenne.", NOTE),

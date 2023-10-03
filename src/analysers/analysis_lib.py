@@ -479,7 +479,7 @@ class Model:
             self.analyse_tree(tree, files_in_dir, content, selections)
 
         except Exception as e:
-            # print(e)
+            print(e)
             self.clear_analysis_data()
             self._category_results.clear()
             self.add_msg("tool_error", filename)
