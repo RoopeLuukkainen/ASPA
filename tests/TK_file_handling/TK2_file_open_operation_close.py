@@ -11,7 +11,7 @@ def PK4(t): # Example from PK4
         t.fhandle.write("123\n")
         _ = t.fhandle.readline()
         print(t.fhandle.readline())
-    except OSError:
+    except Exception:
         pass
     # t.fhandle.close()
     return None
@@ -21,7 +21,7 @@ def another_way():
         f2 = open("test.txt", "r")
         print(file_operation(f2))
         f2.close()
-    except OSError:
+    except Exception:
         pass
     return None
 
@@ -29,7 +29,7 @@ def another_way():
 def opening(name):
     try:
         f = open(name, "r")
-    except OSError:
+    except Exception:
         pass
     return f
 
@@ -39,7 +39,7 @@ def file_operation(f):
         line = f.readline()
         for i in f:
             print(i)
-    except OSError:
+    except Exception:
         pass
     return line
 
@@ -47,7 +47,7 @@ def file_operation(f):
 def closing(f):
     try:
         f.close()
-    except OSError:
+    except Exception:
         pass
     return None
 
@@ -70,7 +70,7 @@ def paaohjelma():
         f1 = open("test.txt", "w")
         f1.write("qwerty\n")
         f1.close()
-    except OSError:
+    except Exception:
         pass
     TK2()
     return None

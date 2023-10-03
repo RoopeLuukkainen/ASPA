@@ -20,6 +20,7 @@ class ExceptionHandlingAnalyser(ast.NodeVisitor):
             "read", "readline", "readlines", "write", "writelines",
         }
         self.allowed_exception_types = cnf.ALLOWED_EXCEPTION_TYPES
+        self._checked_try_nodes = []
 
    # ------------------------------------------------------------------------- #
    # Getters
@@ -49,6 +50,10 @@ class ExceptionHandlingAnalyser(ast.NodeVisitor):
                     lineno=node.lineno,
                     status=self._has_exception_handling(node)
                 )
+
+                # As this is file handling, check exception type
+                try_node = a_utils.get_parent(node, ast.Try, denied=cnf.FUNC)
+                self._check_exception_type(try_node)
         except AttributeError:
             pass
 
@@ -91,6 +96,9 @@ class ExceptionHandlingAnalyser(ast.NodeVisitor):
         Method to check if used exception type is Exception.
         """
 
+        if node in self._checked_try_nodes:
+            return None
+
         try:
             temp = []
             for handler in node.handlers:
@@ -110,6 +118,8 @@ class ExceptionHandlingAnalyser(ast.NodeVisitor):
 
         except AttributeError:
             pass
+
+        self._checked_try_nodes.append(node)
         return None
 
    # ------------------------------------------------------------------------- #
@@ -118,7 +128,7 @@ class ExceptionHandlingAnalyser(ast.NodeVisitor):
         """Method to visit Try nodes."""
 
         self._check_exception_handlers(node)
-        self._check_exception_type(node)
+        # self._check_exception_type(node)
         self.generic_visit(node)
 
     def visit_Call(self, node):
@@ -138,6 +148,7 @@ class ExceptionHandlingAnalyser(ast.NodeVisitor):
         6. Missing try - except around file.close().
         """
 
+        filehandling = False
         try:
             if node.attr in self.file_operations:
                 self.model.add_msg(
@@ -146,6 +157,8 @@ class ExceptionHandlingAnalyser(ast.NodeVisitor):
                     lineno=node.lineno,
                     status=self._has_exception_handling(node)
                 )
+                filehandling = True
+
             elif node.attr == "close":
                 self.model.add_msg(
                     "PK5",
@@ -153,9 +166,16 @@ class ExceptionHandlingAnalyser(ast.NodeVisitor):
                     lineno=node.lineno,
                     status=self._has_exception_handling(node)
                 )
+                filehandling = True
 
         except AttributeError:
             pass
+
+        if filehandling:
+            # As this is file handling, check exception type
+            try_node = a_utils.get_parent(node, ast.Try, denied=cnf.FUNC)
+            self._check_exception_type(try_node)
+
         self.generic_visit(node)
 
     def visit_For(self, node):

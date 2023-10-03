@@ -9,13 +9,13 @@ def PK3():
     try:
         f = open("test.txt", "w")
         f.close()
-    except OSError:
+    except Exception:
         pass
 
     try:
         f = open("test.txt", "r")
         f.close()
-    except OSError:
+    except Exception:
         pass
 
     try:

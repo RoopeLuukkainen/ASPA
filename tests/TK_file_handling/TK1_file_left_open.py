@@ -20,14 +20,14 @@ def TK1():
                 break
             elif sel == "1":
                 f.readline()
-    except OSError:
+    except Exception:
         pass
 
 
     try:
         f2 = open("test.txt", "r") # This is left open.
         f2.readline()
-    except OSError:
+    except Exception:
         pass
 
     try:
@@ -39,7 +39,7 @@ def TK1():
     try:
         f2 = open("test.txt", "w")
         f2.write("qwerty\n")
-    except OSError:
+    except Exception:
         pass
 
     try:

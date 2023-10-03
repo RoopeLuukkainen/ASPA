@@ -10,7 +10,7 @@ def PK4():
     try:
         t.fhandle = open("test.txt", "w")
         t.fhandle.write("123\n")
-    except OSError:
+    except Exception:
         pass
     t.fhandle.write()
 
@@ -22,7 +22,7 @@ def PK4():
     try:
         f = open("test.txt", "r")
         f.readline()
-    except OSError:
+    except Exception:
         pass
     line = f.readline()
     everyting = f.read()

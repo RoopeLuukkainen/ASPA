@@ -1,6 +1,6 @@
 2022-09-30_14-25-01
 ================================================================================
-\\maa1.cc.lut.fi\home\h17373\Documents\ASPA\ASPA\tests\AR_functions\AR1_no_paaohjelma.py
+D:\GitHub\ASPA\tests\AR_functions\AR1_no_paaohjelma.py
 AR1_no_paaohjelma.py
 
 Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
@@ -17,7 +17,7 @@ Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
 
 Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
 ================================================================================
-\\maa1.cc.lut.fi\home\h17373\Documents\ASPA\ASPA\tests\AR_functions\AR2-1_local_scope_function.py
+D:\GitHub\ASPA\tests\AR_functions\AR2-1_local_scope_function.py
 AR2-1_local_scope_function.py
 
 Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
@@ -37,7 +37,7 @@ Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
 
 Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
 ================================================================================
-\\maa1.cc.lut.fi\home\h17373\Documents\ASPA\ASPA\tests\AR_functions\AR3_global_object.py
+D:\GitHub\ASPA\tests\AR_functions\AR3_global_object.py
 AR3_global_object.py
 
 Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
@@ -57,7 +57,7 @@ Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
 
 Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
 ================================================================================
-\\maa1.cc.lut.fi\home\h17373\Documents\ASPA\ASPA\tests\AR_functions\AR3_global_variable.py
+D:\GitHub\ASPA\tests\AR_functions\AR3_global_variable.py
 AR3_global_variable.py
 
 Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
@@ -77,7 +77,7 @@ Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
 
 Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
 ================================================================================
-\\maa1.cc.lut.fi\home\h17373\Documents\ASPA\ASPA\tests\AR_functions\AR3_global_variable_2.py
+D:\GitHub\ASPA\tests\AR_functions\AR3_global_variable_2.py
 AR3_global_variable_2.py
 
 Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
@@ -106,7 +106,7 @@ Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
 
 Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
 ================================================================================
-\\maa1.cc.lut.fi\home\h17373\Documents\ASPA\ASPA\tests\AR_functions\AR4_recursive_function.py
+D:\GitHub\ASPA\tests\AR_functions\AR4_recursive_function.py
 AR4_recursive_function.py
 
 Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
@@ -122,7 +122,7 @@ Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
 
 Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
 ================================================================================
-\\maa1.cc.lut.fi\home\h17373\Documents\ASPA\ASPA\tests\AR_functions\AR5_parameters.py
+D:\GitHub\ASPA\tests\AR_functions\AR5_parameters.py
 AR5_parameters.py
 
 Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
@@ -154,7 +154,7 @@ Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
 
 Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
 ================================================================================
-\\maa1.cc.lut.fi\home\h17373\Documents\ASPA\ASPA\tests\AR_functions\AR6-1_yield.py
+D:\GitHub\ASPA\tests\AR_functions\AR6-1_yield.py
 AR6-1_yield.py
 
 Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
@@ -172,7 +172,7 @@ Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
 
 Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
 ================================================================================
-\\maa1.cc.lut.fi\home\h17373\Documents\ASPA\ASPA\tests\AR_functions\AR6_return.py
+D:\GitHub\ASPA\tests\AR_functions\AR6_return.py
 AR6_return.py
 
 Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
@@ -195,7 +195,7 @@ Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
 
 Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
 ================================================================================
-\\maa1.cc.lut.fi\home\h17373\Documents\ASPA\ASPA\tests\AR_functions\AR7_function_attribute.py
+D:\GitHub\ASPA\tests\AR_functions\AR7_function_attribute.py
 AR7_function_attribute.py
 
 Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
@@ -212,7 +212,7 @@ Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
 
 Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
 ================================================================================
-\\maa1.cc.lut.fi\home\h17373\Documents\ASPA\ASPA\tests\AR_functions\example_lib.py
+D:\GitHub\ASPA\tests\AR_functions\example_lib.py
 example_lib.py
 
 Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
@@ -227,7 +227,7 @@ Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
 
 Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
 ================================================================================
-\\maa1.cc.lut.fi\home\h17373\Documents\ASPA\ASPA\tests\MR_file_structure\MR1_element_order_correct.py
+D:\GitHub\ASPA\tests\MR_file_structure\MR1_element_order_correct.py
 MR1_element_order_correct.py
 
 Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
@@ -242,7 +242,7 @@ Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
 
 Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
 ================================================================================
-\\maa1.cc.lut.fi\home\h17373\Documents\ASPA\ASPA\tests\MR_file_structure\MR1_element_order_wrong1.py
+D:\GitHub\ASPA\tests\MR_file_structure\MR1_element_order_wrong1.py
 MR1_element_order_wrong1.py
 
 Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
@@ -262,7 +262,7 @@ Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
 
 Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
 ================================================================================
-\\maa1.cc.lut.fi\home\h17373\Documents\ASPA\ASPA\tests\MR_file_structure\MR1_element_order_wrong2.py
+D:\GitHub\ASPA\tests\MR_file_structure\MR1_element_order_wrong2.py
 MR1_element_order_wrong2.py
 
 Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
@@ -278,7 +278,7 @@ Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
 
 Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
 ================================================================================
-\\maa1.cc.lut.fi\home\h17373\Documents\ASPA\ASPA\tests\MR_file_structure\MR1_element_order_wrong3.py
+D:\GitHub\ASPA\tests\MR_file_structure\MR1_element_order_wrong3.py
 MR1_element_order_wrong3.py
 
 Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
@@ -296,7 +296,7 @@ Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
 
 Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
 ================================================================================
-\\maa1.cc.lut.fi\home\h17373\Documents\ASPA\ASPA\tests\MR_file_structure\MR1_element_order_wrong4.py
+D:\GitHub\ASPA\tests\MR_file_structure\MR1_element_order_wrong4.py
 MR1_element_order_wrong4.py
 
 Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
@@ -312,7 +312,7 @@ Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
 
 Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
 ================================================================================
-\\maa1.cc.lut.fi\home\h17373\Documents\ASPA\ASPA\tests\MR_file_structure\MR1_element_order_wrong5.py
+D:\GitHub\ASPA\tests\MR_file_structure\MR1_element_order_wrong5.py
 MR1_element_order_wrong5.py
 
 Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
@@ -330,7 +330,7 @@ Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
 
 Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
 ================================================================================
-\\maa1.cc.lut.fi\home\h17373\Documents\ASPA\ASPA\tests\MR_file_structure\MR1_element_order_wrong6.py
+D:\GitHub\ASPA\tests\MR_file_structure\MR1_element_order_wrong6.py
 MR1_element_order_wrong6.py
 
 Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
@@ -357,7 +357,7 @@ Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
 
 Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
 ================================================================================
-\\maa1.cc.lut.fi\home\h17373\Documents\ASPA\ASPA\tests\MR_file_structure\MR2-3_global_scope_call.py
+D:\GitHub\ASPA\tests\MR_file_structure\MR2-3_global_scope_call.py
 MR2-3_global_scope_call.py
 
 Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
@@ -376,7 +376,7 @@ Rivi 14: Aliohjelmakutsu 'MR2_3()' on 3. aliohjelmakutsu. Pitäisi olla vain yks
 
 Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
 ================================================================================
-\\maa1.cc.lut.fi\home\h17373\Documents\ASPA\ASPA\tests\MR_file_structure\MR2-4_not_main_function_call.py
+D:\GitHub\ASPA\tests\MR_file_structure\MR2-4_not_main_function_call.py
 MR2-4_not_main_function_call.py
 
 Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
@@ -395,7 +395,7 @@ Rivi 15: Päätason aliohjelmakutsu 'random.random()' ei viittaa tiedoston pää
 
 Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
 ================================================================================
-\\maa1.cc.lut.fi\home\h17373\Documents\ASPA\ASPA\tests\MR_file_structure\MR3-1_MR4_from_module_imported_again.py
+D:\GitHub\ASPA\tests\MR_file_structure\MR3-1_MR4_from_module_imported_again.py
 MR3-1_MR4_from_module_imported_again.py
 
 Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
@@ -415,7 +415,7 @@ Rivi 9: Kirjastosta 'random' sisällytetään sisältöä uudelleen.
 
 Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
 ================================================================================
-\\maa1.cc.lut.fi\home\h17373\Documents\ASPA\ASPA\tests\MR_file_structure\MR3_MR4_module_imported_again.py
+D:\GitHub\ASPA\tests\MR_file_structure\MR3_MR4_module_imported_again.py
 MR3_MR4_module_imported_again.py
 
 Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
@@ -434,7 +434,7 @@ Rivi 10: Kirjasto 'datetime' sisällytetään (eng. import) uudelleen.
 
 Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
 ================================================================================
-\\maa1.cc.lut.fi\home\h17373\Documents\ASPA\ASPA\tests\MR_file_structure\MR5_header_comments_correct.py
+D:\GitHub\ASPA\tests\MR_file_structure\MR5_header_comments_correct.py
 MR5_header_comments_correct.py
 
 Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
@@ -449,7 +449,7 @@ Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
 
 Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
 ================================================================================
-\\maa1.cc.lut.fi\home\h17373\Documents\ASPA\ASPA\tests\MR_file_structure\MR5_header_comments_wrong1.py
+D:\GitHub\ASPA\tests\MR_file_structure\MR5_header_comments_wrong1.py
 MR5_header_comments_wrong1.py
 
 Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
@@ -464,7 +464,7 @@ Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
 
 Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
 ================================================================================
-\\maa1.cc.lut.fi\home\h17373\Documents\ASPA\ASPA\tests\MR_file_structure\MR5_header_comments_wrong2.py
+D:\GitHub\ASPA\tests\MR_file_structure\MR5_header_comments_wrong2.py
 MR5_header_comments_wrong2.py
 
 Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
@@ -479,7 +479,7 @@ Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
 
 Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
 ================================================================================
-\\maa1.cc.lut.fi\home\h17373\Documents\ASPA\ASPA\tests\MR_file_structure\MR5_header_comments_wrong3.py
+D:\GitHub\ASPA\tests\MR_file_structure\MR5_header_comments_wrong3.py
 MR5_header_comments_wrong3.py
 
 Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
@@ -494,7 +494,7 @@ Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
 
 Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
 ================================================================================
-\\maa1.cc.lut.fi\home\h17373\Documents\ASPA\ASPA\tests\OK_files\empty.py
+D:\GitHub\ASPA\tests\OK_files\empty.py
 empty.py
 
 Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
@@ -509,7 +509,7 @@ Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
 
 Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
 ================================================================================
-\\maa1.cc.lut.fi\home\h17373\Documents\ASPA\ASPA\tests\OK_files\paaohjelma.py
+D:\GitHub\ASPA\tests\OK_files\paaohjelma.py
 paaohjelma.py
 
 Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
@@ -524,7 +524,7 @@ Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
 
 Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
 ================================================================================
-\\maa1.cc.lut.fi\home\h17373\Documents\ASPA\ASPA\tests\PK_exception_handling\PK1-1_missing_exception_type.py
+D:\GitHub\ASPA\tests\PK_exception_handling\PK1-1_missing_exception_type.py
 PK1-1_missing_exception_type.py
 
 Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
@@ -542,7 +542,26 @@ Rivi 8: Exceptistä puuttuu virhetyyppi.
 Rivi 15: Exceptistä puuttuu virhetyyppi.
 Rivi 22: Exceptistä puuttuu virhetyyppi.
 ================================================================================
-\\maa1.cc.lut.fi\home\h17373\Documents\ASPA\ASPA\tests\PK_exception_handling\PK1_try_without_except_branch.py
+D:\GitHub\ASPA\tests\PK_exception_handling\PK1-2_wrong_exception_type_in_file_handling.py
+PK1-2_wrong_exception_type_in_file_handling.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat: Ei tunnistettu tyylirikkomuksia.
+
+Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
+
+Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
+
+Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
+
+Poikkeustenkäsittely, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Poikkeukset':
+Rivi 16: Tällä kurssilla virhetyypin tulisi olla tiedostonkäsittelyn yhteydessä Exception.
+Rivi 21: Tällä kurssilla virhetyypin tulisi olla tiedostonkäsittelyn yhteydessä Exception.
+Rivi 26: Tällä kurssilla virhetyypin tulisi olla tiedostonkäsittelyn yhteydessä Exception.
+Rivi 33: Tällä kurssilla virhetyypin tulisi olla tiedostonkäsittelyn yhteydessä Exception.
+================================================================================
+D:\GitHub\ASPA\tests\PK_exception_handling\PK1_try_without_except_branch.py
 PK1_try_without_except_branch.py
 
 Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
@@ -559,7 +578,7 @@ Poikkeustenkäsittely, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Poik
 Rivi 7: Poikkeustenkäsittelyssä ei ole lainkaan exceptiä.
 Rivi 10: Poikkeustenkäsittelyssä ei ole lainkaan exceptiä.
 ================================================================================
-\\maa1.cc.lut.fi\home\h17373\Documents\ASPA\ASPA\tests\PK_exception_handling\PK3_file_open_miss_exception_handling.py
+D:\GitHub\ASPA\tests\PK_exception_handling\PK3_file_open_miss_exception_handling.py
 PK3_file_open_miss_exception_handling.py
 
 Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
@@ -581,7 +600,7 @@ Rivi 29: Tiedoston avaamisesta puuttuu poikkeustenkäsittely.
 Rivi 30: Tiedoston sulkemisesta puuttuu poikkeustenkäsittely.
 Rivi 32: Tiedoston avaamisesta puuttuu poikkeustenkäsittely.
 ================================================================================
-\\maa1.cc.lut.fi\home\h17373\Documents\ASPA\ASPA\tests\PK_exception_handling\PK4_file_operation_miss_exception_handling.py
+D:\GitHub\ASPA\tests\PK_exception_handling\PK4_file_operation_miss_exception_handling.py
 PK4_file_operation_miss_exception_handling.py
 
 Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
@@ -602,7 +621,24 @@ Rivi 29: Tiedosto-operaatiosta 'f.readlines' puuttuu poikkeustenkäsittely.
 Rivi 30: Tiedosto-operaatiosta 'for _ in f' puuttuu poikkeustenkäsittely.
 Rivi 49: Tiedosto-operaatiosta 'for this_is_a_bug in f' puuttuu poikkeustenkäsittely.
 ================================================================================
-\\maa1.cc.lut.fi\home\h17373\Documents\ASPA\ASPA\tests\PT_basic_command\PT1_print_call.py
+D:\GitHub\ASPA\tests\PK_exception_handling\PK5_file_closing_miss_exception_handling.py
+PK5_file_closing_miss_exception_handling.py
+
+Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
+
+Aliohjelmat: Ei tunnistettu tyylirikkomuksia.
+
+Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
+
+Tietorakenteet: Ei tunnistettu tyylirikkomuksia.
+
+Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
+
+Poikkeustenkäsittely, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Poikkeukset':
+Rivi 21: Tiedoston sulkemisesta puuttuu poikkeustenkäsittely.
+Rivi 29: Tiedoston sulkemisesta puuttuu poikkeustenkäsittely.
+================================================================================
+D:\GitHub\ASPA\tests\PT_basic_command\PT1_print_call.py
 PT1_print_call.py
 
 Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
@@ -617,7 +653,7 @@ Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
 
 Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
 ================================================================================
-\\maa1.cc.lut.fi\home\h17373\Documents\ASPA\ASPA\tests\PT_basic_command\PT2_naming.py
+D:\GitHub\ASPA\tests\PT_basic_command\PT2_naming.py
 PT2_naming.py
 
 Perustoiminnot, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Tiedon tulostaminen ruudulle' 'Tiedon lukeminen käyttäjältä' 'Valintarakenne' 'Toistorakenteet':
@@ -655,7 +691,7 @@ Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
 
 Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
 ================================================================================
-\\maa1.cc.lut.fi\home\h17373\Documents\ASPA\ASPA\tests\PT_basic_command\PT4-1_infinite_loop.py
+D:\GitHub\ASPA\tests\PT_basic_command\PT4-1_infinite_loop.py
 PT4-1_infinite_loop.py
 
 Perustoiminnot, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Tiedon tulostaminen ruudulle' 'Tiedon lukeminen käyttäjältä' 'Valintarakenne' 'Toistorakenteet':
@@ -671,7 +707,7 @@ Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
 
 Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
 ================================================================================
-\\maa1.cc.lut.fi\home\h17373\Documents\ASPA\ASPA\tests\PT_basic_command\PT5_unreachable_code.py
+D:\GitHub\ASPA\tests\PT_basic_command\PT5_unreachable_code.py
 PT5_unreachable_code.py
 
 Perustoiminnot, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Tiedon tulostaminen ruudulle' 'Tiedon lukeminen käyttäjältä' 'Valintarakenne' 'Toistorakenteet':
@@ -710,7 +746,7 @@ Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
 
 Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
 ================================================================================
-\\maa1.cc.lut.fi\home\h17373\Documents\ASPA\ASPA\tests\TK_file_handling\TK1-1_with_open.py
+D:\GitHub\ASPA\tests\TK_file_handling\TK1-1_with_open.py
 TK1-1_with_open.py
 
 Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
@@ -726,7 +762,7 @@ Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
 
 Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
 ================================================================================
-\\maa1.cc.lut.fi\home\h17373\Documents\ASPA\ASPA\tests\TK_file_handling\TK1-2_close_in_except.py
+D:\GitHub\ASPA\tests\TK_file_handling\TK1-2_close_in_except.py
 TK1-2_close_in_except.py
 
 Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
@@ -743,7 +779,7 @@ Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
 
 Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
 ================================================================================
-\\maa1.cc.lut.fi\home\h17373\Documents\ASPA\ASPA\tests\TK_file_handling\TK1-3_close_missing_parenthesis.py
+D:\GitHub\ASPA\tests\TK_file_handling\TK1-3_close_missing_parenthesis.py
 TK1-3_close_missing_parenthesis.py
 
 Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
@@ -759,7 +795,7 @@ Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
 
 Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
 ================================================================================
-\\maa1.cc.lut.fi\home\h17373\Documents\ASPA\ASPA\tests\TK_file_handling\TK1_file_left_open.py
+D:\GitHub\ASPA\tests\TK_file_handling\TK1_file_left_open.py
 TK1_file_left_open.py
 
 Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
@@ -776,7 +812,7 @@ Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
 
 Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
 ================================================================================
-\\maa1.cc.lut.fi\home\h17373\Documents\ASPA\ASPA\tests\TK_file_handling\TK1_file_left_open_fix_me.py
+D:\GitHub\ASPA\tests\TK_file_handling\TK1_file_left_open_fix_me.py
 TK1_file_left_open_fix_me.py
 
 Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
@@ -794,7 +830,7 @@ Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
 Poikkeustenkäsittely, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Poikkeukset':
 Rivi 32: Tiedoston sulkemisesta puuttuu poikkeustenkäsittely.
 ================================================================================
-\\maa1.cc.lut.fi\home\h17373\Documents\ASPA\ASPA\tests\TK_file_handling\TK2_file_open_operation_close.py
+D:\GitHub\ASPA\tests\TK_file_handling\TK2_file_open_operation_close.py
 TK2_file_open_operation_close.py
 
 Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
@@ -814,7 +850,7 @@ Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
 
 Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
 ================================================================================
-\\maa1.cc.lut.fi\home\h17373\Documents\ASPA\ASPA\tests\TR_data_structure\example_lib_TR.py
+D:\GitHub\ASPA\tests\TR_data_structure\example_lib_TR.py
 example_lib_TR.py
 
 Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
@@ -829,7 +865,7 @@ Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
 
 Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
 ================================================================================
-\\maa1.cc.lut.fi\home\h17373\Documents\ASPA\ASPA\tests\TR_data_structure\TR2-1_using_class_without_object.py
+D:\GitHub\ASPA\tests\TR_data_structure\TR2-1_using_class_without_object.py
 TR2-1_using_class_without_object.py
 
 Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
@@ -845,7 +881,7 @@ Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
 
 Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
 ================================================================================
-\\maa1.cc.lut.fi\home\h17373\Documents\ASPA\ASPA\tests\TR_data_structure\TR2-2_object_creation_miss_parenthesis.py
+D:\GitHub\ASPA\tests\TR_data_structure\TR2-2_object_creation_miss_parenthesis.py
 TR2-2_object_creation_miss_parenthesis.py
 
 Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
@@ -862,7 +898,7 @@ Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
 
 Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
 ================================================================================
-\\maa1.cc.lut.fi\home\h17373\Documents\ASPA\ASPA\tests\TR_data_structure\TR2-3_non_global_class.py
+D:\GitHub\ASPA\tests\TR_data_structure\TR2-3_non_global_class.py
 TR2-3_non_global_class.py
 
 Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
@@ -879,7 +915,7 @@ Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
 
 Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
 ================================================================================
-\\maa1.cc.lut.fi\home\h17373\Documents\ASPA\ASPA\tests\TR_data_structure\TR2-4_lowercase_class.py
+D:\GitHub\ASPA\tests\TR_data_structure\TR2-4_lowercase_class.py
 TR2-4_lowercase_class.py
 
 Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
@@ -896,7 +932,7 @@ Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
 
 Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
 ================================================================================
-\\maa1.cc.lut.fi\home\h17373\Documents\ASPA\ASPA\tests\TR_data_structure\TR3-1_attribute_to_list.py
+D:\GitHub\ASPA\tests\TR_data_structure\TR3-1_attribute_to_list.py
 TR3-1_attribute_to_list.py
 
 Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
@@ -940,7 +976,7 @@ Kirjaston käyttö: Ei tunnistettu tyylirikkomuksia.
 
 Poikkeustenkäsittely: Ei tunnistettu tyylirikkomuksia.
 ================================================================================
-\\maa1.cc.lut.fi\home\h17373\Documents\ASPA\ASPA\tests\TR_data_structure\TR3-2_object_outside_loop.py
+D:\GitHub\ASPA\tests\TR_data_structure\TR3-2_object_outside_loop.py
 TR3-2_object_outside_loop.py
 
 Perustoiminnot: Ei tunnistettu tyylirikkomuksia.

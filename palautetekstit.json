@@ -34,7 +34,7 @@
     "MR5": "Tiedostossa ei ole kaikkia alkukommentteja tiedoston {} ensimm\u00e4isell\u00e4 rivill\u00e4.",
     "PK1": "Poikkeustenk\u00e4sittelyss\u00e4 ei ole lainkaan excepti\u00e4.",
     "PK1-1": "Exceptist\u00e4 puuttuu virhetyyppi.",
-    "PK1-2": "T\u00e4ll\u00e4 kurssilla virhetyypin tulisi olla Exception.",
+    "PK1-2": "Tällä kurssilla virhetyypin tulisi olla tiedostonkäsittelyn yhteydessä Exception.",
     "PK3": "Tiedoston avaamisesta puuttuu poikkeustenk\u00e4sittely.",
     "PK4": "Tiedosto-operaatiosta '{}' puuttuu poikkeustenk\u00e4sittely.",
     "PK4-1": "Tiedosto-operaatiosta '{}' puuttuu poikkeustenk\u00e4sittely.",

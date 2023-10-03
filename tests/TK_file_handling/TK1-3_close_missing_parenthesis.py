@@ -8,7 +8,7 @@ def TK1_3():
         f1 = open("test.txt", "w")
         f1.write("qwerty\n")
         f1.close
-    except OSError:
+    except Exception:
         pass
 
     return None

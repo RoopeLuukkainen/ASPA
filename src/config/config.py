@@ -70,7 +70,7 @@ ALLOWED_LIBRARIES_FOR_CONST = {
     "numpy", "matplotlib", "svgwrite", "pandas", "seaborn", "requests"
 }
 
-# Allowed Exception types
+# Allowed Exception types for file handling
 ALLOWED_EXCEPTION_TYPES = {"Exception"}
 
 # Add keys of ignored structure messages (work with single or multiple regex patterns)
@@ -393,7 +393,8 @@ MSG = {
                 + " ensimmäisellä rivillä.", WARNING),
         "PK1": ("Poikkeustenkäsittelyssä ei ole lainkaan exceptiä.", ERROR),
         "PK1-1": ("Exceptistä puuttuu virhetyyppi.", WARNING),
-        "PK1-2": ("Tällä kurssilla virhetyypin tulisi olla Exception.", WARNING),
+        "PK1-2": ("Tällä kurssilla virhetyypin tulisi olla tiedostonkäsittelyn"
+                  + "yhteydessä Exception.", WARNING),
         "PK3": ("Tiedoston avaamisesta puuttuu poikkeustenkäsittely.", ERROR),
         "PK4": ("Tiedosto-operaatiosta '{}' puuttuu poikkeustenkäsittely.", ERROR),
         "PK4-1": ("Tiedosto-operaatiosta '{}' puuttuu poikkeustenkäsittely.", ERROR),

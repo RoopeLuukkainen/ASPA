@@ -17,7 +17,7 @@ def TK1(argument):
             f = open("test.txt", "a")
         f.write("qwerty\n")
         f.close()
-    except OSError:
+    except Exception:
         pass
 
     try:
@@ -27,7 +27,7 @@ def TK1(argument):
         try:
             f2 = open("test.txt", "w")
             f2.write("qwerty\n")
-        except OSError:
+        except Exception:
             pass
     f2.close()
 
