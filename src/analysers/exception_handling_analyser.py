@@ -6,6 +6,12 @@ import src.analysers.analysis_utils as a_utils
 import src.config.config as cnf
 
 class ExceptionHandlingAnalyser(ast.NodeVisitor):
+    """
+    Class for Exception handling analyser. Inlcude tests related to exception
+    handling, e.g. checking that exception handling exist and that exception
+    types are used as instructed.
+    """
+
    # ------------------------------------------------------------------------- #
    # Initialisation
     def __init__(self, model):
@@ -72,7 +78,7 @@ class ExceptionHandlingAnalyser(ast.NodeVisitor):
             for handler in node.handlers:  # handler is ast.ExceptHandler object
                 self.model.add_msg(
                     code="PK1-1",
-                    status=(handler.type != None),
+                    status=(handler.type is not None),
                     lineno=handler.lineno
                 )
 
@@ -108,20 +114,20 @@ class ExceptionHandlingAnalyser(ast.NodeVisitor):
 
    # ------------------------------------------------------------------------- #
    # Visits
-    def visit_Try(self, node, *args, **kwargs):
+    def visit_Try(self, node):
         """Method to visit Try nodes."""
 
         self._check_exception_handlers(node)
         self._check_exception_type(node)
         self.generic_visit(node)
 
-    def visit_Call(self, node, *args, **kwargs):
+    def visit_Call(self, node):
         """Method to visit (function) Call nodes."""
 
         self._check_exception_handling(node)
         self.generic_visit(node)
 
-    def visit_Attribute(self, node, *args, **kwargs):
+    def visit_Attribute(self, node):
         """
         Method to check if node is:
         1. Missing try - except around file.read().
@@ -152,12 +158,13 @@ class ExceptionHandlingAnalyser(ast.NodeVisitor):
             pass
         self.generic_visit(node)
 
-    def visit_For(self, node, *args, **kwargs):
+    def visit_For(self, node):
         """
         Method to check if node is:
         1. For loop reading a file AND missing exception handling.
         """
 
+        msg_arg = ""
         try:
             names = [i.filehandle for i in self.model.get_files_opened()]
             # TODO: add check that file is opened in same function
@@ -175,7 +182,7 @@ class ExceptionHandlingAnalyser(ast.NodeVisitor):
                 try:
                     msg_arg = f"for {node.target.id} in {iter_name}"
                 except AttributeError:
-                    msg_arg = f"for ... in ..."
+                    msg_arg = "for ... in ..."
                 finally:
                     self.model.add_msg(
                         "PK4-1",
