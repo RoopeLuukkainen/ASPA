@@ -39,6 +39,31 @@ class Model:
             self.language = "FIN"
             self.controller.propagate_error_message("NO_LANGUAGE")
 
+        # Variable data structures (used by function_analyser)
+        self.global_variables = {}
+        self.local_variables = set()
+        self.call_dict = {}
+        self.same_names_dict = {}
+
+        # File handling (used by file_handling_analyser)
+        self.files_opened = []
+        self.files_closed =  []
+
+        # File structure list and dict used by file_structure_analyser
+        # and data_structure_analyser
+        self.function_dict = {}
+        self.class_dict = {}
+
+        # File structure lists used by file_structure_analyser
+        self.file_list = []
+        self.lib_list = []
+        self.import_dict = {}
+
+        # Result list for checks from each category and list for storing
+        # category_result lists
+        self._category_results = []
+        self.all_results = []
+
         try:
             self.checkbox_options = self.settings["checkbox_options"]
         except KeyError:   # This should not be possible if defaults settings are not changed
@@ -71,31 +96,6 @@ class Model:
         # Structure/command detector
         self.structure_detector = structure_detector.StructureDetector()
         self.structures = {}
-
-        # Variable data structures (used by function_analyser)
-        self.global_variables = {}
-        self.local_variables = set()
-        self.call_dict = {}
-        self.same_names_dict = {}
-
-        # File handling (used by file_handling_analyser)
-        self.files_opened = []
-        self.files_closed =  []
-
-        # File structure list and dict used by file_structure_analyser
-        # and data_structure_analyser
-        self.function_dict = {}
-        self.class_dict = {}
-
-        # File structure lists used by file_structure_analyser
-        self.file_list = []
-        self.lib_list = []
-        self.import_dict = {}
-
-        # Result list for checks from each category and list for storing
-        # category_result lists
-        self._category_results = []
-        self.all_results = []
 
    # Datastructure getters
     def get_call_dict(self):
@@ -566,6 +566,7 @@ class Model:
                     analyser.check_element_order(tree.body, cnf.ELEMENT_ORDER)
                     analyser.check_global_variables()
                     analyser.check_local_global_names(self.same_names_dict)
+                    analyser.check_functions_without_return(self.function_dict)
                     analyser.check_recursive_functions(self.function_dict)
                     analyser.clear_all()
 

@@ -16,15 +16,38 @@ class FunctionAnalyser(ast.NodeVisitor):
         self.ALLOWED_CONSTANTS = cnf.ALLOWED_CONSTANTS
 
         self.recursive_calls = {}
+        self._functions_with_return = {}
 
     def clear_all(self):
         self.recursive_calls.clear()
         return None
 
     # General methods
-    def _check_return(self, node):
+    def _mark_function_having_return(self, node):
+        parent = a_utils.get_parent(node, cnf.FUNC)
+        self._functions_with_return[parent.name] = parent
+
+    def check_functions_without_return(self, all_funcs):
+        """
+        Method to check
+        1. if function does not have a return anywhere.
+        """
+        # TODO add check if function has yield or yield from.
+
+        for value in all_funcs.values():
+            name = value.name
+            status = ((name in self.MISSING_RETURN_ALLOWED)
+                        or (name in self._functions_with_return))
+            self.model.add_msg(
+                "AR6-7",
+                name,  # Name
+                lineno=value.lineno,
+                status=status
+            )
+
+    def _check_return_as_last_command(self, node):
         """Method to check
-        1. if function is missing a return
+        1. if function is missing a return at the end.
 
         NOTE 1:
         Functions with yield should not give return errors, e.g. AR6
@@ -34,6 +57,7 @@ class FunctionAnalyser(ast.NodeVisitor):
         """
         # TODO change such that checks if there is at least one return or yield
         # in the function.
+        status = None
 
         try:
             last = node.body[-1]
@@ -454,20 +478,21 @@ class FunctionAnalyser(ast.NodeVisitor):
             self.model.add_msg("AR3-3", i.name, lineno=i.lineno)
 
    # Visits
-    def visit_Assign(self, node, *args, **kwargs):
+    def visit_Assign(self, node):
         self._check_function_attributes(node)
         self.generic_visit(node)
 
-    def visit_Global(self, node, *args, **kwargs):
+    def visit_Global(self, node):
         """Method to detect usage of global keyword."""
 
         self._found_global(node)
         self.generic_visit(node)
 
-    def visit_Return(self, node, *args, **kwargs):
+    def visit_Return(self, node):
         """Method to detect usage of 'return'."""
 
         self._check_return_location(node)
+        self._mark_function_having_return(node)
         is_valid_return = self._check_return_value(node)
 
         # TODO BKTA
@@ -478,7 +503,7 @@ class FunctionAnalyser(ast.NodeVisitor):
         # )
         self.generic_visit(node)
 
-    def visit_Call(self, node, *args, **kwargs):
+    def visit_Call(self, node):
         """Method to check if node is:
         1. Recursive function call.
         2. Check that arguments and parameters match
@@ -497,7 +522,7 @@ class FunctionAnalyser(ast.NodeVisitor):
 
         self.generic_visit(node)
 
-    def visit_FunctionDef(self, node, *args, **kwargs):
+    def visit_FunctionDef(self, node):
         """Method to find:
         1. Usage of return at the END of the function
 
@@ -505,24 +530,24 @@ class FunctionAnalyser(ast.NodeVisitor):
         1. If there are multiple returns
         """
 
-        self._check_return(node)
+        self._check_return_as_last_command(node)
         self._check_nested_function(node)
         self.generic_visit(node)
 
-    def visit_AsyncFunctionDef(self, node, *args, **kwargs):
+    def visit_AsyncFunctionDef(self, node):
         """Method to check usage of async functions. Currently checks:
         1. If function declaration is nested.
         """
-        self._check_return(node)
+        self._check_return_as_last_command(node)
         self._check_nested_function(node)
         self.generic_visit(node)
 
-    def visit_Yield(self, node, *args, **kwargs):
+    def visit_Yield(self, node):
         """Method to detect usage of yield."""
         self._found_yield(node, yield_type="yield")
         self.generic_visit(node)
 
-    def visit_YieldFrom(self, node, *args, **kwargs):
+    def visit_YieldFrom(self, node):
         """Method to detect usage of yield from."""
         self._found_yield(node, yield_type="yield from")
         self.generic_visit(node)

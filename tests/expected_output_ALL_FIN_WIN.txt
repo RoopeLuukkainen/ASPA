@@ -160,9 +160,11 @@ AR6-1_yield.py
 Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
 
 Aliohjelmat, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Aliohjelmat':
-Rivi 5: Aliohjelman 'AR6_1' lopusta puuttuu return-komento.
+Rivi 5: Aliohjelman 'AR6_1' päätason lopusta puuttuu return-komento.
 Rivi 8: Käytetään generaattoria 'yield' aliohjelmassa 'AR6_1'.
 Rivi 11: Käytetään generaattoria 'yield from' aliohjelmassa 'AR6_1_b'.
+Rivi 5: Aliohjelmassa 'AR6_1' ei ole lainkaan return-komentoa.
+Rivi 10: Aliohjelmassa 'AR6_1_b' ei ole lainkaan return-komentoa.
 
 Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
 
@@ -178,7 +180,7 @@ AR6_return.py
 Perustoiminnot: Ei tunnistettu tyylirikkomuksia.
 
 Aliohjelmat, tyylirikkeitä havaittu, ole hyvä ja katso Liite 5 'Aliohjelmat':
-Rivi 19: Aliohjelman 'AR6' lopusta puuttuu return-komento.
+Rivi 19: Aliohjelman 'AR6' päätason lopusta puuttuu return-komento.
 Rivi 28: return-komennosta puuttuu paluuarvo.
 Rivi 31: Paluuarvo on vakio.
 Rivi 34: Paluuarvo on vakio.
@@ -186,6 +188,7 @@ Rivi 38: Palautetaan useita paluuarvoja.
 Rivi 42: Palautetaan jotain muuta kuin muuttujia tai avainsana.
 Rivi 46: Palautetaan jotain muuta kuin muuttujia tai avainsana.
 Rivi 50: Palautetaan jotain muuta kuin muuttujia tai avainsana.
+Rivi 19: Aliohjelmassa 'AR6' ei ole lainkaan return-komentoa.
 
 Tiedostonkäsittely: Ei tunnistettu tyylirikkomuksia.
 
