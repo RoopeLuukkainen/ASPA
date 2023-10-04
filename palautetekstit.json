@@ -51,7 +51,7 @@
     "TR2-4": "Luokan '{}' nimi ei ole kirjoitettu SUURAAKKOSIN.",
     "TR3-1": "Olion attribuutin arvo lis\u00e4t\u00e4\u00e4n listaan silmukan sis\u00e4ll\u00e4.",
     "TR3-2": "Olion luonti silmukan ulkopuolella, mutta arvojen p\u00e4ivitys ja listaan lis\u00e4\u00e4minen silmukassa.",
-    "NOTE": ", tyylirikkeit\u00e4 havaittu, ole hyv\u00e4 ja katso",
+    "NOTE": ", tyylirikkeitä havaittu, ole hyvä ja katso suluissa listatut esimerkit:",
     "OK": ": Ei tunnistettu tyylirikkomuksia.",
     "LINE": "Rivi",
     "WELCOME": "Tulosteissa **-merkint\u00e4 tarkoittaa varoitusta ja ++-merkint\u00e4 ilmoitusta, muut ovat virheit\u00e4.",

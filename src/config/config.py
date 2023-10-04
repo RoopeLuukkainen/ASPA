@@ -414,7 +414,7 @@ MSG = {
         "TR3-1": ("Olion attribuutin arvo lisätään listaan silmukan sisällä.", WARNING),
         "TR3-2": ("Olion luonti silmukan ulkopuolella, mutta arvojen päivitys"
                 + " ja listaan lisääminen silmukassa.", WARNING),
-        "NOTE": (", tyylirikkeitä havaittu, ole hyvä ja katso", GENERAL),
+        "NOTE": (", tyylirikkeitä havaittu, ole hyvä ja katso suluissa listatut esimerkit:", GENERAL),
         "OK": (": Ei tunnistettu tyylirikkomuksia.", GOOD),
         "LINE": ("Rivi", GENERAL),
         "WELCOME": ("Tulosteissa **-merkintä tarkoittaa varoitusta ja ++-merkintä ilmoitusta, "

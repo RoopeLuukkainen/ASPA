@@ -146,14 +146,14 @@ def create_title(code, title_key, lang="FIN"):
             msg += MSG[lang][code][0]
             severity = MSG[lang][code][1]
 
-            if code == "NOTE":
-                exs = TITLE_TO_EXAMPLES[title_key]
-                for i in exs:
-                    if i == "EX0":
-                        msg += f" {EXAMPLES[i]}"
-                    else:
-                        msg += f" '{EXAMPLES[i]}'"
-                msg += ":"
+            # if code == "NOTE":
+            #     exs = TITLE_TO_EXAMPLES[title_key]
+            #     for i in exs:
+            #         if i == "EX0":
+            #             msg += f" {EXAMPLES[i]}"
+            #         else:
+            #             msg += f" '{EXAMPLES[i]}'"
+            #     msg += ":"
     except KeyError:
         pass
 

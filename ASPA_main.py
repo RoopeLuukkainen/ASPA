@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """The main file for ASPA - static analyser."""
-__version__ = "0.2.5" # 03.10.2023
+__version__ = "0.2.6" # 04.10.2023
 __author__ = "RL"
 
 import src.GUI as GUI
