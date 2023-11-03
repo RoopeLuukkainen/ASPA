@@ -264,6 +264,25 @@ def get_attribute_name(node, splitted=False, omit_n_last=0):
     return name
 
 
+def get_subscript(node):
+    """
+    Function to get the first Subscript node from ast.tree.
+    If not found, returns None.
+    """
+    subscript = None
+    for child in ast.walk(node):
+        if isinstance(child, ast.Subscript):
+            try:
+                # print(child.value)
+                # dump_node(child.value, indent=4)
+                subscript = child
+                break
+            except AttributeError:
+                pass
+
+    return subscript
+
+
 def get_class_name(node, **kwargs):
     """
     Function to get name of a class. The class can be 'called' with or

@@ -478,8 +478,7 @@ class Model:
             self.pre_analyse_tree(tree, files_in_dir, dir_path)
             self.analyse_tree(tree, files_in_dir, content, selections)
 
-        except Exception as e:
-            print(e)
+        except Exception:
             self.clear_analysis_data()
             self._category_results.clear()
             self.add_msg("tool_error", filename)

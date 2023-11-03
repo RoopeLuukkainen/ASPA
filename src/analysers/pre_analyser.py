@@ -176,15 +176,32 @@ class PreAnalyser(ast.NodeVisitor):
         existing variable (X) then the X is a global variable.
         """
 
-        if (isinstance(node.target, ast.Attribute)
-                and (name := node.target.value.id) in self._possible_constant_dict):
-            self.global_dict[name] = self._possible_constant_dict.pop(name, None)
-        elif ((node.col_offset == 0
-             or a_utils.get_parent(node, cnf.CLS_FUNC) is None)
-                and (name := node.target.id) in self._possible_constant_dict):
-            # If we get here and variable used in AugAssign does not exist it
-            # would be NameError when analysed code is executed.
-            self.global_dict[name] = self._possible_constant_dict.pop(name, None)
+        try:
+            # Verify condition order
+            if (((sub := a_utils.get_subscript(node.target)) is not None)
+                and (name := a_utils.get_attribute_name(
+                    sub.value, splitted=True))
+            ):
+                if name[0] in self._possible_constant_dict:
+                    self.global_dict[name[0]] = self._possible_constant_dict.pop(
+                        name[0], None
+                    )
+                # else do nothing
+
+            elif (isinstance(node.target, ast.Attribute)
+                    and (name := a_utils.get_attribute_name(
+                        node.target.value)) in self._possible_constant_dict
+            ):
+                self.global_dict[name] = self._possible_constant_dict.pop(name, None)
+
+            elif ((node.col_offset == 0
+                or a_utils.get_parent(node, cnf.CLS_FUNC) is None)
+                    and (name := node.target.id) in self._possible_constant_dict):
+                # If we get here and variable used in AugAssign does not exist it
+                # would be NameError when analysed code is executed.
+                self.global_dict[name] = self._possible_constant_dict.pop(name, None)
+        except AttributeError:
+            pass
 
     def _store_class(self, node):
         imported = False
