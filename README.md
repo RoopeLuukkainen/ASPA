@@ -2,7 +2,7 @@
 
 ASPA - Abstrakti SyntaksiPuu Analysaattori 
 ==========================================
-Abstrakti SyntaksiPuu Analysaattori (ASPA) == Abstract Syntax Tree Analyser. It is a static analyser to support self-study and complying with recommended coding conventions at Fundamentals of Programming course at LUT University.
+Abstrakti SyntaksiPuu Analysaattori (ASPA) == Abstract Syntax Tree Analyser. It is a static analyser to support self-study and complying with recommended coding conventions at Fundamentals of Programming (CS1) course at LUT University.
 
 ## Repository structure
 
