@@ -6,11 +6,11 @@ ASPA - Abstrakti SyntaksiPuu Analysaattori
 Abstrakti SyntaksiPuu Analysaattori (ASPA) == Abstract Syntax Tree Analyser. It is a static analyser to support self-study and complying with recommended coding conventions at Fundamentals of Programming (CS1) course at LUT University. 
 
 ## Citation
-If you wish to cite related research (preferred), cite a conference article at ICSE [DOI link](https://dl.acm.org/doi/10.1145/3510456.3514149), and citation as text:
+If you wish to cite related research (preferred), cite a conference article at ICSE [DOI link](https://dl.acm.org/doi/10.1145/3510456.3514149), same citation as text:
 ```
 R. Luukkainen, J. Kasurinen, U. Nikula, V. Lenarduzzi, ASPA: A static analyser to support learning and continuous feedback on programming courses. an empirical validation, in: Proceedings of the ACM/IEEE 44th International Conference on Software Engineering: Software Engineering Education and Training, ICSE-SEET ’22, Association for Computing Machinery, New York, NY, USA, 2022, p. 29–39. doi:10.1145/3510456.3514149.
 ```
-and citation as bibtex:
+and same citation in bibtex format:
 ```
 @inproceedings{luukkainen_aspa_2022,
 	address = {New York, NY, USA},
@@ -32,7 +32,7 @@ and citation as bibtex:
 }
 ```
 
-However to directly cite to this repository use "Cite this repository" to get Zenodo link.
+However, if you wish to cite directly this repository use "Cite this repository" to get Zenodo link.
 
 ## Repository structure
 
