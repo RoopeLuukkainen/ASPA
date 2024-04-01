@@ -45,6 +45,9 @@ class WEB_INTERFACE_CLASS():
         
         temp_dir = USER_FILES_PATH
 
+        if not os.path.exists(temp_dir):
+            os.makedirs(temp_dir)
+
         temp_file_fd, temp_file_path = tempfile.mkstemp(suffix='.py', dir=temp_dir)
 
         with open(temp_file_path, 'w') as temp_file:

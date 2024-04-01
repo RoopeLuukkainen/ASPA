@@ -1,6 +1,9 @@
 # flask server file
 server.py
 
+# temporary user files folder
+user_files
+
 # ignore vscode config files
 .vscode/
 
