@@ -311,6 +311,80 @@ class Model:
 
         return None
 
+    def default_analyse_web(self, selections, file_list, *args, **kwargs):
+        """
+        Method to handle default analysis steps where coding convention
+        violations are detected. This includes:
+        1. Initialising result file.
+        2. Iterating analysed files.
+        3. Formating each file's results
+        4. Showing results.
+        5. Clearing results.
+        """
+
+        timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+        utils.write_file(self.settings["result_path"], timestamp + "\n")
+        current_statistics = {}
+
+        for filepath in file_list:
+            results = self.execute_analysis(filepath, selections)
+
+            # Statistics
+            # FIX currently "student" only works for course project directory
+            # structure
+            if self.settings.get("show_statistics", False):
+                current_statistics = a_utils.calculate_statistics(results)
+                # TODO change to filepath.path.student when it is ready in template
+                # TODO add setting for this, i.e. is it file or directory/folder
+
+                student = f"{filepath.path.parents[1].name}/{filepath.path.parents[0].name}"
+                # student = f"{filepath.path.parents[0].name}/{filepath.filename}"
+                # student = filepath.path.parents[0].name
+                a_utils.sum_statistics(
+                    self.statistics,
+                    student,
+                    current_statistics
+                )
+                current_statistics.clear()
+
+            # Format results
+            formated_results = self.format_violations_web(results)
+
+            # Add filename and filepath at the beginning of the result list
+            #formated_results.insert(
+            #    0, (utils.create_dash(character="=", get_dash=True), cnf.GENERAL)
+            #)
+            #if (self.settings["shown_filepath_format"]
+            #        in cnf.OPTIONS_FOR_ALL + cnf.FILENAME_OPTIONS):
+            #    formated_results.insert(1, (filepath.filename, cnf.GENERAL))
+
+            #if (self.settings["shown_filepath_format"]
+            #        in cnf.OPTIONS_FOR_ALL + cnf.FILEPATH_OPTIONS):
+            #    formated_results.insert(1, (str(filepath.path), cnf.GENERAL))
+
+            # Show results and clear results
+            self.clear_analysis_data()
+            #formated_results.clear()
+            return formated_results
+
+        if self.settings.get("show_statistics", False):
+            if self.settings.get("console_print", False):
+                a_utils.print_statistics(self.statistics)
+
+            if self.settings.get("file_write", False):
+                content = json.dumps(self.statistics, indent=4)
+                utils.write_file(
+                    self.settings["statistics_path"],
+                    content,
+                    mode="w"
+                )
+
+            self.statistics.clear()
+            self.statistics = {"ALL": {}}
+
+        return None
+
+
     def BKT_analyse(self, selections, file_dict, *args, **kwargs):
         """
         Method to control Bayesian Knowledge Tracing analysis steps.
@@ -600,6 +674,48 @@ class Model:
 
             # Every line after each topics is empty to make view less crowded.
             line_list.append(("", cnf.GENERAL))
+
+            # Include only violations
+            for violation in results:
+                if violation.status == False:  # False means there is a violation
+                    violations.append(violation)
+
+            # Check if there are violations in this topic/title, if not go to
+            # next title/analysis category.
+            if len(violations) == 0:
+                line_list.append(
+                    utils.create_title('OK', title_key, lang=self.language)
+                )
+                continue
+
+            # There is one or more violations in this topic/title so need to add
+            # a note.
+            line_list.append(
+                utils.create_title('NOTE', title_key, lang=self.language)
+            )
+
+            for violation in violations: # TODO sort by lineno?
+                line_list.append(violation.get_msg(self.language))
+        violations.clear()
+
+        return line_list
+
+    def format_violations_web(self, all_results):
+        """
+        Method to format results to violations. Category titles are
+        included between results. Includes only results which are
+        violations.
+
+        Return: List of violation tuples.
+        """
+
+        line_list = []
+        violations = []
+        for title_key, results in all_results:
+            violations.clear()
+
+            # Every line after each topics is empty to make view less crowded.
+            #line_list.append(("", cnf.GENERAL))
 
             # Include only violations
             for violation in results:
