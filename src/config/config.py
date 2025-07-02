@@ -15,6 +15,7 @@ DEFAULT_SETTINGS = {
     "show_statistics": False,
     "result_dir": str(pathlib.Path(__file__).parents[2].resolve().joinpath("results")),
     "result_file": "results.txt",
+    "yaml_result_file": "ASPA_tulokset.yaml",
     "statistics_file": "statistics.json",
     "settings_file": "settings.json",
     "BKT_file": "BKTA.csv",

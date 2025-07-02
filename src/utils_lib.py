@@ -5,7 +5,9 @@ import json
 import os       # os.walk is used for convenient directory exclusion possibility
 import pathlib  # Used for all the other path operations
 import re
+import yaml     # Used for bulkanalysis
 from typing import List
+from collections import defaultdict
 
 import src.config.config as cnf
 import src.config.templates as templates
@@ -287,6 +289,25 @@ def read_file(filepath, encoding="UTF-8", settings_file=False):
     return content
 
 
+def write_yaml_file(filepath, data, encoding="utf-8"):
+    try:
+        with open(filepath, "w", encoding=encoding) as f_handle:
+            # yaml.dump(data, f_handle, indent=4, allow_unicode=True)
+            yaml.safe_dump(
+                data,
+                f_handle,
+                indent=4,
+                allow_unicode=True,
+                default_style='|',
+                default_flow_style=False
+            )
+    except OSError as err:
+        print(f"OSError while writing a file '{filepath}'.\n{err}")
+    except Exception as err:
+        print(f"Other error than OSError with file '{filepath}'.\n{err}")
+    return None
+
+
 def write_file(filepath, content, mode="w", encoding="UTF-8", repeat=True):
     """
     Function to write given content to given filepath. If filepath has
@@ -338,6 +359,26 @@ def create_dash(character="-", dash_count=80, get_dash=False):
     else:
         print(character * dash_count)
 
+########################################################################
+# Data structure manipulation functions
+
+def combine_integer_dicts(*args: dict) -> dict:
+    """
+    Function to combine N amount of integer dictionaries to one. All keys
+    from all dictionaries are included and if there are same keys, values
+    are added together.
+
+    Arguments:
+    1. - N. Dictionary with anything as a key, but value must be integer.
+    Keyword arguments
+
+    Return: Merged dictionary
+    """
+    merged = defaultdict(int)
+    for _dict in args:
+        for key, value in _dict.items():
+            merged[key] += value
+    return merged
 
 ########################################################################
 # Getter functions for static values

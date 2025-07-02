@@ -1,6 +1,8 @@
 """Library containing utility functions for static analysers."""
 
 import ast
+from collections import defaultdict
+
 # Constants
 LIST_ADDITION_ATTRIBUTES = {"append", "extend", "insert"}
 LIST_MODIFICATION_ATTRIBUTES = LIST_ADDITION_ATTRIBUTES | { # Union of sets
@@ -248,7 +250,6 @@ def get_attribute_name(node, splitted=False, omit_n_last=0):
 
         name_parts = []
         try:
-            name_parts = []
             temp = node
             while hasattr(temp, "attr"):
                 name_parts.insert(0, temp.attr)
@@ -296,6 +297,16 @@ def get_class_name(node, **kwargs):
         except AttributeError:
             name = ""
     return name
+
+####################################################################
+# TA and bulkanalysis functions
+def results_to_violation_dict(results: list) -> dict:
+    violation_dict = defaultdict(int)
+    for category_name, result_tuple in results:
+        for i in result_tuple:
+            if i.status == False: # = violation
+                violation_dict[i.vid] += 1
+    return violation_dict
 
 ####################################################################
 # Statistic functions

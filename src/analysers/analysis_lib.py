@@ -1,6 +1,7 @@
 """File to handle ASPA static analysers."""
 
 import ast
+import copy      # for deepcopy
 import datetime  # for timestamp
 import json      # for statistics
 import os
@@ -252,6 +253,7 @@ class Model:
         timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
         utils.write_file(self.settings["result_path"], timestamp + "\n")
         current_statistics = {}
+        yaml_dict = {}  # TA yaml data
 
         for filepath in file_list:
             results = self.execute_analysis(filepath, selections)
@@ -276,6 +278,37 @@ class Model:
 
             # Format results
             formated_results = self.format_violations(results)
+
+            # Count violations to violation dict
+            violation_dict = a_utils.results_to_violation_dict(results)
+
+            # TA version YAML formatting
+            directory_name = filepath.path.parents[0].name
+            analysed_filename = filepath.path.name
+            if directory_name in yaml_dict.keys():
+                yaml_dict[directory_name]["additional_comments"] += "\n{}\n{}{}".format(
+                    utils.create_dash(character="=", get_dash=True),
+                    analysed_filename,
+                    "\n".join(map(lambda x: x[0], formated_results)) #0th value is the message
+                )
+
+                # Combine violations, changed to built-in dict so that YAML parser can handle it
+                yaml_dict[directory_name]["violations"] = dict(utils.combine_integer_dicts(
+                    yaml_dict[directory_name]["violations"],
+                    copy.deepcopy(violation_dict)
+                ))
+
+            else:
+                yaml_dict[directory_name] = {}
+                # Comments in text
+                yaml_dict[directory_name]["additional_comments"] = "ASPAn palaute:\n{}{}".format(
+                    analysed_filename,
+                    "\n".join(map(lambda x: x[0], formated_results))
+                )
+                # Violations, changed to built-in dict so that YAML parser can handle it
+                yaml_dict[directory_name]["violations"] = dict(copy.deepcopy(violation_dict))
+
+
 
             # Add filename and filepath at the beginning of the result list
             formated_results.insert(
@@ -308,6 +341,9 @@ class Model:
 
             self.statistics.clear()
             self.statistics = {"ALL": {}}
+
+        # Write TA yaml results
+        utils.write_yaml_file(self.settings["yaml_result_file"], yaml_dict)
 
         return None
 
