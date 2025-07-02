@@ -246,6 +246,7 @@ def get_attribute_name(node, splitted=False, omit_n_last=0):
         # This is used in substring [:-n] where [:None] is same as [:]
         omit_n_last = -omit_n_last or None
 
+        name_parts = []
         try:
             name_parts = []
             temp = node
