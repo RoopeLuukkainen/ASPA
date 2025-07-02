@@ -287,14 +287,12 @@ class BasicsAnalyser(ast.NodeVisitor):
                 pyramid_linenos.append(min_lineno)
 
                 if_pyramid = False
-                print(1)
                 min_lineno = -1
                 if_count = 0
 
         else:
             if if_count >= self._if_limit:
                 pyramid_linenos.append(min_lineno)
-                print(2)
 
             if_pyramid = False
             min_lineno = -1
