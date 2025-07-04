@@ -430,6 +430,7 @@ def add_fixed_settings(settings):
     # Result file paths
     result_dir = pathlib.Path(settings["result_dir"])
     settings["result_path"] = result_dir.joinpath(settings["result_file"])
+    settings["yaml_result_path"] = result_dir.joinpath(settings["yaml_result_file"])
     settings["BKT_path"] = result_dir.joinpath(settings["BKT_file"])
     settings["structure_path"] = result_dir.joinpath(settings["structure_file"])
     settings["statistics_path"] = result_dir.joinpath(settings["statistics_file"])

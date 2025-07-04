@@ -343,7 +343,7 @@ class Model:
             self.statistics = {"ALL": {}}
 
         # Write TA yaml results
-        utils.write_yaml_file(self.settings["yaml_result_file"], yaml_dict)
+        utils.write_yaml_file(self.settings["yaml_result_path"], yaml_dict)
 
         return None
 
