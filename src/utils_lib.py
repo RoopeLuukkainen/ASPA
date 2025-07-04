@@ -202,6 +202,7 @@ def directory_crawler(
                 pass
 
     def add_file(file_struct, filepath):
+        """"Function to add file to file structure in BKT analysis."""
         # TODO add settings which allow user to define corresponding numberings
         # and how many there are and in which order.
         student = 0
@@ -221,6 +222,10 @@ def directory_crawler(
                 exercise=exercise_str
             )
         )
+
+    def add_file_bulk_analysis(file_struct, filepath):
+        """"Function to add file to file structure in bulk analysis."""
+        pass
 
 
     # List which will include every filepath as pathlib.Path object
@@ -259,6 +264,13 @@ def directory_crawler(
 
         for path_obj in file_list:
             add_file(file_structure, path_obj)
+
+    elif output_format == "bulk":
+        file_structure = {}
+
+        for path_obj in file_list:
+            add_file_bulk_analysis(file_structure, path_obj)
+
 
     # Else there is invalid output_format then empty list is returned.
     else:
