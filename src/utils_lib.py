@@ -11,6 +11,7 @@ from collections import defaultdict
 
 import src.config.config as cnf
 import src.config.templates as templates
+import src.bulk_analysis_utils as bulk_utils
 
 
 MSG = cnf.MSG
@@ -223,11 +224,6 @@ def directory_crawler(
             )
         )
 
-    def add_file_bulk_analysis(file_struct, filepath):
-        """"Function to add file to file structure in bulk analysis."""
-        pass
-
-
     # List which will include every filepath as pathlib.Path object
     file_list = []
 
@@ -265,11 +261,11 @@ def directory_crawler(
         for path_obj in file_list:
             add_file(file_structure, path_obj)
 
-    elif output_format == "bulk":
+    elif output_format == "bulk_dict":
         file_structure = {}
 
-        for path_obj in file_list:
-            add_file_bulk_analysis(file_structure, path_obj)
+        for path in paths:
+            file_structure.update(bulk_utils.parse_students_and_filepaths(pathlib.Path(path)))
 
 
     # Else there is invalid output_format then empty list is returned.

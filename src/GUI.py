@@ -100,7 +100,7 @@ class GUICLASS(tk.Tk):
         if analysis_type == "BKTA":
             output_format = "dict"
         elif analysis_type == "bulk":
-            output_format = "dict"
+            output_format = "bulk_dict"
         else:  # default
             output_format = "list"
 

@@ -94,6 +94,15 @@ class MainFrame(tk.Frame):
                 analysis_type="BKTA"
             )
         )
+        # Add bulk analysis option
+        filemenu.add_command(
+            label=cnf.GUI[self.LANG]["bulk_analysis"],
+            font=NORMAL_FONT,
+            command=lambda: self.pages[AnalysePage].analyse(
+                controller.analyse_wrapper,
+                analysis_type="bulk"
+            )
+        )
         # Add guit option
         filemenu.add_command(
             label=cnf.GUI[self.LANG]["exit"],
