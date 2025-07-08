@@ -12,6 +12,7 @@ import re
 from ..config import config as cnf
 from ..config import templates
 import src.utils_lib as utils
+import src.bulk_analysis_utils as bulk_utils
 import src.analysers.analysis_utils as a_utils
 
 # AST analysers
@@ -349,69 +350,48 @@ class Model:
 
     def bulk_analyse(self, selections, student_dict):
         """
-        Method to control Bayesian Knowledge Tracing analysis steps.
+        Method to control bulk analysis steps.
         This includes:
-        1. Initialising result file.
-        2. Iterating analysed files.
-        3. Showing results.
-        4. Clearing results.
+        1. Iterating analysed files.
+        2. Formatting results and feedback.
+        3. Clearing results for new analysis
+        4. Write students all results at once
         """
-        # TODO PÄIVITÄ TÄMÄ
+        course_id = None
 
-
-
-        # --- 2. BKT analyse all files in given paths ---
-        for student, student_obj in student_dict.items():
-            for assignment_id, assignment_obj in student_obj.get_assignments().items():
+        for student_obj in student_dict.values():
+            for assignment_obj in student_obj.get_assignments().values():
                 for filepath in assignment_obj.get_filepaths():
-                    results_per_title = self.execute_analysis(filepath, selections)
-                    print(results_per_title)
 
-                    # Feeback
-                    assignment_obj.append_feedback(f"Sample feedback for {assignment_obj.assignment_name}\n")
+                    results = self.execute_analysis(filepath, selections)
+
+                    # Format results
+                    formated_results = self.format_violations(results)
+
+                    # Add feedback
+                    assignment_obj.append_feedback("\n{}\n{}{}".format(
+                        utils.create_dash(character="=", get_dash=True),
+                        filepath.filename,
+                        "\n".join(map(lambda x: x[0], formated_results)) #0th value is the message
+                    ))
 
                     # Violations
-                    # assignment_obj.update_violations(analysis_result)
+                    # Count violations and update assignment object violation data structure
+                    assignment_obj.update_violations(
+                        a_utils.results_to_violation_dict(results)
+                    )
 
-                # --- Add results to student object to update BKTA values ---
-                # for title, results in results_per_title:
-                #     student.add_results(results, key="vid", success="status")
+                    self.clear_analysis_data()
 
-                self.clear_analysis_data()
-            print("-- END --")
-            # # --- Format results into writable list ---
-            # result_line = initial_line[:] # copy to allow separate changes
-            # for key, result in student.get_results().items():
-            #     try:
-            #         result_line[BKT_index[key]] = round(result.Ln, _ACC)
-            #     except (KeyError, IndexError):
-            #         pass
+                    if not course_id: # Hotfix to get course_id to result file
+                        course_id = filepath.course
 
-            # content_lines.append(
-            #     "{0}{1}{2}".format(  # Basically 'studentID;float;...;float' as str
-            #         student.student_id,
-            #         _CELL_SEP,
-            #         _CELL_SEP.join(map(str, result_line)).replace(".", _DESIM_SEP)
-            #     )
-            # )
-
-            # # --- 3. Write results to BKT result file ---
-            # utils.write_file(
-            #     BKT_result_path,
-            #     "\n".join(content_lines) + "\n",
-            #     mode="a"
-            # )
-
-            # # --- 4. Clear written results before next iteration ---
-            # result_line.clear()
-            # content_lines.clear()
-
-        # # At the end clear created data structures
-        # initial_line.clear()
-        # BKT_index.clear()
-        # BKT_title_sorted.clear()
-
+        # Write results
+        # Result strcuture requires all files from same student being
+        # analysed before writing, therefore writing is after analysis.
+        bulk_utils.write_results(self.settings["bulk_result_path"], student_dict, course_id)
         return None
+
 
     def BKT_analyse(self, selections, file_dict, *args, **kwargs):
         """

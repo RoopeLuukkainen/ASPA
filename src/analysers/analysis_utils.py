@@ -2,6 +2,7 @@
 
 import ast
 from collections import defaultdict
+from collections import Counter
 
 # Constants
 LIST_ADDITION_ATTRIBUTES = {"append", "extend", "insert"}
