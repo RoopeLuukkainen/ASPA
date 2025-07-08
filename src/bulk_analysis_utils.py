@@ -206,5 +206,3 @@ def write_json(json_path, json_data):
     except OSError as err:
         print(f"Error while opening a file at path '{json_path}'\n{err}")
 
-def create_directory_structure():
-    pass
