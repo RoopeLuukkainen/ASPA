@@ -4,6 +4,9 @@ import copy
 import re
 from collections import Counter
 
+import src.config.templates as templates
+
+
 METADATA_FILENAME = "metadata.json"
 USER_FIELD = "user"
 STUDENT_NUMBER_FIELD = "username"
@@ -109,8 +112,8 @@ def parse_metadata(metadata_path, student_dict):
 def parse_students_and_filepaths(root: pathlib.Path) -> dict:
     """Expects each student being in different directory starting from root."""
 
-    if not root.is_dir:
-        print(f"Invalid filepath '{root}', give path to root directory.")
+    if not root.is_dir():
+        print(f"Invalid filepath for bulkanalysis '{root}' is not a directory. Give path to root directory.")
         return {}
 
     assignment_patt = re.compile(ASSIGNMENT_PATT)
@@ -123,7 +126,7 @@ def parse_students_and_filepaths(root: pathlib.Path) -> dict:
             metadata_path = path
             break
         else:
-            print(f"No metadata file '{METADATA_FILENAME}' found in directory tree starting from '{path}'.")
+            print(f"No metadata file '{METADATA_FILENAME}' found in directory tree starting from '{student_dir}'.")
             continue
 
         student_id = parse_metadata(metadata_path, student_dict)
@@ -147,10 +150,20 @@ def parse_students_and_filepaths(root: pathlib.Path) -> dict:
                 assignment_name = path.stem
                 # print("2", assignment_name)
 
+
+            filepath_template_obj = templates.FilepathTemplate(
+                path=path,
+                student=student_id,
+                course=root.stem  # Name of root directory
+            )
+
             if (temp := temp_assignment_dict.setdefault(assignment_name)):
-                temp.add_filepath(path)
+                temp.add_filepath(filepath_template_obj)
             else:
-                temp_assignment_dict[assignment_name] = Assignment(assignment_name, path)
+                temp_assignment_dict[assignment_name] = Assignment(
+                    assignment_name,
+                    filepath_template_obj
+                )
 
         # Add assignments to students
         for assignment_name, assignment_obj in temp_assignment_dict.items():

@@ -347,6 +347,72 @@ class Model:
 
         return None
 
+    def bulk_analyse(self, selections, student_dict):
+        """
+        Method to control Bayesian Knowledge Tracing analysis steps.
+        This includes:
+        1. Initialising result file.
+        2. Iterating analysed files.
+        3. Showing results.
+        4. Clearing results.
+        """
+        # TODO PÄIVITÄ TÄMÄ
+
+
+
+        # --- 2. BKT analyse all files in given paths ---
+        for student, student_obj in student_dict.items():
+            for assignment_id, assignment_obj in student_obj.get_assignments().items():
+                for filepath in assignment_obj.get_filepaths():
+                    results_per_title = self.execute_analysis(filepath, selections)
+                    print(results_per_title)
+
+                    # Feeback
+                    assignment_obj.append_feedback(f"Sample feedback for {assignment_obj.assignment_name}\n")
+
+                    # Violations
+                    # assignment_obj.update_violations(analysis_result)
+
+                # --- Add results to student object to update BKTA values ---
+                # for title, results in results_per_title:
+                #     student.add_results(results, key="vid", success="status")
+
+                self.clear_analysis_data()
+            print("-- END --")
+            # # --- Format results into writable list ---
+            # result_line = initial_line[:] # copy to allow separate changes
+            # for key, result in student.get_results().items():
+            #     try:
+            #         result_line[BKT_index[key]] = round(result.Ln, _ACC)
+            #     except (KeyError, IndexError):
+            #         pass
+
+            # content_lines.append(
+            #     "{0}{1}{2}".format(  # Basically 'studentID;float;...;float' as str
+            #         student.student_id,
+            #         _CELL_SEP,
+            #         _CELL_SEP.join(map(str, result_line)).replace(".", _DESIM_SEP)
+            #     )
+            # )
+
+            # # --- 3. Write results to BKT result file ---
+            # utils.write_file(
+            #     BKT_result_path,
+            #     "\n".join(content_lines) + "\n",
+            #     mode="a"
+            # )
+
+            # # --- 4. Clear written results before next iteration ---
+            # result_line.clear()
+            # content_lines.clear()
+
+        # # At the end clear created data structures
+        # initial_line.clear()
+        # BKT_index.clear()
+        # BKT_title_sorted.clear()
+
+        return None
+
     def BKT_analyse(self, selections, file_dict, *args, **kwargs):
         """
         Method to control Bayesian Knowledge Tracing analysis steps.
@@ -359,7 +425,7 @@ class Model:
 
         # round handles also negative accuracy so no need to check that. However
         # user might get undesired results with that (in BKT case basically 0.0)
-        # 0 is also allowed setting therefore using default value intead of
+        # 0 is also allowed setting therefore using default value instead of
         # "or"-operator to give value 3 as default.
         _ACC = self.settings.get("BKT_decimal_places", 3)
         _DESIM_SEP = self.settings.get("BKT_decimal_separator") or ","
