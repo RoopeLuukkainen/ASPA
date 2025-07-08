@@ -265,7 +265,9 @@ def directory_crawler(
         file_structure = {}
 
         for path in paths:
-            file_structure.update(bulk_utils.parse_students_and_filepaths(pathlib.Path(path)))
+            file_structure.update(bulk_utils.parse_students_and_filepaths(
+                pathlib.Path(path))
+            )
 
 
     # Else there is invalid output_format then empty list is returned.
@@ -427,6 +429,7 @@ def add_fixed_settings(settings):
     result_dir = pathlib.Path(settings["result_dir"])
     settings["result_path"] = result_dir.joinpath(settings["result_file"])
     settings["yaml_result_path"] = result_dir.joinpath(settings["yaml_result_file"])
+    settings["bulk_result_path"] = result_dir.joinpath(settings["bulk_result_file"])
     settings["BKT_path"] = result_dir.joinpath(settings["BKT_file"])
     settings["structure_path"] = result_dir.joinpath(settings["structure_file"])
     settings["statistics_path"] = result_dir.joinpath(settings["statistics_file"])

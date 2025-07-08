@@ -17,6 +17,7 @@ DEFAULT_SETTINGS = {
     "result_file": "results.txt",
     "yaml_result_file": "ASPA_tulokset.yaml",
     "statistics_file": "statistics.json",
+    "bulk_result_file": "bulk_result.json",
     "settings_file": "settings.json",
     "BKT_file": "BKTA.csv",
     "structure_file": "structures.csv",
