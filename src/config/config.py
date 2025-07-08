@@ -72,7 +72,7 @@ ALLOWED_LIBRARIES_FOR_CONST = {
 }
 
 # Allowed Exception types
-ALLOWED_EXCEPTION_TYPES = {"Exception"}
+ALLOWED_EXCEPTION_TYPES = {"OSError"} # {"Exception"}
 
 # Add keys of ignored structure messages (work with single or multiple regex patterns)
 IGNORE_STRUCT = {}
@@ -326,7 +326,7 @@ MSG = {
         "MR5": ("Missing some or all header comments at {} first lines of the file.", WARNING),
         "PK1": ("Exception handling has no excepts.", ERROR),
         "PK1-1": ("Missing exception type.", WARNING),
-        "PK1-2": ("In this course used exception type should be Exception.", WARNING),
+        "PK1-2": ("In this course used exception type should be OSError.", WARNING),
         "PK3": ("Missing exception handling from the file opening.", ERROR),
         "PK4": ("Missing exception handling from the file operation '{}'.", ERROR),
         "PK4-1": ("Missing exception handling from the file operation '{}'.", ERROR),
@@ -396,7 +396,7 @@ MSG = {
                 + " ensimmäisellä rivillä.", WARNING),
         "PK1": ("Poikkeustenkäsittelyssä ei ole lainkaan exceptiä.", ERROR),
         "PK1-1": ("Exceptistä puuttuu virhetyyppi.", WARNING),
-        "PK1-2": ("Tällä kurssilla virhetyypin tulisi olla Exception.", WARNING),
+        "PK1-2": ("Tällä kurssilla virhetyypin tulisi olla OSError.", WARNING),
         "PK3": ("Tiedoston avaamisesta puuttuu poikkeustenkäsittely.", ERROR),
         "PK4": ("Tiedosto-operaatiosta '{}' puuttuu poikkeustenkäsittely.", ERROR),
         "PK4-1": ("Tiedosto-operaatiosta '{}' puuttuu poikkeustenkäsittely.", ERROR),
