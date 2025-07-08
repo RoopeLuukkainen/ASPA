@@ -99,6 +99,8 @@ class GUICLASS(tk.Tk):
 
         if analysis_type == "BKTA":
             output_format = "dict"
+        elif analysis_type == "bulk":
+            output_format = "bulk_dict"
         else:  # default
             output_format = "list"
 
@@ -122,6 +124,14 @@ class GUICLASS(tk.Tk):
             )
 
             self.model.count_structures(file_structure)
+
+        elif analysis_type == "bulk":
+            self.main_frame.show_page(view.AnalysePage)  # Show "front page"
+            self.model.bulk_analyse(
+                selections,
+                file_structure
+            )
+
         else:
             result_page.show_info()  # Init new results with default info
             self.main_frame.show_page(view.ResultPage)  # Show "result page"

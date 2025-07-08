@@ -1,6 +1,7 @@
 """File to handle ASPA static analysers."""
 
 import ast
+import copy      # for deepcopy
 import datetime  # for timestamp
 import json      # for statistics
 import os
@@ -11,6 +12,7 @@ import re
 from ..config import config as cnf
 from ..config import templates
 import src.utils_lib as utils
+import src.bulk_analysis_utils as bulk_utils
 import src.analysers.analysis_utils as a_utils
 
 # AST analysers
@@ -252,6 +254,7 @@ class Model:
         timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
         utils.write_file(self.settings["result_path"], timestamp + "\n")
         current_statistics = {}
+        yaml_dict = {}  # TA yaml data
 
         for filepath in file_list:
             results = self.execute_analysis(filepath, selections)
@@ -276,6 +279,37 @@ class Model:
 
             # Format results
             formated_results = self.format_violations(results)
+
+            # Count violations to violation dict
+            violation_dict = a_utils.results_to_violation_dict(results)
+
+            # TA version YAML formatting
+            directory_name = filepath.path.parents[0].name
+            analysed_filename = filepath.path.name
+            if directory_name in yaml_dict.keys():
+                yaml_dict[directory_name]["additional_comments"] += "\n{}\n{}{}".format(
+                    utils.create_dash(character="=", get_dash=True),
+                    analysed_filename,
+                    "\n".join(map(lambda x: x[0], formated_results)) #0th value is the message
+                )
+
+                # Combine violations, changed to built-in dict so that YAML parser can handle it
+                yaml_dict[directory_name]["violations"] = dict(utils.combine_integer_dicts(
+                    yaml_dict[directory_name]["violations"],
+                    copy.deepcopy(violation_dict)
+                ))
+
+            else:
+                yaml_dict[directory_name] = {}
+                # Comments in text
+                yaml_dict[directory_name]["additional_comments"] = "ASPAn palaute:\n{}{}".format(
+                    analysed_filename,
+                    "\n".join(map(lambda x: x[0], formated_results))
+                )
+                # Violations, changed to built-in dict so that YAML parser can handle it
+                yaml_dict[directory_name]["violations"] = dict(copy.deepcopy(violation_dict))
+
+
 
             # Add filename and filepath at the beginning of the result list
             formated_results.insert(
@@ -308,6 +342,9 @@ class Model:
 
             self.statistics.clear()
             self.statistics = {"ALL": {}}
+
+        # Write TA yaml results
+        utils.write_yaml_file(self.settings["yaml_result_path"], yaml_dict)
 
         return None
 
@@ -383,7 +420,50 @@ class Model:
             self.statistics = {"ALL": {}}
 
         return None
+      
+    def bulk_analyse(self, selections, student_dict):
+        """
+        Method to control bulk analysis steps.
+        This includes:
+        1. Iterating analysed files.
+        2. Formatting results and feedback.
+        3. Clearing results for new analysis
+        4. Write students all results at once
+        """
+        course_id = None
 
+        for student_obj in student_dict.values():
+            for assignment_obj in student_obj.get_assignments().values():
+                for filepath in assignment_obj.get_filepaths():
+
+                    results = self.execute_analysis(filepath, selections)
+
+                    # Format results
+                    formated_results = self.format_violations(results)
+
+                    # Add feedback
+                    assignment_obj.append_feedback("\n{}\n{}{}".format(
+                        utils.create_dash(character="=", get_dash=True),
+                        filepath.filename,
+                        "\n".join(map(lambda x: x[0], formated_results)) #0th value is the message
+                    ))
+
+                    # Violations
+                    # Count violations and update assignment object violation data structure
+                    assignment_obj.update_violations(
+                        a_utils.results_to_violation_dict(results)
+                    )
+
+                    self.clear_analysis_data()
+
+                    if not course_id: # Hotfix to get course_id to result file
+                        course_id = filepath.course
+
+        # Write results
+        # Result strcuture requires all files from same student being
+        # analysed before writing, therefore writing is after analysis.
+        bulk_utils.write_results(self.settings["bulk_result_path"], student_dict, course_id)
+        return None
 
     def BKT_analyse(self, selections, file_dict, *args, **kwargs):
         """
@@ -397,7 +477,7 @@ class Model:
 
         # round handles also negative accuracy so no need to check that. However
         # user might get undesired results with that (in BKT case basically 0.0)
-        # 0 is also allowed setting therefore using default value intead of
+        # 0 is also allowed setting therefore using default value instead of
         # "or"-operator to give value 3 as default.
         _ACC = self.settings.get("BKT_decimal_places", 3)
         _DESIM_SEP = self.settings.get("BKT_decimal_separator") or ","

@@ -5,10 +5,13 @@ import json
 import os       # os.walk is used for convenient directory exclusion possibility
 import pathlib  # Used for all the other path operations
 import re
+import yaml     # Used for bulkanalysis
 from typing import List
+from collections import defaultdict
 
 import src.config.config as cnf
 import src.config.templates as templates
+import src.bulk_analysis_utils as bulk_utils
 
 
 MSG = cnf.MSG
@@ -200,6 +203,7 @@ def directory_crawler(
                 pass
 
     def add_file(file_struct, filepath):
+        """"Function to add file to file structure in BKT analysis."""
         # TODO add settings which allow user to define corresponding numberings
         # and how many there are and in which order.
         student = 0
@@ -219,7 +223,6 @@ def directory_crawler(
                 exercise=exercise_str
             )
         )
-
 
     # List which will include every filepath as pathlib.Path object
     file_list = []
@@ -258,6 +261,15 @@ def directory_crawler(
         for path_obj in file_list:
             add_file(file_structure, path_obj)
 
+    elif output_format == "bulk_dict":
+        file_structure = {}
+
+        for path in paths:
+            file_structure.update(bulk_utils.parse_students_and_filepaths(
+                pathlib.Path(path))
+            )
+
+
     # Else there is invalid output_format then empty list is returned.
     else:
         file_structure = []
@@ -285,6 +297,25 @@ def read_file(filepath, encoding="UTF-8", settings_file=False):
     except Exception:
         pass
     return content
+
+
+def write_yaml_file(filepath, data, encoding="utf-8"):
+    try:
+        with open(filepath, "w", encoding=encoding) as f_handle:
+            # yaml.dump(data, f_handle, indent=4, allow_unicode=True)
+            yaml.safe_dump(
+                data,
+                f_handle,
+                indent=4,
+                allow_unicode=True,
+                default_style='|',
+                default_flow_style=False
+            )
+    except OSError as err:
+        print(f"OSError while writing a file '{filepath}'.\n{err}")
+    except Exception as err:
+        print(f"Other error than OSError with file '{filepath}'.\n{err}")
+    return None
 
 
 def write_file(filepath, content, mode="w", encoding="UTF-8", repeat=True):
@@ -338,6 +369,26 @@ def create_dash(character="-", dash_count=80, get_dash=False):
     else:
         print(character * dash_count)
 
+########################################################################
+# Data structure manipulation functions
+
+def combine_integer_dicts(*args: dict) -> dict:
+    """
+    Function to combine N amount of integer dictionaries to one. All keys
+    from all dictionaries are included and if there are same keys, values
+    are added together.
+
+    Arguments:
+    1. - N. Dictionary with anything as a key, but value must be integer.
+    Keyword arguments
+
+    Return: Merged dictionary
+    """
+    merged = defaultdict(int)
+    for _dict in args:
+        for key, value in _dict.items():
+            merged[key] += value
+    return merged
 
 ########################################################################
 # Getter functions for static values
@@ -377,6 +428,8 @@ def add_fixed_settings(settings):
     # Result file paths
     result_dir = pathlib.Path(settings["result_dir"])
     settings["result_path"] = result_dir.joinpath(settings["result_file"])
+    settings["yaml_result_path"] = result_dir.joinpath(settings["yaml_result_file"])
+    settings["bulk_result_path"] = result_dir.joinpath(settings["bulk_result_file"])
     settings["BKT_path"] = result_dir.joinpath(settings["BKT_file"])
     settings["structure_path"] = result_dir.joinpath(settings["structure_file"])
     settings["statistics_path"] = result_dir.joinpath(settings["statistics_file"])

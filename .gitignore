@@ -38,6 +38,7 @@ viope_json_parser.py
 # ignore all result files
 results/
 tarkistukset*.txt
+ASPA_tulokset.yaml
 
 
 # FROM GITHUB:

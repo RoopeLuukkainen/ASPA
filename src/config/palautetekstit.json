@@ -29,7 +29,7 @@
     "MR5": "Tiedostossa ei ole kaikkia alkukommentteja tiedoston {} ensimmäisellä rivillä.",
     "PK1": "Poikkeustenkäsittelyssä ei ole lainkaan exceptiä.",
     "PK1-1": "Exceptistä puuttuu virhetyyppi.",
-    "PK1-2": "Tällä kurssilla virhetyypin tulisi olla Exception.",
+    "PK1-2": "Tällä kurssilla virhetyypin tulisi olla OSError.",
     "PK3": "Tiedoston avaamisesta puuttuu poikkeustenkäsittely.",
     "PK4": "Tiedosto-operaatiosta '{}' puuttuu poikkeustenkäsittely.",
     "PK4-1": "Tiedosto-operaatiosta '{}' puuttuu poikkeustenkäsittely.",

@@ -15,7 +15,9 @@ DEFAULT_SETTINGS = {
     "show_statistics": False,
     "result_dir": str(pathlib.Path(__file__).parents[2].resolve().joinpath("results")),
     "result_file": "results.txt",
+    "yaml_result_file": "ASPA_tulokset.yaml",
     "statistics_file": "statistics.json",
+    "bulk_result_file": "bulk_result.json",
     "settings_file": "settings.json",
     "BKT_file": "BKTA.csv",
     "structure_file": "structures.csv",
@@ -71,7 +73,7 @@ ALLOWED_LIBRARIES_FOR_CONST = {
 }
 
 # Allowed Exception types
-ALLOWED_EXCEPTION_TYPES = {"Exception"}
+ALLOWED_EXCEPTION_TYPES = {"OSError"} # {"Exception"}
 
 # Add keys of ignored structure messages (work with single or multiple regex patterns)
 IGNORE_STRUCT = {}
@@ -177,6 +179,7 @@ GUI = {
         "filemenu": "Toiminnot",
         "results": "Näytä tulokset",
         "BKTA": "Tee BKT-analyysi",
+        "bulk_analysis": "Tee bulkki-analyysi",
         "help": "Käyttöohje",
         "helpmenu": "Ohjeet",
         "select_analysis_title": "Valitse tarkistukset",
@@ -199,6 +202,7 @@ GUI = {
         "filemenu": "File",
         "results": "Show results",
         "BKTA": "Execute BKT analysis",
+        "bulk_analysis": "Execute bulk analysis",
         "help": "User guide",
         "helpmenu": "Help",
         "select_analysis_title": "Select analyses",
@@ -323,7 +327,7 @@ MSG = {
         "MR5": ("Missing some or all header comments at {} first lines of the file.", WARNING),
         "PK1": ("Exception handling has no excepts.", ERROR),
         "PK1-1": ("Missing exception type.", WARNING),
-        "PK1-2": ("In this course used exception type should be Exception.", WARNING),
+        "PK1-2": ("In this course used exception type should be OSError.", WARNING),
         "PK3": ("Missing exception handling from the file opening.", ERROR),
         "PK4": ("Missing exception handling from the file operation '{}'.", ERROR),
         "PK4-1": ("Missing exception handling from the file operation '{}'.", ERROR),
@@ -393,7 +397,7 @@ MSG = {
                 + " ensimmäisellä rivillä.", WARNING),
         "PK1": ("Poikkeustenkäsittelyssä ei ole lainkaan exceptiä.", ERROR),
         "PK1-1": ("Exceptistä puuttuu virhetyyppi.", WARNING),
-        "PK1-2": ("Tällä kurssilla virhetyypin tulisi olla Exception.", WARNING),
+        "PK1-2": ("Tällä kurssilla virhetyypin tulisi olla OSError.", WARNING),
         "PK3": ("Tiedoston avaamisesta puuttuu poikkeustenkäsittely.", ERROR),
         "PK4": ("Tiedosto-operaatiosta '{}' puuttuu poikkeustenkäsittely.", ERROR),
         "PK4-1": ("Tiedosto-operaatiosta '{}' puuttuu poikkeustenkäsittely.", ERROR),
