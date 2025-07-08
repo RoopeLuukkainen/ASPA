@@ -1,8 +1,38 @@
 [![CodeQL](https://github.com/RoopeLuukkainen/ASPA/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/RoopeLuukkainen/ASPA/actions/workflows/codeql-analysis.yml)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3898126.svg)](https://doi.org/10.5281/zenodo.3898126)
 
 ASPA - Abstrakti SyntaksiPuu Analysaattori 
 ==========================================
-Abstrakti SyntaksiPuu Analysaattori (ASPA) == Abstract Syntax Tree Analyser. It is a static analyser to support self-study and complying with recommended coding conventions at Fundamentals of Programming course at LUT University.
+Abstrakti SyntaksiPuu Analysaattori (ASPA) == Abstract Syntax Tree Analyser. It is a static analyser to support self-study and complying with recommended coding conventions at Fundamentals of Programming (CS1) course at LUT University. 
+
+## Citation
+If you wish to cite related research (preferred), cite a conference article at ICSE [DOI link](https://dl.acm.org/doi/10.1145/3510456.3514149), same citation as text:
+```
+R. Luukkainen, J. Kasurinen, U. Nikula, V. Lenarduzzi, ASPA: A static analyser to support learning and continuous feedback on programming courses. an empirical validation, in: Proceedings of the ACM/IEEE 44th International Conference on Software Engineering: Software Engineering Education and Training, ICSE-SEET ’22, Association for Computing Machinery, New York, NY, USA, 2022, p. 29–39. doi:10.1145/3510456.3514149.
+```
+and same citation in bibtex format:
+```
+@inproceedings{luukkainen_aspa_2022,
+	address = {New York, NY, USA},
+	series = {{ICSE}-{SEET} '22},
+	title = {{ASPA}: {A} static analyser to support learning and continuous feedback on programming courses. {An} empirical validation},
+	isbn = {978-1-4503-9225-9},
+	shorttitle = {{ASPA}},
+	url = {https://dl.acm.org/doi/10.1145/3510456.3514149},
+	doi = {10.1145/3510456.3514149},
+	abstract = {For decades there have been arguments how to teach programming in the basic courses. Supportive intervention methods to improve students' learning and methods to improve assessment process have been widely studied. There are various successful methods to each topic separately, but only a few of them fit for both. In this work, we aimed at validating ASPA a static analyser tool that supports learning and continuous feedback on programming courses. For this purpose, we designed and conduct an empirical study among 236 students enrolled in the basic programming course, that voluntary adopted the tools during the project development activities. We first profiled the students, then, evaluated the attitude toward using ASPA, the perceived ease of use, and the perceived usefulness. Results showed that ASPA is a good helper for the entire course and especially the student's programming assignments, and it also helps to improve the students' grades.},
+	urldate = {2023-03-30},
+	booktitle = {Proceedings of the {ACM}/{IEEE} 44th {International} {Conference} on {Software} {Engineering}: {Software} {Engineering} {Education} and {Training}},
+	publisher = {Association for Computing Machinery},
+	author = {Luukkainen, Roope and Kasurinen, Jussi and Nikula, Uolevi and Lenarduzzi, Valentina},
+	month = oct,
+	year = {2022},
+	keywords = {CS1, programming education, empirical software engineering, software education, static analysis tools},
+	pages = {29--39},
+}
+```
+
+However, if you wish to cite directly this repository use "Cite this repository" to get Zenodo link.
 
 ## Repository structure
 

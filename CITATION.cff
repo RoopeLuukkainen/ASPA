@@ -1,0 +1,41 @@
+cff-version: 1.2.0
+title: ASPA - Abstract Syntax Tree Analyser
+message: >-
+  If you wish to cite related research, cite 
+  an article at ICSE, however to directly 
+  cite to this repository use Zenodo
+  http://doi.org/10.5281/zenodo.3898125.
+type: software
+authors:
+  - family-names: Luukkainen
+    given-names: Roope
+    orcid: 'https://orcid.org/0009-0008-5877-4304'
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.3898125
+    description: Zenodo release
+  - type: url
+    value: 'https://github.com/RoopeLuukkainen/ASPA'
+    description: Plain repository link
+repository-code: 'https://github.com/RoopeLuukkainen/ASPA'
+repository-artifact: 'https://github.com/RoopeLuukkainen/ASPA'
+abstract: >-
+  Abstrakti SyntaksiPuu Analysaattori (ASPA) == Abstract
+  Syntax Tree Analyser. It is a static analyser to  support
+  self-study and complying with recommended coding
+  conventions at Fundamentals of Programming (CS1) course at
+  LUT University.
+keywords:
+  - abstract syntax tree
+  - AST
+  - research software
+  - Python
+  - CS1
+  - programming education
+  - software education
+  - feedback
+  - LUT University
+license: GPL-3.0
+version: 0.5-alpha
+date-released: '2020-06-17'
+doi: '10.5281/zenodo.3898125'
