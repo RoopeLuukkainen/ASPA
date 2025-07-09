@@ -420,7 +420,7 @@ class Model:
             self.statistics = {"ALL": {}}
 
         return None
-      
+
     def bulk_analyse(self, selections, student_dict):
         """
         Method to control bulk analysis steps.
@@ -430,12 +430,19 @@ class Model:
         3. Clearing results for new analysis
         4. Write students all results at once
         """
+
+        print(f"Bulk analysis function starts...{datetime.datetime.now().strftime('%H:%M:%S')}")
+
         course_id = None
+        student_counter = 0
+        student_amount = len(student_dict.keys())
 
         for student_obj in student_dict.values():
+            student_counter += 1
             for assignment_obj in student_obj.get_assignments().values():
                 for filepath in assignment_obj.get_filepaths():
 
+                    # TODO FIX SELECTIONS to match assingment
                     results = self.execute_analysis(filepath, selections)
 
                     # Format results
@@ -458,11 +465,14 @@ class Model:
 
                     if not course_id: # Hotfix to get course_id to result file
                         course_id = filepath.course
+            print(f"Student '{student_obj.name}' analysed, {student_counter}/{student_amount}.")
 
         # Write results
         # Result strcuture requires all files from same student being
         # analysed before writing, therefore writing is after analysis.
         bulk_utils.write_results(self.settings["bulk_result_path"], student_dict, course_id)
+
+        print(f"Bulk analysis function finished...{datetime.datetime.now().strftime('%H:%M:%S')}")
         return None
 
     def BKT_analyse(self, selections, file_dict, *args, **kwargs):
