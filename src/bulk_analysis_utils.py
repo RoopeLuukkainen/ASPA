@@ -25,6 +25,21 @@ LIB_PATT = rf"(?P<before>.*){LIB_FILE_NAME}(?P<after>.*)"
 #     "HTTavoite": "HTTavoitetaso"
 # }
 
+# These are used to map assignment names to selections in ASPA analyser
+# For example, L01T1 is analysed with only basic analyser selections and L06T3 with 3 first analysers etc.
+WEEK_PATT = r"(?P<week>L\d+)T"
+ASSIGNMENT_TO_ASPA_ANALAYSER = {
+    "L01": {'basic': 1, 'function': 0, 'file_handling': 0, 'data_structure': 0, 'library': 0, 'exception_handling': 0},
+    "L02": {'basic': 1, 'function': 0, 'file_handling': 0, 'data_structure': 0, 'library': 0, 'exception_handling': 0},
+    "L03": {'basic': 1, 'function': 0, 'file_handling': 0, 'data_structure': 0, 'library': 0, 'exception_handling': 0},
+    "L04": {'basic': 1, 'function': 0, 'file_handling': 0, 'data_structure': 0, 'library': 0, 'exception_handling': 0},
+    "L05": {'basic': 1, 'function': 1, 'file_handling': 0, 'data_structure': 0, 'library': 0, 'exception_handling': 0},
+    "L06": {'basic': 1, 'function': 1, 'file_handling': 1, 'data_structure': 0, 'library': 0, 'exception_handling': 0},
+    "L07": {'basic': 1, 'function': 1, 'file_handling': 1, 'data_structure': 1, 'library': 0, 'exception_handling': 0},
+    "L08": {'basic': 1, 'function': 1, 'file_handling': 1, 'data_structure': 1, 'library': 1, 'exception_handling': 0}
+    # Others analysed with all selections
+}
+
 # ---------------------------------------------------------------------------- #
 # Classes
 

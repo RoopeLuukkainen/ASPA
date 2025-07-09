@@ -431,8 +431,10 @@ class Model:
         4. Write students all results at once
         """
 
-        print(f"Bulk analysis function starts...{datetime.datetime.now().strftime('%H:%M:%S')}")
+        print(f"Bulk analysis function starts at {datetime.datetime.now().strftime('%H:%M:%S')}")
 
+        original_selections = copy.deepcopy(selections)
+        week_patt = re.compile(bulk_utils.WEEK_PATT)
         course_id = None
         student_counter = 0
         student_amount = len(student_dict.keys())
@@ -440,9 +442,20 @@ class Model:
         for student_obj in student_dict.values():
             student_counter += 1
             for assignment_obj in student_obj.get_assignments().values():
+
+                # Use fixed selections for each week, if course project or other not detected,
+                # then just analyse everything
+                if ((match := (week_patt.match(assignment_obj.assignment_name)))
+                    and (weekly_selection := (bulk_utils.ASSIGNMENT_TO_ASPA_ANALAYSER.get(match.group("week"), None)))
+                ):
+                    # If weekly selection is not None, then use it
+                    selections = weekly_selection
+                else: # Otherwise use original selections
+                    selections = original_selections
+
+
                 for filepath in assignment_obj.get_filepaths():
 
-                    # TODO FIX SELECTIONS to match assingment
                     results = self.execute_analysis(filepath, selections)
 
                     # Format results
@@ -465,14 +478,14 @@ class Model:
 
                     if not course_id: # Hotfix to get course_id to result file
                         course_id = filepath.course
-            print(f"Student '{student_obj.name}' analysed, {student_counter}/{student_amount}.")
+            print(f"Student {student_counter}/{student_amount} analysed, '{student_obj.name}'.")
 
         # Write results
         # Result strcuture requires all files from same student being
         # analysed before writing, therefore writing is after analysis.
         bulk_utils.write_results(self.settings["bulk_result_path"], student_dict, course_id)
 
-        print(f"Bulk analysis function finished...{datetime.datetime.now().strftime('%H:%M:%S')}")
+        print(f"Bulk analysis function finished at {datetime.datetime.now().strftime('%H:%M:%S')}")
         return None
 
     def BKT_analyse(self, selections, file_dict, *args, **kwargs):
