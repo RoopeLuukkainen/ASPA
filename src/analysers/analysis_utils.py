@@ -275,7 +275,6 @@ def get_attribute_name(node, splitted=False, omit_n_last=0):
             raise
         finally:
             name_parts.clear()
-    print(name)
     return name
 
 
