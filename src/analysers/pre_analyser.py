@@ -79,8 +79,11 @@ class PreAnalyser(ast.NodeVisitor):
     def _get_names(self, var, name):
         name.clear()
         try:
-            if isinstance(var, (ast.Attribute, ast.Subscript)): # TODO Use Match case here
-                name.append(var.value.id)
+            if isinstance(var, (ast.Attribute, ast.Subscript)):
+                temp = var
+                while (isinstance(temp, (ast.Attribute, ast.Subscript))):
+                    temp = temp.value
+                name.append(temp.id)
             elif isinstance(var, ast.Tuple):
             # NOTE this might be unused due to the Tuple check in _store_assing
                 for i in var.elts:
@@ -176,15 +179,18 @@ class PreAnalyser(ast.NodeVisitor):
         existing variable (X) then the X is a global variable.
         """
 
-        if (isinstance(node.target, ast.Attribute)
-                and (name := node.target.value.id) in self._possible_constant_dict):
-            self.global_dict[name] = self._possible_constant_dict.pop(name, None)
-        elif ((node.col_offset == 0
-             or a_utils.get_parent(node, cnf.CLS_FUNC) is None)
-                and (name := node.target.id) in self._possible_constant_dict):
-            # If we get here and variable used in AugAssign does not exist it
-            # would be NameError when analysed code is executed.
-            self.global_dict[name] = self._possible_constant_dict.pop(name, None)
+        try:
+            if (isinstance(node.target, ast.Attribute)
+                    and (name := node.target.value.id) in self._possible_constant_dict):
+                self.global_dict[name] = self._possible_constant_dict.pop(name, None)
+            elif ((node.col_offset == 0
+                 or a_utils.get_parent(node, cnf.CLS_FUNC) is None)
+                    and (name := node.target.id) in self._possible_constant_dict):
+                # If we get here and variable used in AugAssign does not exist it
+                # would be NameError when analysed code is executed.
+                self.global_dict[name] = self._possible_constant_dict.pop(name, None)
+        except AttributeError:
+            pass
 
     def _store_class(self, node):
         imported = False

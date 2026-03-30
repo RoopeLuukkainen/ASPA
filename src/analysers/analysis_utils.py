@@ -235,6 +235,10 @@ def get_attribute_name(node, splitted=False, omit_n_last=0):
     node then node.id is enough. Otherwise add all attrs in front of
     the id.
 
+    Handles Subscript nodes in the chain, e.g. datalist[i].member
+    resolves to the base variable name ("datalist.member" or
+    ["datalist", "member"]).
+
     Optional parameters:
     1. "splitted" is used get result as list instead of joined string,
         i.e. "[like, this]" instead of "like.this".
@@ -252,9 +256,16 @@ def get_attribute_name(node, splitted=False, omit_n_last=0):
         name_parts = []
         try:
             temp = node
-            while hasattr(temp, "attr"):
-                name_parts.insert(0, temp.attr)
-                temp = temp.value
+            while hasattr(temp, "attr") or isinstance(temp, ast.Subscript):
+                if isinstance(temp, ast.Subscript):
+                    temp = temp.value
+                    # Could index be also included e.g.
+                    # datalist.[1].member
+                    # datalist.1.member
+                    # datalist[1].member (this might require extra parameter)
+                else:
+                    name_parts.insert(0, temp.attr)
+                    temp = temp.value
 
             name = [temp.id] + name_parts[:omit_n_last]
             if not splitted:
@@ -264,6 +275,7 @@ def get_attribute_name(node, splitted=False, omit_n_last=0):
             raise
         finally:
             name_parts.clear()
+    print(name)
     return name
 
 
