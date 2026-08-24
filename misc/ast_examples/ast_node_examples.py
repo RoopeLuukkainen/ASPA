@@ -779,3 +779,74 @@ While(
 )
 
 # ******************************************************************** #
+# F-string creates a JoinedStr node and strings are Constants and
+# variables are FormattedValue nodes
+f"Normal method called with name: {self.name} and datapoint: {self.datapoint}"
+
+JoinedStr(
+    values=[
+        Constant(value='Normal method called with name: '),
+        FormattedValue(value=Attribute(
+            value=Name(id='self', ctx=Load()), attr='name', ctx=Load()
+            ),
+            conversion=-1
+        ),
+        Constant(value=' and datapoint: '),
+        FormattedValue(value=Attribute(
+            value=Name(id='self', ctx=Load()), attr='datapoint', ctx=Load()
+            ),
+            conversion=-1
+        )
+])
+
+# ******************************************************************** #
+# Class property
+@dataclass
+class TestClass():
+
+ClassDef(
+    name='TestClass', body=[    ],
+    decorator_list=[Name(id='dataclass', ctx=Load())])
+# ******************************************************************** #
+# Method property
+    @property
+    def datapoint(self):
+        return self._datapoint
+
+FunctionDef(
+    name='datapoint',
+    args=arguments(args=[arg(arg='self')]),
+    body=[
+        Return(
+            value=Attribute(value=Name(id='self', ctx=Load()), attr='_datapoint', ctx=Load())
+        )
+    ],
+    decorator_list=[Name(id='property', ctx=Load())]
+)
+
+# ******************************************************************** #
+# Method property setter
+    @datapoint.setter
+    def datapoint(self, new_datapoint: int):
+        if new_datapoint < 0:
+            raise ValueError("Datapoint cannot be negative")
+        self._datapoint = new_datapoint
+
+FunctionDef(
+    name='datapoint',
+    args=arguments(args=[arg(arg='self'), arg(arg='new_datapoint', annotation=Name(id='int', ctx=Load()))]),
+    body=[
+        If(test=Compare(left=Name(id='new_datapoint', ctx=Load()), ops=[Lt()], comparators=[Constant(value=0)]), body=[Raise(exc=Call(func=Name(id='ValueError', ctx=Load()), args=[Constant(value='Datapoint cannot be negative')]))]),
+        Assign(
+            targets=[Attribute(value=Name(id='self', ctx=Load()), attr='_datapoint', ctx=Store())],
+            value=Name(id='new_datapoint', ctx=Load())
+        )
+    ],
+    decorator_list=[
+        Attribute(value=Name(
+            id='datapoint', ctx=Load()),
+            attr='setter', ctx=Load()
+        )
+    ]
+)
+# ******************************************************************** #
